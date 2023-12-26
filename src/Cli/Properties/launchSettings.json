@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Cli": {
-      "commandName": "Project",
-      "commandLineArgs": "about -p \"C:\" -f true"
-    }
-  }
-}
