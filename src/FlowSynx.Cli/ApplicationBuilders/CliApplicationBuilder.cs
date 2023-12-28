@@ -2,9 +2,8 @@
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
-using FlowSynx.Cli.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using Spectre.Console;
+using FlowSynx.Cli.Formatter;
 
 namespace FlowSynx.Cli.ApplicationBuilders;
 
@@ -31,12 +30,20 @@ public class CliApplicationBuilder : ICliApplicationBuilder
                 context.BindingContext.AddService<IServiceProvider>(_ => _serviceProvider!);
                 await next(context);
             })
-            .UseDefaults();
+            .UseHelp()
+            .UseEnvironmentVariableDirective()
+            .UseParseDirective()
+            .UseSuggestDirective()
+            .RegisterWithDotnetSuggest()
+            .UseTypoCorrections()
+            .UseParseErrorReporting()
+            .UseExceptionHandler()
+            .CancelOnProcessTermination();
 
-        var console = _serviceProvider?.GetService<IAnsiConsole>() ?? AnsiConsole.Console;
+        var console = _serviceProvider?.GetService<IOutputFormatter>();
 
         if (!args.Any())
-            console.WriteText(FlowSyncLogo());
+            console?.Write(FlowSyncLogo());
 
         return await commandLineBuilder.Build().InvokeAsync(args);
 
