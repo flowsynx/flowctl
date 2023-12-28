@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
 using System.Diagnostics;
 using EnsureThat;
-using FlowSynx.Cli.Extensions;
+using FlowSynx.Cli.Formatter;
 using FlowSynx.Environment;
 using FlowSynx.IO.Serialization;
 using Spectre.Console;
@@ -37,17 +37,17 @@ internal class RunCommandOptions : ICommandOptions
 
 internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptions>
 {
-    private readonly IAnsiConsole _console;
+    private readonly IOutputFormatter _outputFormatter;
     private readonly IEnvironmentManager _environmentManager;
     private readonly ISerializer _serializer;
 
-    public RunCommandOptionsHandler(IAnsiConsole console, IEnvironmentManager environmentManager, 
+    public RunCommandOptionsHandler(IOutputFormatter outputFormatter, IEnvironmentManager environmentManager, 
         ISerializer serializer)
     {
-        EnsureArg.IsNotNull(console, nameof(console));
+        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(environmentManager, nameof(environmentManager));
         EnsureArg.IsNotNull(serializer, nameof(serializer));
-        _console = console;
+        _outputFormatter = outputFormatter;
         _environmentManager = environmentManager;
         _serializer = serializer;
     }
@@ -63,12 +63,12 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
         var flowSyncPath = _environmentManager.Get(EnvironmentVariables.FlowsynxPath);
         if (string.IsNullOrEmpty(flowSyncPath))
         {
-            _console.WriteError(@"FlowSync engine is not installed. Please run the 'fs-cli install -h' command to see the details.");
+            _outputFormatter.WriteError(@"FlowSynx engine is not installed. Please run the 'synx install -h' command to see the details.");
             return Task.CompletedTask;
         }
 
         var color = AnsiConsole.Foreground;
-        var startInfo = new ProcessStartInfo(Path.Combine(flowSyncPath, "FlowSync.exe"))
+        var startInfo = new ProcessStartInfo(Path.Combine(flowSyncPath, "FlowSynx.exe"))
         {
             Arguments = GetArgumentStr(options),
             UseShellExecute = false,
@@ -104,11 +104,11 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
     
     private void OutputDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
     {
-        if (outLine.Data != null) _console.WriteText(outLine.Data);
+        if (outLine.Data != null) _outputFormatter.Write(outLine.Data);
     }
 
     private void ErrorDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
     {
-        if (outLine.Data != null) _console.WriteError(outLine.Data);
+        if (outLine.Data != null) _outputFormatter.WriteError(outLine.Data);
     }
 }

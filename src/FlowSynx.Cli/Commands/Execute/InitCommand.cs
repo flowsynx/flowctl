@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
 using System.Diagnostics;
 using EnsureThat;
-using FlowSynx.Cli.Extensions;
+using FlowSynx.Cli.Formatter;
 using FlowSynx.Environment;
 using FlowSynx.IO.Serialization;
 using Spectre.Console;
@@ -12,14 +12,12 @@ internal class InitCommand : BaseCommand<InitCommandOptions, InitCommandOptionsH
 {
     public InitCommand() : base("run", "Run FlowSync system")
     {
-        var portOption = new Option<int>(new[] { "-p", "--port" }, getDefaultValue: () => 4400, description: "The port FlowSync is listening on");
         var configOption = new Option<string>(new[] { "-c", "--config-file" }, description: "FlowSync configuration file");
         var enableHealthCheckOption = new Option<bool>(new[] { "-H", "--enable-health-check" }, getDefaultValue: () => true, description: "Enable health checks for the FlowSync");
         var enableLogOption = new Option<bool>(new[] { "-L", "--enable-log" }, getDefaultValue: () => true, description: "Enable logging to records the details of events during FlowSync running");
         var logLevelOption = new Option<AppLogLevel>(new[] { "-l", "--log-level" }, getDefaultValue: () => AppLogLevel.Info, description: "The log verbosity to controls the amount of detail emitted for each event that is logged");
         var retryOption = new Option<int>(new[] { "-r", "--retry" }, getDefaultValue: () => 3, description: "The number of times FlowSync needs to try to receive data if there is a connection problem");
 
-        AddOption(portOption);
         AddOption(configOption);
         AddOption(enableHealthCheckOption);
         AddOption(enableLogOption);
@@ -30,7 +28,6 @@ internal class InitCommand : BaseCommand<InitCommandOptions, InitCommandOptionsH
 
 internal class InitCommandOptions : ICommandOptions
 {
-    public int Port { get; set; }
     public string? ConfigFile { get; set; }
     public bool EnableHealthCheck { get; set; }
     public bool EnableLog { get; set; }
@@ -40,18 +37,18 @@ internal class InitCommandOptions : ICommandOptions
 
 internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOptions>
 {
-    private readonly IAnsiConsole _console;
+    private readonly IOutputFormatter _outputFormatter;
     private readonly IEnvironmentManager _environmentManager;
     private readonly ISerializer _serializer;
 
-    public InitCommandOptionsHandler(IAnsiConsole console, IEnvironmentManager environmentManager, 
+    public InitCommandOptionsHandler(IOutputFormatter outputFormatter, IEnvironmentManager environmentManager, 
         ISerializer serializer)
     {
-        EnsureArg.IsNotNull(console, nameof(console));
+        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(environmentManager, nameof(environmentManager));
         EnsureArg.IsNotNull(serializer, nameof(serializer));
 
-        _console = console;
+        _outputFormatter = outputFormatter;
         _environmentManager = environmentManager;
         _serializer = serializer;
     }
@@ -67,7 +64,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         var flowSyncPath = _environmentManager.Get(EnvironmentVariables.FlowsynxPath);
         if (string.IsNullOrEmpty(flowSyncPath))
         {
-            _console.WriteError(@"FlowSync engine is not installed. Please run the 'fs-cli install -h' command to see the details.");
+            _outputFormatter.WriteError(@"FlowSynx engine is not installed. Please run the 'synx install -h' command to see the details.");
             return Task.CompletedTask;
         }
 
@@ -94,7 +91,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
 
     private string GetArgumentStr(InitCommandOptions options)
     {
-        var argList = new List<string> { $"--port {options.Port}" };
+        var argList = new List<string>();
 
         if (!string.IsNullOrEmpty(options.ConfigFile))
             argList.Add($"--config-file {options.ConfigFile}");
@@ -108,11 +105,11 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     
     private void OutputDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
     {
-        if (outLine.Data != null) _console.WriteText(outLine.Data);
+        if (outLine.Data != null) _outputFormatter.Write(outLine.Data);
     }
 
     private void ErrorDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
     {
-        if (outLine.Data != null) _console.WriteError(outLine.Data);
+        if (outLine.Data != null) _outputFormatter.WriteError(outLine.Data);
     }
 }
