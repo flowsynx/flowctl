@@ -1,11 +1,17 @@
 ﻿using FlowSynx.Cli.ApplicationBuilders;
 using FlowSynx.Cli.Extensions;
+using FlowSynx.Cli.Formatter;
+using FlowSynx.Net;
 using Microsoft.Extensions.DependencyInjection;
-using Spectre.Console;
 
 IServiceCollection serviceCollection = new ServiceCollection()
+    .AddLoggingService()
     .AddApplication()
-    .AddCommands();
+    .AddCommands()
+    .AddFormatter()
+    .AddVersion()
+    .AddHttpClient()
+    .AddHttpRequestService();
 
 IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -20,6 +26,7 @@ try
 }
 catch (Exception ex)
 {
-    AnsiConsole.Console.WriteError(ex.Message);
+    var formatter = serviceProvider.GetService<IOutputFormatter>();
+    formatter?.WriteError(ex.Message);
     return 0;
 }
