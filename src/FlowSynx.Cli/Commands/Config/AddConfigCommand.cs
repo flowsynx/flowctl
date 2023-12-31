@@ -12,8 +12,8 @@ internal class AddConfigCommand : BaseCommand<AddConfigCommandOptions, AddConfig
 {
     public AddConfigCommand() : base("add", "Add configuration section")
     {
-        var nameOption = new Option<string>(new[] { "-n", "--name" }, "The path to get about") { IsRequired = true };
-        var typeOption = new Option<string>(new[] { "-t", "--type" }, "The path to get about") { IsRequired = true };
+        var nameOption = new Option<string>(new[] { "--name" }, "The path to get about") { IsRequired = true };
+        var typeOption = new Option<string>(new[] { "--type" }, "The path to get about") { IsRequired = true };
 
         AddOption(nameOption);
         AddOption(typeOption);

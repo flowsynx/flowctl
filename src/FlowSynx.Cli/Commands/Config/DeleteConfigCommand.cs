@@ -12,7 +12,7 @@ internal class DeleteConfigCommand : BaseCommand<DeleteConfigCommandOptions, Del
 {
     public DeleteConfigCommand() : base("delete", "Delete configuration section")
     {
-        var nameOption = new Option<string>(new[] { "-n", "--name" }, "The path to get about") { IsRequired = true };
+        var nameOption = new Option<string>(new[] { "--name" }, "The path to get about") { IsRequired = true };
 
         AddOption(nameOption);
     }

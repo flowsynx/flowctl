@@ -12,8 +12,8 @@ internal class DetailsConfigCommand : BaseCommand<DetailsConfigCommandOptions, D
 {
     public DetailsConfigCommand() : base("details", "About storage")
     {
-        var nameOption = new Option<string>(new[] { "-n", "--name" }, "The path to get about") { IsRequired = true };
-        var outputFormatOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var nameOption = new Option<string>(new[] { "--name" }, "The path to get about") { IsRequired = true };
+        var outputFormatOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(nameOption);
         AddOption(outputFormatOption);

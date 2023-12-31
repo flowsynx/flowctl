@@ -12,8 +12,8 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
 {
     public ConfigCommand() : base("config", "Configuration management")
     {
-        var typeOption = new Option<string>(new[] { "-t", "--type" }, "The path to get about");
-        var outputOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var typeOption = new Option<string>(new[] { "--type" }, "The path to get about");
+        var outputOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(typeOption);
         AddOption(outputOption);
