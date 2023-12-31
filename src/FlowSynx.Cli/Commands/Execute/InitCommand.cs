@@ -4,6 +4,7 @@ using EnsureThat;
 using FlowSynx.Cli.Formatter;
 using FlowSynx.Environment;
 using FlowSynx.IO.Serialization;
+using FlowSynx.Logging;
 using Spectre.Console;
 
 namespace FlowSynx.Cli.Commands.Execute;
@@ -12,11 +13,11 @@ internal class InitCommand : BaseCommand<InitCommandOptions, InitCommandOptionsH
 {
     public InitCommand() : base("run", "Run FlowSync system")
     {
-        var configOption = new Option<string>(new[] { "-c", "--config-file" }, description: "FlowSync configuration file");
-        var enableHealthCheckOption = new Option<bool>(new[] { "-H", "--enable-health-check" }, getDefaultValue: () => true, description: "Enable health checks for the FlowSync");
-        var enableLogOption = new Option<bool>(new[] { "-L", "--enable-log" }, getDefaultValue: () => true, description: "Enable logging to records the details of events during FlowSync running");
-        var logLevelOption = new Option<AppLogLevel>(new[] { "-l", "--log-level" }, getDefaultValue: () => AppLogLevel.Info, description: "The log verbosity to controls the amount of detail emitted for each event that is logged");
-        var retryOption = new Option<int>(new[] { "-r", "--retry" }, getDefaultValue: () => 3, description: "The number of times FlowSync needs to try to receive data if there is a connection problem");
+        var configOption = new Option<string>(new[] { "--config-file" }, description: "FlowSync configuration file");
+        var enableHealthCheckOption = new Option<bool>(new[] { "--enable-health-check" }, getDefaultValue: () => true, description: "Enable health checks for the FlowSync");
+        var enableLogOption = new Option<bool>(new[] { "--enable-log" }, getDefaultValue: () => true, description: "Enable logging to records the details of events during FlowSync running");
+        var logLevelOption = new Option<LoggingLevel>(new[] { "--log-level" }, getDefaultValue: () => LoggingLevel.Info, description: "The log verbosity to controls the amount of detail emitted for each event that is logged");
+        var retryOption = new Option<int>(new[] { "--retry" }, getDefaultValue: () => 3, description: "The number of times FlowSync needs to try to receive data if there is a connection problem");
 
         AddOption(configOption);
         AddOption(enableHealthCheckOption);
@@ -31,7 +32,7 @@ internal class InitCommandOptions : ICommandOptions
     public string? ConfigFile { get; set; }
     public bool EnableHealthCheck { get; set; }
     public bool EnableLog { get; set; }
-    public AppLogLevel LogLevel { get; set; }
+    public LoggingLevel LogLevel { get; set; }
     public bool Retry { get; set; }
 }
 
