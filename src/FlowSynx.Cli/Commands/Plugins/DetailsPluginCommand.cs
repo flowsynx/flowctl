@@ -12,8 +12,8 @@ internal class DetailsPluginCommand : BaseCommand<DetailsPluginCommandOptions, D
 {
     public DetailsPluginCommand() : base("details", "About storage")
     {
-        var nameOption = new Option<Guid>(new[] { "-i", "--id" }, "The path to get about") { IsRequired = true };
-        var outputFormatOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var nameOption = new Option<Guid>(new[] { "--id" }, "The path to get about") { IsRequired = true };
+        var outputFormatOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(nameOption);
         AddOption(outputFormatOption);
