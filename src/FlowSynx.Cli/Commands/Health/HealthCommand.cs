@@ -11,7 +11,7 @@ internal class HealthCommand : BaseCommand<HealthCommandOptions, HealthCommandOp
 {
     public HealthCommand() : base("health", "Configuration management")
     {
-        var outputOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var outputOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(outputOption);
     }
