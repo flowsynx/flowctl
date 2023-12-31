@@ -12,8 +12,8 @@ internal class VersionCommand : BaseCommand<VersionCommandOptions, VersionComman
 {
     public VersionCommand() : base("version", "Configuration management")
     {
-        var typeOption = new Option<bool>(new[] { "-f", "--full" }, getDefaultValue: () => false, "The path to get about");
-        var outputOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var typeOption = new Option<bool>(new[] { "--full" }, getDefaultValue: () => false, "The path to get about");
+        var outputOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(typeOption);
         AddOption(outputOption);
