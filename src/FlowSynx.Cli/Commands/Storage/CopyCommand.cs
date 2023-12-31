@@ -11,8 +11,8 @@ internal class CopyCommand : BaseCommand<CopyCommandOptions, CopyCommandOptionsH
 {
     public CopyCommand() : base("copy", "List of entities regarding specific path")
     {
-        var sourcePathOption = new Option<string>(new[] { "s", "--source-path" }, "The path to get about") { IsRequired = true };
-        var destinationPathOption = new Option<string>(new[] { "-d", "--destination-path" }, "The path to get about") { IsRequired = true };
+        var sourcePathOption = new Option<string>(new[] { "--source-path" }, "The path to get about") { IsRequired = true };
+        var destinationPathOption = new Option<string>(new[] { "--destination-path" }, "The path to get about") { IsRequired = true };
         var clearDestinationPathOption = new Option<bool?>(new[] { "--clear-destination-path" }, getDefaultValue: () => false, "The maximum number of results to return [default: off]");
         var overWriteDataOption = new Option<bool?>(new[] { "--overWrite-data" }, getDefaultValue: () => false, "Formatting CLI output");
         var includeOption = new Option<string?>(new[] { "--include" }, "Include entities matching pattern");

@@ -11,7 +11,7 @@ internal class DeleteCommand : BaseCommand<DeleteCommandOptions, DeleteCommandOp
 {
     public DeleteCommand() : base("delete", "List of entities regarding specific path")
     {
-        var pathOption = new Option<string>(new[] { "-p", "--path" }, "The path to get about") { IsRequired = true };
+        var pathOption = new Option<string>(new[] { "--path" }, "The path to get about") { IsRequired = true };
         var includeOption = new Option<string?>(new[] { "--include" }, "Include entities matching pattern");
         var excludeOption = new Option<string?>(new[] { "--exclude" }, "Exclude entities matching pattern");
         var minAgeOption = new Option<string?>(new[] { "--min-age" }, "Filter entities older than this in s or suffix ms|s|m|h|d|w|M|y [default: off]");

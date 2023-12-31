@@ -11,7 +11,7 @@ internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsH
 {
     public SizeCommand() : base("size", "List of entities regarding specific path")
     {
-        var pathOption = new Option<string>(new[] { "-p", "--path" }, "The path to get about") { IsRequired = true };
+        var pathOption = new Option<string>(new[] { "--path" }, "The path to get about") { IsRequired = true };
         var kindOption = new Option<string?>(new[] { "--kind" }, getDefaultValue: () => ItemKind.FileAndDirectory.ToString(), "Should apply format for byte size. Valid values are File, Directory, and FileAndDirectory.");
         var includeOption = new Option<string?>(new[] { "--include" }, "Include entities matching pattern");
         var excludeOption = new Option<string?>(new[] { "--exclude" }, "Exclude entities matching pattern");
@@ -24,7 +24,7 @@ internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsH
         var caseSensitiveOption = new Option<bool?>(new[] { "--case-sensitive" }, getDefaultValue: () => false, "Ignore or apply case sensitive in filters");
         var recurseOption = new Option<bool?>(new[] { "--recurse" }, getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
         var maxResultsOption = new Option<int?>(new[] { "--max-results" }, "The maximum number of results to return [default: off]");
-        var outputOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var outputOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(pathOption);
         AddOption(kindOption);

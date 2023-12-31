@@ -12,6 +12,8 @@ internal class StorageCommand : BaseCommand
         AddCommand(new MakeDirectoryCommand());
         AddCommand(new MoveCommand());
         AddCommand(new PurgeDirectoryCommand());
+        AddCommand(new ReadCommand());
         AddCommand(new SizeCommand());
+        AddCommand(new WriteCommand());
     }
 }

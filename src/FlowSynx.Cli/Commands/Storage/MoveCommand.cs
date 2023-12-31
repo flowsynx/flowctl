@@ -11,7 +11,7 @@ internal class MoveCommand : BaseCommand<MoveCommandOptions, MoveCommandOptionsH
 {
     public MoveCommand() : base("move", "List of entities regarding specific path")
     {
-        var sourcePathOption = new Option<string>(new[] { "s", "--source-path" }, "The path to get about") { IsRequired = true };
+        var sourcePathOption = new Option<string>(new[] { "--source-path" }, "The path to get about") { IsRequired = true };
         var destinationPathOption = new Option<string>(new[] { "-d", "--destination-path" }, "The path to get about") { IsRequired = true };
         var includeOption = new Option<string?>(new[] { "--include" }, "Include entities matching pattern");
         var excludeOption = new Option<string?>(new[] { "--exclude" }, "Exclude entities matching pattern");
