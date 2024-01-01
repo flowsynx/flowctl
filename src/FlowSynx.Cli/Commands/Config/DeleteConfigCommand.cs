@@ -30,7 +30,7 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
     private readonly IEndpoint _endpoint;
     private readonly IHttpRequestService _httpRequestService;
 
-    public DeleteConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
+    public DeleteConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
         IEndpoint endpoint, IHttpRequestService httpRequestService, ISerializer serializer)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
@@ -54,16 +54,27 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
         try
         {
             const string relativeUrl = "config/delete";
-            var result = await _httpRequestService.DeleteAsync<DeleteConfigCommandOptions, Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
+            var request = new DeleteConfigRequest { Name = options.Name };
+            var result = await _httpRequestService.DeleteAsync<DeleteConfigRequest, Result<DeleteConfigResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(result.Data ?? result.Messages);
+                _outputFormatter.Write(result.Data);
         }
         catch (Exception ex)
         {
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class DeleteConfigRequest
+{
+    public required string Name { get; set; }
+}
+
+public class DeleteConfigResponse
+{
+
 }

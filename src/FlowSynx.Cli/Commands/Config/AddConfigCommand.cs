@@ -33,7 +33,7 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
     private readonly IEndpoint _endpoint;
     private readonly IHttpRequestService _httpRequestService;
 
-    public AddConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
+    public AddConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
         IEndpoint endpoint, IHttpRequestService httpRequestService, ISerializer serializer)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
@@ -57,16 +57,30 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
         try
         {
             const string relativeUrl = "config/add";
-            var result = await _httpRequestService.PostAsync<AddConfigCommandOptions, Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
+            var request = new AddConfigRequest { Name = options.Name, Type = options.Type };
+            var result = await _httpRequestService.PostAsync<AddConfigRequest, Result<AddConfigResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(result.Data ?? result.Messages);
+                _outputFormatter.Write(result.Data);
         }
         catch (Exception ex)
         {
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class AddConfigRequest
+{
+    public required string Name { get; set; }
+    public required string Type { get; set; }
+    public object? Specifications { get; set; }
+}
+
+public class AddConfigResponse
+{
+    public Guid Id { get; set; }
+    public required string Name { get; set; }
 }

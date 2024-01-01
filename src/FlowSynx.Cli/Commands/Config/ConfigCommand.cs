@@ -37,7 +37,7 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
     private readonly IEndpoint _endpoint;
     private readonly IHttpRequestService _httpRequestService;
 
-    public ConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
+    public ConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
         IEndpoint endpoint, IHttpRequestService httpRequestService, ISerializer serializer)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
@@ -61,21 +61,29 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
         try
         {
             const string relativeUrl = "config";
-            var result = await _httpRequestService.PostAsync<ConfigCommandOptions, Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
+            var request = new ConfigListRequest { Type = options.Type };
+            var result = await _httpRequestService.PostAsync<ConfigListRequest, Result<List<ConfigListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
-            {
-                if (result.Data != null)
-                    _outputFormatter.Write(result.Data, options.Output);
-                else
-                    _outputFormatter.Write(result.Messages);
-            }
+                _outputFormatter.Write(result.Data, options.Output);
         }
         catch (Exception ex)
         {
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class ConfigListRequest
+{
+    public string? Type { get; set; }
+}
+
+public class ConfigListResponse
+{
+    public required Guid Id { get; set; }
+    public required string Name { get; set; }
+    public required string Type { get; set; }
 }
