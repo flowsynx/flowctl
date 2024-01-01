@@ -61,7 +61,7 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
         {
             if (options.Full is null or false)
             {
-                var version = new 
+                var version = new
                 {
                     Cli = _version.Version
                 };
@@ -70,7 +70,7 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
             }
 
             const string relativeUrl = "version";
-            var result = await _httpRequestService.GetAsync<Result<VersionModel?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var result = await _httpRequestService.GetAsync<Result<VersionResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
@@ -81,8 +81,6 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
                     result.Data.Cli = _version.Version;
                     _outputFormatter.Write(result.Data, options.Output);
                 }
-                else
-                    _outputFormatter.Write(result.Messages);
             }
         }
         catch (Exception ex)
@@ -92,10 +90,10 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
     }
 }
 
-internal class VersionModel
+public class VersionResponse
 {
     public string? Cli { get; set; }
-    public string? FlowSynx { get; set; }
+    public required string FlowSynx { get; set; }
     public string? OSVersion { get; set; } = string.Empty;
     public string? OSArchitecture { get; set; } = string.Empty;
     public string? OSType { get; set; }
