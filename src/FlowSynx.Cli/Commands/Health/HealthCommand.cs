@@ -67,14 +67,14 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
     }
 }
 
-internal class HealthCheckResponse
+public class HealthCheckResponse
 {
     public string? Status { get; set; }
     public IEnumerable<IndividualHealthCheckResponse> HealthChecks { get; set; } = new List<IndividualHealthCheckResponse>();
     public TimeSpan HealthCheckDuration { get; set; }
 }
 
-internal class IndividualHealthCheckResponse
+public class IndividualHealthCheckResponse
 {
     public string? Status { get; set; }
     public string? Component { get; set; }
