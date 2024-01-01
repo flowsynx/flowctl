@@ -52,13 +52,17 @@ internal class PurgeDirectoryCommandOptionsHandler : ICommandOptionsHandler<Purg
         try
         {
             const string relativeUrl = "storage/purge";
-            var result = await _httpRequestService.DeleteAsync<PurgeDirectoryCommandOptions, Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
+            var request = new PurgeDirectoryRequest { Path = options.Path };
+            var result = await _httpRequestService.DeleteAsync<PurgeDirectoryRequest, Result<PurgeDirectoryResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                _outputFormatter.Write(result.Data ?? result.Messages);
+                if (result.Data is not null)
+                    _outputFormatter.Write(result.Data);
+                else
+                    _outputFormatter.Write(result.Messages);
             }
         }
         catch (Exception ex)
@@ -66,4 +70,14 @@ internal class PurgeDirectoryCommandOptionsHandler : ICommandOptionsHandler<Purg
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class PurgeDirectoryRequest
+{
+    public required string Path { get; set; }
+}
+
+public class PurgeDirectoryResponse
+{
+
 }

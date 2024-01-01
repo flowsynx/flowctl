@@ -36,7 +36,7 @@ internal class AboutCommandOptionsHandler : ICommandOptionsHandler<AboutCommandO
     private readonly IEndpoint _endpoint;
     private readonly IHttpRequestService _httpRequestService;
 
-    public AboutCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
+    public AboutCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
         IEndpoint endpoint, IHttpRequestService httpRequestService, ISerializer serializer)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
@@ -60,13 +60,19 @@ internal class AboutCommandOptionsHandler : ICommandOptionsHandler<AboutCommandO
         try
         {
             const string relativeUrl = "storage/about";
-            var result = await _httpRequestService.PostAsync<AboutCommandOptions, Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
+            var request = new AboutRequest()
+            {
+                Path = options.Path, 
+                Full = options.Full
+            };
+
+            var result = await _httpRequestService.PostAsync<AboutRequest, Result<AboutResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                if (result.Data != null)
+                if (result.Data is not null)
                     _outputFormatter.Write(result.Data, options.Output);
                 else
                     _outputFormatter.Write(result.Messages);
@@ -77,4 +83,17 @@ internal class AboutCommandOptionsHandler : ICommandOptionsHandler<AboutCommandO
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class AboutRequest
+{
+    public required string Path { get; set; }
+    public bool? Full { get; set; } = false;
+}
+
+public class AboutResponse
+{
+    public string? Total { get; set; }
+    public string? Free { get; set; }
+    public string? Used { get; set; }
 }

@@ -85,16 +85,57 @@ internal class CopyCommandOptionsHandler : ICommandOptionsHandler<CopyCommandOpt
         try
         {
             const string relativeUrl = "storage/copy";
-            var result = await _httpRequestService.PostAsync<CopyCommandOptions, Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
+            var request = new CopyRequest
+            {
+                SourcePath = options.SourcePath,
+                DestinationPath = options.DestinationPath,
+                Include = options.Include,
+                Exclude = options.Exclude,
+                MinAge = options.MinAge,
+                MaxAge = options.MaxAge,
+                MinSize = options.MinSize,
+                MaxSize = options.MaxSize,
+                CaseSensitive = options.CaseSensitive,
+                Recurse = options.Recurse,
+                ClearDestinationPath = options.ClearDestinationPath,
+                OverWriteData = options.OverWriteData
+            };
+            var result = await _httpRequestService.PostAsync<CopyRequest, Result<CopyResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(result.Data ?? result.Messages);
+            {
+                if (result.Data is not null)
+                    _outputFormatter.Write(result.Data);
+                else
+                    _outputFormatter.Write(result.Messages);
+            }
         }
         catch (Exception ex)
         {
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class CopyRequest
+{
+    public required string SourcePath { get; set; }
+    public required string DestinationPath { get; set; }
+    public string? Include { get; set; }
+    public string? Exclude { get; set; }
+    public string? MinAge { get; set; }
+    public string? MaxAge { get; set; }
+    public string? MinSize { get; set; }
+    public string? MaxSize { get; set; }
+    public bool? CaseSensitive { get; set; } = false;
+    public bool? Recurse { get; set; } = false;
+    public bool? ClearDestinationPath { get; set; } = false;
+    public bool? OverWriteData { get; set; } = false;
+}
+
+public class CopyResponse
+{
+
 }

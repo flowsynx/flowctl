@@ -91,13 +91,30 @@ internal class ListCommandOptionsHandler : ICommandOptionsHandler<ListCommandOpt
         try
         {
             const string relativeUrl = "storage/list";
-            var result = await _httpRequestService.PostAsync<ListCommandOptions, Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
+            var request = new ListRequest
+            {
+                Path = options.Path,
+                Kind = options.Kind,
+                Include = options.Include,
+                Exclude = options.Exclude,
+                MinAge = options.MinAge,
+                MaxAge = options.MaxAge,
+                MinSize = options.MinSize,
+                MaxSize = options.MaxSize,
+                CaseSensitive = options.CaseSensitive,
+                Recurse = options.Recurse,
+                FormatSize = options.FormatSize,
+                Sorting = options.Sorting,
+                MaxResults = options.MaxResults
+            };
+
+            var result = await _httpRequestService.PostAsync<ListCommandOptions, Result<List<ListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                if (result.Data != null)
+                if (result.Data is not null)
                     _outputFormatter.Write(result.Data, options.Output);
                 else
                     _outputFormatter.Write(result.Messages);
@@ -108,4 +125,32 @@ internal class ListCommandOptionsHandler : ICommandOptionsHandler<ListCommandOpt
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class ListRequest
+{
+    public required string Path { get; set; }
+    public string? Kind { get; set; } = ItemKind.FileAndDirectory.ToString();
+    public string? Include { get; set; }
+    public string? Exclude { get; set; }
+    public string? MinAge { get; set; }
+    public string? MaxAge { get; set; }
+    public string? MinSize { get; set; }
+    public string? MaxSize { get; set; }
+    public bool? FormatSize { get; set; } = true;
+    public string? Sorting { get; set; }
+    public bool? CaseSensitive { get; set; } = false;
+    public bool? Recurse { get; set; } = false;
+    public int? MaxResults { get; set; }
+}
+
+public class ListResponse
+{
+    public string? Id { get; set; }
+    public string? Kind { get; set; }
+    public string? Name { get; set; } = string.Empty;
+    public string? Path { get; set; } = string.Empty;
+    public string? Size { get; set; }
+    public string? MimeType { get; set; }
+    public DateTimeOffset? ModifiedTime { get; set; }
 }

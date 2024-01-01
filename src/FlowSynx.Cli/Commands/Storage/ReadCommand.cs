@@ -15,7 +15,7 @@ internal class ReadCommand : BaseCommand<ReadCommandOptions, ReadCommandOptionsH
         var pathOption = new Option<string>(new[] { "--path" }, "The path to get about") { IsRequired = true };
         var savePathOption = new Option<string>(new[] { "--save-to" }, "The path to get about") { IsRequired = true };
         var overWriteOption = new Option<bool?>(new[] { "--overwrite" }, getDefaultValue: () => false, "The path to get about");
-        
+
         AddOption(pathOption);
         AddOption(savePathOption);
         AddOption(overWriteOption);
@@ -90,9 +90,10 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
         await stream.CopyToAsync(fileStream, cancellationToken);
         await fileStream.DisposeAsync();
     }
+
 }
 
-internal class ReadRequest
+public class ReadRequest
 {
     public string Path { get; set; } = string.Empty;
 }

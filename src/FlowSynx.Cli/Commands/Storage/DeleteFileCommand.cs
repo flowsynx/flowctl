@@ -52,13 +52,17 @@ internal class DeleteFileCommandOptionsHandler : ICommandOptionsHandler<DeleteFi
         try
         {
             const string relativeUrl = "storage/deletefile";
-            var result = await _httpRequestService.DeleteAsync<DeleteFileCommandOptions, Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
+            var request = new DeleteFileRequest { Path = options.Path };
+            var result = await _httpRequestService.DeleteAsync<DeleteFileRequest, Result<DeleteFileResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                _outputFormatter.Write(result.Data ?? result.Messages);
+                if (result.Data is not null)
+                    _outputFormatter.Write(result.Data);
+                else
+                    _outputFormatter.Write(result.Messages);
             }
         }
         catch (Exception ex)
@@ -66,4 +70,14 @@ internal class DeleteFileCommandOptionsHandler : ICommandOptionsHandler<DeleteFi
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class DeleteFileRequest
+{
+    public required string Path { get; set; }
+}
+
+public class DeleteFileResponse
+{
+
 }

@@ -91,13 +91,29 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
         try
         {
             const string relativeUrl = "storage/size";
-            var result = await _httpRequestService.PostAsync<SizeCommandOptions, Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
+            var request = new SizeRequest
+            {
+                Path = options.Path,
+                Kind = options.Kind,
+                Include = options.Include,
+                Exclude = options.Exclude,
+                MinAge = options.MinAge,
+                MaxAge = options.MaxAge,
+                MinSize = options.MinSize,
+                MaxSize = options.MaxSize,
+                CaseSensitive = options.CaseSensitive,
+                Recurse = options.Recurse,
+                FormatSize = options.FormatSize,
+                MaxResults = options.MaxResults
+            };
+
+            var result = await _httpRequestService.PostAsync<SizeRequest, Result<SizeResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                if (result.Data != null)
+                if (result.Data is not null)
                     _outputFormatter.Write(result.Data, options.Output);
                 else
                     _outputFormatter.Write(result.Messages);
@@ -108,4 +124,25 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class SizeRequest
+{
+    public required string Path { get; set; }
+    public string? Kind { get; set; } = ItemKind.FileAndDirectory.ToString();
+    public string? Include { get; set; }
+    public string? Exclude { get; set; }
+    public string? MinAge { get; set; }
+    public string? MaxAge { get; set; }
+    public string? MinSize { get; set; }
+    public string? MaxSize { get; set; }
+    public bool? FormatSize { get; set; } = true;
+    public bool? CaseSensitive { get; set; } = false;
+    public bool? Recurse { get; set; } = false;
+    public int? MaxResults { get; set; }
+}
+
+public class SizeResponse
+{
+    public string? Size { get; set; }
 }

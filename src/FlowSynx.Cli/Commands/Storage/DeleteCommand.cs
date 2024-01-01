@@ -76,13 +76,29 @@ internal class DeleteCommandOptionsHandler : ICommandOptionsHandler<DeleteComman
         try
         {
             const string relativeUrl = "storage/delete";
-            var result = await _httpRequestService.DeleteAsync<DeleteCommandOptions, Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", options, cancellationToken);
+            var request = new DeleteRequest
+            {
+                Path = options.Path,
+                Include = options.Include,
+                Exclude = options.Exclude,
+                MinAge = options.MinAge,
+                MaxAge = options.MaxAge,
+                MinSize = options.MinSize,
+                MaxSize = options.MaxSize,
+                CaseSensitive = options.CaseSensitive,
+                Recurse = options.Recurse
+            };
+
+            var result = await _httpRequestService.DeleteAsync<DeleteRequest, Result<DeleteResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                _outputFormatter.Write(result.Data ?? result.Messages);
+                if (result.Data is not null)
+                    _outputFormatter.Write(result.Data);
+                else
+                    _outputFormatter.Write(result.Messages);
             }
         }
         catch (Exception ex)
@@ -90,4 +106,28 @@ internal class DeleteCommandOptionsHandler : ICommandOptionsHandler<DeleteComman
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class DeleteRequest
+{
+    public required string Path { get; set; }
+    public string? Include { get; set; }
+    public string? Exclude { get; set; }
+    public string? MinAge { get; set; }
+    public string? MaxAge { get; set; }
+    public string? MinSize { get; set; }
+    public string? MaxSize { get; set; }
+    public bool? CaseSensitive { get; set; } = false;
+    public bool? Recurse { get; set; } = false;
+}
+
+public class DeleteResponse
+{
+    public string? Id { get; set; }
+    public string? Kind { get; set; }
+    public string? Name { get; set; } = string.Empty;
+    public string? Path { get; set; } = string.Empty;
+    public string? Size { get; set; }
+    public string? MimeType { get; set; }
+    public DateTimeOffset? ModifiedTime { get; set; }
 }
