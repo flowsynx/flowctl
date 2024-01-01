@@ -33,7 +33,7 @@ internal class DetailsPluginCommandOptionsHandler : ICommandOptionsHandler<Detai
     private readonly IEndpoint _endpoint;
     private readonly IHttpRequestService _httpRequestService;
 
-    public DetailsPluginCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
+    public DetailsPluginCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
         IEndpoint endpoint, IHttpRequestService httpRequestService, ISerializer serializer)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
@@ -57,21 +57,23 @@ internal class DetailsPluginCommandOptionsHandler : ICommandOptionsHandler<Detai
         try
         {
             var relativeUrl = $"plugins/details/{options.Id}";
-            var result = await _httpRequestService.GetAsync<Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var result = await _httpRequestService.GetAsync<Result<PluginDetailsResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
-            {
-                if (result.Data != null)
-                    _outputFormatter.Write(result.Data, options.Output);
-                else
-                    _outputFormatter.Write(result.Messages);
-            }
+                _outputFormatter.Write(result.Data, options.Output);
         }
         catch (Exception ex)
         {
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class PluginDetailsResponse
+{
+    public required Guid Id { get; set; }
+    public required string Type { get; set; }
+    public string? Description { get; set; }
 }

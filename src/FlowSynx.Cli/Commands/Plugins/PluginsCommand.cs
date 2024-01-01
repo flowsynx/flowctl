@@ -35,7 +35,7 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
     private readonly IEndpoint _endpoint;
     private readonly IHttpRequestService _httpRequestService;
 
-    public PluginsCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
+    public PluginsCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
         IEndpoint endpoint, IHttpRequestService httpRequestService, ISerializer serializer)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
@@ -62,21 +62,23 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
             if (!string.IsNullOrEmpty(options.Type))
                 relativeUrl = $"plugins/{options.Type}";
 
-            var result = await _httpRequestService.GetAsync<Result<object?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var result = await _httpRequestService.GetAsync<Result<List<PluginsListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
             if (!result.Succeeded)
                 _outputFormatter.WriteError(result.Messages);
             else
-            {
-                if (result.Data != null)
-                    _outputFormatter.Write(result.Data, options.Output);
-                else
-                    _outputFormatter.Write(result.Messages);
-            }
+                _outputFormatter.Write(result.Data, options.Output);
         }
         catch (Exception ex)
         {
             _outputFormatter.WriteError(ex.Message);
         }
     }
+}
+
+public class PluginsListResponse
+{
+    public required Guid Id { get; set; }
+    public required string Type { get; set; }
+    public string? Description { get; set; }
 }
