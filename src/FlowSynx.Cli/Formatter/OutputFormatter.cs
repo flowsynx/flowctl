@@ -174,7 +174,7 @@ public class OutputFormatter : IOutputFormatter
 
         var json = _serializer.Serialize(data);
         var xml = JsonConvert.DeserializeXNode(json, "root");
-        return xml.ToString(SaveOptions.None);
+        return xml == null ? string.Empty : xml.ToString(SaveOptions.None);
     }
 
     public string GenerateXml<T>(List<T>? data)
@@ -194,7 +194,7 @@ public class OutputFormatter : IOutputFormatter
 
         var json = _serializer.Serialize(data);
         var xml = JsonConvert.DeserializeXNode("{item:" + json + "}", "root");
-        return xml.ToString(SaveOptions.None);
+        return xml == null ? string.Empty : xml.ToString(SaveOptions.None);
     }
     
     public static string GenerateYaml<T>(T? data)
