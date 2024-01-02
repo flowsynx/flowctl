@@ -1,34 +1,21 @@
 ﻿using System.Diagnostics;
-using System.Reflection;
 using FlowSynx.Environment;
 
 namespace FlowSynx.Cli;
 
 public class CliVersion : IVersion
 {
-    private readonly string? _rootLocation = Path.GetDirectoryName(System.AppContext.BaseDirectory);
-
     public string Version => GetApplicationVersion();
 
     #region MyRegion
     private string GetApplicationVersion()
     {
-        Assembly? thisAssembly = null;
-        try
-        {
-            thisAssembly = Assembly.GetEntryAssembly();
-        }
-        finally
-        {
-            thisAssembly ??= Assembly.GetExecutingAssembly();
-        }
+        var assemblyLocation = System.Environment.ProcessPath;
 
-        if (thisAssembly == null)
-            throw new Exception("Error in reading executable application.");
+        if (string.IsNullOrEmpty(assemblyLocation))
+            return "1.0.0.0";
 
-
-        var fullAssemblyName = thisAssembly.Location;
-        var versionInfo = FileVersionInfo.GetVersionInfo(fullAssemblyName);
+        var versionInfo = FileVersionInfo.GetVersionInfo(assemblyLocation);
         return versionInfo.ProductVersion ?? "1.0.0.0";
     }
     #endregion
