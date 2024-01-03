@@ -1,12 +1,10 @@
 ﻿using System.Reflection;
 using System.Xml.Serialization;
-using System.Xml;
-using FlowSynx.IO.Serialization;
 using Spectre.Console;
-using System.Text;
-using FlowSynx.Reflections;
 using Newtonsoft.Json;
 using System.Xml.Linq;
+using FlowSynx.IO.Serialization;
+using FlowSynx.Reflections;
 
 namespace FlowSynx.Cli.Formatter;
 
@@ -56,7 +54,7 @@ public class OutputFormatter : IOutputFormatter
                 break;
             case Output.Json:
             default:
-                var json = _serializer.Serialize(data, new JsonSerializationConfiguration() { Indented = true });
+                var json = GenerateJson(data);
                 Write(json);
                 break;
         }
@@ -81,7 +79,7 @@ public class OutputFormatter : IOutputFormatter
                 break;
             case Output.Json:
             default:
-                var json = _serializer.Serialize(data, new JsonSerializationConfiguration() { Indented = true });
+                var json = GenerateJson(data);
                 Write(json);
                 break;
         }
@@ -162,13 +160,6 @@ public class OutputFormatter : IOutputFormatter
         if (data == null)
             return string.Empty;
 
-        var xmlWriterSettings = new XmlWriterSettings
-        {
-            Indent = true,
-            OmitXmlDeclaration = false,
-            Encoding = Encoding.UTF8
-        };
-
         var xmlns = new XmlSerializerNamespaces();
         xmlns.Add(string.Empty, string.Empty);
 
@@ -182,13 +173,6 @@ public class OutputFormatter : IOutputFormatter
         if (data == null)
             return string.Empty;
 
-        var xmlWriterSettings = new XmlWriterSettings
-        {
-            Indent = true,
-            OmitXmlDeclaration = false,
-            Encoding = Encoding.UTF8
-        };
-
         var xmlns = new XmlSerializerNamespaces();
         xmlns.Add(string.Empty, string.Empty);
 
@@ -197,7 +181,7 @@ public class OutputFormatter : IOutputFormatter
         return xml == null ? string.Empty : xml.ToString(SaveOptions.None);
     }
     
-    public static string GenerateYaml<T>(T? data)
+    public string GenerateYaml<T>(T? data)
     {
         if (data == null)
             return string.Empty;
@@ -209,7 +193,7 @@ public class OutputFormatter : IOutputFormatter
         return serializer.Serialize(data);
     }
 
-    public static string GenerateYaml<T>(List<T>? data)
+    public string GenerateYaml<T>(List<T>? data)
     {
         if (data == null)
             return string.Empty;
@@ -219,5 +203,21 @@ public class OutputFormatter : IOutputFormatter
             .Build();
 
         return serializer.Serialize(data);
+    }
+
+    public string GenerateJson<T>(T? data)
+    {
+        if (data == null)
+            return string.Empty;
+
+        return _serializer.Serialize(data, new JsonSerializationConfiguration() { Indented = true });
+    }
+
+    public string GenerateJson<T>(List<T>? data)
+    {
+        if (data == null)
+            return string.Empty;
+
+        return _serializer.Serialize(data, new JsonSerializationConfiguration() { Indented = true });
     }
 }
