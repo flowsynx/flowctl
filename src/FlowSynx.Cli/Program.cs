@@ -1,8 +1,8 @@
-﻿using FlowSynx.Cli.ApplicationBuilders;
+﻿using Microsoft.Extensions.DependencyInjection;
+using FlowSynx.Cli.ApplicationBuilders;
 using FlowSynx.Cli.Extensions;
 using FlowSynx.Cli.Formatter;
 using FlowSynx.Net;
-using Microsoft.Extensions.DependencyInjection;
 
 IServiceCollection serviceCollection = new ServiceCollection()
     .AddLoggingService()
