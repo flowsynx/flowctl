@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.CommandLine;
+using Microsoft.Extensions.Logging;
+using Spectre.Console;
 using FlowSynx.Cli.Commands.Storage;
 using FlowSynx.Cli.Commands.Execute;
-using Spectre.Console;
 using FlowSynx.Cli.Commands;
 using FlowSynx.Cli.ApplicationBuilders;
 using FlowSynx.Cli.Commands.Config;
@@ -11,7 +12,6 @@ using FlowSynx.Environment;
 using FlowSynx.IO;
 using FlowSynx.Net;
 using FlowSynx.Logging;
-using Microsoft.Extensions.Logging;
 using FlowSynx.Cli.Commands.Plugins;
 using FlowSynx.Cli.Commands.Version;
 using FlowSynx.Cli.Commands.Health;
