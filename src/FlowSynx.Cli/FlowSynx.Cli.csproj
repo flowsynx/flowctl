@@ -6,8 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>Synx</AssemblyName>
-	<DebugType>embedded</DebugType>
-	<Copyright>© 2024 FlowSynx. All rights reserved.</Copyright>
+    <Copyright>© 2024 FlowSynx. All rights reserved.</Copyright>
 	<RepositoryUrl>https://github.com/FlowSynx/Cli</RepositoryUrl>
 	<Title>FlowSynx CLI</Title>
 	<Company>FlowSynx</Company>
@@ -16,6 +15,11 @@
 	<PackageProjectUrl>flowsynx.io</PackageProjectUrl>
 	<RepositoryType>git</RepositoryType>
 	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+	<DebugSymbols>False</DebugSymbols>
+	<DebugType>None</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
