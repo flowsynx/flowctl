@@ -89,16 +89,16 @@ internal class DeleteCommandOptionsHandler : ICommandOptionsHandler<DeleteComman
                 Recurse = options.Recurse
             };
 
-            var result = await _httpRequestService.DeleteAsync<DeleteRequest, Result<DeleteResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.DeleteRequestAsync<DeleteRequest, Result<DeleteResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (!result.Succeeded)
+            if (result is { Succeeded: false })
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                if (result.Data is not null)
+                if (result?.Data is not null)
                     _outputFormatter.Write(result.Data);
                 else
-                    _outputFormatter.Write(result.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

@@ -70,13 +70,13 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
             }
 
             const string relativeUrl = "version";
-            var result = await _httpRequestService.GetAsync<Result<VersionResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var result = await _httpRequestService.GetRequestAsync<Result<VersionResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
-            if (!result.Succeeded)
+            if (result is { Succeeded: false })
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                if (result.Data != null)
+                if (result?.Data != null)
                 {
                     result.Data.Cli = _version.Version;
                     _outputFormatter.Write(result.Data, options.Output);
@@ -96,5 +96,5 @@ public class VersionResponse
     public required string FlowSynx { get; set; }
     public string? OSVersion { get; set; } = string.Empty;
     public string? OSArchitecture { get; set; } = string.Empty;
-    public string? OSType { get; set; }
+    public string? OSType { get; set; } = string.Empty;
 }

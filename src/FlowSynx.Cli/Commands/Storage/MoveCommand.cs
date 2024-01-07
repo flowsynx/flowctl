@@ -93,16 +93,16 @@ internal class MoveCommandOptionsHandler : ICommandOptionsHandler<MoveCommandOpt
                 CaseSensitive = options.CaseSensitive,
                 Recurse = options.Recurse
             };
-            var result = await _httpRequestService.PostAsync<MoveRequest, Result<MoveResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<MoveRequest, Result<MoveResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (!result.Succeeded)
+            if (result is { Succeeded: false })
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                if (result.Data is not null)
+                if (result?.Data is not null)
                     _outputFormatter.Write(result.Data);
                 else
-                    _outputFormatter.Write(result.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

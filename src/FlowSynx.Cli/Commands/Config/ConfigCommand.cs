@@ -62,12 +62,12 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
         {
             const string relativeUrl = "config";
             var request = new ConfigListRequest { Type = options.Type };
-            var result = await _httpRequestService.PostAsync<ConfigListRequest, Result<List<ConfigListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<ConfigListRequest, Result<List<ConfigListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (!result.Succeeded)
+            if (result is { Succeeded: false })
                 _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(result.Data, options.Output);
+                _outputFormatter.Write(result?.Data, options.Output);
         }
         catch (Exception ex)
         {

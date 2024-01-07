@@ -3,8 +3,6 @@ using FlowSynx.Environment;
 using FlowSynx.Net;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Abstractions;
-using System.Threading;
 
 namespace FlowSynx.Cli.Commands.Storage;
 
@@ -60,7 +58,7 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
         {
             const string relativeUrl = "storage/read";
             var request = new ReadRequest { Path = options.Path };
-            var result = await _httpRequestService.PostAsync<ReadRequest>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<ReadRequest>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var filePath = options.SaveTo;
             if (Directory.Exists(filePath))
@@ -95,5 +93,5 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
 
 public class ReadRequest
 {
-    public string Path { get; set; } = string.Empty;
+    public required string Path { get; set; }
 }

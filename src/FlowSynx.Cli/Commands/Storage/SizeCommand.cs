@@ -107,16 +107,16 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
                 MaxResults = options.MaxResults
             };
 
-            var result = await _httpRequestService.PostAsync<SizeRequest, Result<SizeResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<SizeRequest, Result<SizeResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (!result.Succeeded)
+            if (result is { Succeeded: false })
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                if (result.Data is not null)
+                if (result?.Data is not null)
                     _outputFormatter.Write(result.Data, options.Output);
                 else
-                    _outputFormatter.Write(result.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

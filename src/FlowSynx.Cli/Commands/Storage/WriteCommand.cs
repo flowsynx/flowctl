@@ -73,16 +73,16 @@ internal class WriteCommandOptionsHandler : ICommandOptionsHandler<WriteCommandO
                 throw new Exception($"The content is empty. Please provide a Base64String data.");
 
             var request = new WriteRequest { Path = options.Path, Data = options.Data };
-            var result = await _httpRequestService.PostAsync<WriteRequest, Result<WriteResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<WriteRequest, Result<WriteResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (!result.Succeeded)
+            if (result is { Succeeded: false })
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                if (result.Data is not null)
+                if (result?.Data is not null)
                     _outputFormatter.Write(result.Data);
                 else
-                    _outputFormatter.Write(result.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

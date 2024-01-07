@@ -66,16 +66,16 @@ internal class AboutCommandOptionsHandler : ICommandOptionsHandler<AboutCommandO
                 Full = options.Full
             };
 
-            var result = await _httpRequestService.PostAsync<AboutRequest, Result<AboutResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<AboutRequest, Result<AboutResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (!result.Succeeded)
+            if (result is { Succeeded: false })
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                if (result.Data is not null)
+                if (result?.Data is not null)
                     _outputFormatter.Write(result.Data, options.Output);
                 else
-                    _outputFormatter.Write(result.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

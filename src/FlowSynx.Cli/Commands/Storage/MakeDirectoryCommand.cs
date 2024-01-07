@@ -53,16 +53,16 @@ internal class MakeDirectoryCommandOptionsHandler : ICommandOptionsHandler<MakeD
         {
             const string relativeUrl = "storage/mkdir";
             var request = new MakeDirectoryRequest { Path = options.Path };
-            var result = await _httpRequestService.PostAsync<MakeDirectoryRequest, Result<MakeDirectoryResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<MakeDirectoryRequest, Result<MakeDirectoryResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (!result.Succeeded)
+            if (result is { Succeeded: false })
                 _outputFormatter.WriteError(result.Messages);
             else
             {
-                if (result.Data is not null)
+                if (result?.Data is not null)
                     _outputFormatter.Write(result.Data);
                 else
-                    _outputFormatter.Write(result.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)
