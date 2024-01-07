@@ -18,7 +18,7 @@ internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsComman
         AddOption(typeOption);
         AddOption(outputOption);
 
-        AddCommand(new DetailsPluginCommand());
+        AddCommand(new PluginDetailsCommand());
     }
 }
 
@@ -62,12 +62,12 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
             if (!string.IsNullOrEmpty(options.Type))
                 relativeUrl = $"plugins/{options.Type}";
 
-            var result = await _httpRequestService.GetAsync<Result<List<PluginsListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var result = await _httpRequestService.GetRequestAsync<Result<List<PluginsListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
-            if (!result.Succeeded)
+            if (result is { Succeeded: false })
                 _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(result.Data, options.Output);
+                _outputFormatter.Write(result?.Data, options.Output);
         }
         catch (Exception ex)
         {

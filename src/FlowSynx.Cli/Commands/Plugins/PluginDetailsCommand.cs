@@ -8,9 +8,9 @@ using FlowSynx.Cli.Formatter;
 
 namespace FlowSynx.Cli.Commands.Plugins;
 
-internal class DetailsPluginCommand : BaseCommand<DetailsPluginCommandOptions, DetailsPluginCommandOptionsHandler>
+internal class PluginDetailsCommand : BaseCommand<DetailsPluginCommandOptions, DetailsPluginCommandOptionsHandler>
 {
-    public DetailsPluginCommand() : base("details", "About storage")
+    public PluginDetailsCommand() : base("details", "About storage")
     {
         var nameOption = new Option<Guid>(new[] { "--id" }, "The path to get about") { IsRequired = true };
         var outputFormatOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
@@ -57,12 +57,12 @@ internal class DetailsPluginCommandOptionsHandler : ICommandOptionsHandler<Detai
         try
         {
             var relativeUrl = $"plugins/details/{options.Id}";
-            var result = await _httpRequestService.GetAsync<Result<PluginDetailsResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var result = await _httpRequestService.GetRequestAsync<Result<PluginDetailsResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
-            if (!result.Succeeded)
+            if (result is { Succeeded: false })
                 _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(result.Data, options.Output);
+                _outputFormatter.Write(result?.Data, options.Output);
         }
         catch (Exception ex)
         {
