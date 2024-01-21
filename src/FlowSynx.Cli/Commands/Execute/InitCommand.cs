@@ -1,116 +1,183 @@
-﻿using System.CommandLine;
-using System.Diagnostics;
+﻿using System.IO.Compression;
+using System.Net;
+using System.Text;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
 using FlowSynx.Environment;
-using FlowSynx.IO.Serialization;
-using FlowSynx.Logging;
-using Spectre.Console;
 
 namespace FlowSynx.Cli.Commands.Execute;
 
 internal class InitCommand : BaseCommand<InitCommandOptions, InitCommandOptionsHandler>
 {
-    public InitCommand() : base("run", "Run FlowSync system")
+    public InitCommand() : base("init", "Initialize FlowSynx engine")
     {
-        var configOption = new Option<string>(new[] { "--config-file" }, description: "FlowSync configuration file");
-        var enableHealthCheckOption = new Option<bool>(new[] { "--enable-health-check" }, getDefaultValue: () => true, description: "Enable health checks for the FlowSync");
-        var enableLogOption = new Option<bool>(new[] { "--enable-log" }, getDefaultValue: () => true, description: "Enable logging to records the details of events during FlowSync running");
-        var logLevelOption = new Option<LoggingLevel>(new[] { "--log-level" }, getDefaultValue: () => LoggingLevel.Info, description: "The log verbosity to controls the amount of detail emitted for each event that is logged");
-        var retryOption = new Option<int>(new[] { "--retry" }, getDefaultValue: () => 3, description: "The number of times FlowSync needs to try to receive data if there is a connection problem");
-
-        AddOption(configOption);
-        AddOption(enableHealthCheckOption);
-        AddOption(enableLogOption);
-        AddOption(logLevelOption);
-        AddOption(retryOption);
     }
 }
 
 internal class InitCommandOptions : ICommandOptions
 {
-    public string? ConfigFile { get; set; }
-    public bool EnableHealthCheck { get; set; }
-    public bool EnableLog { get; set; }
-    public LoggingLevel LogLevel { get; set; }
-    public bool Retry { get; set; }
+
 }
 
 internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
-    private readonly IEnvironmentManager _environmentManager;
-    private readonly ISerializer _serializer;
+    private readonly ISpinner _spinner;
+    private readonly IVersion _version;
+    private readonly ILocation _location;
+    private readonly IOperatingSystemInfo _operatingSystemInfo;
 
-    public InitCommandOptionsHandler(IOutputFormatter outputFormatter, IEnvironmentManager environmentManager, 
-        ISerializer serializer)
+    public InitCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
+        IVersion version, ILocation location, IOperatingSystemInfo operatingSystemInfo)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(environmentManager, nameof(environmentManager));
-        EnsureArg.IsNotNull(serializer, nameof(serializer));
+        EnsureArg.IsNotNull(spinner, nameof(spinner));
+        EnsureArg.IsNotNull(version, nameof(version));
+        EnsureArg.IsNotNull(location, nameof(location));
+        EnsureArg.IsNotNull(operatingSystemInfo, nameof(operatingSystemInfo));
 
         _outputFormatter = outputFormatter;
-        _environmentManager = environmentManager;
-        _serializer = serializer;
+        _spinner = spinner;
+        _version = version;
+        _location = location;
+        _operatingSystemInfo = operatingSystemInfo;
     }
 
     public async Task<int> HandleAsync(InitCommandOptions options, CancellationToken cancellationToken)
     {
-        await RunFlowSync(options, cancellationToken);
+        await _spinner.DisplayLineSpinnerAsync(async () => await InitializeFlowSynx(options, cancellationToken));
         return 0;
     }
 
-    private Task RunFlowSync(InitCommandOptions options, CancellationToken cancellationToken)
+    private async Task InitializeFlowSynx(InitCommandOptions options, CancellationToken cancellationToken)
     {
-        var flowSyncPath = _environmentManager.Get(EnvironmentVariables.FlowsynxPath);
-        if (string.IsNullOrEmpty(flowSyncPath))
+        try
         {
-            _outputFormatter.WriteError(@"FlowSynx engine is not installed. Please run the 'synx install -h' command to see the details.");
-            return Task.CompletedTask;
+            var flowSynxPath = Path.Combine(_location.RootLocation, "bin");
+            Directory.CreateDirectory(flowSynxPath);
+            await DownloadBinary("0.2.0", flowSynxPath, cancellationToken);
+        }
+        catch (Exception e)
+        {
+            _outputFormatter.WriteError(e.Message);
+        }
+    }
+
+    private async Task DownloadBinary(string version, string installPath, CancellationToken cancellationToken)
+    {
+        using var client = new HttpClient();
+        var archiveName = ArchiveName.ToLower();
+        var uri = $"https://github.com/{GitHubOrganization}/{GitHubRepository}/releases/download/{version}/{archiveName}";
+        var message = new HttpRequestMessage(HttpMethod.Get, new Uri(uri));
+        using var response = await client.SendAsync(message, cancellationToken);
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+            throw new Exception($"Version not found from url: {uri}");
+
+        if (response.StatusCode != HttpStatusCode.OK)
+            throw new Exception($"Download failed with {response.StatusCode.ToString()}");
+
+        var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        var archivePath = Path.Combine(installPath, archiveName);
+        await using (var fs = new FileStream(archivePath, FileMode.OpenOrCreate))
+        {
+            await stream.CopyToAsync(fs, cancellationToken);
         }
 
-        var color = AnsiConsole.Foreground;
-        var startInfo = new ProcessStartInfo(Path.Combine(flowSyncPath, "FlowSync.exe"))
+        ExtractFile(archivePath, installPath);
+        File.Delete(archivePath);
+        _outputFormatter.Write(@"FlowSynx engine is downloaded and installed successfully.");
+    }
+
+    private string ArchiveName => $"FlowSynx-{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
+    private string GitHubOrganization => "FlowSynx";
+    private string GitHubRepository => "TestWorkflow";
+    private string Extension => string.Equals(_operatingSystemInfo.Type, "windows", StringComparison.OrdinalIgnoreCase) ? "zip" : "tar.gz";
+
+    private void ExtractFile(string sourcePath, string destinationPath)
+    {
+        if (Extension == "tar.gz")
         {
-            Arguments = GetArgumentStr(options),
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true
-        };
-
-        var process = new Process { StartInfo = startInfo };
-        process.OutputDataReceived += OutputDataHandler;
-        process.ErrorDataReceived += ErrorDataHandler;
-        process.Start();
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
-        process?.WaitForExit();
-        AnsiConsole.Foreground = color;
-
-        return Task.CompletedTask;
+            ExtractTarGz(sourcePath, destinationPath);
+        }
+        else
+        {
+            ZipFile.ExtractToDirectory(sourcePath, destinationPath, true);
+        }
     }
 
-    private string GetArgumentStr(InitCommandOptions options)
+    public static void ExtractTarGz(string filename, string outputDir)
     {
-        var argList = new List<string>();
+        void ReadExactly(Stream stream, byte[] buffer, int count)
+        {
+            var total = 0;
+            while (true)
+            {
+                int n = stream.Read(buffer, total, count - total);
+                total += n;
+                if (total == count)
+                    return;
+            }
+        }
 
-        if (!string.IsNullOrEmpty(options.ConfigFile))
-            argList.Add($"--config-file {options.ConfigFile}");
+        void SeekExactly(Stream stream, byte[] buffer, int count)
+        {
+            ReadExactly(stream, buffer, count);
+        }
 
-        argList.Add($"--enable-health-check {options.EnableHealthCheck}");
-        argList.Add($"--enable-log {options.EnableLog}");
-        argList.Add($"--log-level {options.LogLevel}");
+        using var fs = File.OpenRead(filename);
+        using (var stream = new GZipStream(fs, CompressionMode.Decompress))
+        {
+            var buffer = new byte[1024];
+            while (true)
+            {
+                ReadExactly(stream, buffer, 100);
+                var name = Encoding.ASCII.GetString(buffer, 0, 100).Split('\0')[0];
+                if (string.IsNullOrWhiteSpace(name))
+                    break;
 
-        return argList.Count == 0 ? string.Empty : string.Join(' ', argList);
-    }
-    
-    private void OutputDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
-    {
-        if (outLine.Data != null) _outputFormatter.Write(outLine.Data);
-    }
+                SeekExactly(stream, buffer, 24);
 
-    private void ErrorDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
-    {
-        if (outLine.Data != null) _outputFormatter.WriteError(outLine.Data);
+                ReadExactly(stream, buffer, 12);
+                var sizeString = Encoding.ASCII.GetString(buffer, 0, 12).Split('\0')[0];
+                var size = Convert.ToInt64(sizeString, 8);
+
+                SeekExactly(stream, buffer, 209);
+
+                ReadExactly(stream, buffer, 155);
+                var prefix = Encoding.ASCII.GetString(buffer, 0, 155).Split('\0')[0];
+                if (!string.IsNullOrWhiteSpace(prefix))
+                {
+                    name = prefix + name;
+                }
+
+                SeekExactly(stream, buffer, 12);
+
+                var output = Path.GetFullPath(Path.Combine(outputDir, name));
+                if (!Directory.Exists(Path.GetDirectoryName(output)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(output));
+                }
+                using (var outfs = File.Open(output, FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    var total = 0;
+                    while (true)
+                    {
+                        var next = Math.Min(buffer.Length, (int)size - total);
+                        ReadExactly(stream, buffer, next);
+                        outfs.Write(buffer, 0, next);
+                        total += next;
+                        if (total == size)
+                            break;
+                    }
+                }
+
+                var offset = 512 - ((int)size % 512);
+                if (offset == 512)
+                    offset = 0;
+
+                SeekExactly(stream, buffer, offset);
+            }
+        }
     }
 }
