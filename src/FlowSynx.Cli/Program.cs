@@ -5,6 +5,7 @@ using FlowSynx.Cli.Formatter;
 using FlowSynx.Net;
 
 IServiceCollection serviceCollection = new ServiceCollection()
+    .AddLocation()
     .AddLoggingService()
     .AddApplication()
     .AddCommands()
