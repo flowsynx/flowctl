@@ -72,8 +72,10 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
         IEndpoint endpoint, IHttpRequestService httpRequestService)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(endpoint, nameof(endpoint));
         EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _endpoint = endpoint;

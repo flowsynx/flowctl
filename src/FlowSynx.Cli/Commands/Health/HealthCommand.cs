@@ -1,6 +1,5 @@
 ﻿using System.CommandLine;
 using FlowSynx.Environment;
-using FlowSynx.IO.Serialization;
 using FlowSynx.Net;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
@@ -28,21 +27,17 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
     private readonly ISpinner _spinner;
     private readonly IEndpoint _endpoint;
     private readonly IHttpRequestService _httpRequestService;
-    private readonly IVersion _version;
 
     public HealthCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService, ISerializer serializer,
-        IVersion version)
+        IEndpoint endpoint, IHttpRequestService httpRequestService)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(endpoint, nameof(endpoint));
         EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
-        EnsureArg.IsNotNull(serializer, nameof(serializer));
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _endpoint = endpoint;
         _httpRequestService = httpRequestService;
-        _version = version;
     }
 
     public async Task<int> HandleAsync(HealthCommandOptions options, CancellationToken cancellationToken)

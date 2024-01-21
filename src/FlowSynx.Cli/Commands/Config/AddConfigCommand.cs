@@ -39,12 +39,14 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
     private readonly IDeserializer _deserializer;
 
     public AddConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService, ISerializer serializer, IDeserializer deserializer)
+        IEndpoint endpoint, IHttpRequestService httpRequestService, IDeserializer deserializer)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(endpoint, nameof(endpoint));
         EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
-        EnsureArg.IsNotNull(serializer, nameof(serializer));
+        EnsureArg.IsNotNull(deserializer, nameof(deserializer));
+
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _endpoint = endpoint;

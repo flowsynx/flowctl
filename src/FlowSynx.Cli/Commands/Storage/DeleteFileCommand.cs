@@ -34,7 +34,9 @@ internal class DeleteFileCommandOptionsHandler : ICommandOptionsHandler<DeleteFi
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(endpoint, nameof(endpoint));
+        EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _endpoint = endpoint;

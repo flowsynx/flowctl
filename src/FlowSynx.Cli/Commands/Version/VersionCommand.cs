@@ -1,7 +1,6 @@
 ﻿using System.CommandLine;
 using FlowSynx.Abstractions;
 using FlowSynx.Environment;
-using FlowSynx.IO.Serialization;
 using FlowSynx.Net;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
@@ -35,13 +34,14 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
     private readonly IVersion _version;
 
     public VersionCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService, ISerializer serializer,
-        IVersion version)
+        IEndpoint endpoint, IHttpRequestService httpRequestService, IVersion version)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(endpoint, nameof(endpoint));
         EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
-        EnsureArg.IsNotNull(serializer, nameof(serializer));
+        EnsureArg.IsNotNull(version, nameof(version));
+
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _endpoint = endpoint;

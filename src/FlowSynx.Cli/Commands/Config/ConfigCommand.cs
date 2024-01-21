@@ -1,7 +1,6 @@
 ﻿using System.CommandLine;
 using FlowSynx.Abstractions;
 using FlowSynx.Environment;
-using FlowSynx.IO.Serialization;
 using FlowSynx.Net;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
@@ -38,12 +37,13 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
     private readonly IHttpRequestService _httpRequestService;
 
     public ConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService, ISerializer serializer)
+        IEndpoint endpoint, IHttpRequestService httpRequestService)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(endpoint, nameof(endpoint));
         EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
-        EnsureArg.IsNotNull(serializer, nameof(serializer));
+
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _endpoint = endpoint;
