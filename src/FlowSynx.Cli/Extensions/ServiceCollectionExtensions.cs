@@ -20,10 +20,17 @@ namespace FlowSynx.Cli.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddLocation(this IServiceCollection services)
+    {
+        services.AddTransient<ILocation, CliLocation>();
+        return services;
+    }
+
     public static IServiceCollection AddCommands(this IServiceCollection services)
     {
         services.AddTransient<RootCommand, Root>();
         services.AddTransient<Command, RunCommand>();
+        services.AddTransient<Command, InitCommand>();
         services.AddTransient<Command, StorageCommand>();
         services.AddTransient<Command, ConfigCommand>();
         services.AddTransient<Command, PluginsCommand>();
@@ -34,7 +41,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddEnvironmentManager();
+        services.AddOperatingSystemInfo();
         services.AddEndpoint();
         services.AddSerialization();
         services.AddHttpRequestService();
