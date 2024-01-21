@@ -61,12 +61,40 @@ namespace FlowSynx.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to   _____ _                ____                   
-        /// |  ___| | _____      __/ ___| _   _ _ __   ___ 
-        /// | |_  | |/ _ \ \ /\ / /\___ \| | | | &apos;_ \ / __|
-        /// |  _| | | (_) \ V  V /  ___) | |_| | | | | (__ 
-        /// |_|   |_|\___/ \_/\_/  |____/ \__, |_| |_|\___|
-        ///                               |___/            .
+        ///   Looks up a localized string similar to FlowSynx engine is not installed. Please run the &apos;synx init -h&apos; command to see the details..
+        /// </summary>
+        internal static string FlowSynxEngineIsNotInstalled {
+            get {
+                return ResourceManager.GetString("FlowSynxEngineIsNotInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Base location not found.
+        /// </summary>
+        internal static string FlowSynxLocationBaseLocationNotFound {
+            get {
+                return ResourceManager.GetString("FlowSynxLocationBaseLocationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Root location not found.
+        /// </summary>
+        internal static string FlowSynxLocationRootLocationNotFound {
+            get {
+                return ResourceManager.GetString("FlowSynxLocationRootLocationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to   _____ _               ____                   
+        /// |  ___| | _____      _/ ___| _   _ _ __ __  __
+        /// | |_  | |/ _ \ \ /\ / \___ \| | | | &apos;_ \\ \/ /
+        /// |  _| | | (_) \ V  V / ___) | |_| | | | |&gt;  &lt; 
+        /// |_|   |_|\___/ \_/\_/ |____/ \__, |_| |_/_/\_\
+        ///                              |___/            
+        ///.
         /// </summary>
         internal static string logo {
             get {
