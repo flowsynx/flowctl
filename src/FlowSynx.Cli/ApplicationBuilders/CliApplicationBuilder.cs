@@ -14,7 +14,9 @@ public class CliApplicationBuilder : ICliApplicationBuilder
 
     public CliApplicationBuilder(IServiceProvider serviceProvider, RootCommand rootCommand)
     {
+        EnsureArg.IsNotNull(serviceProvider, nameof(serviceProvider));
         EnsureArg.IsNotNull(rootCommand, nameof(rootCommand));
+
         _serviceProvider = serviceProvider;
         _rootCommand = rootCommand;
     }
