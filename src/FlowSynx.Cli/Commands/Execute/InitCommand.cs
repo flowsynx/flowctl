@@ -1,9 +1,8 @@
-﻿using System.IO.Compression;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
 using FlowSynx.Environment;
+using FlowSynx.IO.Compression;
 
 namespace FlowSynx.Cli.Commands.Execute;
 
@@ -26,21 +25,28 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     private readonly IVersion _version;
     private readonly ILocation _location;
     private readonly IOperatingSystemInfo _operatingSystemInfo;
+    private readonly IZipFile _zipFile;
+    private readonly IGZipFile _gZipFile;
 
     public InitCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
-        IVersion version, ILocation location, IOperatingSystemInfo operatingSystemInfo)
+        IVersion version, ILocation location, IOperatingSystemInfo operatingSystemInfo,
+        IZipFile zipFile, IGZipFile gZipFile)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(version, nameof(version));
         EnsureArg.IsNotNull(location, nameof(location));
         EnsureArg.IsNotNull(operatingSystemInfo, nameof(operatingSystemInfo));
+        EnsureArg.IsNotNull(zipFile, nameof(zipFile));
+        EnsureArg.IsNotNull(gZipFile, nameof(gZipFile));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _version = version;
         _location = location;
         _operatingSystemInfo = operatingSystemInfo;
+        _zipFile = zipFile;
+        _gZipFile = gZipFile;
     }
 
     public async Task<int> HandleAsync(InitCommandOptions options, CancellationToken cancellationToken)
@@ -97,87 +103,8 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     private void ExtractFile(string sourcePath, string destinationPath)
     {
         if (Extension == "tar.gz")
-        {
-            ExtractTarGz(sourcePath, destinationPath);
-        }
+            _gZipFile.Decompression(sourcePath, destinationPath, true);
         else
-        {
-            ZipFile.ExtractToDirectory(sourcePath, destinationPath, true);
-        }
-    }
-
-    public static void ExtractTarGz(string filename, string outputDir)
-    {
-        void ReadExactly(Stream stream, byte[] buffer, int count)
-        {
-            var total = 0;
-            while (true)
-            {
-                int n = stream.Read(buffer, total, count - total);
-                total += n;
-                if (total == count)
-                    return;
-            }
-        }
-
-        void SeekExactly(Stream stream, byte[] buffer, int count)
-        {
-            ReadExactly(stream, buffer, count);
-        }
-
-        using var fs = File.OpenRead(filename);
-        using (var stream = new GZipStream(fs, CompressionMode.Decompress))
-        {
-            var buffer = new byte[1024];
-            while (true)
-            {
-                ReadExactly(stream, buffer, 100);
-                var name = Encoding.ASCII.GetString(buffer, 0, 100).Split('\0')[0];
-                if (string.IsNullOrWhiteSpace(name))
-                    break;
-
-                SeekExactly(stream, buffer, 24);
-
-                ReadExactly(stream, buffer, 12);
-                var sizeString = Encoding.ASCII.GetString(buffer, 0, 12).Split('\0')[0];
-                var size = Convert.ToInt64(sizeString, 8);
-
-                SeekExactly(stream, buffer, 209);
-
-                ReadExactly(stream, buffer, 155);
-                var prefix = Encoding.ASCII.GetString(buffer, 0, 155).Split('\0')[0];
-                if (!string.IsNullOrWhiteSpace(prefix))
-                {
-                    name = prefix + name;
-                }
-
-                SeekExactly(stream, buffer, 12);
-
-                var output = Path.GetFullPath(Path.Combine(outputDir, name));
-                if (!Directory.Exists(Path.GetDirectoryName(output)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(output));
-                }
-                using (var outfs = File.Open(output, FileMode.OpenOrCreate, FileAccess.Write))
-                {
-                    var total = 0;
-                    while (true)
-                    {
-                        var next = Math.Min(buffer.Length, (int)size - total);
-                        ReadExactly(stream, buffer, next);
-                        outfs.Write(buffer, 0, next);
-                        total += next;
-                        if (total == size)
-                            break;
-                    }
-                }
-
-                var offset = 512 - ((int)size % 512);
-                if (offset == 512)
-                    offset = 0;
-
-                SeekExactly(stream, buffer, offset);
-            }
-        }
+            _zipFile.Decompression(sourcePath, destinationPath, true);
     }
 }
