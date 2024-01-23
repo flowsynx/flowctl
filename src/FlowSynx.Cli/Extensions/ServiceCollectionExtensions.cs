@@ -35,6 +35,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<Command, ConfigCommand>();
         services.AddTransient<Command, PluginsCommand>();
         services.AddTransient<Command, VersionCommand>();
+        services.AddTransient<Command, UpdateCommand>();
         services.AddTransient<Command, HealthCommand>();
         return services;
     }
