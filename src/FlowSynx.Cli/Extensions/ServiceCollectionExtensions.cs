@@ -15,6 +15,7 @@ using FlowSynx.Logging;
 using FlowSynx.Cli.Commands.Plugins;
 using FlowSynx.Cli.Commands.Version;
 using FlowSynx.Cli.Commands.Health;
+using FlowSynx.Cli.Services;
 
 namespace FlowSynx.Cli.Extensions;
 
@@ -29,14 +30,17 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddCommands(this IServiceCollection services)
     {
         services.AddTransient<RootCommand, Root>();
-        services.AddTransient<Command, RunCommand>();
-        services.AddTransient<Command, InitCommand>();
-        services.AddTransient<Command, StorageCommand>();
         services.AddTransient<Command, ConfigCommand>();
-        services.AddTransient<Command, PluginsCommand>();
-        services.AddTransient<Command, VersionCommand>();
-        services.AddTransient<Command, UpdateCommand>();
         services.AddTransient<Command, HealthCommand>();
+        services.AddTransient<Command, InitCommand>();
+        services.AddTransient<Command, PluginsCommand>();
+        services.AddTransient<Command, RunCommand>();
+        services.AddTransient<Command, StorageCommand>();
+        services.AddTransient<Command, StopCommand>();
+        services.AddTransient<Command, UninstallCommand>();
+        services.AddTransient<Command, UpdateCommand>();
+        services.AddTransient<Command, VersionCommand>();
+
         return services;
     }
 
