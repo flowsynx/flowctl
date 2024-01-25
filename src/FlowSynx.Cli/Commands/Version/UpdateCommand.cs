@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using System.Text;
 using FlowSynx.IO.Compression;
 using FlowSynx.IO.Serialization;
-using System.Threading;
 
 namespace FlowSynx.Cli.Commands.Version;
 
@@ -129,17 +128,18 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
 
     private Task ExtractFlowSynx(string sourcePath, CancellationToken cancellationToken)
     {
-        var extractTarget = @"./downloadedFiles";
+        var extractTarget = Path.Combine(DefaultFlowSynxDirName, "engine", "downloadedFiles");
+        var enginePath = Path.Combine(DefaultFlowSynxDirName, "engine");
+        
         ExtractFile(sourcePath, extractTarget);
-
-        Directory.CreateDirectory("./bin");
+        Directory.CreateDirectory(enginePath);
 
         foreach (var newPath in Directory.GetFiles(extractTarget, "*.*", SearchOption.AllDirectories))
         {
             if (cancellationToken.IsCancellationRequested)
                 break;
             
-            File.Copy(newPath, newPath.Replace(extractTarget, "./bin"), true);
+            File.Copy(newPath, newPath.Replace(extractTarget, enginePath), true);
         }
         
         Directory.Delete(extractTarget, true);
@@ -266,6 +266,8 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     private string FlowSynxGitHubOrganization => "FlowSynx";
     private string FlowSynxGitHubRepository => "TestWorkflow";
     private string FlowSynxCliGitHubRepository => "TestWorkflow";
+    private string UserProfilePath => System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
+    private string DefaultFlowSynxDirName => Path.Combine(UserProfilePath, ".flowsynx");
 
     private string ComputeSha256Hash(string filePath)
     {
