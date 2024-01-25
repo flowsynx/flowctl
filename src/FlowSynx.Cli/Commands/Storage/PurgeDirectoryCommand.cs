@@ -45,11 +45,11 @@ internal class PurgeDirectoryCommandOptionsHandler : ICommandOptionsHandler<Purg
 
     public async Task<int> HandleAsync(PurgeDirectoryCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(PurgeDirectoryCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(PurgeDirectoryCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

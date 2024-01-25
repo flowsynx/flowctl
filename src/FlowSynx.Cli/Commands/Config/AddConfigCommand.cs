@@ -56,11 +56,11 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
 
     public async Task<int> HandleAsync(AddConfigCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(AddConfigCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(AddConfigCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

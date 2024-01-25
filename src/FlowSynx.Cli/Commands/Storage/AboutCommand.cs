@@ -51,11 +51,11 @@ internal class AboutCommandOptionsHandler : ICommandOptionsHandler<AboutCommandO
 
     public async Task<int> HandleAsync(AboutCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(AboutCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(AboutCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

@@ -50,11 +50,11 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
 
     public async Task<int> HandleAsync(ReadCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(ReadCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(ReadCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

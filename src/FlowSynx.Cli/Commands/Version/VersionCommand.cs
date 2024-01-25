@@ -51,11 +51,11 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
 
     public async Task<int> HandleAsync(VersionCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(VersionCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(VersionCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

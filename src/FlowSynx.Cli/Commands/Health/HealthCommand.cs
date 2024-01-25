@@ -42,11 +42,11 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
 
     public async Task<int> HandleAsync(HealthCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(HealthCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(HealthCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

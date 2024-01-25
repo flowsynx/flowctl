@@ -52,11 +52,11 @@ internal class WriteCommandOptionsHandler : ICommandOptionsHandler<WriteCommandO
 
     public async Task<int> HandleAsync(WriteCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(WriteCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(WriteCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

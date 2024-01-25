@@ -84,11 +84,11 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
 
     public async Task<int> HandleAsync(SizeCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(SizeCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(SizeCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

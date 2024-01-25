@@ -78,11 +78,11 @@ internal class CopyCommandOptionsHandler : ICommandOptionsHandler<CopyCommandOpt
 
     public async Task<int> HandleAsync(CopyCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(CopyCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(CopyCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

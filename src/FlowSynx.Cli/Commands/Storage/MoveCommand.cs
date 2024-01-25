@@ -73,11 +73,11 @@ internal class MoveCommandOptionsHandler : ICommandOptionsHandler<MoveCommandOpt
 
     public async Task<int> HandleAsync(MoveCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(MoveCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(MoveCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

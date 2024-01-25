@@ -45,11 +45,11 @@ internal class DeleteFileCommandOptionsHandler : ICommandOptionsHandler<DeleteFi
 
     public async Task<int> HandleAsync(DeleteFileCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(DeleteFileCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(DeleteFileCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

@@ -48,11 +48,11 @@ internal class DetailsPluginCommandOptionsHandler : ICommandOptionsHandler<Detai
 
     public async Task<int> HandleAsync(DetailsPluginCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(DetailsPluginCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(DetailsPluginCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {

@@ -45,11 +45,11 @@ internal class MakeDirectoryCommandOptionsHandler : ICommandOptionsHandler<MakeD
 
     public async Task<int> HandleAsync(MakeDirectoryCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await CallApi(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task CallApi(MakeDirectoryCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(MakeDirectoryCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
