@@ -61,7 +61,7 @@ jobs:
     - name: Publish
       shell: bash
       run: |
-          release_name="flowsynx-${{ matrix.title }}-${{ matrix.os_arch }}"
+          release_name="synx-${{ matrix.title }}-${{ matrix.os_arch }}"
           # mkdir -p ${release_name}
           dotnet publish src/FlowSynx.Cli/FlowSynx.Cli.csproj --configuration Release /property:Version='${{ inputs.rel_version }}' --runtime '${{ matrix.kind }}-${{ matrix.os_arch }}' -o "${{github.workspace}}/$release_name"
           
