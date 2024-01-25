@@ -1,12 +1,17 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
+using System.Runtime.InteropServices;
 using FlowSynx.Environment;
 using FlowSynx.Net;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
 using System.Security.Cryptography;
 using System.Text;
+using FlowSynx.Cli.Services;
 using FlowSynx.IO.Compression;
 using FlowSynx.IO.Serialization;
+using System.IO;
+using System.CommandLine;
 
 namespace FlowSynx.Cli.Commands.Version;
 
@@ -14,13 +19,15 @@ internal class UpdateCommand : BaseCommand<UpdateCommandOptions, UpdateCommandOp
 {
     public UpdateCommand() : base("update", "Configuration management")
     {
+        var forceOption = new Option<bool>(new[] { "--force" }, getDefaultValue: () => false, description: "Force terminate FlowSynx engine if it is running");
 
+        AddOption(forceOption);
     }
 }
 
 internal class UpdateCommandOptions : ICommandOptions
 {
-
+    public bool Force { get; set; }
 }
 
 internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateCommandOptions>
@@ -33,10 +40,11 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     private readonly IZipFile _zipFile;
     private readonly IGZipFile _gZipFile;
     private readonly IDeserializer _deserializer;
+    private readonly ILocation _location;
 
     public UpdateCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
         IHttpRequestService httpRequestService, IVersion version, IOperatingSystemInfo operatingSystemInfo,
-        IZipFile zipFile, IGZipFile gZipFile, IDeserializer deserializer)
+        IZipFile zipFile, IGZipFile gZipFile, IDeserializer deserializer, ILocation location)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
@@ -55,6 +63,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         _zipFile = zipFile;
         _gZipFile = gZipFile;
         _deserializer = deserializer;
+        _location = location;
     }
 
     public async Task<int> HandleAsync(UpdateCommandOptions options, CancellationToken cancellationToken)
@@ -68,6 +77,19 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         try
         {
             _outputFormatter.Write("Checking for updates...");
+
+            if (options.Force)
+            {
+                TerminateProcess("FlowSynx", ".");
+            }
+            else
+            {
+                if (IsProcessRunning("FlowSynx", "."))
+                {
+                    _outputFormatter.Write("The FlowSynx engine is running. Please stop it by run the command: 'Synx stop', and try update again.");
+                    return;
+                }
+            }
 
             var latestVersion = await GetLatestVersion(FlowSynxCliGitHubRepository);
             var currentVersion = "0.2.0";
@@ -168,7 +190,14 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             if (cancellationToken.IsCancellationRequested)
                 break;
 
-            File.Copy(newPath, newPath.Replace(extractTarget, "."), true);
+            if (string.Equals(newPath, LookupBinaryFilePath(Path.GetDirectoryName(newPath)), StringComparison.InvariantCultureIgnoreCase))
+            {
+                SelfUpdate(File.OpenRead(newPath));
+            }
+            else
+            {
+                File.Copy(newPath, newPath.Replace(extractTarget, "."), true);
+            }
         }
 
         Directory.Delete(extractTarget, true);
@@ -299,6 +328,77 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             _gZipFile.Decompression(sourcePath, destinationPath, true);
         else
             _zipFile.Decompression(sourcePath, destinationPath, true);
+    }
+
+    private bool IsProcessRunning(string processName, string machineAddress)
+    {
+        var processes = Process.GetProcessesByName(processName, machineAddress);
+        return processes.Length != 0;
+    }
+
+    private void TerminateProcess(string processName, string machineAddress)
+    {
+        var processes = Process.GetProcessesByName(processName, machineAddress);
+
+        if (processes.Length == 0) return;
+
+        try
+        {
+            foreach (var process in processes)
+                process.Kill();
+
+            _outputFormatter.Write("The FlowSynx engine was stopped successfully.");
+        }
+        catch (Exception ex)
+        {
+            _outputFormatter.WriteError(ex.Message);
+        }
+    }
+
+    private void SelfUpdate(Stream stream)
+    {
+        var self = new FileInfo(LookupBinaryFilePath(_location.RootLocation)).FullName;
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            SaveStreamToFile(stream, self);
+
+            Process.Start(self);
+            Thread.Sleep(500);
+            System.Environment.Exit(0);
+        }
+        else
+        {
+            var selfFileName = Path.GetFileName(self);
+            var selfWithoutExt = Path.Combine(Path.GetDirectoryName(self), Path.GetFileNameWithoutExtension(self));
+            SaveStreamToFile(stream, selfWithoutExt + "Update.exe");
+
+            using (var batFile = new StreamWriter(File.Create(selfWithoutExt + "Update.bat")))
+            {
+                batFile.WriteLine("@ECHO OFF");
+                batFile.WriteLine("TIMEOUT /t 1 /nobreak > NUL");
+                batFile.WriteLine("TASKKILL /IM \"{0}\" > NUL", selfFileName);
+                batFile.WriteLine("MOVE \"{0}\" \"{1}\"", selfWithoutExt + "Update.exe", self);
+                batFile.WriteLine("DEL \"%~f0\" & START \"\" /B \"{0}\"", self);
+            }
+
+            ProcessStartInfo startInfo = new ProcessStartInfo(selfWithoutExt + "Update.bat");
+            startInfo.CreateNoWindow = true;
+            startInfo.UseShellExecute = false;
+            startInfo.WorkingDirectory = Path.GetDirectoryName(self);
+            Process.Start(startInfo);
+
+            System.Environment.Exit(0);
+        }
+    }
+    
+    private string LookupBinaryFilePath(string path)
+    {
+        var binFileName = "Synx";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            binFileName += ".exe";
+
+        return Path.Combine(path, binFileName);
     }
 }
 
