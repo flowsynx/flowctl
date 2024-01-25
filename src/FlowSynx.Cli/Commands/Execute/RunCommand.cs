@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 using FlowSynx.Logging;
 using Spectre.Console;
 
@@ -55,6 +56,9 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
         _location = location;
     }
 
+    private string UserProfilePath => System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
+    private string DefaultFlowSynxDirName => Path.Combine(UserProfilePath, ".flowsynx");
+
     public async Task<int> HandleAsync(RunCommandOptions options, CancellationToken cancellationToken)
     {
         await RunFlowSynx(options, cancellationToken);
@@ -63,7 +67,7 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
 
     private Task RunFlowSynx(RunCommandOptions options, CancellationToken cancellationToken)
     {
-        var flowSynxPath = Path.Combine(_location.RootLocation, "bin");
+        var flowSynxPath = Path.Combine(UserProfilePath, DefaultFlowSynxDirName, "engine");
         var flowSynxBinaryFile = LookupBinaryFilePath(flowSynxPath);
         if (!Path.Exists(flowSynxBinaryFile))
         {

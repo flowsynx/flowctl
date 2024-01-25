@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 using FlowSynx.Environment;
 using FlowSynx.IO.Compression;
 using FlowSynx.IO.Serialization;
@@ -68,7 +69,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         {
             _outputFormatter.Write("Beginning Initialize...");
 
-            var flowSynxPath = Path.Combine(_location.RootLocation, "bin");
+            var flowSynxPath = Path.Combine(UserProfilePath, DefaultFlowSynxDirName, "engine");
             var look = LookupBinaryFilePath(flowSynxPath);
             if (File.Exists(look))
             {
@@ -117,17 +118,18 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
 
     private Task ExtractFlowSynx(string sourcePath, CancellationToken cancellationToken)
     {
-        var extractTarget = @"./downloadedFiles";
-        ExtractFile(sourcePath, extractTarget);
+        var extractTarget = Path.Combine(DefaultFlowSynxDirName, "engine", "downloadedFiles");
+        var enginePath = Path.Combine(DefaultFlowSynxDirName, "engine");
 
-        Directory.CreateDirectory("./bin");
+        ExtractFile(sourcePath, extractTarget);
+        Directory.CreateDirectory(enginePath);
 
         foreach (var newPath in Directory.GetFiles(extractTarget, "*.*", SearchOption.AllDirectories))
         {
             if (cancellationToken.IsCancellationRequested)
                 break;
 
-            File.Copy(newPath, newPath.Replace(extractTarget, "./bin"), true);
+            File.Copy(newPath, newPath.Replace(extractTarget, enginePath), true);
         }
 
         Directory.Delete(extractTarget, true);
@@ -199,74 +201,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         var content = await sr.ReadToEndAsync(cancellationToken);
         return content.Split('*')[0].Trim();
     }
-
-
-
-
-
-
-
-
-    //private async Task<string> GetLatestVersion(string repositoryName)
-    //{
-    //    var httpClient = new HttpClient();
-    //    var uri = $"https://api.github.com/repos/{FlowSynxGitHubOrganization}/{repositoryName}/tags";
-    //    httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    //    httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
-
-    //    var request = new HttpRequestMessage
-    //    {
-    //        Method = HttpMethod.Get,
-    //        RequestUri = new Uri(uri)
-    //    };
-
-    //    var response = await httpClient.SendAsync(request);
-    //    response.EnsureSuccessStatusCode();
-
-    //    var responseBody = await response.Content.ReadAsStringAsync();
-    //    var tags = _deserializer.Deserialize<List<GitHubTag>>(responseBody);
-    //    return tags.Count <= 0 ? string.Empty : tags.First().Name;
-    //}
-
-    //private async Task<string> DownloadBinary(string repositoryName, string version, string archiveFileName, string destinationPath, CancellationToken cancellationToken)
-    //{
-    //    using var client = new HttpClient();
-    //    var uri = $"https://github.com/{FlowSynxGitHubOrganization}/{repositoryName}/releases/download/{version}/{archiveFileName}";
-    //    var message = new HttpRequestMessage(HttpMethod.Get, new Uri(uri));
-    //    using var response = await client.SendAsync(message, cancellationToken);
-
-    //    if (response.StatusCode == HttpStatusCode.NotFound)
-    //        throw new Exception($"Version not found from url: {uri}");
-
-    //    if (response.StatusCode != HttpStatusCode.OK)
-    //        throw new Exception($"Download failed with {response.StatusCode.ToString()}");
-
-    //    var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-    //    var archivePath = Path.Combine(destinationPath, archiveFileName);
-    //    await using var fs = new FileStream(archivePath, FileMode.OpenOrCreate);
-    //    await stream.CopyToAsync(fs, cancellationToken);
-    //    return archivePath;
-    //}
-
-    //private async Task<string> GetLatestHashFile(string repositoryName, string version, string archiveFileName, CancellationToken cancellationToken)
-    //{
-    //    using var client = new HttpClient();
-    //    var uri = $"https://github.com/{FlowSynxGitHubOrganization}/{repositoryName}/releases/download/{version}/{archiveFileName}";
-    //    var message = new HttpRequestMessage(HttpMethod.Get, new Uri(uri));
-    //    using var response = await client.SendAsync(message, cancellationToken);
-
-    //    if (response.StatusCode == HttpStatusCode.NotFound)
-    //        throw new Exception($"Version not found from url: {uri}");
-
-    //    if (response.StatusCode != HttpStatusCode.OK)
-    //        throw new Exception($"Download failed with {response.StatusCode.ToString()}");
-
-    //    var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-    //    using var sr = new StreamReader(stream);
-    //    var content = await sr.ReadToEndAsync(cancellationToken);
-    //    return content.Split('*')[0].Trim();
-    //}
-
+    
     private string FlowSynxArchiveFileName => $"flowSynx-{ArchiveName.ToLower()}";
     private string FlowSynxArchiveHashFileName => $"flowSynx-{ArchiveName.ToLower()}.sha256";
     private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
@@ -274,6 +209,8 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     private string FlowSynxGitHubOrganization => "FlowSynx";
     private string FlowSynxGitHubRepository => "TestWorkflow";
     private string FlowSynxCliGitHubRepository => "TestWorkflow";
+    private string UserProfilePath => System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
+    private string DefaultFlowSynxDirName => Path.Combine(UserProfilePath, ".flowsynx");
 
     private string ComputeSha256Hash(string filePath)
     {
