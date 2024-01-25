@@ -1,7 +1,7 @@
 ﻿using EnsureThat;
 using Microsoft.Extensions.Logging;
 
-namespace FlowSynx.Cli;
+namespace FlowSynx.Cli.Services;
 
 public interface ILocation
 {

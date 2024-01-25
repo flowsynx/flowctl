@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using FlowSynx.Environment;
 
-namespace FlowSynx.Cli;
+namespace FlowSynx.Cli.Services;
 
 public class CliVersion : IVersion
 {
