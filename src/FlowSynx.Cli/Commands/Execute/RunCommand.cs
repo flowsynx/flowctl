@@ -61,11 +61,11 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
 
     public async Task<int> HandleAsync(RunCommandOptions options, CancellationToken cancellationToken)
     {
-        await RunFlowSynx(options, cancellationToken);
+        await Execute(options, cancellationToken);
         return 0;
     }
 
-    private Task RunFlowSynx(RunCommandOptions options, CancellationToken cancellationToken)
+    private Task Execute(RunCommandOptions options, CancellationToken cancellationToken)
     {
         var flowSynxPath = Path.Combine(UserProfilePath, DefaultFlowSynxDirName, "engine");
         var flowSynxBinaryFile = LookupBinaryFilePath(flowSynxPath);
