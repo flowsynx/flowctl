@@ -102,5 +102,6 @@ jobs:
       with:
         tag: ${{ inputs.rel_version }}
         name: FlowSynx CLI v${{ inputs.rel_version }}
+        body: "This is the release version ${{ inputs.rel_version }}"
         artifacts: "**/*.*"
         token: ${{ secrets.NUGET_PACKAGE_TOKEN }}
