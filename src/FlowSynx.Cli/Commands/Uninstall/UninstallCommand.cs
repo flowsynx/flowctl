@@ -95,7 +95,7 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
             foreach (var process in processes)
                 process.Kill();
 
-            _outputFormatter.Write("The FlowSynx engine was stopped successfully.");
+            _outputFormatter.Write("The FlowSynx system was stopped successfully.");
         }
         catch (Exception ex)
         {

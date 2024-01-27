@@ -91,7 +91,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             }
 
             var latestVersion = await GetLatestVersion(FlowSynxCliGitHubRepository);
-            var currentVersion = "0.2.0";
+            var currentVersion = _version.Version;
 
             if (IsUpdateAvailable(latestVersion, currentVersion))
             {
@@ -291,13 +291,13 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
 
     private string FlowSynxArchiveFileName => $"flowSynx-{ArchiveName.ToLower()}";
     private string FlowSynxArchiveHashFileName => $"flowSynx-{ArchiveName.ToLower()}.sha256";
-    private string FlowSynxCliArchiveFileName => $"flowSynx-{ArchiveName.ToLower()}";
-    private string FlowSynxCliArchiveHashFileName => $"flowSynx-{ArchiveName.ToLower()}.sha256";
+    private string FlowSynxCliArchiveFileName => $"synx-{ArchiveName.ToLower()}";
+    private string FlowSynxCliArchiveHashFileName => $"synx-{ArchiveName.ToLower()}.sha256";
     private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
     private string Extension => string.Equals(_operatingSystemInfo.Type, "windows", StringComparison.OrdinalIgnoreCase) ? "zip" : "tar.gz";
     private string FlowSynxGitHubOrganization => "FlowSynx";
-    private string FlowSynxGitHubRepository => "TestWorkflow";
-    private string FlowSynxCliGitHubRepository => "TestWorkflow";
+    private string FlowSynxGitHubRepository => "FlowSynx";
+    private string FlowSynxCliGitHubRepository => "Cli";
     private string UserProfilePath => System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
     private string DefaultFlowSynxDirName => Path.Combine(UserProfilePath, ".flowsynx");
 

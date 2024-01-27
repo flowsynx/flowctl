@@ -87,21 +87,21 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         }
     }
 
-    private async Task Init(CancellationToken cancellationToken)
+    private async Task<bool> Init(CancellationToken cancellationToken)
     {
-        var latestVersion = await GetLatestVersion(FlowSynxCliGitHubRepository);
-        var flowSynxDownloadPath = await DownloadFlowSynxAsset(latestVersion, Path.GetTempPath(), cancellationToken);
-        var isFlowSynxValid = await ValidateFlowSynxDownloadedAsset(flowSynxDownloadPath, latestVersion, cancellationToken);
+        var currentVersion = _version.Version;
+        var flowSynxDownloadPath = await DownloadFlowSynxAsset(currentVersion, Path.GetTempPath(), cancellationToken);
+        var isFlowSynxValid = await ValidateFlowSynxDownloadedAsset(flowSynxDownloadPath, currentVersion, cancellationToken);
 
         if (isFlowSynxValid)
         {
             await Task.Run(() => ExtractFlowSynx(flowSynxDownloadPath, cancellationToken), cancellationToken);
+            return true;
         }
-        else
-        {
-            _outputFormatter.Write("Validating download - Fail!");
-            _outputFormatter.Write("The downloaded data may has been corrupted!");
-        }
+
+        _outputFormatter.Write("Validating download - Fail!");
+        _outputFormatter.Write("The downloaded data may has been corrupted!");
+        return false;
     }
 
     private async Task<bool> ValidateFlowSynxDownloadedAsset(string path, string latestVersion, CancellationToken cancellationToken)
@@ -207,8 +207,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
     private string Extension => string.Equals(_operatingSystemInfo.Type, "windows", StringComparison.OrdinalIgnoreCase) ? "zip" : "tar.gz";
     private string FlowSynxGitHubOrganization => "FlowSynx";
-    private string FlowSynxGitHubRepository => "TestWorkflow";
-    private string FlowSynxCliGitHubRepository => "TestWorkflow";
+    private string FlowSynxGitHubRepository => "FlowSynx";
     private string UserProfilePath => System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
     private string DefaultFlowSynxDirName => Path.Combine(UserProfilePath, ".flowsynx");
 
