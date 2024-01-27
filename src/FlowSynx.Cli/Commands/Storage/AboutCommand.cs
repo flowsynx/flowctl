@@ -11,8 +11,8 @@ internal class AboutCommand : BaseCommand<AboutCommandOptions, AboutCommandOptio
 {
     public AboutCommand() : base("about", "About storage")
     {
-        var pathOption = new Option<string>(new[] { "--path" }, "The path to get about") { IsRequired = true };
-        var fullOption = new Option<bool?>(new[] { "--full" }, "Should apply format for byte size");
+        var pathOption = new Option<string?>(new[] { "--path" }, "The path to get about");
+        var fullOption = new Option<bool?>(new[] { "--full" }, getDefaultValue: () => false, "Full numbers instead of human-readable");
         var outputFormatOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(pathOption);
@@ -23,7 +23,7 @@ internal class AboutCommand : BaseCommand<AboutCommandOptions, AboutCommandOptio
 
 internal class AboutCommandOptions : ICommandOptions
 {
-    public string Path { get; set; } = string.Empty;
+    public string? Path { get; set; } = string.Empty;
     public bool? Full { get; set; } = false;
     public Output Output { get; set; } = Output.Json;
 }
@@ -87,7 +87,7 @@ internal class AboutCommandOptionsHandler : ICommandOptionsHandler<AboutCommandO
 
 public class AboutRequest
 {
-    public required string Path { get; set; }
+    public string? Path { get; set; } = string.Empty;
     public bool? Full { get; set; } = false;
 }
 
