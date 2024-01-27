@@ -13,9 +13,9 @@ internal class AddConfigCommand : BaseCommand<AddConfigCommandOptions, AddConfig
 {
     public AddConfigCommand() : base("add", "Add configuration section")
     {
-        var nameOption = new Option<string>(new[] { "--name" }, "The path to get about") { IsRequired = true };
-        var typeOption = new Option<string>(new[] { "--type" }, "The path to get about") { IsRequired = true };
-        var specificationsOption = new Option<string>(new[] { "--spec" }, "The path to get about");
+        var nameOption = new Option<string>(new[] { "--name" }, "The unique configuration section name") { IsRequired = true };
+        var typeOption = new Option<string>(new[] { "--type" }, "The type of plugin") { IsRequired = true };
+        var specificationsOption = new Option<string>(new[] { "--spec" }, "The specifications regarding configuration section. They should be passed in pairs of key value");
 
         AddOption(nameOption);
         AddOption(typeOption);

@@ -1,7 +1,6 @@
 ﻿using System.CommandLine;
 using FlowSynx.Abstractions;
 using FlowSynx.Environment;
-using FlowSynx.IO.Serialization;
 using FlowSynx.Net;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
@@ -10,9 +9,9 @@ namespace FlowSynx.Cli.Commands.Config;
 
 internal class DetailsConfigCommand : BaseCommand<DetailsConfigCommandOptions, DetailsConfigCommandOptionsHandler>
 {
-    public DetailsConfigCommand() : base("details", "About storage")
+    public DetailsConfigCommand() : base("details", "Get details about configuration section")
     {
-        var nameOption = new Option<string>(new[] { "--name" }, "The path to get about") { IsRequired = true };
+        var nameOption = new Option<string>(new[] { "--name" }, "The configuration section name") { IsRequired = true };
         var outputFormatOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(nameOption);

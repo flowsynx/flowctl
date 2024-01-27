@@ -3,7 +3,6 @@ using System.CommandLine;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
 using FlowSynx.Cli.Commands.Storage;
-using FlowSynx.Cli.Commands.Execute;
 using FlowSynx.Cli.Commands;
 using FlowSynx.Cli.ApplicationBuilders;
 using FlowSynx.Cli.Commands.Config;
@@ -15,7 +14,12 @@ using FlowSynx.Logging;
 using FlowSynx.Cli.Commands.Plugins;
 using FlowSynx.Cli.Commands.Version;
 using FlowSynx.Cli.Commands.Health;
+using FlowSynx.Cli.Commands.Update;
 using FlowSynx.Cli.Services;
+using FlowSynx.Cli.Commands.Init;
+using FlowSynx.Cli.Commands.Run;
+using FlowSynx.Cli.Commands.Stop;
+using FlowSynx.Cli.Commands.Uninstall;
 
 namespace FlowSynx.Cli.Extensions;
 

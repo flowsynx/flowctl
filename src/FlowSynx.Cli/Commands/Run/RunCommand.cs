@@ -7,11 +7,11 @@ using FlowSynx.Cli.Services;
 using FlowSynx.Logging;
 using Spectre.Console;
 
-namespace FlowSynx.Cli.Commands.Execute;
+namespace FlowSynx.Cli.Commands.Run;
 
 internal class RunCommand : BaseCommand<RunCommandOptions, RunCommandOptionsHandler>
 {
-    public RunCommand() : base("run", "Run FlowSync system")
+    public RunCommand() : base("run", "Run and execute the FlowSynx system on the current user profile")
     {
         var configFileOption = new Option<string>(new[] { "--config-file" }, description: "FlowSynx configuration file");
 
@@ -25,12 +25,13 @@ internal class RunCommand : BaseCommand<RunCommandOptions, RunCommandOptionsHand
             description: "The log verbosity to controls the amount of detail emitted for each event that is logged");
 
         var logFileOption = new Option<string?>(new[] { "--log-file" },
-            description: "The log verbosity to controls the amount of detail emitted for each event that is logged");
+            description: "Log file path to store system logs information");
 
         AddOption(configFileOption);
         AddOption(enableHealthCheckOption);
         AddOption(enableLogOption);
         AddOption(logLevelOption);
+        AddOption(logFileOption);
     }
 }
 
@@ -112,7 +113,7 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
 
         return argList.Count == 0 ? string.Empty : string.Join(' ', argList);
     }
-    
+
     private void OutputDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
     {
         if (outLine.Data != null) _outputFormatter.Write(outLine.Data);
@@ -128,7 +129,7 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
         var binFileName = "FlowSynx";
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             binFileName += ".exe";
-        
+
         return Path.Combine(path, binFileName);
     }
 }

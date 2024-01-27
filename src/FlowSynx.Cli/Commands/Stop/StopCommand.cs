@@ -3,11 +3,11 @@ using EnsureThat;
 using FlowSynx.Cli.Formatter;
 using FlowSynx.Cli.Services;
 
-namespace FlowSynx.Cli.Commands.Execute;
+namespace FlowSynx.Cli.Commands.Stop;
 
 internal class StopCommand : BaseCommand<StopCommandOptions, StopCommandOptionsHandler>
 {
-    public StopCommand() : base("stop", "Stop FlowSync engine")
+    public StopCommand() : base("stop", "Stop the FlowSynx system which running on the current user profile")
     {
 
     }
@@ -53,7 +53,7 @@ internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOpt
         {
             foreach (var process in processes)
                 process.Kill();
-            
+
             _outputFormatter.Write("The FlowSynx engine was stopped successfully.");
         }
         catch (Exception ex)

@@ -2,7 +2,7 @@
 
 internal class StorageCommand : BaseCommand
 {
-    public StorageCommand() : base("storage", "Storage commands")
+    public StorageCommand() : base("storage", "Execute supportable commands on different storage supported by FlowSynx system")
     {
         AddCommand(new AboutCommand());
         AddCommand(new CopyCommand());

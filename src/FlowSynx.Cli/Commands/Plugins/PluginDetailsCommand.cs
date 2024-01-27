@@ -9,9 +9,9 @@ namespace FlowSynx.Cli.Commands.Plugins;
 
 internal class PluginDetailsCommand : BaseCommand<DetailsPluginCommandOptions, DetailsPluginCommandOptionsHandler>
 {
-    public PluginDetailsCommand() : base("details", "About storage")
+    public PluginDetailsCommand() : base("details", "Display details about a particular plugin")
     {
-        var nameOption = new Option<Guid>(new[] { "--id" }, "The path to get about") { IsRequired = true };
+        var nameOption = new Option<Guid>(new[] { "--id" }, "The identifier (Id) of the plugin") { IsRequired = true };
         var outputFormatOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(nameOption);

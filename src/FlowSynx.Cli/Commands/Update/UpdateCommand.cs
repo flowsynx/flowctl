@@ -10,16 +10,15 @@ using System.Text;
 using FlowSynx.Cli.Services;
 using FlowSynx.IO.Compression;
 using FlowSynx.IO.Serialization;
-using System.IO;
 using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Version;
+namespace FlowSynx.Cli.Commands.Update;
 
 internal class UpdateCommand : BaseCommand<UpdateCommandOptions, UpdateCommandOptionsHandler>
 {
-    public UpdateCommand() : base("update", "Configuration management")
+    public UpdateCommand() : base("update", "Update FlowSynx system and Cli")
     {
-        var forceOption = new Option<bool>(new[] { "--force" }, getDefaultValue: () => false, description: "Force terminate FlowSynx engine if it is running");
+        var forceOption = new Option<bool>(new[] { "--force" }, getDefaultValue: () => false, description: "Force terminate FlowSynx system if it is running");
 
         AddOption(forceOption);
     }

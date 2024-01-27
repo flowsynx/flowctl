@@ -9,9 +9,9 @@ namespace FlowSynx.Cli.Commands.Plugins;
 
 internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsCommandOptionsHandler>
 {
-    public PluginsCommand() : base("plugins", "Configuration management")
+    public PluginsCommand() : base("plugins", "Display list and details of plugins supported by FlowSynx system")
     {
-        var typeOption = new Option<string>(new[] { "--type" }, "The path to get about");
+        var typeOption = new Option<string>(new[] { "--type" }, "The namespace of plugin (like Storage)");
         var outputOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(typeOption);

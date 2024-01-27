@@ -9,11 +9,11 @@ using FlowSynx.Environment;
 using FlowSynx.IO.Compression;
 using FlowSynx.IO.Serialization;
 
-namespace FlowSynx.Cli.Commands.Execute;
+namespace FlowSynx.Cli.Commands.Init;
 
 internal class InitCommand : BaseCommand<InitCommandOptions, InitCommandOptionsHandler>
 {
-    public InitCommand() : base("init", "Initialize FlowSynx engine")
+    public InitCommand() : base("init", "Install and iInitialize FlowSynx system on the current user profile")
     {
     }
 }
@@ -201,7 +201,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         var content = await sr.ReadToEndAsync(cancellationToken);
         return content.Split('*')[0].Trim();
     }
-    
+
     private string FlowSynxArchiveFileName => $"flowSynx-{ArchiveName.ToLower()}";
     private string FlowSynxArchiveHashFileName => $"flowSynx-{ArchiveName.ToLower()}.sha256";
     private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";

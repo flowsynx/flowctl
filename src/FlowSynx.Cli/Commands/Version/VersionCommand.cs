@@ -9,9 +9,9 @@ namespace FlowSynx.Cli.Commands.Version;
 
 internal class VersionCommand : BaseCommand<VersionCommandOptions, VersionCommandOptionsHandler>
 {
-    public VersionCommand() : base("version", "Configuration management")
+    public VersionCommand() : base("version", "Display the FlowSynx system and Cli version")
     {
-        var typeOption = new Option<bool>(new[] { "--full" }, getDefaultValue: () => false, "The path to get about");
+        var typeOption = new Option<bool>(new[] { "--full" }, getDefaultValue: () => false, "Display full details about the running FlowSynx system");
         var outputOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(typeOption);
@@ -83,9 +83,17 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _outputFormatter.WriteError(ex.Message);
+            if (options.Full is true)
+            {
+                var version = new
+                {
+                    Cli = _version.Version,
+                    FlowSynx = "FlowSynx system is not running"
+                };
+                _outputFormatter.Write(version, options.Output);
+            }
         }
     }
 }

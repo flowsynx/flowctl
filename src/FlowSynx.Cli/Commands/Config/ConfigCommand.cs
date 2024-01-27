@@ -9,7 +9,7 @@ namespace FlowSynx.Cli.Commands.Config;
 
 internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOptionsHandler>
 {
-    public ConfigCommand() : base("config", "Configuration management")
+    public ConfigCommand() : base("config", "Manage configurations related to FlowSynx System")
     {
         var typeOption = new Option<string>(new[] { "--type" }, "The path to get about");
         var outputOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
