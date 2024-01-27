@@ -189,7 +189,11 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             if (cancellationToken.IsCancellationRequested)
                 break;
 
-            if (string.Equals(newPath, LookupBinaryFilePath(Path.GetDirectoryName(newPath)), StringComparison.InvariantCultureIgnoreCase))
+            var directoryName = Path.GetDirectoryName(newPath);
+            if (string.IsNullOrEmpty(directoryName))
+                continue;
+
+            if (string.Equals(newPath, LookupBinaryFilePath(directoryName), StringComparison.InvariantCultureIgnoreCase))
             {
                 SelfUpdate(File.OpenRead(newPath));
             }
@@ -369,7 +373,11 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         else
         {
             var selfFileName = Path.GetFileName(self);
-            var selfWithoutExt = Path.Combine(Path.GetDirectoryName(self), Path.GetFileNameWithoutExtension(self));
+            var directoryName = Path.GetDirectoryName(self);
+            if (string.IsNullOrEmpty(directoryName))
+                return;
+
+            var selfWithoutExt = Path.Combine(directoryName, Path.GetFileNameWithoutExtension(self));
             SaveStreamToFile(stream, selfWithoutExt + "Update.exe");
 
             using (var batFile = new StreamWriter(File.Create(selfWithoutExt + "Update.bat")))
