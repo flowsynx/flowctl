@@ -19,8 +19,7 @@ internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsH
         var maxAgeOption = new Option<string?>(new[] { "--max-age" }, "Filter entities younger than this in s or suffix ms|s|m|h|d|w|M|y [default: off]");
         var minSizeOption = new Option<string?>(new[] { "--min-size" }, "Filter entities bigger than this in KiB or suffix B|K|M|G|T|P [default: off]");
         var maxSizeOption = new Option<string?>(new[] { "--max-size" }, "Filter entities smaller than this in KiB or suffix B|K|M|G|T|P [default: off]");
-        var formatSizeOption = new Option<bool?>(new[] { "--format-size" }, getDefaultValue: () => false, "Should apply format for byte size");
-        var sortingOption = new Option<string?>(new[] { "--sorting" }, "Sorting entities based on field name and ascending and descending. Like Property ASC, Property2 DESC [default: off]");
+        var fullOption = new Option<bool?>(new[] { "--full" }, getDefaultValue: () => false, "Full numbers instead of human-readable");
         var caseSensitiveOption = new Option<bool?>(new[] { "--case-sensitive" }, getDefaultValue: () => false, "Ignore or apply case sensitive in filters");
         var recurseOption = new Option<bool?>(new[] { "--recurse" }, getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
         var maxResultsOption = new Option<int?>(new[] { "--max-results" }, "The maximum number of results to return [default: off]");
@@ -34,8 +33,7 @@ internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsH
         AddOption(maxAgeOption);
         AddOption(minSizeOption);
         AddOption(maxSizeOption);
-        AddOption(formatSizeOption);
-        AddOption(sortingOption);
+        AddOption(fullOption);
         AddOption(caseSensitiveOption);
         AddOption(recurseOption);
         AddOption(maxResultsOption);
@@ -53,8 +51,7 @@ internal class SizeCommandOptions : ICommandOptions
     public string? MaxAge { get; set; } = string.Empty;
     public string? MinSize { get; set; } = string.Empty;
     public string? MaxSize { get; set; } = string.Empty;
-    public bool? FormatSize { get; set; } = true;
-    public string? Sorting { get; set; } = string.Empty;
+    public bool? Full { get; set; } = false;
     public bool? CaseSensitive { get; set; } = false;
     public bool? Recurse { get; set; } = false;
     public int? MaxResults { get; set; }
@@ -105,7 +102,7 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
                 MaxSize = options.MaxSize,
                 CaseSensitive = options.CaseSensitive,
                 Recurse = options.Recurse,
-                FormatSize = options.FormatSize,
+                Full = options.Full,
                 MaxResults = options.MaxResults
             };
 
@@ -138,7 +135,7 @@ public class SizeRequest
     public string? MaxAge { get; set; }
     public string? MinSize { get; set; }
     public string? MaxSize { get; set; }
-    public bool? FormatSize { get; set; } = true;
+    public bool? Full { get; set; } = false;
     public bool? CaseSensitive { get; set; } = false;
     public bool? Recurse { get; set; } = false;
     public int? MaxResults { get; set; }
