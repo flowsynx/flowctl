@@ -61,6 +61,19 @@ namespace FlowSynx.Cli {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to attrib &quot;{0}&quot; -a -s -r -h
+        ///:Repeat
+        ///del &quot;{1}&quot;
+        ///if exist &quot;{2}&quot; goto Repeat
+        ///del &quot;{3}&quot;.
+        /// </summary>
+        internal static string DeleteScript_Bat {
+            get {
+                return ResourceManager.GetString("DeleteScript_Bat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FlowSynx engine is not installed. Please run the &apos;synx init -h&apos; command to see the details..
         /// </summary>
         internal static string FlowSynxEngineIsNotInstalled {
@@ -96,9 +109,40 @@ namespace FlowSynx.Cli {
         ///                              |___/            
         ///.
         /// </summary>
-        internal static string logo {
+        internal static string Logo {
             get {
-                return ResourceManager.GetString("logo", resourceCulture);
+                return ResourceManager.GetString("Logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @ECHO OFF
+        ///TIMEOUT /t 1 /nobreak &gt; NUL
+        ///TASKKILL /F /IM &quot;{0}&quot; &gt; NUL
+        ///COPY &quot;{1}&quot; &quot;{2}&quot;
+        ///DEL &quot;{3}&quot;
+        ///RD /s /q &quot;{4}&quot;
+        ///DEL &quot;%~f0&quot;.
+        /// </summary>
+        internal static string UpdateScript_Bat {
+            get {
+                return ResourceManager.GetString("UpdateScript_Bat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #!/bin/sh
+        ///
+        ///cp -fr &quot;{0}&quot; &quot;{1}&quot;
+        ///sleep 9999999 &lt;{2} &amp;
+        ///rm &quot;{3}&quot;
+        ///rm -rf &quot;{4}&quot;
+        ///rm -- &quot;$0&quot;
+        ///kill $!.
+        /// </summary>
+        internal static string UpdateScript_Shell {
+            get {
+                return ResourceManager.GetString("UpdateScript_Shell", resourceCulture);
             }
         }
     }

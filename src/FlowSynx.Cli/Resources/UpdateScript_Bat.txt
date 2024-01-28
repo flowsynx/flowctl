@@ -1,0 +1,7 @@
+@ECHO OFF
+TIMEOUT /t 1 /nobreak > NUL
+TASKKILL /F /IM "{0}" > NUL
+COPY "{1}" "{2}"
+DEL "{3}"
+RD /s /q "{4}"
+DEL "%~f0"

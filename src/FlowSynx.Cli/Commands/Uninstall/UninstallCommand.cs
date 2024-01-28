@@ -113,29 +113,30 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            var procDestruct = new Process();
-            var strName = "destruct.bat";
-            var strPath = Path.Combine(Directory.GetCurrentDirectory(), strName);
+            string scriptFile = "delete.bat";
+            var strPath = Path.Combine(Directory.GetCurrentDirectory(), scriptFile);
             var strExe = new FileInfo(LookupBinaryFilePath(_location.RootLocation)).Name;
+            var directoryName = Path.GetDirectoryName(strPath);
 
-            var swDestruct = new StreamWriter(strPath);
-            swDestruct.WriteLine("attrib \"" + strExe + "\"" + " -a -s -r -h");
-            swDestruct.WriteLine(":Repeat");
-            swDestruct.WriteLine("del " + "\"" + strExe + "\"");
-            swDestruct.WriteLine("if exist \"" + strExe + "\"" + " goto Repeat");
-            swDestruct.WriteLine("del \"" + strName + "\"");
-            swDestruct.Close();
+            var deleteScript = string.Format(Resources.DeleteScript_Bat, strExe, scriptFile);
+            StreamWriter streamWriter = new StreamWriter(strPath);
+            streamWriter.Write(deleteScript);
+            streamWriter.Close();
 
-            procDestruct.StartInfo.FileName = "destruct.bat";
-            procDestruct.StartInfo.CreateNoWindow = true;
-            procDestruct.StartInfo.UseShellExecute = false;
-
+            ProcessStartInfo startInfo = new ProcessStartInfo(scriptFile)
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                WorkingDirectory = directoryName
+            };
+            
             try
             {
-                procDestruct.Start();
+                Process.Start(startInfo);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _outputFormatter.WriteError(ex.Message);
                 System.Environment.Exit(0);
             }
         }
@@ -148,7 +149,7 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
     
     private string LookupBinaryFilePath(string path)
     {
-        var binFileName = "Synx";
+        var binFileName = "synx";
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             binFileName += ".exe";
 

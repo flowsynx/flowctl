@@ -11,6 +11,8 @@ using FlowSynx.Cli.Services;
 using FlowSynx.IO.Compression;
 using FlowSynx.IO.Serialization;
 using System.CommandLine;
+using System.Xml.Linq;
+using System.IO;
 
 namespace FlowSynx.Cli.Commands.Update;
 
@@ -67,11 +69,37 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
 
     public async Task<int> HandleAsync(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
+        DownloadUpdateResult result = new DownloadUpdateResult();
+        await _spinner.DisplayLineSpinnerAsync(async () =>
+        {
+            result = await DownloadAndValidate(options, cancellationToken);
+        });
+
+        if (result.Success)
+        {
+            try
+            {
+                await Task
+                    .Run(() => ExtractFlowSynx(result.FlowSynxDownloadPath, cancellationToken), cancellationToken)
+                    .ContinueWith(t =>
+                    {
+                        if (t.IsCanceled || t.IsFaulted)
+                        {
+                            var exception = t.Exception;
+                            throw new Exception(exception?.Message);
+                        }
+                        ExtractFlowSynxCli(result.FlowSynxCliDownloadPath, cancellationToken);
+                    }, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _outputFormatter.WriteError(ex.Message);
+            }
+        }
         return 0;
     }
 
-    private async Task Execute(UpdateCommandOptions options, CancellationToken cancellationToken)
+    private async Task<DownloadUpdateResult> DownloadAndValidate(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
@@ -86,7 +114,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
                 if (IsProcessRunning("FlowSynx", "."))
                 {
                     _outputFormatter.Write("The FlowSynx engine is running. Please stop it by run the command: 'Synx stop', and try update again.");
-                    return;
+                    return new DownloadUpdateResult { Success = false };
                 }
             }
 
@@ -106,32 +134,30 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
 
                 if (isFlowSynxValid && isFlowSynxCliValid)
                 {
-                    await Task
-                        .Run(() => ExtractFlowSynx(flowSynxDownloadPath, cancellationToken), cancellationToken)
-                        .ContinueWith(t =>
-                        {
-                            if (t.IsCanceled || t.IsFaulted)
-                            {
-                                var exception = t.Exception;
-                                throw new Exception(exception?.Message);
-                            }
-                            ExtractFlowSynxCli(flowSynxCliDownloadPath, cancellationToken);
-                        }, cancellationToken);
+                    return new DownloadUpdateResult
+                    {
+                        Success = true,
+                        FlowSynxDownloadPath = flowSynxDownloadPath,
+                        FlowSynxCliDownloadPath = flowSynxCliDownloadPath
+                    };
                 }
                 else
                 {
                     _outputFormatter.Write("Validating download - Fail!");
                     _outputFormatter.Write("The downloaded data may has been corrupted!");
+                    return new DownloadUpdateResult { Success = false };
                 }
             }
             else
             {
                 _outputFormatter.Write("The current version is up to dated");
+                return new DownloadUpdateResult { Success = false };
             }
         }
         catch (Exception ex)
         {
             _outputFormatter.WriteError(ex.Message);
+            return new DownloadUpdateResult { Success = false };
         }
     }
 
@@ -140,7 +166,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         var expectedHash = await DownloadFlowSynxHashAsset(latestVersion, cancellationToken);
         var downloadHash = ComputeSha256Hash(path);
 
-        if (string.Equals(downloadHash.Trim(), expectedHash.Trim(), StringComparison.CurrentCultureIgnoreCase)) 
+        if (string.Equals(downloadHash.Trim(), expectedHash.Trim(), StringComparison.CurrentCultureIgnoreCase))
             return true;
 
         File.Delete(path);
@@ -151,18 +177,20 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     {
         var extractTarget = Path.Combine(DefaultFlowSynxDirName, "engine", "downloadedFiles");
         var enginePath = Path.Combine(DefaultFlowSynxDirName, "engine");
-        
+
         ExtractFile(sourcePath, extractTarget);
+        File.Delete(sourcePath);
+
         Directory.CreateDirectory(enginePath);
 
         foreach (var newPath in Directory.GetFiles(extractTarget, "*.*", SearchOption.AllDirectories))
         {
             if (cancellationToken.IsCancellationRequested)
                 break;
-            
+
             File.Copy(newPath, newPath.Replace(extractTarget, enginePath), true);
         }
-        
+
         Directory.Delete(extractTarget, true);
         return Task.CompletedTask;
     }
@@ -172,38 +200,35 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         var expectedHash = await DownloadFlowSynxCliHashAsset(latestVersion, cancellationToken);
         var downloadHash = ComputeSha256Hash(path);
 
-        if (string.Equals(downloadHash.Trim(), expectedHash.Trim(), StringComparison.CurrentCultureIgnoreCase)) 
+        if (string.Equals(downloadHash.Trim(), expectedHash.Trim(), StringComparison.CurrentCultureIgnoreCase))
             return true;
 
         File.Delete(path);
         return false;
     }
 
-    private Task ExtractFlowSynxCli(string path, CancellationToken cancellationToken)
+    private Task ExtractFlowSynxCli(string sourcePath, CancellationToken cancellationToken)
     {
         var extractTarget = @"./downloadedFiles";
-        ExtractFile(path, extractTarget);
+        ExtractFile(sourcePath, extractTarget);
+        File.Delete(sourcePath);
 
-        foreach (var newPath in Directory.GetFiles(extractTarget, "*.*", SearchOption.AllDirectories))
+        var synxUpdateExeFile = Path.GetFullPath(LookupBinaryFilePath(extractTarget));
+        var files = Directory
+                                    .GetFiles(extractTarget, "*.*", SearchOption.AllDirectories)
+                                    .Where(name => !string.Equals(Path.GetFullPath(name), synxUpdateExeFile, StringComparison.InvariantCultureIgnoreCase));
+
+        foreach (var newPath in files)
         {
             if (cancellationToken.IsCancellationRequested)
                 break;
 
-            var directoryName = Path.GetDirectoryName(newPath);
-            if (string.IsNullOrEmpty(directoryName))
-                continue;
-
-            if (string.Equals(newPath, LookupBinaryFilePath(directoryName), StringComparison.InvariantCultureIgnoreCase))
-            {
-                SelfUpdate(File.OpenRead(newPath));
-            }
-            else
-            {
-                File.Copy(newPath, newPath.Replace(extractTarget, "."), true);
-            }
+            File.Copy(newPath, newPath.Replace(extractTarget, "."), true);
         }
 
-        Directory.Delete(extractTarget, true);
+        var synxExeFile = Path.GetFullPath(LookupBinaryFilePath(_location.RootLocation));
+        SelfUpdate(synxUpdateExeFile, synxExeFile);
+        
         return Task.CompletedTask;
     }
 
@@ -281,7 +306,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         stream.CopyTo(fileStream);
         fileStream.Dispose();
     }
-    
+
     private async Task<string> GetAssetHashCode(Stream stream, CancellationToken cancellationToken)
     {
         using var sr = new StreamReader(stream);
@@ -307,15 +332,15 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         using SHA256 sha256Hash = SHA256.Create();
         var bytes = sha256Hash.ComputeHash(file);
         file.Close();
-        
+
         var builder = new StringBuilder();
 
         foreach (var t in bytes)
             builder.Append(t.ToString("x2"));
-        
+
         return builder.ToString();
     }
-    
+
     private bool IsUpdateAvailable(string latestVersion, string currentVersion)
     {
         if (string.IsNullOrEmpty(latestVersion)) return false;
@@ -350,7 +375,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             foreach (var process in processes)
                 process.Kill();
 
-            _outputFormatter.Write("The FlowSynx engine was stopped successfully.");
+            _outputFormatter.Write("The FlowSynx system was stopped successfully.");
         }
         catch (Exception ex)
         {
@@ -358,54 +383,85 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         }
     }
 
-    private void SelfUpdate(Stream stream)
+    private void SelfUpdate(string updateFile, string selfFile)
     {
-        var self = new FileInfo(LookupBinaryFilePath(_location.RootLocation)).FullName;
+        var stream = File.OpenRead(updateFile);
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        var selfFileName = Path.GetFileName(selfFile);
+        var directoryName = Path.GetDirectoryName(selfFile);
+        var downloadedFilesPath = Path.GetDirectoryName(updateFile);
+        if (string.IsNullOrEmpty(directoryName))
+            return;
+
+        string selfWithoutExt = Path.Combine(directoryName, Path.GetFileNameWithoutExtension(selfFile));
+        SaveStreamToFile(stream, selfWithoutExt + GetUpdateFilePath());
+
+        string updateExeFile = selfWithoutExt + GetUpdateFilePath();
+        string scriptFile = selfWithoutExt + GetScriptFilePath();
+
+        var updateScript = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? 
+            string.Format(Resources.UpdateScript_Bat, selfFileName, updateExeFile, selfFile, updateExeFile, downloadedFilesPath) : 
+            string.Format(Resources.UpdateScript_Shell, updateExeFile, selfFile, selfFileName, updateExeFile, downloadedFilesPath);
+
+        StreamWriter streamWriter = new StreamWriter(File.Create(scriptFile));
+
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            streamWriter.NewLine = "\n";
+
+        streamWriter.Write(updateScript);
+        streamWriter.Close();
+
+        ProcessStartInfo startInfo = new ProcessStartInfo(scriptFile)
         {
-            SaveStreamToFile(stream, self);
+            CreateNoWindow = true,
+            UseShellExecute = false,
+            WorkingDirectory = directoryName
+        };
 
-            Process.Start(self);
-            Thread.Sleep(500);
-            System.Environment.Exit(0);
-        }
-        else
+        try
         {
-            var selfFileName = Path.GetFileName(self);
-            var directoryName = Path.GetDirectoryName(self);
-            if (string.IsNullOrEmpty(directoryName))
-                return;
-
-            var selfWithoutExt = Path.Combine(directoryName, Path.GetFileNameWithoutExtension(self));
-            SaveStreamToFile(stream, selfWithoutExt + "Update.exe");
-
-            using (var batFile = new StreamWriter(File.Create(selfWithoutExt + "Update.bat")))
-            {
-                batFile.WriteLine("@ECHO OFF");
-                batFile.WriteLine("TIMEOUT /t 1 /nobreak > NUL");
-                batFile.WriteLine("TASKKILL /IM \"{0}\" > NUL", selfFileName);
-                batFile.WriteLine("MOVE \"{0}\" \"{1}\"", selfWithoutExt + "Update.exe", self);
-                batFile.WriteLine("DEL \"%~f0\" & START \"\" /B \"{0}\"", self);
-            }
-
-            ProcessStartInfo startInfo = new ProcessStartInfo(selfWithoutExt + "Update.bat");
-            startInfo.CreateNoWindow = true;
-            startInfo.UseShellExecute = false;
-            startInfo.WorkingDirectory = Path.GetDirectoryName(self);
             Process.Start(startInfo);
-
+            _outputFormatter.Write("The FlowSynx system updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            _outputFormatter.WriteError(ex.Message);
             System.Environment.Exit(0);
         }
     }
-    
+
     private string LookupBinaryFilePath(string path)
     {
-        var binFileName = "Synx";
+        var binFileName = "synx";
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             binFileName += ".exe";
 
         return Path.Combine(path, binFileName);
+    }
+
+    private string GetUpdateFilePath()
+    {
+        var binFileName = "Update";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            binFileName += ".exe";
+
+        return binFileName;
+    }
+
+    private string GetScriptFilePath()
+    {
+        var scriptFileName = "Update.sh";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            scriptFileName = "Update.bat";
+
+        return scriptFileName;
+    }
+
+    private class DownloadUpdateResult
+    {
+        public bool Success { get; init; }
+        public string FlowSynxDownloadPath { get; init; } = string.Empty;
+        public string FlowSynxCliDownloadPath { get; init; } = string.Empty;
     }
 }
 
