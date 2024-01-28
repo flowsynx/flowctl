@@ -51,5 +51,5 @@ public class CliApplicationBuilder : ICliApplicationBuilder
 
     }
 
-    private string FlowSyncLogo() => Resources.logo;
+    private string FlowSyncLogo() => Resources.Logo;
 }
