@@ -10,7 +10,7 @@
 	<RepositoryUrl>https://github.com/FlowSynx/Cli</RepositoryUrl>
 	<Title>FlowSynx CLI</Title>
 	<Company>FlowSynx</Company>
-	<Description>The cli for manage and handle FlowSynx engine</Description>
+	<Description>The cli for manage and handle FlowSynx system</Description>
 	<Authors>FlowSynx</Authors>
 	<PackageProjectUrl>flowsynx.io</PackageProjectUrl>
 	<RepositoryType>git</RepositoryType>
