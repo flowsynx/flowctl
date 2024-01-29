@@ -142,4 +142,4 @@ else {
 }
 
 Write-Output "`r`nFlowSynx CLI is installed successfully."
-Write-Output "To get started with FlowSynx, please visit http://flowsynx.io/docs/getting-started/ ."
+Write-Output "To get started with FlowSynx, please visit http://flowsynx.io/docs/category/getting-started ."

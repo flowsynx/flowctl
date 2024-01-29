@@ -69,7 +69,7 @@ runAsRoot() {
     fi
 
     $CMD || {
-        echo "Please visit http://flowsynx.io/docs/getting-started/install-flowsynx-cli/ for instructions on how to install without sudo."
+        echo "Please visit http://flowsynx.io/docs/getting-started/install-flowsynx-cli for instructions on how to install without sudo."
         exit 1
     }
 }
@@ -197,7 +197,7 @@ cleanup() {
 }
 
 installCompleted() {
-    echo -e "\nTo get started with FlowSynx, please visit http://flowsynx.io/docs/getting-started/"
+    echo -e "\nTo get started with FlowSynx, please visit http://flowsynx.io/docs/category/getting-started"
 }
 
 # -----------------------------------------------------------------------------
