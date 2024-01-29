@@ -1,9 +1,8 @@
 ﻿using System.CommandLine;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using EnsureThat;
+using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Cli.Services;
 using FlowSynx.Logging;
 using Spectre.Console;
 
@@ -13,19 +12,18 @@ internal class RunCommand : BaseCommand<RunCommandOptions, RunCommandOptionsHand
 {
     public RunCommand() : base("run", "Run and execute the FlowSynx system on the current user profile")
     {
-        var configFileOption = new Option<string>(new[] { "--config-file" }, description: "FlowSynx configuration file");
+        var configFileOption = new Option<string>("--config-file", description: "FlowSynx configuration file");
 
-        var enableHealthCheckOption = new Option<bool>(new[] { "--enable-health-check" }, getDefaultValue: () => true,
+        var enableHealthCheckOption = new Option<bool>("--enable-health-check", getDefaultValue: () => true,
             description: "Enable health checks for the FlowSynx");
 
-        var enableLogOption = new Option<bool>(new[] { "--enable-log" }, getDefaultValue: () => true,
+        var enableLogOption = new Option<bool>("--enable-log", getDefaultValue: () => true,
             description: "Enable logging to records the details of events during FlowSynx running");
 
-        var logLevelOption = new Option<LoggingLevel>(new[] { "--log-level" }, getDefaultValue: () => LoggingLevel.Info,
+        var logLevelOption = new Option<LoggingLevel>("--log-level", getDefaultValue: () => LoggingLevel.Info,
             description: "The log verbosity to controls the amount of detail emitted for each event that is logged");
 
-        var logFileOption = new Option<string?>(new[] { "--log-file" },
-            description: "Log file path to store system logs information");
+        var logFileOption = new Option<string?>("--log-file", description: "Log file path to store system logs information");
 
         AddOption(configFileOption);
         AddOption(enableHealthCheckOption);
@@ -47,29 +45,23 @@ internal class RunCommandOptions : ICommandOptions
 internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
-    private readonly ILocation _location;
 
-    public RunCommandOptionsHandler(IOutputFormatter outputFormatter, ILocation location)
+    public RunCommandOptionsHandler(IOutputFormatter outputFormatter)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(location, nameof(location));
         _outputFormatter = outputFormatter;
-        _location = location;
     }
-
-    private string UserProfilePath => System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
-    private string DefaultFlowSynxDirName => Path.Combine(UserProfilePath, ".flowsynx");
 
     public async Task<int> HandleAsync(RunCommandOptions options, CancellationToken cancellationToken)
     {
-        await Execute(options, cancellationToken);
+        await Execute(options);
         return 0;
     }
 
-    private Task Execute(RunCommandOptions options, CancellationToken cancellationToken)
+    private Task Execute(RunCommandOptions options)
     {
-        var flowSynxPath = Path.Combine(UserProfilePath, DefaultFlowSynxDirName, "engine");
-        var flowSynxBinaryFile = LookupBinaryFilePath(flowSynxPath);
+        var flowSynxPath = Path.Combine(PathHelper.UserProfilePath, PathHelper.DefaultFlowSynxDirectoryName, "engine");
+        var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
         if (!Path.Exists(flowSynxBinaryFile))
         {
             _outputFormatter.WriteError(Resources.FlowSynxEngineIsNotInstalled);
@@ -122,14 +114,5 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
     private void ErrorDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
     {
         if (outLine.Data != null) _outputFormatter.WriteError(outLine.Data);
-    }
-
-    private string LookupBinaryFilePath(string path)
-    {
-        var binFileName = "FlowSynx";
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            binFileName += ".exe";
-
-        return Path.Combine(path, binFileName);
     }
 }

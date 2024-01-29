@@ -11,19 +11,19 @@ internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsH
 {
     public SizeCommand() : base("size", "List of entities regarding specific path")
     {
-        var pathOption = new Option<string>(new[] { "--path" }, "The path to get about") { IsRequired = true };
-        var kindOption = new Option<string?>(new[] { "--kind" }, getDefaultValue: () => ItemKind.FileAndDirectory.ToString(), "Should apply format for byte size. Valid values are File, Directory, and FileAndDirectory.");
-        var includeOption = new Option<string?>(new[] { "--include" }, "Include entities matching pattern");
-        var excludeOption = new Option<string?>(new[] { "--exclude" }, "Exclude entities matching pattern");
-        var minAgeOption = new Option<string?>(new[] { "--min-age" }, "Filter entities older than this in s or suffix ms|s|m|h|d|w|M|y [default: off]");
-        var maxAgeOption = new Option<string?>(new[] { "--max-age" }, "Filter entities younger than this in s or suffix ms|s|m|h|d|w|M|y [default: off]");
-        var minSizeOption = new Option<string?>(new[] { "--min-size" }, "Filter entities bigger than this in KiB or suffix B|K|M|G|T|P [default: off]");
-        var maxSizeOption = new Option<string?>(new[] { "--max-size" }, "Filter entities smaller than this in KiB or suffix B|K|M|G|T|P [default: off]");
-        var fullOption = new Option<bool?>(new[] { "--full" }, getDefaultValue: () => false, "Full numbers instead of human-readable");
-        var caseSensitiveOption = new Option<bool?>(new[] { "--case-sensitive" }, getDefaultValue: () => false, "Ignore or apply case sensitive in filters");
-        var recurseOption = new Option<bool?>(new[] { "--recurse" }, getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
-        var maxResultsOption = new Option<int?>(new[] { "--max-results" }, "The maximum number of results to return [default: off]");
-        var outputOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var pathOption = new Option<string>("--path", "The path to get about") { IsRequired = true };
+        var kindOption = new Option<string?>("--kind", getDefaultValue: () => nameof(ItemKind.FileAndDirectory), "Should apply format for byte size. Valid values are File, Directory, and FileAndDirectory.");
+        var includeOption = new Option<string?>("--include", "Include entities matching pattern");
+        var excludeOption = new Option<string?>("--exclude", "Exclude entities matching pattern");
+        var minAgeOption = new Option<string?>("--min-age", "Filter entities older than this in s or suffix ms|s|m|h|d|w|M|y [default: off]");
+        var maxAgeOption = new Option<string?>("--max-age", "Filter entities younger than this in s or suffix ms|s|m|h|d|w|M|y [default: off]");
+        var minSizeOption = new Option<string?>("--min-size", "Filter entities bigger than this in KiB or suffix B|K|M|G|T|P [default: off]");
+        var maxSizeOption = new Option<string?>("--max-size", "Filter entities smaller than this in KiB or suffix B|K|M|G|T|P [default: off]");
+        var fullOption = new Option<bool?>("--full", getDefaultValue: () => false, "Full numbers instead of human-readable");
+        var caseSensitiveOption = new Option<bool?>("--case-sensitive", getDefaultValue: () => false, "Ignore or apply case sensitive in filters");
+        var recurseOption = new Option<bool?>("--recurse", getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
+        var maxResultsOption = new Option<int?>("--max-results", "The maximum number of results to return [default: off]");
+        var outputOption = new Option<Output>("--output", getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(pathOption);
         AddOption(kindOption);
@@ -44,7 +44,7 @@ internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsH
 internal class SizeCommandOptions : ICommandOptions
 {
     public string Path { get; set; } = string.Empty;
-    public string? Kind { get; set; } = ItemKind.FileAndDirectory.ToString();
+    public string? Kind { get; set; } = nameof(ItemKind.FileAndDirectory);
     public string? Include { get; set; } = string.Empty;
     public string? Exclude { get; set; } = string.Empty;
     public string? MinAge { get; set; } = string.Empty;
@@ -108,8 +108,10 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
 
             var result = await _httpRequestService.PostRequestAsync<SizeRequest, Result<SizeResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
+            if (result is {Succeeded: false})
+            {
                 _outputFormatter.WriteError(result.Messages);
+            }
             else
             {
                 if (result?.Data is not null)
@@ -128,7 +130,7 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
 public class SizeRequest
 {
     public required string Path { get; set; }
-    public string? Kind { get; set; } = ItemKind.FileAndDirectory.ToString();
+    public string? Kind { get; set; } = nameof(ItemKind.FileAndDirectory);
     public string? Include { get; set; }
     public string? Exclude { get; set; }
     public string? MinAge { get; set; }

@@ -1,43 +1,33 @@
 ﻿using System.Diagnostics;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Cli.Services;
 
 namespace FlowSynx.Cli.Commands.Stop;
 
 internal class StopCommand : BaseCommand<StopCommandOptions, StopCommandOptionsHandler>
 {
-    public StopCommand() : base("stop", "Stop the FlowSynx system which running on the current user profile")
-    {
-
-    }
+    public StopCommand() : base("stop", "Stop the FlowSynx system which running on the current user profile") {}
 }
 
-internal class StopCommandOptions : ICommandOptions
-{
-
-}
+internal class StopCommandOptions : ICommandOptions {}
 
 internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
-    private readonly ILocation _location;
 
-    public StopCommandOptionsHandler(IOutputFormatter outputFormatter, ILocation location)
+    public StopCommandOptionsHandler(IOutputFormatter outputFormatter)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(location, nameof(location));
         _outputFormatter = outputFormatter;
-        _location = location;
     }
 
     public async Task<int> HandleAsync(StopCommandOptions options, CancellationToken cancellationToken)
     {
-        await Execute(options, cancellationToken);
+        await Execute();
         return 0;
     }
 
-    private Task Execute(StopCommandOptions options, CancellationToken cancellationToken)
+    private Task Execute()
     {
         TerminateProcess("FlowSynx", ".");
         return Task.CompletedTask;

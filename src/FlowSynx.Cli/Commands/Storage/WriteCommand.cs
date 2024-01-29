@@ -12,9 +12,9 @@ internal class WriteCommand : BaseCommand<WriteCommandOptions, WriteCommandOptio
 {
     public WriteCommand() : base("write", "List of entities regarding specific path")
     {
-        var pathOption = new Option<string>(new[] { "--path" }, "The path to get about") { IsRequired = true };
-        var dataOption = new Option<string?>(new[] { "--data" }, "The path to get about");
-        var fileToUploadOption = new Option<string?>(new[] { "--file-to-upload" }, "The path to get about");
+        var pathOption = new Option<string>("--path", "The path to get about") { IsRequired = true };
+        var dataOption = new Option<string?>("--data", "The path to get about");
+        var fileToUploadOption = new Option<string?>("--file-to-upload", "The path to get about");
 
         AddOption(pathOption);
         AddOption(dataOption);
@@ -72,13 +72,15 @@ internal class WriteCommandOptionsHandler : ICommandOptionsHandler<WriteCommandO
             }
 
             if (options.Data is null)
-                throw new Exception($"The content is empty. Please provide a Base64String data.");
+                throw new Exception("The content is empty. Please provide a Base64String data.");
 
             var request = new WriteRequest { Path = options.Path, Data = options.Data };
             var result = await _httpRequestService.PostRequestAsync<WriteRequest, Result<WriteResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
+            if (result is {Succeeded: false})
+            {
                 _outputFormatter.WriteError(result.Messages);
+            }
             else
             {
                 if (result?.Data is not null)
@@ -92,13 +94,6 @@ internal class WriteCommandOptionsHandler : ICommandOptionsHandler<WriteCommandO
             _outputFormatter.WriteError(ex.Message);
         }
     }
-
-    internal async Task WriteStream(string path, Stream stream, CancellationToken cancellationToken)
-    {
-        var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write);
-        await stream.CopyToAsync(fileStream, cancellationToken);
-        await fileStream.DisposeAsync();
-    }
 }
 
 public class WriteRequest
@@ -107,7 +102,4 @@ public class WriteRequest
     public string Data { get; set; } = string.Empty;
 }
 
-public class WriteResponse
-{
-
-}
+public class WriteResponse {}

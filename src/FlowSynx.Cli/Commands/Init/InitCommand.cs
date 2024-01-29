@@ -1,76 +1,60 @@
-﻿using System.Net;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using EnsureThat;
+﻿using EnsureThat;
+using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Cli.Services;
 using FlowSynx.Environment;
 using FlowSynx.IO.Compression;
-using FlowSynx.IO.Serialization;
 
 namespace FlowSynx.Cli.Commands.Init;
 
 internal class InitCommand : BaseCommand<InitCommandOptions, InitCommandOptionsHandler>
 {
-    public InitCommand() : base("init", "Install and iInitialize FlowSynx system on the current user profile")
-    {
-    }
+    public InitCommand() : base("init", "Install and iInitialize FlowSynx system on the current user profile") {}
 }
 
-internal class InitCommandOptions : ICommandOptions
-{
-
-}
+internal class InitCommandOptions : ICommandOptions {}
 
 internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
     private readonly IVersion _version;
-    private readonly ILocation _location;
     private readonly IOperatingSystemInfo _operatingSystemInfo;
     private readonly IZipFile _zipFile;
     private readonly IGZipFile _gZipFile;
-    private readonly IDeserializer _deserializer;
 
     public InitCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IVersion version, ILocation location, IOperatingSystemInfo operatingSystemInfo,
-        IZipFile zipFile, IGZipFile gZipFile, IDeserializer deserializer)
+        IVersion version, IOperatingSystemInfo operatingSystemInfo,
+        IZipFile zipFile, IGZipFile gZipFile)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(version, nameof(version));
-        EnsureArg.IsNotNull(location, nameof(location));
         EnsureArg.IsNotNull(operatingSystemInfo, nameof(operatingSystemInfo));
         EnsureArg.IsNotNull(zipFile, nameof(zipFile));
         EnsureArg.IsNotNull(gZipFile, nameof(gZipFile));
-        EnsureArg.IsNotNull(deserializer, nameof(deserializer));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _version = version;
-        _location = location;
         _operatingSystemInfo = operatingSystemInfo;
         _zipFile = zipFile;
         _gZipFile = gZipFile;
-        _deserializer = deserializer;
     }
 
     public async Task<int> HandleAsync(InitCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(cancellationToken));
         return 0;
     }
 
-    private async Task Execute(InitCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(CancellationToken cancellationToken)
     {
         try
         {
             _outputFormatter.Write("Beginning Initialize...");
 
-            var flowSynxPath = Path.Combine(UserProfilePath, DefaultFlowSynxDirName, "engine");
-            var look = LookupBinaryFilePath(flowSynxPath);
+            var flowSynxPath = Path.Combine(PathHelper.UserProfilePath, PathHelper.DefaultFlowSynxDirectoryName, "engine");
+            var look = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
             if (File.Exists(look))
             {
                 _outputFormatter.Write("The FlowSynx engine is already Initialized.");
@@ -79,7 +63,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             }
             Directory.CreateDirectory(flowSynxPath);
             await Init(cancellationToken);
-            _outputFormatter.Write(@"FlowSynx engine is downloaded and installed successfully.");
+            _outputFormatter.Write("FlowSynx engine is downloaded and installed successfully.");
         }
         catch (Exception e)
         {
@@ -107,7 +91,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     private async Task<bool> ValidateFlowSynxDownloadedAsset(string path, string latestVersion, CancellationToken cancellationToken)
     {
         var expectedHash = await DownloadFlowSynxHashAsset(latestVersion, cancellationToken);
-        var downloadHash = ComputeSha256Hash(path);
+        var downloadHash = HashHelper.ComputeSha256Hash(path);
 
         if (string.Equals(downloadHash.Trim(), expectedHash.Trim(), StringComparison.CurrentCultureIgnoreCase))
             return true;
@@ -118,8 +102,8 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
 
     private Task ExtractFlowSynx(string sourcePath, CancellationToken cancellationToken)
     {
-        var extractTarget = Path.Combine(DefaultFlowSynxDirName, "engine", "downloadedFiles");
-        var enginePath = Path.Combine(DefaultFlowSynxDirName, "engine");
+        var extractTarget = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine", "downloadedFiles");
+        var enginePath = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine");
 
         ExtractFile(sourcePath, extractTarget);
         Directory.CreateDirectory(enginePath);
@@ -136,95 +120,26 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         return Task.CompletedTask;
     }
 
-    private async Task<string> GetLatestVersion(string repositoryName)
-    {
-        var httpClient = new HttpClient();
-        var uri = $"https://api.github.com/repos/{FlowSynxGitHubOrganization}/{repositoryName}/tags";
-        httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-        httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
-
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri(uri)
-        };
-
-        var response = await httpClient.SendAsync(request);
-        response.EnsureSuccessStatusCode();
-
-        var responseBody = await response.Content.ReadAsStringAsync();
-        var tags = _deserializer.Deserialize<List<GitHubTag>>(responseBody);
-        return tags.Count <= 0 ? string.Empty : tags.First().Name;
-    }
-
     private async Task<string> DownloadFlowSynxAsset(string version, string destinationPath, CancellationToken cancellationToken)
     {
-        var uri = $"https://github.com/{FlowSynxGitHubOrganization}/{FlowSynxGitHubRepository}/releases/download/{version}/{FlowSynxArchiveFileName}";
-        var stream = await DownloadFile(uri, cancellationToken);
+        var uri = $"https://github.com/{GitHubHelper.Organization}/{GitHubHelper.FlowSynxRepository}/releases/download/v{version}/{FlowSynxArchiveFileName}";
+        var stream = await NetHelper.DownloadFile(uri, cancellationToken);
         var path = Path.Combine(destinationPath, FlowSynxArchiveFileName);
-        SaveStreamToFile(stream, path);
+        StreamHelper.SaveStreamToFile(stream, path);
         return path;
     }
 
     private async Task<string> DownloadFlowSynxHashAsset(string version, CancellationToken cancellationToken)
     {
-        var uri = $"https://github.com/{FlowSynxGitHubOrganization}/{FlowSynxGitHubRepository}/releases/download/{version}/{FlowSynxArchiveHashFileName}";
-        var stream = await DownloadFile(uri, cancellationToken);
-        return await GetAssetHashCode(stream, cancellationToken);
-    }
-
-    private async Task<Stream> DownloadFile(string uri, CancellationToken cancellationToken)
-    {
-        var client = new HttpClient();
-        var message = new HttpRequestMessage(HttpMethod.Get, new Uri(uri));
-        var response = await client.SendAsync(message, cancellationToken);
-
-        if (response.StatusCode == HttpStatusCode.NotFound)
-            throw new Exception($"Version not found from url: {uri}");
-
-        if (response.StatusCode != HttpStatusCode.OK)
-            throw new Exception($"Download failed with {response.StatusCode.ToString()}");
-
-        return await response.Content.ReadAsStreamAsync(cancellationToken);
-    }
-
-    private void SaveStreamToFile(Stream stream, string path)
-    {
-        var fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
-        stream.CopyTo(fileStream);
-        fileStream.Dispose();
-    }
-
-    private async Task<string> GetAssetHashCode(Stream stream, CancellationToken cancellationToken)
-    {
-        using var sr = new StreamReader(stream);
-        var content = await sr.ReadToEndAsync(cancellationToken);
-        return content.Split('*')[0].Trim();
+        var uri = $"https://github.com/{GitHubHelper.Organization}/{GitHubHelper.FlowSynxRepository}/releases/download/v{version}/{FlowSynxArchiveHashFileName}";
+        var stream = await NetHelper.DownloadFile(uri, cancellationToken);
+        return await HashHelper.GetAssetHashCode(stream, cancellationToken);
     }
 
     private string FlowSynxArchiveFileName => $"flowSynx-{ArchiveName.ToLower()}";
     private string FlowSynxArchiveHashFileName => $"flowSynx-{ArchiveName.ToLower()}.sha256";
     private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
     private string Extension => string.Equals(_operatingSystemInfo.Type, "windows", StringComparison.OrdinalIgnoreCase) ? "zip" : "tar.gz";
-    private string FlowSynxGitHubOrganization => "FlowSynx";
-    private string FlowSynxGitHubRepository => "FlowSynx";
-    private string UserProfilePath => System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
-    private string DefaultFlowSynxDirName => Path.Combine(UserProfilePath, ".flowsynx");
-
-    private string ComputeSha256Hash(string filePath)
-    {
-        var file = new FileStream(filePath, FileMode.Open);
-        using SHA256 sha256Hash = SHA256.Create();
-        var bytes = sha256Hash.ComputeHash(file);
-        file.Close();
-
-        var builder = new StringBuilder();
-
-        foreach (var t in bytes)
-            builder.Append(t.ToString("x2"));
-
-        return builder.ToString();
-    }
 
     private void ExtractFile(string sourcePath, string destinationPath)
     {
@@ -233,18 +148,4 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         else
             _zipFile.Decompression(sourcePath, destinationPath, true);
     }
-
-    private string LookupBinaryFilePath(string path)
-    {
-        var binFileName = "FlowSynx";
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            binFileName += ".exe";
-
-        return Path.Combine(path, binFileName);
-    }
-}
-
-internal class GitHubTag
-{
-    public required string Name { get; set; }
 }

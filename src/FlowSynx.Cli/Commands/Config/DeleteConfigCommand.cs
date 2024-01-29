@@ -11,7 +11,7 @@ internal class DeleteConfigCommand : BaseCommand<DeleteConfigCommandOptions, Del
 {
     public DeleteConfigCommand() : base("delete", "Delete configuration section")
     {
-        var nameOption = new Option<string>(new[] { "--name" }, "The configuration section name") { IsRequired = true };
+        var nameOption = new Option<string>("--name", "The configuration section name") { IsRequired = true };
 
         AddOption(nameOption);
     }
@@ -74,7 +74,4 @@ public class DeleteConfigRequest
     public required string Name { get; set; }
 }
 
-public class DeleteConfigResponse
-{
-
-}
+public class DeleteConfigResponse {}

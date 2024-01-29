@@ -11,7 +11,7 @@ internal class DeleteFileCommand : BaseCommand<DeleteFileCommandOptions, DeleteF
 {
     public DeleteFileCommand() : base("deletefile", "List of entities regarding specific path")
     {
-        var pathOption = new Option<string>(new[] { "--path" }, "The path to get about") { IsRequired = true };
+        var pathOption = new Option<string>("--path", "The path to get about") { IsRequired = true };
 
         AddOption(pathOption);
     }
@@ -57,8 +57,10 @@ internal class DeleteFileCommandOptionsHandler : ICommandOptionsHandler<DeleteFi
             var request = new DeleteFileRequest { Path = options.Path };
             var result = await _httpRequestService.DeleteRequestAsync<DeleteFileRequest, Result<DeleteFileResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
+            if (result is {Succeeded: false})
+            {
                 _outputFormatter.WriteError(result.Messages);
+            }
             else
             {
                 if (result?.Data is not null)
@@ -79,7 +81,4 @@ public class DeleteFileRequest
     public required string Path { get; set; }
 }
 
-public class DeleteFileResponse
-{
-
-}
+public class DeleteFileResponse {}

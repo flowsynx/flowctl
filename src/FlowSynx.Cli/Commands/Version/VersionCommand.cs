@@ -11,8 +11,8 @@ internal class VersionCommand : BaseCommand<VersionCommandOptions, VersionComman
 {
     public VersionCommand() : base("version", "Display the FlowSynx system and Cli version")
     {
-        var typeOption = new Option<bool>(new[] { "--full" }, getDefaultValue: () => false, "Display full details about the running FlowSynx system");
-        var outputOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var typeOption = new Option<bool>("--full", getDefaultValue: () => false, "Display full details about the running FlowSynx system");
+        var outputOption = new Option<Output>("--output", getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(typeOption);
         AddOption(outputOption);
@@ -72,8 +72,10 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
             const string relativeUrl = "version";
             var result = await _httpRequestService.GetRequestAsync<Result<VersionResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
-            if (result is { Succeeded: false })
+            if (result is {Succeeded: false})
+            {
                 _outputFormatter.WriteError(result.Messages);
+            }
             else
             {
                 if (result?.Data != null)

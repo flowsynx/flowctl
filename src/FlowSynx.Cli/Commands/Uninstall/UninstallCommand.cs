@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using EnsureThat;
+using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Formatter;
 using FlowSynx.Cli.Services;
 
@@ -11,7 +12,7 @@ internal class UninstallCommand : BaseCommand<UninstallCommandOptions, Uninstall
 {
     public UninstallCommand() : base("uninstall", "Uninstalling FlowSynx system and Cli from the current user profile and machine")
     {
-        var forceOption = new Option<bool>(new[] { "--force" }, getDefaultValue :() => false, description: "Force terminate FlowSynx system if it is running");
+        var forceOption = new Option<bool>("--force", getDefaultValue :() => false, description: "Force terminate FlowSynx system if it is running");
 
         AddOption(forceOption);
     }
@@ -39,16 +40,13 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
         _location = location;
     }
 
-    private string UserProfilePath => System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
-    private string DefaultFlowSynxDirName => Path.Combine(UserProfilePath, ".flowsynx");
-
     public async Task<int> HandleAsync(UninstallCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(() => Execute(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(() => Execute(options));
         return 0;
     }
 
-    private Task Execute(UninstallCommandOptions options, CancellationToken cancellationToken)
+    private Task Execute(UninstallCommandOptions options)
     {
         try
         {
@@ -56,18 +54,21 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
 
             if (options.Force)
             {
-                TerminateProcess("FlowSynx", ".");
+                ProcessHelper.TerminateProcess("FlowSynx", ".");
+                _outputFormatter.Write("The FlowSynx system was stopped successfully.");
             }
             else
             {
-                if (IsProcessRunning("FlowSynx", "."))
+                if (ProcessHelper.IsProcessRunning("FlowSynx", "."))
                 {
                     _outputFormatter.Write("The FlowSynx engine is running. Please stop it by run the command: 'Synx stop', and try uninstall again.");
                     return Task.CompletedTask;
                 }
             }
 
-            FlowSynxDestruction();
+            if (Directory.Exists(PathHelper.DefaultFlowSynxDirectoryName))
+                Directory.Delete(PathHelper.DefaultFlowSynxDirectoryName, true);
+
             SelfDestruction();
             _outputFormatter.Write("Uninstalling is done!");
         }
@@ -78,58 +79,27 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
         return Task.CompletedTask;
     }
 
-    private bool IsProcessRunning(string processName, string machineAddress)
-    {
-        var processes = Process.GetProcessesByName(processName, machineAddress);
-        return processes.Length != 0;
-    }
-
-    private void TerminateProcess(string processName, string machineAddress)
-    {
-        var processes = Process.GetProcessesByName(processName, machineAddress);
-
-        if (processes.Length == 0) return;
-
-        try
-        {
-            foreach (var process in processes)
-                process.Kill();
-
-            _outputFormatter.Write("The FlowSynx system was stopped successfully.");
-        }
-        catch (Exception ex)
-        {
-            _outputFormatter.WriteError(ex.Message);
-        }
-    }
-
-    private void FlowSynxDestruction()
-    {
-        if (Directory.Exists(DefaultFlowSynxDirName))
-            Directory.Delete(DefaultFlowSynxDirName, true);
-    }
-
     private void SelfDestruction()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            string scriptFile = "delete.bat";
+            const string scriptFile = "delete.bat";
             var strPath = Path.Combine(Directory.GetCurrentDirectory(), scriptFile);
-            var strExe = new FileInfo(LookupBinaryFilePath(_location.RootLocation)).Name;
+            var strExe = new FileInfo(PathHelper.LookupSynxBinaryFilePath(_location.RootLocation)).Name;
             var directoryName = Path.GetDirectoryName(strPath);
 
             var deleteScript = string.Format(Resources.DeleteScript_Bat, strExe, scriptFile);
-            StreamWriter streamWriter = new StreamWriter(strPath);
+            StreamWriter streamWriter = new(strPath);
             streamWriter.Write(deleteScript);
             streamWriter.Close();
 
-            ProcessStartInfo startInfo = new ProcessStartInfo(scriptFile)
+            ProcessStartInfo startInfo = new(scriptFile)
             {
                 CreateNoWindow = true,
                 UseShellExecute = false,
                 WorkingDirectory = directoryName
             };
-            
+
             try
             {
                 Process.Start(startInfo);
@@ -142,17 +112,8 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
         }
         else
         {
-            var strExe = new FileInfo(LookupBinaryFilePath(_location.RootLocation)).FullName;
+            var strExe = new FileInfo(PathHelper.LookupSynxBinaryFilePath(_location.RootLocation)).FullName;
             File.Delete(strExe);
         }
-    }
-    
-    private string LookupBinaryFilePath(string path)
-    {
-        var binFileName = "synx";
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            binFileName += ".exe";
-
-        return Path.Combine(path, binFileName);
     }
 }

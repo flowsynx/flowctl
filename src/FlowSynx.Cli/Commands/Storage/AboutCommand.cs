@@ -11,9 +11,9 @@ internal class AboutCommand : BaseCommand<AboutCommandOptions, AboutCommandOptio
 {
     public AboutCommand() : base("about", "About storage")
     {
-        var pathOption = new Option<string?>(new[] { "--path" }, "The path to get about");
-        var fullOption = new Option<bool?>(new[] { "--full" }, getDefaultValue: () => false, "Full numbers instead of human-readable");
-        var outputFormatOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var pathOption = new Option<string?>("--path", "The path to get about");
+        var fullOption = new Option<bool?>("--full", getDefaultValue: () => false, "Full numbers instead of human-readable");
+        var outputFormatOption = new Option<Output>("--output", getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(pathOption);
         AddOption(fullOption);
@@ -62,14 +62,16 @@ internal class AboutCommandOptionsHandler : ICommandOptionsHandler<AboutCommandO
             const string relativeUrl = "storage/about";
             var request = new AboutRequest()
             {
-                Path = options.Path, 
+                Path = options.Path,
                 Full = options.Full
             };
 
             var result = await _httpRequestService.PostRequestAsync<AboutRequest, Result<AboutResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
+            if (result is {Succeeded: false})
+            {
                 _outputFormatter.WriteError(result.Messages);
+            }
             else
             {
                 if (result?.Data is not null)

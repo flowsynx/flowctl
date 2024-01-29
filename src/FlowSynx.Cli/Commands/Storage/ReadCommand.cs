@@ -3,6 +3,7 @@ using FlowSynx.Environment;
 using FlowSynx.Net;
 using EnsureThat;
 using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Common;
 
 namespace FlowSynx.Cli.Commands.Storage;
 
@@ -10,9 +11,9 @@ internal class ReadCommand : BaseCommand<ReadCommandOptions, ReadCommandOptionsH
 {
     public ReadCommand() : base("read", "List of entities regarding specific path")
     {
-        var pathOption = new Option<string>(new[] { "--path" }, "The path to get about") { IsRequired = true };
-        var savePathOption = new Option<string>(new[] { "--save-to" }, "The path to get about") { IsRequired = true };
-        var overWriteOption = new Option<bool?>(new[] { "--overwrite" }, getDefaultValue: () => false, "The path to get about");
+        var pathOption = new Option<string>("--path", "The path to get about") { IsRequired = true };
+        var savePathOption = new Option<string>("--save-to", "The path to get about") { IsRequired = true };
+        var overWriteOption = new Option<bool?>("--overwrite", getDefaultValue: () => false, "The path to get about");
 
         AddOption(pathOption);
         AddOption(savePathOption);
@@ -65,13 +66,13 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
             var filePath = options.SaveTo;
             if (Directory.Exists(filePath))
             {
-                var fileName = $"{Guid.NewGuid().ToString()}{Path.GetExtension(options.Path)}";
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(options.Path)}";
                 filePath = Path.Combine(options.SaveTo, fileName);
             }
 
             if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
-                await WriteStream(filePath, result, cancellationToken);
+                await StreamHelper.WriteStream(filePath, result, cancellationToken);
             }
             else
             {
@@ -83,14 +84,6 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
             _outputFormatter.WriteError(ex.Message);
         }
     }
-
-    internal async Task WriteStream(string path, Stream stream, CancellationToken cancellationToken)
-    {
-        var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write);
-        await stream.CopyToAsync(fileStream, cancellationToken);
-        await fileStream.DisposeAsync();
-    }
-
 }
 
 public class ReadRequest

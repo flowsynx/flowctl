@@ -11,7 +11,7 @@ internal class MakeDirectoryCommand : BaseCommand<MakeDirectoryCommandOptions, M
 {
     public MakeDirectoryCommand() : base("mkdir", "List of entities regarding specific path")
     {
-        var pathOption = new Option<string>(new[] { "--path" }, "The path to get about") { IsRequired = true };
+        var pathOption = new Option<string>("--path", "The path to get about") { IsRequired = true };
 
         AddOption(pathOption);
     }
@@ -57,8 +57,10 @@ internal class MakeDirectoryCommandOptionsHandler : ICommandOptionsHandler<MakeD
             var request = new MakeDirectoryRequest { Path = options.Path };
             var result = await _httpRequestService.PostRequestAsync<MakeDirectoryRequest, Result<MakeDirectoryResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
+            if (result is {Succeeded: false})
+            {
                 _outputFormatter.WriteError(result.Messages);
+            }
             else
             {
                 if (result?.Data is not null)
@@ -79,7 +81,4 @@ public class MakeDirectoryRequest
     public required string Path { get; set; }
 }
 
-public class MakeDirectoryResponse
-{
-
-}
+public class MakeDirectoryResponse {}

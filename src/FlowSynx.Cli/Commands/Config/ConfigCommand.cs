@@ -11,8 +11,8 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
 {
     public ConfigCommand() : base("config", "Manage configurations related to FlowSynx System")
     {
-        var typeOption = new Option<string>(new[] { "--type" }, "The path to get about");
-        var outputOption = new Option<Output>(new[] { "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var typeOption = new Option<string>("--type", "The path to get about");
+        var outputOption = new Option<Output>("--output", getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(typeOption);
         AddOption(outputOption);

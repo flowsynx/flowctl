@@ -11,7 +11,7 @@ internal class PurgeDirectoryCommand : BaseCommand<PurgeDirectoryCommandOptions,
 {
     public PurgeDirectoryCommand() : base("purge", "List of entities regarding specific path")
     {
-        var pathOption = new Option<string>(new[] { "--path" }, "The path to get about") { IsRequired = true };
+        var pathOption = new Option<string>("--path", "The path to get about") { IsRequired = true };
 
         AddOption(pathOption);
     }
@@ -57,8 +57,10 @@ internal class PurgeDirectoryCommandOptionsHandler : ICommandOptionsHandler<Purg
             var request = new PurgeDirectoryRequest { Path = options.Path };
             var result = await _httpRequestService.DeleteRequestAsync<PurgeDirectoryRequest, Result<PurgeDirectoryResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
+            if (result is {Succeeded: false})
+            {
                 _outputFormatter.WriteError(result.Messages);
+            }
             else
             {
                 if (result?.Data is not null)
@@ -79,7 +81,4 @@ public class PurgeDirectoryRequest
     public required string Path { get; set; }
 }
 
-public class PurgeDirectoryResponse
-{
-
-}
+public class PurgeDirectoryResponse {}
