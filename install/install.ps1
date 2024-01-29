@@ -1,19 +1,17 @@
 param (
     [string]$Version,
-    [string]$FlowSynxRoot = "$Env:SystemDrive\flowsynx",
-    [string]$FlowSynxReleaseJsonUrl = "",
-    [scriptblock]$CustomAssetFactory = $null
+    [string]$FlowSynxRootPath = "$Env:SystemDrive\flowsynx"
 )
 
 Write-Output ""
 $ErrorActionPreference = 'stop'
 
 #Escape space of FlowSynxRoot path
-$FlowSynxRoot = $FlowSynxRoot -replace ' ', '` '
+$FlowSynxRootPath = $FlowSynxRootPath -replace ' ', '` '
 
 # Constants
 $FlowSynxCliFileName = "synx.exe"
-$FlowSynxCliFilePath = "${FlowSynxRoot}\${FlowSynxCliFileName}"
+$FlowSynxCliFilePath = "${FlowSynxRootPath}\${FlowSynxCliFileName}"
 
 # GitHub Org and repo hosting FlowSynx CLI
 $GitHubOrg = "FlowSynx"
@@ -49,18 +47,15 @@ else {
 }
 
 # Create FlowSynx Directory
-Write-Output "Creating $FlowSynxRoot directory"
-New-Item -ErrorAction Ignore -Path $FlowSynxRoot -ItemType "directory"
-if (!(Test-Path $FlowSynxRoot -PathType Container)) {
+Write-Output "Creating $FlowSynxRootPath directory"
+New-Item -ErrorAction Ignore -Path $FlowSynxRootPath -ItemType "directory"
+if (!(Test-Path $FlowSynxRootPath -PathType Container)) {
     Write-Warning "Please visit http://flowsynx.io/docs/getting-started/install-flowsynx-cli/ for instructions on how to install without admin rights."
-    throw "Cannot create $FlowSynxRoot"
+    throw "Cannot create $FlowSynxRootPath"
 }
 
 # Get the list of release from GitHub
-$releaseJsonUrl = $FlowSynxReleaseJsonUrl
-if (!$releaseJsonUrl) {
-    $releaseJsonUrl = "https://api.github.com/repos/${GitHubOrg}/${GitHubRepo}/releases"
-}
+$releaseJsonUrl = "https://api.github.com/repos/${GitHubOrg}/${GitHubRepo}/releases"
 
 $releases = Invoke-RestMethod -Headers $githubHeader -Uri $releaseJsonUrl -Method Get
 if ($releases.Count -eq 0) {
@@ -89,20 +84,15 @@ function GetWindowsAsset {
     param (
         $Release
     )
-    if ($CustomAssetFactory) {
-        Write-Output "CustomAssetFactory dectected, try to invoke it"
-        return $CustomAssetFactory.Invoke($Release)
+    $windowsAsset = $Release | Select-Object -ExpandProperty assets | Where-Object { $_.name -Like "*windows-x64.zip" }
+    if (!$windowsAsset) {
+        throw "Cannot find the windows FlowSynx CLI binary"
     }
-    else {
-        $windowsAsset = $Release | Select-Object -ExpandProperty assets | Where-Object { $_.name -Like "*windows-x64.zip" }
-        if (!$windowsAsset) {
-            throw "Cannot find the windows FlowSynx CLI binary"
-        }
-        [hashtable]$return = @{}
-        $return.url = $windowsAsset.url
-        $return.name = $windowsAsset.name
-        return $return
-    }`
+    [hashtable]$return = @{}
+    $return.url = $windowsAsset.url
+    $return.name = $windowsAsset.name
+    return $return
+
 }
 
 $release = GetVersionInfo -Version $Version -Releases $releases
@@ -113,7 +103,7 @@ $asset = GetWindowsAsset -Release $release
 $zipFileUrl = $asset.url
 $assetName = $asset.name
 
-$zipFilePath = $FlowSynxRoot + "\" + $assetName
+$zipFilePath = $FlowSynxRootPath + "\" + $assetName
 Write-Output "Downloading $zipFileUrl ..."
 
 $githubHeader.Accept = "application/octet-stream"
@@ -125,9 +115,9 @@ if (!(Test-Path $zipFilePath -PathType Leaf)) {
     throw "Failed to download FlowSynx Cli binary - $zipFilePath"
 }
 
-# Extract FlowSynx CLI to $FlowSynxRoot
+# Extract FlowSynx CLI to $FlowSynxRootPath
 Write-Output "Extracting $zipFilePath..."
-Microsoft.Powershell.Archive\Expand-Archive -Force -Path $zipFilePath -DestinationPath $FlowSynxRoot
+Microsoft.Powershell.Archive\Expand-Archive -Force -Path $zipFilePath -DestinationPath $FlowSynxRootPath
 if (!(Test-Path $FlowSynxCliFilePath -PathType Leaf)) {
     throw "Failed to download FlowSynx Cli archive - $zipFilePath"
 }
@@ -139,16 +129,16 @@ if (!(Test-Path $FlowSynxCliFilePath -PathType Leaf)) {
 Write-Output "Clean up $zipFilePath..."
 Remove-Item $zipFilePath -Force
 
-# Add FlowSynxRoot directory to User Path environment variable
-Write-Output "Try to add $FlowSynxRoot to User Path Environment variable..."
+# Add FlowSynxRootPath directory to User Path environment variable
+Write-Output "Try to add $FlowSynxRootPath to User Path Environment variable..."
 $UserPathEnvironmentVar = [Environment]::GetEnvironmentVariable("PATH", "User")
 if ($UserPathEnvironmentVar -like '*flowsynx*') {
-    Write-Output "Skipping to add $FlowSynxRoot to User Path - $UserPathEnvironmentVar"
+    Write-Output "Skipping to add $FlowSynxRootPath to User Path - $UserPathEnvironmentVar"
 }
 else {
-    [System.Environment]::SetEnvironmentVariable("PATH", $UserPathEnvironmentVar + ";$FlowSynxRoot", "User")
+    [System.Environment]::SetEnvironmentVariable("PATH", $UserPathEnvironmentVar + ";$FlowSynxRootPath", "User")
     $UserPathEnvironmentVar = [Environment]::GetEnvironmentVariable("PATH", "User")
-    Write-Output "Added $FlowSynxRoot to User Path - $UserPathEnvironmentVar"
+    Write-Output "Added $FlowSynxRootPath to User Path - $UserPathEnvironmentVar"
 }
 
 Write-Output "`r`nFlowSynx CLI is installed successfully."
