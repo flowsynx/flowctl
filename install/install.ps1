@@ -143,4 +143,3 @@ else {
 
 Write-Output "`r`nFlowSynx CLI is installed successfully."
 Write-Output "To get started with FlowSynx, please visit http://flowsynx.io/docs/getting-started/ ."
-Write-Output "Ensure that Docker Desktop is set to Linux containers mode when you run FlowSynx in self hosted mode."
