@@ -271,8 +271,8 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         return await HashHelper.GetAssetHashCode(stream, cancellationToken);
     }
 
-    private string FlowSynxArchiveFileName => $"flowSynx-{ArchiveName.ToLower()}";
-    private string FlowSynxArchiveHashFileName => $"flowSynx-{ArchiveName.ToLower()}.sha256";
+    private string FlowSynxArchiveFileName => $"flowsynx-{ArchiveName.ToLower()}";
+    private string FlowSynxArchiveHashFileName => $"flowsynx-{ArchiveName.ToLower()}.sha256";
     private string FlowSynxCliArchiveFileName => $"synx-{ArchiveName.ToLower()}";
     private string FlowSynxCliArchiveHashFileName => $"synx-{ArchiveName.ToLower()}.sha256";
     private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
