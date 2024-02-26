@@ -3,7 +3,9 @@ using FlowSynx.Abstractions;
 using FlowSynx.Environment;
 using FlowSynx.Net;
 using EnsureThat;
+using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Formatter;
+using System.Diagnostics;
 
 namespace FlowSynx.Cli.Commands.Version;
 
@@ -57,13 +59,31 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
 
     private async Task Execute(VersionCommandOptions options, CancellationToken cancellationToken)
     {
+        var cliVersion = _version.Version;
+        var flowSynxVersion = "N/A";
+
+        try
+        {
+            var flowSynxAssemblyLocation = PathHelper.LookupFlowSynxBinaryFilePath(PathHelper.DefaultFlowSynxDirectoryName);
+            if (File.Exists(flowSynxAssemblyLocation))
+            {
+                var versionInfo = FileVersionInfo.GetVersionInfo(flowSynxAssemblyLocation);
+                flowSynxVersion = versionInfo.ProductVersion;
+            }
+        }
+        catch
+        {
+            flowSynxVersion = "N/A";
+        }
+
         try
         {
             if (options.Full is null or false)
             {
                 var version = new
                 {
-                    Cli = _version.Version
+                    Cli = cliVersion,
+                    FlowSynx = flowSynxVersion
                 };
                 _outputFormatter.Write(version, options.Output);
                 return;
@@ -72,7 +92,7 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
             const string relativeUrl = "version";
             var result = await _httpRequestService.GetRequestAsync<Result<VersionResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
-            if (result is {Succeeded: false})
+            if (result is { Succeeded: false })
             {
                 _outputFormatter.WriteError(result.Messages);
             }
@@ -80,22 +100,19 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
             {
                 if (result?.Data != null)
                 {
-                    result.Data.Cli = _version.Version;
+                    result.Data.Cli = cliVersion;
                     _outputFormatter.Write(result.Data, options.Output);
                 }
             }
         }
-        catch (Exception)
+        catch         
         {
-            if (options.Full is true)
+            var version = new
             {
-                var version = new
-                {
-                    Cli = _version.Version,
-                    FlowSynx = "FlowSynx system is not running"
-                };
-                _outputFormatter.Write(version, options.Output);
-            }
+                Cli = cliVersion,
+                FlowSynx = flowSynxVersion
+            };
+            _outputFormatter.Write(version, options.Output);
         }
     }
 }
