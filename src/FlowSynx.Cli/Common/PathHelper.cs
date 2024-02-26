@@ -18,7 +18,7 @@ internal static class PathHelper
 
     public static string LookupFlowSynxBinaryFilePath(string path)
     {
-        var binFileName = "FlowSynx";
+        var binFileName = "flowsynx";
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             binFileName += ".exe";
 
