@@ -8,7 +8,7 @@ namespace FlowSynx.Cli.Commands.Init;
 
 internal class InitCommand : BaseCommand<InitCommandOptions, InitCommandOptionsHandler>
 {
-    public InitCommand() : base("init", "Install and iInitialize FlowSynx system on the current user profile") {}
+    public InitCommand() : base("init", "Install and initialize FlowSynx system on the current user profile") {}
 }
 
 internal class InitCommandOptions : ICommandOptions {}
@@ -136,8 +136,8 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         return await HashHelper.GetAssetHashCode(stream, cancellationToken);
     }
 
-    private string FlowSynxArchiveFileName => $"flowSynx-{ArchiveName.ToLower()}";
-    private string FlowSynxArchiveHashFileName => $"flowSynx-{ArchiveName.ToLower()}.sha256";
+    private string FlowSynxArchiveFileName => $"flowsynx-{ArchiveName.ToLower()}";
+    private string FlowSynxArchiveHashFileName => $"flowsynx-{ArchiveName.ToLower()}.sha256";
     private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
     private string Extension => string.Equals(_operatingSystemInfo.Type, "windows", StringComparison.OrdinalIgnoreCase) ? "zip" : "tar.gz";
 
