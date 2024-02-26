@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System.Reflection;
 using FlowSynx.Environment;
 
 namespace FlowSynx.Cli.Services;
@@ -10,13 +10,8 @@ public class CliVersion : IVersion
     #region Private function
     private string GetApplicationVersion()
     {
-        var assemblyLocation = System.Environment.ProcessPath;
-
-        if (string.IsNullOrEmpty(assemblyLocation))
-            return "1.0.0";
-
-        var versionInfo = FileVersionInfo.GetVersionInfo(assemblyLocation);
-        return versionInfo.ProductVersion ?? "1.0.0";
+        var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false);
+        return attributes.Length == 0 ? "" : ((AssemblyInformationalVersionAttribute)attributes[0]).InformationalVersion;
     }
     #endregion
 }
