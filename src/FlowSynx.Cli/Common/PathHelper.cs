@@ -24,4 +24,15 @@ internal static class PathHelper
 
         return Path.Combine(path, binFileName);
     }
+
+    public static void MakeExecutable(string path)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return;
+
+        const UnixFileMode ownershipPermissions = UnixFileMode.UserRead  | UnixFileMode.UserWrite  | UnixFileMode.UserExecute  |
+                                                  UnixFileMode.GroupRead | UnixFileMode.GroupWrite | UnixFileMode.GroupExecute |
+                                                  UnixFileMode.OtherRead | UnixFileMode.OtherWrite | UnixFileMode.OtherExecute;
+
+        File.SetUnixFileMode(path, ownershipPermissions);
+    }
 }

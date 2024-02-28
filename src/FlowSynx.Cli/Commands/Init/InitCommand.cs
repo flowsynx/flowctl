@@ -53,9 +53,9 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         {
             _outputFormatter.Write("Beginning Initialize...");
 
-            var flowSynxPath = Path.Combine(PathHelper.UserProfilePath, PathHelper.DefaultFlowSynxDirectoryName, "engine");
-            var look = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
-            if (File.Exists(look))
+            var flowSynxPath = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine");
+            var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
+            if (File.Exists(flowSynxBinaryFile))
             {
                 _outputFormatter.Write("The FlowSynx engine is already Initialized.");
                 _outputFormatter.Write("You can use command 'Synx update' to check and update the FlowSynx.");
@@ -63,6 +63,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             }
             Directory.CreateDirectory(flowSynxPath);
             await Init(cancellationToken);
+            PathHelper.MakeExecutable(flowSynxBinaryFile);
             _outputFormatter.Write("FlowSynx engine is downloaded and installed successfully.");
         }
         catch (Exception e)
