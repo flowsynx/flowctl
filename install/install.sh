@@ -10,8 +10,8 @@
 FLOWSYNX_HTTP_REQUEST_CLI=curl
 
 # GitHub Organization and repo name to download release
-GITHUB_ORG=FlowSynx
-GITHUB_REPO=Cli
+GITHUB_ORG=flowsynx
+GITHUB_REPO=cli
 
 # FlowSynx CLI filename
 FLOWSYNX_CLI_FILENAME=synx

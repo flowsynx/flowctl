@@ -14,8 +14,8 @@ $FlowSynxCliFileName = "synx.exe"
 $FlowSynxCliFilePath = "${FlowSynxRootPath}\${FlowSynxCliFileName}"
 
 # GitHub Org and repo hosting FlowSynx CLI
-$GitHubOrg = "FlowSynx"
-$GitHubRepo = "Cli"
+$GitHubOrg = "flowsynx"
+$GitHubRepo = "cli"
 
 # Set Github request authentication for basic authentication.
 if ($Env:GITHUB_USER) {
@@ -59,7 +59,7 @@ $releaseJsonUrl = "https://api.github.com/repos/${GitHubOrg}/${GitHubRepo}/relea
 
 $releases = Invoke-RestMethod -Headers $githubHeader -Uri $releaseJsonUrl -Method Get
 if ($releases.Count -eq 0) {
-    throw "No releases from github.com/FlowSynx/Cli repo"
+    throw "No releases from github.com/flowsynx/cli repo"
 }
 
 # Get latest or specified version info from releases
