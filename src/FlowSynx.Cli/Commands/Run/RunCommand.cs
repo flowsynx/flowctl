@@ -60,32 +60,36 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
 
     private Task Execute(RunCommandOptions options)
     {
-        var flowSynxPath = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine");
-        var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
-        if (!Path.Exists(flowSynxBinaryFile))
+        try
         {
-            _outputFormatter.WriteError(Resources.FlowSynxEngineIsNotInstalled);
-            return Task.CompletedTask;
+            var flowSynxPath = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine");
+            var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
+            if (!Path.Exists(flowSynxBinaryFile))
+            {
+                _outputFormatter.WriteError(Resources.FlowSynxEngineIsNotInstalled);
+                return Task.CompletedTask;
+            }
+
+            var startInfo = new ProcessStartInfo(flowSynxBinaryFile)
+            {
+                Arguments = GetArgumentStr(options),
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            };
+
+            var process = new Process { StartInfo = startInfo };
+            process.OutputDataReceived += OutputDataHandler;
+            process.ErrorDataReceived += ErrorDataHandler;
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            process?.WaitForExit();
         }
-
-        var color = AnsiConsole.Foreground;
-        var startInfo = new ProcessStartInfo(flowSynxBinaryFile)
+        catch (Exception e)
         {
-            Arguments = GetArgumentStr(options),
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true
-        };
-
-        var process = new Process { StartInfo = startInfo };
-        process.OutputDataReceived += OutputDataHandler;
-        process.ErrorDataReceived += ErrorDataHandler;
-        process.Start();
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
-        process?.WaitForExit();
-        AnsiConsole.Foreground = color;
-
+            _outputFormatter.WriteError(e.Message);
+        }
         return Task.CompletedTask;
     }
 

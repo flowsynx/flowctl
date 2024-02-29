@@ -29,7 +29,14 @@ internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOpt
 
     private Task Execute()
     {
-        TerminateProcess("flowsynx", ".");
+        try
+        {
+            TerminateProcess("flowsynx", ".");
+        }
+        catch (Exception e)
+        {
+            _outputFormatter.WriteError(e.Message);
+        }
         return Task.CompletedTask;
     }
 
