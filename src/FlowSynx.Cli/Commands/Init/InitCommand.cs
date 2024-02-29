@@ -63,7 +63,10 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             }
             Directory.CreateDirectory(flowSynxPath);
             await Init(cancellationToken);
+
+            _outputFormatter.Write("Starting to change the execution mode of FlowSynx.");
             PathHelper.MakeExecutable(flowSynxBinaryFile);
+
             _outputFormatter.Write("FlowSynx engine is downloaded and installed successfully.");
         }
         catch (Exception e)
@@ -75,11 +78,16 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     private async Task<bool> Init(CancellationToken cancellationToken)
     {
         var currentVersion = _version.Version;
+
+        _outputFormatter.Write("Starting download FlowSynx binary");
         var flowSynxDownloadPath = await DownloadFlowSynxAsset(currentVersion, Path.GetTempPath(), cancellationToken);
+
+        _outputFormatter.Write("Starting validating FlowSynx binary");
         var isFlowSynxValid = await ValidateFlowSynxDownloadedAsset(flowSynxDownloadPath, currentVersion, cancellationToken);
 
         if (isFlowSynxValid)
         {
+            _outputFormatter.Write("Starting extract FlowSynx binary");
             await Task.Run(() => ExtractFlowSynx(flowSynxDownloadPath, cancellationToken), cancellationToken);
             return true;
         }
