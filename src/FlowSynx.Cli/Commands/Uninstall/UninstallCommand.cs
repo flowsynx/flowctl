@@ -54,12 +54,12 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
 
             if (options.Force)
             {
-                ProcessHelper.TerminateProcess("FlowSynx", ".");
+                ProcessHelper.TerminateProcess("flowsynx", ".");
                 _outputFormatter.Write("The FlowSynx system was stopped successfully.");
             }
             else
             {
-                if (ProcessHelper.IsProcessRunning("FlowSynx", "."))
+                if (ProcessHelper.IsProcessRunning("flowsynx", "."))
                 {
                     _outputFormatter.Write("The FlowSynx engine is running. Please stop it by run the command: 'Synx stop', and try uninstall again.");
                     return Task.CompletedTask;

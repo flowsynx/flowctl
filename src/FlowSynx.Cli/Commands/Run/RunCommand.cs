@@ -60,7 +60,7 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
 
     private Task Execute(RunCommandOptions options)
     {
-        var flowSynxPath = Path.Combine(PathHelper.UserProfilePath, PathHelper.DefaultFlowSynxDirectoryName, "engine");
+        var flowSynxPath = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine");
         var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
         if (!Path.Exists(flowSynxBinaryFile))
         {
