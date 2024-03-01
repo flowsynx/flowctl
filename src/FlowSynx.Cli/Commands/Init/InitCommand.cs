@@ -57,12 +57,15 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
             if (File.Exists(flowSynxBinaryFile))
             {
-                _outputFormatter.Write("The FlowSynx engine is already Initialized.");
+                _outputFormatter.Write("The FlowSynx engine is already initialized.");
                 _outputFormatter.Write("You can use command 'Synx update' to check and update the FlowSynx.");
                 return;
             }
             Directory.CreateDirectory(flowSynxPath);
-            await Init(cancellationToken);
+            var initialized = await Init(cancellationToken);
+
+            if (!initialized)
+                return;
 
             _outputFormatter.Write("Starting to change the execution mode of FlowSynx.");
             PathHelper.MakeExecutable(flowSynxBinaryFile);
