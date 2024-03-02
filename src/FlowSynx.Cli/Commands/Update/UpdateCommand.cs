@@ -110,8 +110,9 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
                 }
             }
 
+            _outputFormatter.Write($"GetLatestVersion");
             var latestVersion = await GetLatestVersion(GitHubHelper.CliRepository);
-            var currentVersion = _version.Version;
+            var currentVersion = $"v{_version.Version}";
 
             if (IsUpdateAvailable(latestVersion, currentVersion))
             {
@@ -282,6 +283,9 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     private static bool IsUpdateAvailable(string latestVersion, string currentVersion)
     {
         if (string.IsNullOrEmpty(latestVersion)) return false;
+
+        Console.WriteLine(latestVersion);
+        Console.WriteLine(currentVersion);
 
         var current = new System.Version(currentVersion[1..]);
         var latest = new System.Version(latestVersion[1..]);
