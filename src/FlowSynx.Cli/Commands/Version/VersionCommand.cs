@@ -60,31 +60,12 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
     private async Task Execute(VersionCommandOptions options, CancellationToken cancellationToken)
     {
         var cliVersion = _version.Version;
-        var flowSynxVersion = "N/A";
-
-        try
-        {
-            var flowSynxAssemblyLocation = PathHelper.LookupFlowSynxBinaryFilePath(PathHelper.DefaultFlowSynxDirectoryName);
-            if (File.Exists(flowSynxAssemblyLocation))
-            {
-                var versionInfo = FileVersionInfo.GetVersionInfo(flowSynxAssemblyLocation);
-                flowSynxVersion = versionInfo.ProductVersion;
-            }
-        }
-        catch
-        {
-            flowSynxVersion = "N/A";
-        }
-
+        
         try
         {
             if (options.Full is null or false)
             {
-                var version = new
-                {
-                    Cli = cliVersion,
-                    FlowSynx = flowSynxVersion
-                };
+                var version = new { Cli = cliVersion };
                 _outputFormatter.Write(version, options.Output);
                 return;
             }
@@ -105,13 +86,9 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
                 }
             }
         }
-        catch         
+        catch
         {
-            var version = new
-            {
-                Cli = cliVersion,
-                FlowSynx = flowSynxVersion
-            };
+            dynamic version = options.Full is null or false ? new { Cli = cliVersion } : new { Cli = cliVersion, FlowSynx = "N/A" };
             _outputFormatter.Write(version, options.Output);
         }
     }
