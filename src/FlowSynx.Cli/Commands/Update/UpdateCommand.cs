@@ -283,8 +283,8 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     {
         if (string.IsNullOrEmpty(latestVersion)) return false;
 
-        var current = new System.Version(currentVersion);
-        var latest = new System.Version(latestVersion);
+        var current = new System.Version(currentVersion[1..]);
+        var latest = new System.Version(latestVersion[1..]);
         return latest > current;
     }
 
