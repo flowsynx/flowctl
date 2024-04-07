@@ -18,7 +18,9 @@ internal class ListCommand : BaseCommand<ListCommandOptions, ListCommandOptionsH
         var sortingOption = new Option<string?>("--sorting", "Sorting entities based on field name and ascending and descending. Like Property ASC, Property2 DESC [default: off]");
         var caseSensitiveOption = new Option<bool?>("--case-sensitive", getDefaultValue: () => false, "Ignore or apply case sensitive in filters");
         var recurseOption = new Option<bool?>("--recurse", getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
+        var hashingOption = new Option<bool?>("--hashing", getDefaultValue: () => false, "Display hashing content in response data [default: off]");
         var maxResultsOption = new Option<int?>("--max-results", "The maximum number of results to return [default: off]");
+        var showMetadataOption = new Option<bool?>("--show-metadata", getDefaultValue: () => false, "Display metadata in response data [default: off]");
         var outputOption = new Option<Output>("--output", getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(pathOption);
@@ -33,7 +35,9 @@ internal class ListCommand : BaseCommand<ListCommandOptions, ListCommandOptionsH
         AddOption(sortingOption);
         AddOption(caseSensitiveOption);
         AddOption(recurseOption);
+        AddOption(hashingOption);
         AddOption(maxResultsOption);
+        AddOption(showMetadataOption);
         AddOption(outputOption);
     }
 }

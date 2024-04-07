@@ -51,7 +51,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddOperatingSystemInfo();
-        services.AddCompression();
+        services.AddCompressions();
         services.AddEndpoint();
         services.AddSerialization();
         services.AddHttpRequestService();

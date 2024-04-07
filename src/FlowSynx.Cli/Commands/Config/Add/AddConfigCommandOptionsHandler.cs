@@ -44,10 +44,10 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
         {
             const string relativeUrl = "config/add";
 
-            var specification = new Dictionary<string, string?>();
+            var specification = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(options.Spec))
             {
-                specification = _deserializer.Deserialize<Dictionary<string, string?>>(options.Spec);
+                specification = _deserializer.Deserialize<Dictionary<string, object?>>(options.Spec);
             }
 
             var request = new AddConfigRequest { Name = options.Name, Type = options.Type, Specifications = specification };

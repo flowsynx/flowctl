@@ -14,6 +14,8 @@ internal class ListCommandOptions : ICommandOptions
     public string? Sorting { get; set; } = string.Empty;
     public bool? CaseSensitive { get; set; } = false;
     public bool? Recurse { get; set; } = false;
+    public bool? Hashing { get; set; } = false;
     public int? MaxResults { get; set; }
+    public bool ShowMetadata { get; set; } = false;
     public Output Output { get; set; } = Output.Json;
 }

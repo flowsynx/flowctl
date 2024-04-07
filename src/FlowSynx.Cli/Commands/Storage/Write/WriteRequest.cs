@@ -4,4 +4,5 @@ internal class WriteRequest
 {
     public string Path { get; set; } = string.Empty;
     public string Data { get; set; } = string.Empty;
+    public bool Overwrite { get; set; } = false;
 }

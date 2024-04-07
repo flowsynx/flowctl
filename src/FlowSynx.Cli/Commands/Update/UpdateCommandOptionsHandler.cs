@@ -16,32 +16,36 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     private readonly ISpinner _spinner;
     private readonly IVersion _version;
     private readonly IOperatingSystemInfo _operatingSystemInfo;
-    private readonly IZipFile _zipFile;
-    private readonly IGZipFile _gZipFile;
     private readonly IDeserializer _deserializer;
     private readonly ILocation _location;
+    private readonly Func<CompressType, ICompression> _compressionFactory;
 
     public UpdateCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IVersion version, IOperatingSystemInfo operatingSystemInfo, IZipFile zipFile, IGZipFile gZipFile,
-        IDeserializer deserializer, ILocation location)
+        IVersion version, IOperatingSystemInfo operatingSystemInfo,
+        IDeserializer deserializer, ILocation location,
+        Func<CompressType, ICompression> compressionFactory)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(version, nameof(version));
         EnsureArg.IsNotNull(operatingSystemInfo, nameof(operatingSystemInfo));
-        EnsureArg.IsNotNull(zipFile, nameof(zipFile));
-        EnsureArg.IsNotNull(gZipFile, nameof(gZipFile));
         EnsureArg.IsNotNull(deserializer, nameof(deserializer));
-
+        EnsureArg.IsNotNull(compressionFactory, nameof(compressionFactory));
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _version = version;
         _operatingSystemInfo = operatingSystemInfo;
-        _zipFile = zipFile;
-        _gZipFile = gZipFile;
         _deserializer = deserializer;
         _location = location;
+        _compressionFactory = compressionFactory;
     }
+
+    private string FlowSynxArchiveFileName => $"flowsynx-{ArchiveName.ToLower()}";
+    private string FlowSynxArchiveHashFileName => $"flowsynx-{ArchiveName.ToLower()}.sha256";
+    private string FlowSynxCliArchiveFileName => $"synx-{ArchiveName.ToLower()}";
+    private string FlowSynxCliArchiveHashFileName => $"synx-{ArchiveName.ToLower()}.sha256";
+    private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
+    private string Extension => string.Equals(_operatingSystemInfo.Type, "windows", StringComparison.OrdinalIgnoreCase) ? "zip" : "tar.gz";
 
     public async Task<int> HandleAsync(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
@@ -254,13 +258,6 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         return await HashHelper.GetAssetHashCode(stream, cancellationToken);
     }
 
-    private string FlowSynxArchiveFileName => $"flowsynx-{ArchiveName.ToLower()}";
-    private string FlowSynxArchiveHashFileName => $"flowsynx-{ArchiveName.ToLower()}.sha256";
-    private string FlowSynxCliArchiveFileName => $"synx-{ArchiveName.ToLower()}";
-    private string FlowSynxCliArchiveHashFileName => $"synx-{ArchiveName.ToLower()}.sha256";
-    private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
-    private string Extension => string.Equals(_operatingSystemInfo.Type, "windows", StringComparison.OrdinalIgnoreCase) ? "zip" : "tar.gz";
-    
     private static bool IsUpdateAvailable(string latestVersion, string currentVersion)
     {
         if (string.IsNullOrEmpty(latestVersion)) return false;
@@ -272,10 +269,17 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
 
     private void ExtractFile(string sourcePath, string destinationPath)
     {
+        var compressEntry = new CompressEntry
+        {
+            Stream = File.OpenWrite(sourcePath),
+            Name = Path.GetFileName(sourcePath),
+            ContentType = ""
+        };
+
         if (Extension == "tar.gz")
-            _gZipFile.Decompression(sourcePath, destinationPath, true);
+            _compressionFactory(CompressType.GZip).Decompress(compressEntry, destinationPath);
         else
-            _zipFile.Decompression(sourcePath, destinationPath, true);
+            _compressionFactory(CompressType.Zip).Decompress(compressEntry, destinationPath);
     }
 
     private void SelfUpdate(string updateFile, string selfFile)
