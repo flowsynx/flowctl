@@ -1,7 +1,10 @@
 ﻿using FlowSynx.Cli.Commands.Storage.About;
+using FlowSynx.Cli.Commands.Storage.Check;
+using FlowSynx.Cli.Commands.Storage.Compress;
 using FlowSynx.Cli.Commands.Storage.Copy;
 using FlowSynx.Cli.Commands.Storage.Delete;
 using FlowSynx.Cli.Commands.Storage.DeleteFile;
+using FlowSynx.Cli.Commands.Storage.ExistFile;
 using FlowSynx.Cli.Commands.Storage.List;
 using FlowSynx.Cli.Commands.Storage.MakeDriectory;
 using FlowSynx.Cli.Commands.Storage.Move;
@@ -17,9 +20,12 @@ internal class StorageCommand : BaseCommand
     public StorageCommand() : base("storage", "Execute supportable commands on different storage supported by FlowSynx system")
     {
         AddCommand(new AboutCommand());
+        AddCommand(new CheckCommand());
+        AddCommand(new CompressCommand());
         AddCommand(new CopyCommand());
         AddCommand(new DeleteCommand());
         AddCommand(new DeleteFileCommand());
+        AddCommand(new ExistFileCommand());
         AddCommand(new ListCommand());
         AddCommand(new MakeDirectoryCommand());
         AddCommand(new MoveCommand());
