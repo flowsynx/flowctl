@@ -48,7 +48,7 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
                 filePath = Path.Combine(options.SaveTo, fileName);
             }
 
-            if (!File.Exists(filePath) || File.Exists(filePath) && options.Overwrite is true)
+            if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
                 await StreamHelper.WriteStream(filePath, result, cancellationToken);
             }
