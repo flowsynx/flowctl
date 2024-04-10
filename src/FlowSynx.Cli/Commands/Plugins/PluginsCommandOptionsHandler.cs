@@ -42,10 +42,11 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
 
             var result = await _httpRequestService.GetRequestAsync<Result<List<PluginsListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
-            if (result is { Succeeded: false })
-                _outputFormatter.WriteError(result.Messages);
+            var payLoad = result.Payload;
+            if (payLoad is { Succeeded: false })
+                _outputFormatter.WriteError(payLoad.Messages);
             else
-                _outputFormatter.Write(result?.Data, options.Output);
+                _outputFormatter.Write(payLoad?.Data, options.Output);
         }
         catch (Exception ex)
         {

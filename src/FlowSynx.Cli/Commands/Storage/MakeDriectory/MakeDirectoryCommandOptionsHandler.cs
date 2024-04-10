@@ -41,16 +41,17 @@ internal class MakeDirectoryCommandOptionsHandler : ICommandOptionsHandler<MakeD
             var request = new MakeDirectoryRequest { Path = options.Path };
             var result = await _httpRequestService.PostRequestAsync<MakeDirectoryRequest, Result<MakeDirectoryResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
+            var payLoad = result.Payload;
+            if (payLoad is { Succeeded: false })
             {
-                _outputFormatter.WriteError(result.Messages);
+                _outputFormatter.WriteError(payLoad.Messages);
             }
             else
             {
-                if (result?.Data is not null)
-                    _outputFormatter.Write(result.Data);
+                if (payLoad?.Data is not null)
+                    _outputFormatter.Write(payLoad.Data);
                 else
-                    _outputFormatter.Write(result?.Messages);
+                    _outputFormatter.Write(payLoad?.Messages);
             }
         }
         catch (Exception ex)

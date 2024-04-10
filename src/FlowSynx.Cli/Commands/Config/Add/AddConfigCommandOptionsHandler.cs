@@ -53,10 +53,11 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
             var request = new AddConfigRequest { Name = options.Name, Type = options.Type, Specifications = specification };
             var result = await _httpRequestService.PostRequestAsync<AddConfigRequest, Result<AddConfigResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
-                _outputFormatter.WriteError(result.Messages);
+            var payLoad = result.Payload;
+            if (payLoad is { Succeeded: false })
+                _outputFormatter.WriteError(payLoad.Messages);
             else
-                _outputFormatter.Write(result?.Data);
+                _outputFormatter.Write(payLoad?.Data);
         }
         catch (DeserializerException)
         {

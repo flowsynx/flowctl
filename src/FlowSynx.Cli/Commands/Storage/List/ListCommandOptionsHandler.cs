@@ -57,16 +57,17 @@ internal class ListCommandOptionsHandler : ICommandOptionsHandler<ListCommandOpt
 
             var result = await _httpRequestService.PostRequestAsync<ListRequest, Result<List<ListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
+            var payLoad = result.Payload;
+            if (payLoad is { Succeeded: false })
             {
-                _outputFormatter.WriteError(result.Messages);
+                _outputFormatter.WriteError(payLoad.Messages);
             }
             else
             {
-                if (result?.Data is not null)
-                    _outputFormatter.Write(result.Data, options.Output);
+                if (payLoad?.Data is not null)
+                    _outputFormatter.Write(payLoad.Data, options.Output);
                 else
-                    _outputFormatter.Write(result?.Messages);
+                    _outputFormatter.Write(payLoad?.Messages);
             }
         }
         catch (Exception ex)

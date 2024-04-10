@@ -65,7 +65,7 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
 
             if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
-                await StreamHelper.WriteStream(filePath, result, cancellationToken);
+                await StreamHelper.WriteStream(filePath, result.Payload, cancellationToken);
                 _outputFormatter.Write($"Data saved to the '{filePath}' successfully.");
             }
             else

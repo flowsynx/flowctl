@@ -41,10 +41,11 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
             var request = new DeleteConfigRequest { Name = options.Name };
             var result = await _httpRequestService.DeleteRequestAsync<DeleteConfigRequest, Result<DeleteConfigResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
-                _outputFormatter.WriteError(result.Messages);
+            var payLoad = result.Payload;
+            if (payLoad is { Succeeded: false })
+                _outputFormatter.WriteError(payLoad.Messages);
             else
-                _outputFormatter.Write(result?.Data);
+                _outputFormatter.Write(payLoad?.Data);
         }
         catch (Exception ex)
         {

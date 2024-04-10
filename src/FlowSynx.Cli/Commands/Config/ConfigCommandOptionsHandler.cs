@@ -41,10 +41,11 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
             var request = new ConfigListRequest { Type = options.Type };
             var result = await _httpRequestService.PostRequestAsync<ConfigListRequest, Result<List<ConfigListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
-                _outputFormatter.WriteError(result.Messages);
+            var payLoad = result.Payload;
+            if (payLoad is { Succeeded: false })
+                _outputFormatter.WriteError(payLoad.Messages);
             else
-                _outputFormatter.Write(result?.Data, options.Output);
+                _outputFormatter.Write(payLoad?.Data, options.Output);
         }
         catch (Exception ex)
         {

@@ -41,16 +41,17 @@ internal class DeleteFileCommandOptionsHandler : ICommandOptionsHandler<DeleteFi
             var request = new DeleteFileRequest { Path = options.Path };
             var result = await _httpRequestService.DeleteRequestAsync<DeleteFileRequest, Result<DeleteFileResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
-            if (result is { Succeeded: false })
+            var payLoad = result.Payload;
+            if (payLoad is { Succeeded: false })
             {
-                _outputFormatter.WriteError(result.Messages);
+                _outputFormatter.WriteError(payLoad.Messages);
             }
             else
             {
-                if (result?.Data is not null)
-                    _outputFormatter.Write(result.Data);
+                if (payLoad?.Data is not null)
+                    _outputFormatter.Write(payLoad.Data);
                 else
-                    _outputFormatter.Write(result?.Messages);
+                    _outputFormatter.Write(payLoad?.Messages);
             }
         }
         catch (Exception ex)

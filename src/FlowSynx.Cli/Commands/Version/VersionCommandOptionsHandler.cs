@@ -39,7 +39,6 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
     private async Task Execute(VersionCommandOptions options, CancellationToken cancellationToken)
     {
         var cliVersion = _version.Version;
-        
         try
         {
             if (options.Full is null or false)
@@ -52,16 +51,17 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
             const string relativeUrl = "version";
             var result = await _httpRequestService.GetRequestAsync<Result<VersionResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
-            if (result is { Succeeded: false })
+            var payLoad = result.Payload;
+            if (payLoad is { Succeeded: false })
             {
-                _outputFormatter.WriteError(result.Messages);
+                _outputFormatter.WriteError(payLoad.Messages);
             }
             else
             {
-                if (result?.Data != null)
+                if (payLoad?.Data != null)
                 {
-                    result.Data.Cli = cliVersion;
-                    _outputFormatter.Write(result.Data, options.Output);
+                    payLoad.Data.Cli = cliVersion;
+                    _outputFormatter.Write(payLoad.Data, options.Output);
                 }
             }
         }

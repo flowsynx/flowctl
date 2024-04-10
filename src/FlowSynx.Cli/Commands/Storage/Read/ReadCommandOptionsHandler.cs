@@ -50,7 +50,7 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
 
             if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
-                await StreamHelper.WriteStream(filePath, result, cancellationToken);
+                await StreamHelper.WriteStream(filePath, result.Payload, cancellationToken);
             }
             else
             {

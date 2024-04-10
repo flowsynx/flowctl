@@ -37,7 +37,8 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
             const string relativeUrl = "health";
             var result = await _httpRequestService.GetRequestAsync<HealthCheckResponse>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
-            _outputFormatter.Write(result?.HealthChecks.ToList(), options.Output);
+            var payLoad = result.Payload;
+            _outputFormatter.Write(payLoad?.HealthChecks.ToList(), options.Output);
         }
         catch (Exception ex)
         {
