@@ -49,7 +49,7 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
             }
 
             const string relativeUrl = "version";
-            var result = await _httpRequestService.GetRequestAsync<Result<VersionResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var result = await _httpRequestService.GetRequestAsync<Result<VersionResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

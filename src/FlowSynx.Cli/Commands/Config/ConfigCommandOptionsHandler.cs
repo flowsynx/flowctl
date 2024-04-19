@@ -39,7 +39,7 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
         {
             const string relativeUrl = "config";
             var request = new ConfigListRequest { Type = options.Type };
-            var result = await _httpRequestService.PostRequestAsync<ConfigListRequest, Result<List<ConfigListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<ConfigListRequest, Result<List<ConfigListResponse>?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

@@ -55,7 +55,7 @@ internal class CheckCommandOptionsHandler : ICommandOptionsHandler<CheckCommandO
                 OneWay = options.OneWay
             };
 
-            var result = await _httpRequestService.PostRequestAsync<CheckRequest, Result<List<CheckResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<CheckRequest, Result<List<CheckResponse>?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

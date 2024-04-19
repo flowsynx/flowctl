@@ -54,7 +54,7 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
                 MaxResults = options.MaxResults
             };
 
-            var result = await _httpRequestService.PostRequestAsync<SizeRequest, Result<SizeResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<SizeRequest, Result<SizeResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

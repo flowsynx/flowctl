@@ -55,7 +55,7 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
                 CompressType = options.CompressType.ToString(),
             };
 
-            var result = await _httpRequestService.PostRequestAsync($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
             var filePath = options.SaveTo;
             if (Directory.Exists(filePath))
             {

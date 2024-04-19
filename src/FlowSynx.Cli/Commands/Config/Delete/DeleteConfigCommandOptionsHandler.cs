@@ -39,7 +39,7 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
         {
             const string relativeUrl = "config/delete";
             var request = new DeleteConfigRequest { Name = options.Name };
-            var result = await _httpRequestService.DeleteRequestAsync<DeleteConfigRequest, Result<DeleteConfigResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.DeleteRequestAsync<DeleteConfigRequest, Result<DeleteConfigResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

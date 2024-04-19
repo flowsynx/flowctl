@@ -51,7 +51,7 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
             }
 
             var request = new AddConfigRequest { Name = options.Name, Type = options.Type, Specifications = specification };
-            var result = await _httpRequestService.PostRequestAsync<AddConfigRequest, Result<AddConfigResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<AddConfigRequest, Result<AddConfigResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

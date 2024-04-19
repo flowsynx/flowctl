@@ -38,7 +38,7 @@ internal class DetailsConfigCommandOptionsHandler : ICommandOptionsHandler<Detai
         try
         {
             var relativeUrl = $"config/details/{options.Name}";
-            var result = await _httpRequestService.GetRequestAsync<Result<ConfigDetailsResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var result = await _httpRequestService.GetRequestAsync<Result<ConfigDetailsResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

@@ -40,7 +40,7 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
             if (!string.IsNullOrEmpty(options.Type))
                 relativeUrl = $"plugins/{options.Type}";
 
-            var result = await _httpRequestService.GetRequestAsync<Result<List<PluginsListResponse>?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var result = await _httpRequestService.GetRequestAsync<Result<List<PluginsListResponse>?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

@@ -39,7 +39,7 @@ internal class ExistFileCommandOptionsHandler : ICommandOptionsHandler<ExistFile
         {
             const string relativeUrl = "storage/exist";
             var request = new ExistFileRequest { Path = options.Path };
-            var result = await _httpRequestService.PostRequestAsync<ExistFileRequest, Result<ExistFileResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<ExistFileRequest, Result<ExistFileResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

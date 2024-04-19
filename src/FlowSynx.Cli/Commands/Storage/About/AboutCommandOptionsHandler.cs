@@ -44,7 +44,7 @@ internal class AboutCommandOptionsHandler : ICommandOptionsHandler<AboutCommandO
                 Full = options.Full
             };
 
-            var result = await _httpRequestService.PostRequestAsync<AboutRequest, Result<AboutResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<AboutRequest, Result<AboutResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

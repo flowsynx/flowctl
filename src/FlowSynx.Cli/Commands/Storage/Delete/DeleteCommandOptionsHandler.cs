@@ -51,7 +51,7 @@ internal class DeleteCommandOptionsHandler : ICommandOptionsHandler<DeleteComman
                 Recurse = options.Recurse
             };
 
-            var result = await _httpRequestService.DeleteRequestAsync<DeleteRequest, Result<DeleteResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.DeleteRequestAsync<DeleteRequest, Result<DeleteResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

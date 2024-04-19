@@ -39,7 +39,7 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
         {
             const string relativeUrl = "storage/read";
             var request = new ReadRequest { Path = options.Path };
-            var result = await _httpRequestService.PostRequestAsync($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var filePath = options.SaveTo;
             if (Directory.Exists(filePath))

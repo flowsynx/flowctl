@@ -39,7 +39,7 @@ internal class DeleteFileCommandOptionsHandler : ICommandOptionsHandler<DeleteFi
         {
             const string relativeUrl = "storage/deletefile";
             var request = new DeleteFileRequest { Path = options.Path };
-            var result = await _httpRequestService.DeleteRequestAsync<DeleteFileRequest, Result<DeleteFileResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.DeleteRequestAsync<DeleteFileRequest, Result<DeleteFileResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

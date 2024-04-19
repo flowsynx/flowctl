@@ -51,7 +51,7 @@ internal class MoveCommandOptionsHandler : ICommandOptionsHandler<MoveCommandOpt
                 CaseSensitive = options.CaseSensitive,
                 Recurse = options.Recurse
             };
-            var result = await _httpRequestService.PostRequestAsync<MoveRequest, Result<MoveResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<MoveRequest, Result<MoveResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

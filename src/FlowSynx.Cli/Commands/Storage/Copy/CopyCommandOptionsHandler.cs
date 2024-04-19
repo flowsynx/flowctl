@@ -53,7 +53,7 @@ internal class CopyCommandOptionsHandler : ICommandOptionsHandler<CopyCommandOpt
                 ClearDestinationPath = options.ClearDestinationPath,
                 OverWriteData = options.OverWriteData
             };
-            var result = await _httpRequestService.PostRequestAsync<CopyRequest, Result<CopyResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _httpRequestService.PostRequestAsync<CopyRequest, Result<CopyResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })

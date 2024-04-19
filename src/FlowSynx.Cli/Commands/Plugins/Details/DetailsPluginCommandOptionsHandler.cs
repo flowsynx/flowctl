@@ -38,7 +38,7 @@ internal class DetailsPluginCommandOptionsHandler : ICommandOptionsHandler<Detai
         try
         {
             var relativeUrl = $"plugins/details/{options.Id}";
-            var result = await _httpRequestService.GetRequestAsync<Result<PluginDetailsResponse?>>($"{_endpoint.GetDefaultHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var result = await _httpRequestService.GetRequestAsync<Result<PluginDetailsResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", cancellationToken);
 
             var payLoad = result.Payload;
             if (payLoad is { Succeeded: false })
