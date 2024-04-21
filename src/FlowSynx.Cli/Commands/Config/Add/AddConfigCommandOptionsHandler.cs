@@ -1,10 +1,9 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Config;
 using FlowSynx.IO.Exceptions;
 using FlowSynx.IO.Serialization;
-using FlowSynx.Net;
 
 namespace FlowSynx.Cli.Commands.Config.Add;
 
@@ -12,23 +11,20 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
     private readonly IDeserializer _deserializer;
 
     public AddConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService, IDeserializer deserializer)
+        IFlowSynxClient flowSynxClient, IDeserializer deserializer)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
         EnsureArg.IsNotNull(deserializer, nameof(deserializer));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
         _deserializer = deserializer;
     }
 
@@ -42,8 +38,6 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
     {
         try
         {
-            const string relativeUrl = "config/add";
-
             var specification = new Dictionary<string, string?>();
             if (!string.IsNullOrEmpty(options.Spec))
             {
@@ -51,13 +45,12 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
             }
 
             var request = new AddConfigRequest { Name = options.Name, Type = options.Type, Specifications = specification };
-            var result = await _httpRequestService.PostRequestAsync<AddConfigRequest, Result<AddConfigResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _flowSynxClient.AddConfig(request, cancellationToken);
 
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
-                _outputFormatter.WriteError(payLoad.Messages);
+            if (result is { Succeeded: false })
+                _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(payLoad?.Data);
+                _outputFormatter.Write(result?.Data);
         }
         catch (DeserializerException)
         {

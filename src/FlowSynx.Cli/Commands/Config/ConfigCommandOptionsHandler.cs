@@ -1,8 +1,7 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Config;
 
 namespace FlowSynx.Cli.Commands.Config;
 
@@ -10,21 +9,18 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
-    public ConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+    public ConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(ConfigCommandOptions options, CancellationToken cancellationToken)
@@ -37,15 +33,13 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
     {
         try
         {
-            const string relativeUrl = "config";
             var request = new ConfigListRequest { Type = options.Type };
-            var result = await _httpRequestService.PostRequestAsync<ConfigListRequest, Result<List<ConfigListResponse>?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _flowSynxClient.ConfigList(request, cancellationToken);
 
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
-                _outputFormatter.WriteError(payLoad.Messages);
+            if (result is { Succeeded: false })
+                _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(payLoad?.Data, options.Output);
+                _outputFormatter.Write(result?.Data, options.Output);
         }
         catch (Exception ex)
         {

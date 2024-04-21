@@ -1,8 +1,7 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Config;
 
 namespace FlowSynx.Cli.Commands.Config.Delete;
 
@@ -10,21 +9,18 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public DeleteConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(DeleteConfigCommandOptions options, CancellationToken cancellationToken)
@@ -37,15 +33,13 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
     {
         try
         {
-            const string relativeUrl = "config/delete";
-            var request = new DeleteConfigRequest { Name = options.Name };
-            var result = await _httpRequestService.DeleteRequestAsync<DeleteConfigRequest, Result<DeleteConfigResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
-
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
-                _outputFormatter.WriteError(payLoad.Messages);
+            var request = new DeleteConfigRequest() { Name = options.Name };
+            var result = await _flowSynxClient.DeleteConfig(request, cancellationToken);
+            
+            if (result is { Succeeded: false })
+                _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(payLoad?.Data);
+                _outputFormatter.Write(result?.Data);
         }
         catch (Exception ex)
         {

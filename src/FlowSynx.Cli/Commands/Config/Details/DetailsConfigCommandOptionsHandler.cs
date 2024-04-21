@@ -1,8 +1,7 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Config;
 
 namespace FlowSynx.Cli.Commands.Config.Details;
 
@@ -10,21 +9,18 @@ internal class DetailsConfigCommandOptionsHandler : ICommandOptionsHandler<Detai
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public DetailsConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(DetailsConfigCommandOptions options, CancellationToken cancellationToken)
@@ -37,14 +33,13 @@ internal class DetailsConfigCommandOptionsHandler : ICommandOptionsHandler<Detai
     {
         try
         {
-            var relativeUrl = $"config/details/{options.Name}";
-            var result = await _httpRequestService.GetRequestAsync<Result<ConfigDetailsResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", cancellationToken);
+            var request = new ConfigDetailsRequest { Name = options.Name };
+            var result = await _flowSynxClient.ConfigDetails(request, cancellationToken);
 
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
-                _outputFormatter.WriteError(payLoad.Messages);
+            if (result is { Succeeded: false })
+                _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(payLoad?.Data, options.Output);
+                _outputFormatter.Write(result?.Data, options.Output);
         }
         catch (Exception ex)
         {
