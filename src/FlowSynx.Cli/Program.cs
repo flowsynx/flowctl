@@ -2,7 +2,6 @@
 using FlowSynx.Cli.ApplicationBuilders;
 using FlowSynx.Cli.Extensions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Net;
 
 IServiceCollection serviceCollection = new ServiceCollection()
     .AddLocation()
@@ -11,8 +10,7 @@ IServiceCollection serviceCollection = new ServiceCollection()
     .AddCommands()
     .AddFormatter()
     .AddVersion()
-    .AddHttpClient()
-    .AddHttpRequestService();
+    .AddHttpClient();
 
 IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
