@@ -1,8 +1,7 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Plugins;
 
 namespace FlowSynx.Cli.Commands.Plugins;
 
@@ -10,20 +9,17 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public PluginsCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(PluginsCommandOptions options, CancellationToken cancellationToken)
@@ -36,17 +32,13 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
     {
         try
         {
-            var relativeUrl = "plugins";
-            if (!string.IsNullOrEmpty(options.Type))
-                relativeUrl = $"plugins/{options.Type}";
-
-            var result = await _httpRequestService.GetRequestAsync<Result<List<PluginsListResponse>?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", cancellationToken);
-
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
-                _outputFormatter.WriteError(payLoad.Messages);
+            var request = new PluginsListRequest {Namespace = options.Type};
+            var result = await _flowSynxClient.PluginsList(request, cancellationToken);
+            
+            if (result is { Succeeded: false })
+                _outputFormatter.WriteError(result.Messages);
             else
-                _outputFormatter.Write(payLoad?.Data, options.Output);
+                _outputFormatter.Write(result?.Data, options.Output);
         }
         catch (Exception ex)
         {

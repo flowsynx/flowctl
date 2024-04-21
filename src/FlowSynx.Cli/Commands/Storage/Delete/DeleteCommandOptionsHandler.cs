@@ -1,8 +1,7 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Storage;
 
 namespace FlowSynx.Cli.Commands.Storage.Delete;
 
@@ -10,21 +9,18 @@ internal class DeleteCommandOptionsHandler : ICommandOptionsHandler<DeleteComman
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public DeleteCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(DeleteCommandOptions options, CancellationToken cancellationToken)
@@ -37,8 +33,7 @@ internal class DeleteCommandOptionsHandler : ICommandOptionsHandler<DeleteComman
     {
         try
         {
-            const string relativeUrl = "storage/delete";
-            var request = new DeleteRequest
+            var request = new DeleteRequest()
             {
                 Path = options.Path,
                 Include = options.Include,
@@ -51,19 +46,17 @@ internal class DeleteCommandOptionsHandler : ICommandOptionsHandler<DeleteComman
                 Recurse = options.Recurse
             };
 
-            var result = await _httpRequestService.DeleteRequestAsync<DeleteRequest, Result<DeleteResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
-
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
+            var result = await _flowSynxClient.Delete(request, cancellationToken);
+            if (result is { Succeeded: false })
             {
-                _outputFormatter.WriteError(payLoad.Messages);
+                _outputFormatter.WriteError(result.Messages);
             }
             else
             {
-                if (payLoad?.Data is not null)
-                    _outputFormatter.Write(payLoad.Data);
+                if (result?.Data is not null)
+                    _outputFormatter.Write(result.Data);
                 else
-                    _outputFormatter.Write(payLoad?.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

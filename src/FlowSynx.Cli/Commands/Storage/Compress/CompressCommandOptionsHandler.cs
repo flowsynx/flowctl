@@ -1,8 +1,8 @@
 ﻿using EnsureThat;
 using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Storage;
 
 namespace FlowSynx.Cli.Commands.Storage.Compress;
 
@@ -10,21 +10,18 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public CompressCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(CompressCommandOptions options, CancellationToken cancellationToken)
@@ -37,8 +34,7 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
     {
         try
         {
-            const string relativeUrl = "storage/compress";
-            var request = new CompressRequest
+            var request = new CompressRequest()
             {
                 Path = options.Path,
                 Kind = options.Kind.ToString(),
@@ -52,10 +48,23 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
                 Recurse = options.Recurse,
                 MaxResults = options.MaxResults,
                 Hashing = options.Hashing,
-                CompressType = options.CompressType.ToString(),
+                CompressType = options.CompressType.ToString()
             };
 
-            var result = await _httpRequestService.PostRequestAsync($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _flowSynxClient.Compress(request, cancellationToken);
+
+            if (!result.Succeeded)
+            {
+                _outputFormatter.WriteError(result.Messages);
+                return;
+            }
+
+            if (result.Data.Content == null)
+            {
+                _outputFormatter.WriteError("No data received!");
+                return;
+            }
+
             var filePath = options.SaveTo;
             if (Directory.Exists(filePath))
             {
@@ -65,7 +74,7 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
 
             if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
-                await StreamHelper.WriteStream(filePath, result.Payload, cancellationToken);
+                await StreamHelper.WriteStream(filePath, result.Data.Content, cancellationToken);
                 _outputFormatter.Write($"Data saved to the '{filePath}' successfully.");
             }
             else

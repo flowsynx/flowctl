@@ -9,7 +9,6 @@ using FlowSynx.Cli.Commands.Config;
 using FlowSynx.Cli.Formatter;
 using FlowSynx.Environment;
 using FlowSynx.IO;
-using FlowSynx.Net;
 using FlowSynx.Logging;
 using FlowSynx.Cli.Commands.Plugins;
 using FlowSynx.Cli.Commands.Version;
@@ -20,6 +19,7 @@ using FlowSynx.Cli.Commands.Init;
 using FlowSynx.Cli.Commands.Run;
 using FlowSynx.Cli.Commands.Stop;
 using FlowSynx.Cli.Commands.Uninstall;
+using FlowSynx.Client;
 
 namespace FlowSynx.Cli.Extensions;
 
@@ -54,9 +54,10 @@ public static class ServiceCollectionExtensions
         services.AddCompressions();
         services.AddEndpoint();
         services.AddSerialization();
-        services.AddHttpRequestService();
         services.AddSingleton(AnsiConsole.Console);
         services.AddTransient<ICliApplicationBuilder, CliApplicationBuilder>();
+        services.AddScoped<IFlowSynxClient, FlowSynxClient>();
+        services.AddSingleton(new FlowSynxClientConnection());
         return services;
     }
 

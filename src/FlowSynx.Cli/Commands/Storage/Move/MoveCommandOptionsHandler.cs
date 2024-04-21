@@ -1,8 +1,8 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Storage;
 using FlowSynx.Environment;
-using FlowSynx.Net;
 
 namespace FlowSynx.Cli.Commands.Storage.Move;
 
@@ -11,20 +11,18 @@ internal class MoveCommandOptionsHandler : ICommandOptionsHandler<MoveCommandOpt
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
     private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public MoveCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(MoveCommandOptions options, CancellationToken cancellationToken)
@@ -37,7 +35,6 @@ internal class MoveCommandOptionsHandler : ICommandOptionsHandler<MoveCommandOpt
     {
         try
         {
-            const string relativeUrl = "storage/move";
             var request = new MoveRequest
             {
                 SourcePath = options.SourcePath,
@@ -49,21 +46,22 @@ internal class MoveCommandOptionsHandler : ICommandOptionsHandler<MoveCommandOpt
                 MinSize = options.MinSize,
                 MaxSize = options.MaxSize,
                 CaseSensitive = options.CaseSensitive,
-                Recurse = options.Recurse
+                Recurse = options.Recurse,
+                ClearDestinationPath = options.ClearDestinationPath,
+                CreateEmptyDirectories = options.CreateEmptyDirectories
             };
-            var result = await _httpRequestService.PostRequestAsync<MoveRequest, Result<MoveResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
-
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
+            var result = await _flowSynxClient.Move(request, cancellationToken);
+            
+            if (result is { Succeeded: false })
             {
-                _outputFormatter.WriteError(payLoad.Messages);
+                _outputFormatter.WriteError(result.Messages);
             }
             else
             {
-                if (payLoad?.Data is not null)
-                    _outputFormatter.Write(payLoad.Data);
+                if (result?.Data is not null)
+                    _outputFormatter.Write(result.Data);
                 else
-                    _outputFormatter.Write(payLoad?.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

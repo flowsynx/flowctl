@@ -1,8 +1,7 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Storage;
 
 namespace FlowSynx.Cli.Commands.Storage.PurgeDirectory;
 
@@ -10,21 +9,18 @@ internal class PurgeDirectoryCommandOptionsHandler : ICommandOptionsHandler<Purg
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public PurgeDirectoryCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(PurgeDirectoryCommandOptions options, CancellationToken cancellationToken)
@@ -37,21 +33,19 @@ internal class PurgeDirectoryCommandOptionsHandler : ICommandOptionsHandler<Purg
     {
         try
         {
-            const string relativeUrl = "storage/purge";
-            var request = new PurgeDirectoryRequest { Path = options.Path };
-            var result = await _httpRequestService.DeleteRequestAsync<PurgeDirectoryRequest, Result<PurgeDirectoryResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
-
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
+            var request = new PurgeDirectoryRequest() { Path = options.Path };
+            var result = await _flowSynxClient.PurgeDirectory(request, cancellationToken);
+            
+            if (result is { Succeeded: false })
             {
-                _outputFormatter.WriteError(payLoad.Messages);
+                _outputFormatter.WriteError(result.Messages);
             }
             else
             {
-                if (payLoad?.Data is not null)
-                    _outputFormatter.Write(payLoad.Data);
+                if (result?.Data is not null)
+                    _outputFormatter.Write(result.Data);
                 else
-                    _outputFormatter.Write(payLoad?.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

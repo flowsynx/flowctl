@@ -1,7 +1,6 @@
 ﻿using EnsureThat;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
 
 namespace FlowSynx.Cli.Commands.Health;
 
@@ -9,19 +8,16 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public HealthCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(HealthCommandOptions options, CancellationToken cancellationToken)
@@ -34,11 +30,8 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
     {
         try
         {
-            const string relativeUrl = "health";
-            var result = await _httpRequestService.GetRequestAsync<HealthCheckResponse>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", cancellationToken);
-
-            var payLoad = result.Payload;
-            _outputFormatter.Write(payLoad?.HealthChecks.ToList(), options.Output);
+            var result = await _flowSynxClient.Health(cancellationToken);
+            _outputFormatter.Write(result?.HealthChecks.ToList(), options.Output);
         }
         catch (Exception ex)
         {

@@ -16,6 +16,8 @@ internal class MoveCommand : BaseCommand<MoveCommandOptions, MoveCommandOptionsH
         var maxSizeOption = new Option<string?>("--max-size", "Filter entities smaller than this in KiB or suffix B|K|M|G|T|P [default: off]");
         var caseSensitiveOption = new Option<bool?>("--case-sensitive", getDefaultValue: () => false, "Ignore or apply case sensitive in filters");
         var recurseOption = new Option<bool?>("--recurse", getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
+        var clearDestinationPathOption = new Option<bool?>("--clear-destination-path", getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
+        var createEmptyDirectoriesOption = new Option<bool?>("--create-empty-directories", getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
 
         AddOption(sourcePathOption);
         AddOption(destinationPathOption);
@@ -27,5 +29,7 @@ internal class MoveCommand : BaseCommand<MoveCommandOptions, MoveCommandOptionsH
         AddOption(maxSizeOption);
         AddOption(caseSensitiveOption);
         AddOption(recurseOption);
+        AddOption(clearDestinationPathOption);
+        AddOption(createEmptyDirectoriesOption);
     }
 }

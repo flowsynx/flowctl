@@ -1,8 +1,7 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Storage;
 
 namespace FlowSynx.Cli.Commands.Storage.Size;
 
@@ -10,21 +9,18 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public SizeCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(SizeCommandOptions options, CancellationToken cancellationToken)
@@ -37,7 +33,6 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
     {
         try
         {
-            const string relativeUrl = "storage/size";
             var request = new SizeRequest
             {
                 Path = options.Path,
@@ -53,20 +48,18 @@ internal class SizeCommandOptionsHandler : ICommandOptionsHandler<SizeCommandOpt
                 Full = options.Full,
                 MaxResults = options.MaxResults
             };
-
-            var result = await _httpRequestService.PostRequestAsync<SizeRequest, Result<SizeResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
-
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
+            var result = await _flowSynxClient.Size(request, cancellationToken);
+            
+            if (result is { Succeeded: false })
             {
-                _outputFormatter.WriteError(payLoad.Messages);
+                _outputFormatter.WriteError(result.Messages);
             }
             else
             {
-                if (payLoad?.Data is not null)
-                    _outputFormatter.Write(payLoad.Data, options.Output);
+                if (result?.Data is not null)
+                    _outputFormatter.Write(result.Data, options.Output);
                 else
-                    _outputFormatter.Write(payLoad?.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

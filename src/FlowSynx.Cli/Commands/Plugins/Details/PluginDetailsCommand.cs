@@ -2,7 +2,7 @@
 
 namespace FlowSynx.Cli.Commands.Plugins.Details;
 
-internal class PluginDetailsCommand : BaseCommand<DetailsPluginCommandOptions, DetailsPluginCommandOptionsHandler>
+internal class PluginDetailsCommand : BaseCommand<PluginDetailsCommandOptions, PluginDetailsCommandOptionsHandler>
 {
     public PluginDetailsCommand() : base("details", "Display details about a particular plugin")
     {

@@ -1,8 +1,7 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Storage;
 
 namespace FlowSynx.Cli.Commands.Storage.List;
 
@@ -10,21 +9,18 @@ internal class ListCommandOptionsHandler : ICommandOptionsHandler<ListCommandOpt
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public ListCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(ListCommandOptions options, CancellationToken cancellationToken)
@@ -37,8 +33,7 @@ internal class ListCommandOptionsHandler : ICommandOptionsHandler<ListCommandOpt
     {
         try
         {
-            const string relativeUrl = "storage/list";
-            var request = new ListRequest
+            var request = new ListRequest()
             {
                 Path = options.Path,
                 Kind = options.Kind,
@@ -52,22 +47,22 @@ internal class ListCommandOptionsHandler : ICommandOptionsHandler<ListCommandOpt
                 Recurse = options.Recurse,
                 Full = options.Full,
                 Sorting = options.Sorting,
-                MaxResults = options.MaxResults
+                MaxResults = options.MaxResults,
+                ShowMetadata = options.ShowMetadata
             };
 
-            var result = await _httpRequestService.PostRequestAsync<ListRequest, Result<List<ListResponse>?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
-
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
+            var result = await _flowSynxClient.List(request, cancellationToken);
+            
+            if (result is { Succeeded: false })
             {
-                _outputFormatter.WriteError(payLoad.Messages);
+                _outputFormatter.WriteError(result.Messages);
             }
             else
             {
-                if (payLoad?.Data is not null)
-                    _outputFormatter.Write(payLoad.Data, options.Output);
+                if (result?.Data is not null)
+                    _outputFormatter.Write(result.Data, options.Output);
                 else
-                    _outputFormatter.Write(payLoad?.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

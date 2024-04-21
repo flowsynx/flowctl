@@ -1,9 +1,8 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Storage;
 using FlowSynx.IO;
-using FlowSynx.Net;
 
 namespace FlowSynx.Cli.Commands.Storage.Write;
 
@@ -11,21 +10,18 @@ internal class WriteCommandOptionsHandler : ICommandOptionsHandler<WriteCommandO
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public WriteCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(WriteCommandOptions options, CancellationToken cancellationToken)
@@ -38,8 +34,6 @@ internal class WriteCommandOptionsHandler : ICommandOptionsHandler<WriteCommandO
     {
         try
         {
-            const string relativeUrl = "storage/write";
-
             if (string.IsNullOrEmpty(options.Data) && !string.IsNullOrEmpty(options.FileToUpload))
             {
                 if (!File.Exists(options.FileToUpload))
@@ -52,20 +46,19 @@ internal class WriteCommandOptionsHandler : ICommandOptionsHandler<WriteCommandO
             if (options.Data is null)
                 throw new Exception("The content is empty. Please provide a Base64String data.");
 
-            var request = new WriteRequest { Path = options.Path, Data = options.Data };
-            var result = await _httpRequestService.PostRequestAsync<WriteRequest, Result<WriteResponse?>>($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
-
-            var payLoad = result.Payload;
-            if (payLoad is { Succeeded: false })
+            var request = new WriteRequest { Path = options.Path, Data = options.Data, Overwrite = options.Overwrite };
+            var result = await _flowSynxClient.Write(request, cancellationToken);
+            
+            if (result is { Succeeded: false })
             {
-                _outputFormatter.WriteError(payLoad.Messages);
+                _outputFormatter.WriteError(result.Messages);
             }
             else
             {
-                if (payLoad?.Data is not null)
-                    _outputFormatter.Write(payLoad.Data);
+                if (result?.Data is not null)
+                    _outputFormatter.Write(result.Data);
                 else
-                    _outputFormatter.Write(payLoad?.Messages);
+                    _outputFormatter.Write(result?.Messages);
             }
         }
         catch (Exception ex)

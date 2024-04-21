@@ -1,18 +1,17 @@
 ﻿using EnsureThat;
-using FlowSynx.Abstractions;
 using FlowSynx.Cli.Formatter;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.Storage;
+using FlowSynx.Client.Requests.Plugins;
 
-namespace FlowSynx.Cli.Commands.Storage.DeleteFile;
+namespace FlowSynx.Cli.Commands.Plugins.Details;
 
-internal class DeleteFileCommandOptionsHandler : ICommandOptionsHandler<DeleteFileCommandOptions>
+internal class PluginDetailsCommandOptionsHandler : ICommandOptionsHandler<PluginDetailsCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
     private readonly IFlowSynxClient _flowSynxClient;
 
-    public DeleteFileCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
+    public PluginDetailsCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
         IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
@@ -24,30 +23,23 @@ internal class DeleteFileCommandOptionsHandler : ICommandOptionsHandler<DeleteFi
         _flowSynxClient = flowSynxClient;
     }
 
-    public async Task<int> HandleAsync(DeleteFileCommandOptions options, CancellationToken cancellationToken)
+    public async Task<int> HandleAsync(PluginDetailsCommandOptions options, CancellationToken cancellationToken)
     {
         await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task Execute(DeleteFileCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(PluginDetailsCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
-            var request = new DeleteFileRequest { Path = options.Path };
-            var result = await _flowSynxClient.DeleteFile(request, cancellationToken);
+            var request = new PluginDetailsRequest {Id = options.Id};
+            var result = await _flowSynxClient.PluginDetails(request, cancellationToken);
             
             if (result is { Succeeded: false })
-            {
                 _outputFormatter.WriteError(result.Messages);
-            }
             else
-            {
-                if (result?.Data is not null)
-                    _outputFormatter.Write(result.Data);
-                else
-                    _outputFormatter.Write(result?.Messages);
-            }
+                _outputFormatter.Write(result?.Data, options.Output);
         }
         catch (Exception ex)
         {

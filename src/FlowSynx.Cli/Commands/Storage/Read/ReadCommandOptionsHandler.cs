@@ -1,8 +1,8 @@
 ﻿using EnsureThat;
 using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.Net;
+using FlowSynx.Client;
+using FlowSynx.Client.Requests.Storage;
 
 namespace FlowSynx.Cli.Commands.Storage.Read;
 
@@ -10,21 +10,18 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
-    private readonly IHttpRequestService _httpRequestService;
+    private readonly IFlowSynxClient _flowSynxClient;
 
     public ReadCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IEndpoint endpoint, IHttpRequestService httpRequestService)
+        IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
-        EnsureArg.IsNotNull(httpRequestService, nameof(httpRequestService));
+        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _endpoint = endpoint;
-        _httpRequestService = httpRequestService;
+        _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(ReadCommandOptions options, CancellationToken cancellationToken)
@@ -37,9 +34,8 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
     {
         try
         {
-            const string relativeUrl = "storage/read";
             var request = new ReadRequest { Path = options.Path };
-            var result = await _httpRequestService.PostRequestAsync($"{_endpoint.FlowSynxHttpEndpoint()}/{relativeUrl}", request, cancellationToken);
+            var result = await _flowSynxClient.Read(request, cancellationToken);
 
             var filePath = options.SaveTo;
             if (Directory.Exists(filePath))
@@ -50,7 +46,7 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
 
             if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
-                await StreamHelper.WriteStream(filePath, result.Payload, cancellationToken);
+                await StreamHelper.WriteStream(filePath, result, cancellationToken);
             }
             else
             {
