@@ -6,7 +6,7 @@ internal class UpdateCommand : BaseCommand<UpdateCommandOptions, UpdateCommandOp
 {
     public UpdateCommand() : base("update", "Update FlowSynx system and Cli")
     {
-        var forceOption = new Option<bool>("--force" , getDefaultValue: () => false, description: "Force terminate FlowSynx system if it is running");
+        var forceOption = new Option<bool>(new[] { "-f", "--force" }, getDefaultValue: () => false, description: "Force terminate FlowSynx system if it is running");
 
         AddOption(forceOption);
     }

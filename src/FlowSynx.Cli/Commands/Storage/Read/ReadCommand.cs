@@ -6,10 +6,10 @@ internal class ReadCommand : BaseCommand<ReadCommandOptions, ReadCommandOptionsH
 {
     public ReadCommand() : base("read", "List of entities regarding specific path")
     {
-        var pathOption = new Option<string>("--path", "The path to get about") { IsRequired = true };
-        var hashOption = new Option<bool?>("--hashing", getDefaultValue: () => false, "The path to get about");
-        var savePathOption = new Option<string>("--save-to", "The path to get about") { IsRequired = true };
-        var overWriteOption = new Option<bool?>("--overwrite", getDefaultValue: () => false, "The path to get about");
+        var pathOption = new Option<string>(new[] { "-p", "--path" }, "The path to get about") { IsRequired = true };
+        var hashOption = new Option<bool?>(new[] { "-h", "--hashing" }, getDefaultValue: () => false, "The path to get about");
+        var savePathOption = new Option<string>(new[] { "-s", "--save-to" }, "The path to get about") { IsRequired = true };
+        var overWriteOption = new Option<bool?>(new[] { "-o", "--overwrite" }, getDefaultValue: () => false, "The path to get about");
 
         AddOption(pathOption);
         AddOption(hashOption);

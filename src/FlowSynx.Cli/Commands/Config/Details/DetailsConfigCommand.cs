@@ -6,8 +6,8 @@ internal class DetailsConfigCommand : BaseCommand<DetailsConfigCommandOptions, D
 {
     public DetailsConfigCommand() : base("details", "Get details about configuration section")
     {
-        var nameOption = new Option<string>("--name", "The configuration section name") { IsRequired = true };
-        var outputFormatOption = new Option<Output>("--output", getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var nameOption = new Option<string>(new[] { "-n", "--name" }, "The configuration section name") { IsRequired = true };
+        var outputFormatOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(nameOption);
         AddOption(outputFormatOption);

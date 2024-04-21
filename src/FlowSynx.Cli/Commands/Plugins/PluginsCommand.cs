@@ -7,8 +7,8 @@ internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsComman
 {
     public PluginsCommand() : base("plugins", "Display list and details of plugins supported by FlowSynx system")
     {
-        var typeOption = new Option<string>("--type", "The namespace of plugin (like Storage)");
-        var outputOption = new Option<Output>("--output", getDefaultValue: () => Output.Json, "Formatting CLI output");
+        var typeOption = new Option<string>(new[] { "-t", "--type" }, "The namespace of plugin (like Storage)");
+        var outputOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(typeOption);
         AddOption(outputOption);

@@ -6,7 +6,7 @@ internal class ExistFileCommand : BaseCommand<ExistFileCommandOptions, ExistFile
 {
     public ExistFileCommand() : base("exist", "Check the entity exist on specific path")
     {
-        var pathOption = new Option<string>("--path", "The path to get about") { IsRequired = true };
+        var pathOption = new Option<string>(new[] { "-p", "--path" }, "The path to get about") { IsRequired = true };
 
         AddOption(pathOption);
     }
