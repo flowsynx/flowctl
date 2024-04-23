@@ -22,6 +22,7 @@ internal class CompressCommand : BaseCommand<CompressCommandOptions, CompressCom
         var compressTypeOption = new Option<CompressType?>(new[] { "-t", "--compress-type" }, getDefaultValue: () => CompressType.Zip, "Display metadata in response data [default: off]");
         var savePathOption = new Option<string>(new[] { "-s", "--save-to" }, "The path to get about") { IsRequired = true };
         var overWriteOption = new Option<bool?>(new[] { "-w", "--overwrite" }, getDefaultValue: () => false, "The path to get about");
+        var urlOption = new Option<string?>(new[] { "-u", "--url" }, "The address that specify a URL to connect on remote FlowSynx system");
 
         AddOption(pathOption);
         AddOption(kindOption);
@@ -38,5 +39,6 @@ internal class CompressCommand : BaseCommand<CompressCommandOptions, CompressCom
         AddOption(compressTypeOption);
         AddOption(savePathOption);
         AddOption(overWriteOption);
+        AddOption(urlOption);
     }
 }

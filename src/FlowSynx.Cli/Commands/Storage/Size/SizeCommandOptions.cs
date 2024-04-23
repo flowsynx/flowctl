@@ -14,5 +14,6 @@ internal class SizeCommandOptions : ICommandOptions
     public bool? CaseSensitive { get; set; } = false;
     public bool? Recurse { get; set; } = false;
     public int? MaxResults { get; set; }
+    public string? Url { get; set; } = string.Empty;
     public Output Output { get; set; } = Output.Json;
 }

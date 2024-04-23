@@ -33,6 +33,9 @@ internal class CopyCommandOptionsHandler : ICommandOptionsHandler<CopyCommandOpt
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var request = new CopyRequest()
             {
                 SourcePath = options.SourcePath,

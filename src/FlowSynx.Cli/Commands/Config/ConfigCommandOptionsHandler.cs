@@ -2,6 +2,7 @@
 using FlowSynx.Cli.Formatter;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Config;
+using FlowSynx.Client.Responses.Config;
 
 namespace FlowSynx.Cli.Commands.Config;
 
@@ -33,6 +34,9 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var request = new ConfigListRequest { Type = options.Type };
             var result = await _flowSynxClient.ConfigList(request, cancellationToken);
 

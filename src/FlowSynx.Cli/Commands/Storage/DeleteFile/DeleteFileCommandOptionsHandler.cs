@@ -34,6 +34,9 @@ internal class DeleteFileCommandOptionsHandler : ICommandOptionsHandler<DeleteFi
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var request = new DeleteFileRequest { Path = options.Path };
             var result = await _flowSynxClient.DeleteFile(request, cancellationToken);
             

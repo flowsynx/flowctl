@@ -15,6 +15,7 @@ internal class DeleteCommand : BaseCommand<DeleteCommandOptions, DeleteCommandOp
         var maxSizeOption = new Option<string?>("--max-size", "Filter entities smaller than this in KiB or suffix B|K|M|G|T|P [default: off]");
         var caseSensitiveOption = new Option<bool?>("--case-sensitive", getDefaultValue: () => false, "Ignore or apply case sensitive in filters");
         var recurseOption = new Option<bool?>(new[] { "-r", "--recurse" }, getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
+        var urlOption = new Option<string?>(new[] { "-u", "--url" }, "The address that specify a URL to connect on remote FlowSynx system");
 
         AddOption(pathOption);
         AddOption(includeOption);
@@ -25,5 +26,6 @@ internal class DeleteCommand : BaseCommand<DeleteCommandOptions, DeleteCommandOp
         AddOption(maxSizeOption);
         AddOption(caseSensitiveOption);
         AddOption(recurseOption);
+        AddOption(urlOption);
     }
 }

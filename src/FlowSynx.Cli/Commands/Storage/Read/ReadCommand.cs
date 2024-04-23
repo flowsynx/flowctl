@@ -10,10 +10,12 @@ internal class ReadCommand : BaseCommand<ReadCommandOptions, ReadCommandOptionsH
         var hashOption = new Option<bool?>(new[] { "-h", "--hashing" }, getDefaultValue: () => false, "The path to get about");
         var savePathOption = new Option<string>(new[] { "-s", "--save-to" }, "The path to get about") { IsRequired = true };
         var overWriteOption = new Option<bool?>(new[] { "-o", "--overwrite" }, getDefaultValue: () => false, "The path to get about");
+        var urlOption = new Option<string?>(new[] { "-u", "--url" }, "The address that specify a URL to connect on remote FlowSynx system");
 
         AddOption(pathOption);
         AddOption(hashOption);
         AddOption(savePathOption);
         AddOption(overWriteOption);
+        AddOption(urlOption);
     }
 }

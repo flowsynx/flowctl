@@ -34,6 +34,9 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var request = new CompressRequest()
             {
                 Path = options.Path,

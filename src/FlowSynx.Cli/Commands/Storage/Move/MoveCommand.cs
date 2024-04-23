@@ -18,6 +18,7 @@ internal class MoveCommand : BaseCommand<MoveCommandOptions, MoveCommandOptionsH
         var recurseOption = new Option<bool?>(new[] { "-r", "--recurse" }, getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
         var clearDestinationPathOption = new Option<bool?>(new[] { "-cp", "--clear-destination-path" }, getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
         var createEmptyDirectoriesOption = new Option<bool?>(new[] { "-cd", "--create-empty-directories" }, getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
+        var urlOption = new Option<string?>(new[] { "-u", "--url" }, "The address that specify a URL to connect on remote FlowSynx system");
 
         AddOption(sourcePathOption);
         AddOption(destinationPathOption);
@@ -31,5 +32,6 @@ internal class MoveCommand : BaseCommand<MoveCommandOptions, MoveCommandOptionsH
         AddOption(recurseOption);
         AddOption(clearDestinationPathOption);
         AddOption(createEmptyDirectoriesOption);
+        AddOption(urlOption);
     }
 }

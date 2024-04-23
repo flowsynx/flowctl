@@ -10,9 +10,11 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
     public ConfigCommand() : base("config", "Manage configurations related to FlowSynx System")
     {
         var typeOption = new Option<string>(new []{ "-t", "--type" }, "The path to get about");
+        var urlOption = new Option<string?>(new[] { "-u", "--url" }, "The address that specify a URL to connect on remote FlowSynx system");
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(typeOption);
+        AddOption(urlOption);
         AddOption(outputOption);
 
         AddCommand(new AddConfigCommand());

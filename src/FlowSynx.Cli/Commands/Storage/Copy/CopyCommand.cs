@@ -18,6 +18,7 @@ internal class CopyCommand : BaseCommand<CopyCommandOptions, CopyCommandOptionsH
         var maxSizeOption = new Option<string?>(new[] { "+ms", "--max-size" }, "Filter entities smaller than this in KiB or suffix B|K|M|G|T|P [default: off]");
         var caseSensitiveOption = new Option<bool?>(new[] { "-cs", "--case-sensitive" }, getDefaultValue: () => false, "Ignore or apply case sensitive in filters");
         var recurseOption = new Option<bool?>(new[] { "-r", "--recurse" }, getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
+        var urlOption = new Option<string?>(new[] { "-u", "--url" }, "The address that specify a URL to connect on remote FlowSynx system");
 
         AddOption(sourcePathOption);
         AddOption(destinationPathOption);
@@ -31,5 +32,6 @@ internal class CopyCommand : BaseCommand<CopyCommandOptions, CopyCommandOptionsH
         AddOption(maxSizeOption);
         AddOption(caseSensitiveOption);
         AddOption(recurseOption);
+        AddOption(urlOption);
     }
 }

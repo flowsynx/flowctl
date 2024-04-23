@@ -21,6 +21,7 @@ internal class CheckCommand : BaseCommand<CheckCommandOptions, CheckCommandOptio
         var checkSizeOption = new Option<bool?>(new[] { "-cks", "--check-size" }, getDefaultValue: () => false, "Display hashing content in response data [default: off]");
         var checkHashOption = new Option<bool?>(new[] { "-ckh", "--check-hash" }, getDefaultValue: () => false, "The maximum number of results to return [default: off]");
         var oneWayOption = new Option<bool?>(new[] { "-w", "--oneway" }, getDefaultValue: () => false, "Display metadata in response data [default: off]");
+        var urlOption = new Option<string?>(new[] { "-u", "--url" }, "The address that specify a URL to connect on remote FlowSynx system");
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(sourcePathOption);
@@ -38,6 +39,7 @@ internal class CheckCommand : BaseCommand<CheckCommandOptions, CheckCommandOptio
         AddOption(checkSizeOption);
         AddOption(checkHashOption);
         AddOption(oneWayOption);
+        AddOption(urlOption);
         AddOption(outputOption);
     }
 }

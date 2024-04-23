@@ -32,6 +32,9 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var request = new PluginsListRequest {Namespace = options.Type};
             var result = await _flowSynxClient.PluginsList(request, cancellationToken);
             

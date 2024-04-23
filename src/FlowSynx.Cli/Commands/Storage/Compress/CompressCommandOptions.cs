@@ -19,4 +19,5 @@ internal class CompressCommandOptions : ICommandOptions
     public FlowSynx.IO.Compression.CompressType? CompressType { get; set; } = FlowSynx.IO.Compression.CompressType.Zip;
     public string SaveTo { get; set; } = string.Empty;
     public bool? Overwrite { get; set; } = false;
+    public string? Url { get; set; } = string.Empty;
 }

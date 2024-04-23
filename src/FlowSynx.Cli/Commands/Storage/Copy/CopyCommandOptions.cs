@@ -14,4 +14,5 @@ internal class CopyCommandOptions : ICommandOptions
     public string? MaxSize { get; set; } = string.Empty;
     public bool? CaseSensitive { get; set; } = false;
     public bool? Recurse { get; set; } = false;
+    public string? Url { get; set; } = string.Empty;
 }

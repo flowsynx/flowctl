@@ -33,6 +33,9 @@ internal class ExistFileCommandOptionsHandler : ICommandOptionsHandler<ExistFile
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var request = new ExistRequest { Path = options.Path };
             var result = await _flowSynxClient.Exist(request, cancellationToken);
 

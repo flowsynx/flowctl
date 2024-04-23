@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Xml.Linq;
 using FlowSynx.IO.Serialization;
 using FlowSynx.Reflections;
+using System.Collections.Generic;
 
 namespace FlowSynx.Cli.Formatter;
 
@@ -58,6 +59,12 @@ public class OutputFormatter : IOutputFormatter
                 Write(json);
                 break;
         }
+    }
+
+    public void Write<T>(IEnumerable<T>? data, Output output = Output.Json)
+    {
+        var list = data != null ? data.ToList() : new List<T>();
+        Write(list, output);
     }
 
     public void Write<T>(List<T>? data, Output output = Output.Json)

@@ -8,9 +8,11 @@ internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsComman
     public PluginsCommand() : base("plugins", "Display list and details of plugins supported by FlowSynx system")
     {
         var typeOption = new Option<string>(new[] { "-t", "--type" }, "The namespace of plugin (like Storage)");
+        var urlOption = new Option<string?>(new[] { "-u", "--url" }, "The address that specify a URL to connect on remote FlowSynx system");
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(typeOption);
+        AddOption(urlOption);
         AddOption(outputOption);
 
         AddCommand(new PluginDetailsCommand());

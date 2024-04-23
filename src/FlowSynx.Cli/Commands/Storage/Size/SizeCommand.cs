@@ -18,6 +18,7 @@ internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsH
         var caseSensitiveOption = new Option<bool?>(new[] { "-cs", "--case-sensitive" }, getDefaultValue: () => false, "Ignore or apply case sensitive in filters");
         var recurseOption = new Option<bool?>(new[] { "-r", "--recurse" }, getDefaultValue: () => false, "Apply recursion on filtering entities in the specified path");
         var maxResultsOption = new Option<int?>(new[] { "-mr", "--max-results" }, "The maximum number of results to return [default: off]");
+        var urlOption = new Option<string?>(new[] { "-u", "--url" }, "The address that specify a URL to connect on remote FlowSynx system");
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(pathOption);
@@ -32,6 +33,7 @@ internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsH
         AddOption(caseSensitiveOption);
         AddOption(recurseOption);
         AddOption(maxResultsOption);
+        AddOption(urlOption);
         AddOption(outputOption);
     }
 }

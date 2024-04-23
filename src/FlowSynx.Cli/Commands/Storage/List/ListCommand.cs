@@ -21,6 +21,7 @@ internal class ListCommand : BaseCommand<ListCommandOptions, ListCommandOptionsH
         var hashingOption = new Option<bool?>(new[] { "-h", "--hashing" }, getDefaultValue: () => false, "Display hashing content in response data [default: off]");
         var maxResultsOption = new Option<int?>(new[] { "-mr", "--max-results" }, "The maximum number of results to return [default: off]");
         var showMetadataOption = new Option<bool?>(new[] { "-sm", "--show-metadata" }, getDefaultValue: () => false, "Display metadata in response data [default: off]");
+        var urlOption = new Option<string?>(new[] { "-u", "--url" }, "The address that specify a URL to connect on remote FlowSynx system");
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, getDefaultValue: () => Output.Json, "Formatting CLI output");
 
         AddOption(pathOption);
@@ -38,6 +39,7 @@ internal class ListCommand : BaseCommand<ListCommandOptions, ListCommandOptionsH
         AddOption(hashingOption);
         AddOption(maxResultsOption);
         AddOption(showMetadataOption);
+        AddOption(urlOption);
         AddOption(outputOption);
     }
 }

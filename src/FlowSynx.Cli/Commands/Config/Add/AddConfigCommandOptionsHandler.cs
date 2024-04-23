@@ -38,12 +38,13 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var specification = new Dictionary<string, string?>();
             if (!string.IsNullOrEmpty(options.Spec))
-            {
                 specification = _deserializer.Deserialize<Dictionary<string, string?>>(options.Spec);
-            }
-
+            
             var request = new AddConfigRequest { Name = options.Name, Type = options.Type, Specifications = specification };
             var result = await _flowSynxClient.AddConfig(request, cancellationToken);
 

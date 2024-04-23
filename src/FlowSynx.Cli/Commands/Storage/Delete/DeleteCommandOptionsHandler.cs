@@ -33,6 +33,9 @@ internal class DeleteCommandOptionsHandler : ICommandOptionsHandler<DeleteComman
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var request = new DeleteRequest()
             {
                 Path = options.Path,

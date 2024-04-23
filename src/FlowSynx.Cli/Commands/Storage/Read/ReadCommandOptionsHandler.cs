@@ -34,6 +34,9 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var request = new ReadRequest { Path = options.Path };
             var result = await _flowSynxClient.Read(request, cancellationToken);
 

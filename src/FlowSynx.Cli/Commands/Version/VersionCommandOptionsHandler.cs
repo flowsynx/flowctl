@@ -44,6 +44,9 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
                 return;
             }
 
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+            
             var result = await _flowSynxClient.Version(cancellationToken);
             if (result is { Succeeded: false })
             {
@@ -66,10 +69,9 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
                 }
             }
         }
-        catch
+        catch (Exception ex)
         {
-            dynamic version = options.Full is null or false ? new { Cli = cliVersion } : new { Cli = cliVersion, FlowSynx = "N/A" };
-            _outputFormatter.Write(version, options.Output);
+            _outputFormatter.WriteError(ex.Message);
         }
     }
 }

@@ -33,6 +33,9 @@ internal class CheckCommandOptionsHandler : ICommandOptionsHandler<CheckCommandO
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var request = new CheckRequest()
             {
                 SourcePath = options.SourcePath,

@@ -33,6 +33,9 @@ internal class DetailsConfigCommandOptionsHandler : ICommandOptionsHandler<Detai
     {
         try
         {
+            if (!string.IsNullOrEmpty(options.Url))
+                _flowSynxClient.ChangeConnection(options.Url);
+
             var request = new ConfigDetailsRequest { Name = options.Name };
             var result = await _flowSynxClient.ConfigDetails(request, cancellationToken);
 

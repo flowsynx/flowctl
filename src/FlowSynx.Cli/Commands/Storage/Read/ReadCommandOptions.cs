@@ -6,4 +6,5 @@ internal class ReadCommandOptions : ICommandOptions
     public bool? Hashing { get; set; } = false;
     public string SaveTo { get; set; } = string.Empty;
     public bool? Overwrite { get; set; } = false;
+    public string? Url { get; set; } = string.Empty;
 }
