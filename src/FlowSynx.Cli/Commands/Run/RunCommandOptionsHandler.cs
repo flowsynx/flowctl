@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using EnsureThat;
 using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 
 namespace FlowSynx.Cli.Commands.Run;
 
@@ -25,7 +25,7 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
     {
         try
         {
-            var flowSynxPath = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine");
+            var flowSynxPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "engine");
             var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
             if (!Path.Exists(flowSynxBinaryFile))
             {
@@ -38,7 +38,8 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
                 Arguments = GetArgumentStr(options),
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
-                RedirectStandardError = true
+                RedirectStandardError = true,
+                WorkingDirectory = flowSynxPath
             };
 
             var process = new Process { StartInfo = startInfo };
