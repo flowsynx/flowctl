@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 using EnsureThat;
 using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Services;
+using FlowSynx.Environment;
+using FlowSynx.IO;
 
 namespace FlowSynx.Cli.Commands.Update;
 
@@ -14,10 +16,11 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     private readonly ILocation _location;
     private readonly IGitHub _gitHub;
     private readonly IExtractor _extractor;
+    private readonly IProcessHandler _processHandler;
 
     public UpdateCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
         IVersionHandler versionHandler, ILocation location, IGitHub gitHub,
-        IExtractor extractor)
+        IExtractor extractor, IProcessHandler processHandler)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
@@ -32,6 +35,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         _location = location;
         _gitHub = gitHub;
         _extractor = extractor;
+        _processHandler = processHandler;
     }
 
     public async Task<int> HandleAsync(UpdateCommandOptions options, CancellationToken cancellationToken)
@@ -62,11 +66,11 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     private async Task UpdateFlowSynx(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
         var latestVersion = await _gitHub.GetLatestVersion(_gitHub.FlowSynxRepository, cancellationToken);
-        var binaryFile = PathHelper.LookupFlowSynxBinaryFilePath(Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "engine"));
+        var binaryFile = _location.LookupFlowSynxBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine"));
         var checkVersionResult = CheckVersion(binaryFile, options.FlowSynxVersion, latestVersion);
         if (checkVersionResult.IsUpdateAvailable)
         {
-            var isProcessStopped = ProcessHelper.IsProcessStopped("flowsynx", ".", options.Force);
+            var isProcessStopped = _processHandler.IsStopped("flowsynx", ".", options.Force);
             if (!isProcessStopped)
             {
                 _outputFormatter.Write($"The FlowSynx system is running. Please stop it before doing uninstall again.");
@@ -86,11 +90,11 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     private async Task UpdateDashboard(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
         var latestVersion = await _gitHub.GetLatestVersion(_gitHub.DashboardRepository, cancellationToken);
-        var binaryFile = PathHelper.LookupDashboardBinaryFilePath(Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "dashboard"));
+        var binaryFile = _location.LookupDashboardBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "dashboard"));
         var checkVersionResult = CheckVersion(binaryFile, options.DashboardVersion, latestVersion);
         if (checkVersionResult.IsUpdateAvailable)
         {
-            var isProcessStopped = ProcessHelper.IsProcessStopped("dashboard", ".", options.Force);
+            var isProcessStopped = _processHandler.IsStopped("dashboard", ".", options.Force);
             if (!isProcessStopped)
             {
                 _outputFormatter.Write($"The Dashboard is running. Please stop it before doing uninstall again.");
@@ -196,8 +200,8 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
 
     private void ExtractAsset(string sourcePath, string destinationPathName, CancellationToken cancellationToken)
     {
-        var extractTarget = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, destinationPathName, "downloadedFiles");
-        var destinationPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, destinationPathName);
+        var extractTarget = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, destinationPathName, "downloadedFiles");
+        var destinationPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, destinationPathName);
 
         Directory.CreateDirectory(extractTarget);
         _extractor.ExtractFile(sourcePath, extractTarget);
@@ -214,7 +218,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         _extractor.ExtractFile(sourcePath, extractTarget);
         File.Delete(sourcePath);
 
-        var synxUpdateExeFile = Path.GetFullPath(PathHelper.LookupSynxBinaryFilePath(extractTarget));
+        var synxUpdateExeFile = Path.GetFullPath(_location.LookupSynxBinaryFilePath(extractTarget));
         var files = Directory
             .GetFiles(extractTarget, "*.*", SearchOption.AllDirectories)
             .Where(name => !string.Equals(Path.GetFullPath(name), synxUpdateExeFile, StringComparison.InvariantCultureIgnoreCase));
@@ -227,7 +231,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             File.Copy(newPath, newPath.Replace(extractTarget, "."), true);
         }
 
-        var synxExeFile = Path.GetFullPath(PathHelper.LookupSynxBinaryFilePath(_location.RootLocation));
+        var synxExeFile = Path.GetFullPath(_location.LookupSynxBinaryFilePath(_location.RootLocation));
         await SelfUpdate(synxUpdateExeFile, synxExeFile, cancellationToken);
     }
     
@@ -242,10 +246,10 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             return;
 
         string selfWithoutExt = Path.Combine(directoryName, Path.GetFileNameWithoutExtension(selfFile));
-        StreamHelper.SaveStreamToFile(stream, selfWithoutExt + PathHelper.GetUpdateFilePath());
+        stream.WriteTo(selfWithoutExt + _location.GetUpdateFilePath());
 
-        string updateExeFile = selfWithoutExt + PathHelper.GetUpdateFilePath();
-        string scriptFile = selfWithoutExt + PathHelper.GetScriptFilePath();
+        string updateExeFile = selfWithoutExt + _location.GetUpdateFilePath();
+        string scriptFile = selfWithoutExt + _location.GetScriptFilePath();
 
         var updateScript = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
             string.Format(Resources.UpdateScript_Bat, selfFileName, updateExeFile, selfFile, updateExeFile, downloadedFilesPath) :
