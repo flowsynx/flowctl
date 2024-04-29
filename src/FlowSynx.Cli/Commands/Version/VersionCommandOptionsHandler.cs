@@ -1,7 +1,6 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Formatter;
-using FlowSynx.Client;
-using FlowSynx.Environment;
+using FlowSynx.Cli.Common;
+using FlowSynx.Cli.Services;
 
 namespace FlowSynx.Cli.Commands.Version;
 
@@ -9,69 +8,59 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IFlowSynxClient _flowSynxClient;
-    private readonly IVersion _version;
+    private readonly IVersionHandler _versionHandler;
 
     public VersionCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IFlowSynxClient flowSynxClient, IVersion version)
+         IVersionHandler versionHandler)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
-        EnsureArg.IsNotNull(version, nameof(version));
+        EnsureArg.IsNotNull(versionHandler, nameof(versionHandler));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _flowSynxClient = flowSynxClient;
-        _version = version;
+        _versionHandler = versionHandler;
     }
 
     public async Task<int> HandleAsync(VersionCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(() => Execute(options));
         return 0;
     }
 
-    private async Task Execute(VersionCommandOptions options, CancellationToken cancellationToken)
+    private Task Execute(VersionCommandOptions options)
     {
-        var cliVersion = _version.Version;
         try
         {
+            var cliVersion = _versionHandler.Version;
+
             if (options.Full is null or false)
             {
                 var version = new { Cli = cliVersion };
                 _outputFormatter.Write(version, options.Output);
-                return;
+                return Task.CompletedTask;
             }
 
-            if (!string.IsNullOrEmpty(options.Url))
-                _flowSynxClient.ChangeConnection(options.Url);
-            
-            var result = await _flowSynxClient.Version(cancellationToken);
-            if (result is { Succeeded: false })
-            {
-                _outputFormatter.WriteError(result.Messages);
-            }
-            else
-            {
-                if (result?.Data != null)
-                {
-                    var versionResponse = new VersionResponse
-                    {
-                        Cli = cliVersion,
-                        FlowSynx = result.Data.FlowSynx,
-                        OSVersion = result.Data.OSVersion,
-                        OSArchitecture = result.Data.OSArchitecture,
-                        OSType = result.Data.OSType,
+            var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "engine"));
+            var flowSynxVersion = _versionHandler.GetApplicationVersion(flowSynxBinaryFile);
 
-                    };
-                    _outputFormatter.Write(versionResponse, options.Output);
-                }
-            }
+            var dashboardBinaryFile = PathHelper.LookupDashboardBinaryFilePath(Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "dashboard"));
+            var dashboardVersion = _versionHandler.GetApplicationVersion(dashboardBinaryFile);
+
+            var fullVersion = new VersionResponse
+            {
+                Cli = cliVersion,
+                FlowSynx = string.IsNullOrEmpty(flowSynxVersion) ? "Not initialized" : flowSynxVersion,
+                Dashboard = string.IsNullOrEmpty(dashboardVersion) ? "Not initialized" : dashboardVersion
+            };
+
+            _outputFormatter.Write(fullVersion, options.Output);
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
             _outputFormatter.WriteError(ex.Message);
+            return Task.CompletedTask;
         }
     }
 }
