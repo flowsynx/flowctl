@@ -1,7 +1,9 @@
 ﻿using EnsureThat;
 using FlowSynx.Cli.Common;
 using FlowSynx.Environment;
+using FlowSynx.IO;
 using FlowSynx.IO.Serialization;
+using FlowSynx.Security;
 
 namespace FlowSynx.Cli.Services;
 
@@ -60,14 +62,14 @@ public class GitHub : IGitHub
         var uri = $"https://github.com/{Organization}/{repository}/releases/download/v{version}/{assetName}";
         var stream = await NetHelper.DownloadFile(uri, cancellationToken);
         var path = Path.Combine(destinationPath, assetName);
-        StreamHelper.SaveStreamToFile(stream, path);
+        stream.WriteTo(path);
         return path;
     }
 
     public async Task<bool> ValidateDownloadedAsset(string path, string repository, string version, string assetName, CancellationToken cancellationToken)
     {
         var expectedHash = await DownloadHashAsset(repository, version, assetName, cancellationToken);
-        var downloadHash = HashHelper.ComputeSha256Hash(path);
+        var downloadHash = HashHelper.Sha256.GetHash(path);
 
         if (string.Equals(downloadHash.Trim(), expectedHash.Trim(), StringComparison.CurrentCultureIgnoreCase))
             return true;
@@ -80,6 +82,18 @@ public class GitHub : IGitHub
     {
         var uri = $"https://github.com/{Organization}/{repository}/releases/download/v{version}/{assetHashName}";
         var stream = await NetHelper.DownloadFile(uri, cancellationToken);
-        return await HashHelper.GetAssetHashCode(stream, cancellationToken);
+        return await GetAssetHashCode(stream, cancellationToken);
     }
+
+    private async Task<string> GetAssetHashCode(Stream stream, CancellationToken cancellationToken)
+    {
+        using var sr = new StreamReader(stream);
+        var content = await sr.ReadToEndAsync(cancellationToken);
+        return content.Split('*')[0].Trim();
+    }
+}
+
+internal class GitHubTag
+{
+    public required string Name { get; set; }
 }
