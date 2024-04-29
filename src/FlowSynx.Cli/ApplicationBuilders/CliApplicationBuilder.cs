@@ -3,7 +3,7 @@ using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
 using Microsoft.Extensions.DependencyInjection;
-using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 
 namespace FlowSynx.Cli.ApplicationBuilders;
 
