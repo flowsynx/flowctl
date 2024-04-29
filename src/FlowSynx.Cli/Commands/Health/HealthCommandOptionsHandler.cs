@@ -1,5 +1,5 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services;
+using FlowSynx.Cli.Services.Abstracts;
 using FlowSynx.Client;
 
 namespace FlowSynx.Cli.Commands.Health;

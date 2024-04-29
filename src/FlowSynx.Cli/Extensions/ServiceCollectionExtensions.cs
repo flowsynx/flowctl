@@ -13,13 +13,14 @@ using FlowSynx.Cli.Commands.Plugins;
 using FlowSynx.Cli.Commands.Version;
 using FlowSynx.Cli.Commands.Health;
 using FlowSynx.Cli.Commands.Update;
-using FlowSynx.Cli.Services;
 using FlowSynx.Cli.Commands.Init;
 using FlowSynx.Cli.Commands.Run;
 using FlowSynx.Cli.Commands.Stop;
 using FlowSynx.Cli.Commands.Uninstall;
 using FlowSynx.Client;
 using FlowSynx.Cli.Commands.Dashboard;
+using FlowSynx.Cli.Services.Abstracts;
+using FlowSynx.Cli.Services.Concretes;
 
 namespace FlowSynx.Cli.Extensions;
 
@@ -78,7 +79,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddFormatter(this IServiceCollection services)
     {
-        services.AddTransient<ISpinner, Services.Spinner>()
+        services.AddTransient<ISpinner, Services.Concretes.Spinner>()
                 .AddTransient<IOutputFormatter, OutputFormatter>();
 
         return services;

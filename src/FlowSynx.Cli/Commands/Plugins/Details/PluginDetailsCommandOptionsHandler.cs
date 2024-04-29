@@ -1,5 +1,5 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services;
+using FlowSynx.Cli.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Plugins;
 

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using EnsureThat;
 using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Services;
+using FlowSynx.Cli.Services.Abstracts;
 
 namespace FlowSynx.Cli.Commands.Dashboard;
 

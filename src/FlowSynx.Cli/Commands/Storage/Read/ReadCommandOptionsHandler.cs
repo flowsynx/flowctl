@@ -1,6 +1,6 @@
 ﻿using EnsureThat;
 using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Services;
+using FlowSynx.Cli.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
 using FlowSynx.IO;
