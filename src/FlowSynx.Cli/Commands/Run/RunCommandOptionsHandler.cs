@@ -8,11 +8,15 @@ namespace FlowSynx.Cli.Commands.Run;
 internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
+    private readonly ILocation _location;
 
-    public RunCommandOptionsHandler(IOutputFormatter outputFormatter)
+    public RunCommandOptionsHandler(IOutputFormatter outputFormatter, ILocation location)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(location, nameof(location));
+
         _outputFormatter = outputFormatter;
+        _location = location;
     }
 
     public async Task<int> HandleAsync(RunCommandOptions options, CancellationToken cancellationToken)
@@ -25,8 +29,8 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
     {
         try
         {
-            var flowSynxPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "engine");
-            var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
+            var flowSynxPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine");
+            var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(flowSynxPath);
             if (!Path.Exists(flowSynxBinaryFile))
             {
                 _outputFormatter.WriteError(Resources.FlowSynxEngineIsNotInstalled);
