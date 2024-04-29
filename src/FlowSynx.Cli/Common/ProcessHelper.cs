@@ -19,4 +19,16 @@ internal static class ProcessHelper
             process.Kill();
         }
     }
+
+    public static bool IsProcessStopped(string processName, string machineAddress, bool force)
+    {
+        if (!IsProcessRunning(processName, machineAddress)) 
+            return true;
+
+        if (!force) 
+            return false;
+
+        TerminateProcess(processName, machineAddress);
+        return true;
+    }
 }
