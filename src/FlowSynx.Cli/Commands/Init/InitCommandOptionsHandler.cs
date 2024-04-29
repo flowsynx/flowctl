@@ -1,6 +1,7 @@
 ﻿using EnsureThat;
 using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Services;
+using FlowSynx.IO;
 
 namespace FlowSynx.Cli.Commands.Init;
 
@@ -11,22 +12,25 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     private readonly IVersionHandler _versionHandler;
     private readonly IGitHub _gitHub;
     private readonly IExtractor _extractor;
+    private readonly ILocation _location;
 
     public InitCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
         IVersionHandler versionHandler, IGitHub gitHub,
-        IExtractor extractor)
+        IExtractor extractor, ILocation location)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(versionHandler, nameof(versionHandler));
         EnsureArg.IsNotNull(gitHub, nameof(gitHub));
         EnsureArg.IsNotNull(extractor, nameof(extractor));
+        EnsureArg.IsNotNull(location, nameof(location));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _versionHandler = versionHandler;
         _gitHub = gitHub;
         _extractor = extractor;
+        _location = location;
     }
     
     public async Task<int> HandleAsync(InitCommandOptions options, CancellationToken cancellationToken)
@@ -41,11 +45,11 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         {
             _outputFormatter.Write("Beginning Initialize...");
 
-            var flowSynxPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "engine");
-            var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
+            var flowSynxPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine");
+            var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(flowSynxPath);
 
-            var dashboardPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "dashboard");
-            var dashboardBinaryFile = PathHelper.LookupDashboardBinaryFilePath(dashboardPath);
+            var dashboardPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "dashboard");
+            var dashboardBinaryFile = _location.LookupDashboardBinaryFilePath(dashboardPath);
 
             if (File.Exists(flowSynxBinaryFile) && File.Exists(dashboardBinaryFile))
             {
@@ -132,8 +136,8 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     
     private void ExtractAsset(string sourcePath, string destinationPathName, CancellationToken cancellationToken)
     {
-        var extractTarget = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, destinationPathName, "downloadedFiles");
-        var destinationPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, destinationPathName);
+        var extractTarget = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, destinationPathName, "downloadedFiles");
+        var destinationPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, destinationPathName);
 
         Directory.CreateDirectory(extractTarget);
         _extractor.ExtractFile(sourcePath, extractTarget);
