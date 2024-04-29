@@ -53,6 +53,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddOperatingSystemInfo()
                 .AddCompressions()
+                .AddProcessHandler()
                 .AddEndpoint()
                 .AddSerialization()
                 .AddSingleton(AnsiConsole.Console)
