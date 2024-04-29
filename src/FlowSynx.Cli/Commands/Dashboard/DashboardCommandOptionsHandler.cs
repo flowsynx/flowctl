@@ -8,11 +8,15 @@ namespace FlowSynx.Cli.Commands.Dashboard;
 internal class DashboardCommandOptionsHandler : ICommandOptionsHandler<DashboardCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
+    private readonly ILocation _location;
 
-    public DashboardCommandOptionsHandler(IOutputFormatter outputFormatter)
+    public DashboardCommandOptionsHandler(IOutputFormatter outputFormatter, ILocation location)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(location, nameof(location));
+
         _outputFormatter = outputFormatter;
+        _location = location;
     }
 
     public async Task<int> HandleAsync(DashboardCommandOptions options, CancellationToken cancellationToken)
@@ -25,8 +29,8 @@ internal class DashboardCommandOptionsHandler : ICommandOptionsHandler<Dashboard
     {
         try
         {
-            var dashboardPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "dashboard");
-            var dashboardBinaryFile = PathHelper.LookupDashboardBinaryFilePath(dashboardPath);
+            var dashboardPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "dashboard");
+            var dashboardBinaryFile = _location.LookupDashboardBinaryFilePath(dashboardPath);
             if (!Path.Exists(dashboardBinaryFile))
             {
                 _outputFormatter.WriteError(Resources.FlowSynxEngineIsNotInstalled);
