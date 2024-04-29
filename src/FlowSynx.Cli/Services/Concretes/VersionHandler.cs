@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using FlowSynx.Cli.Services.Abstracts;
 
-namespace FlowSynx.Cli.Services;
+namespace FlowSynx.Cli.Services.Concretes;
 
 public class VersionHandler : IVersionHandler
 {
@@ -27,13 +28,13 @@ public class VersionHandler : IVersionHandler
     {
         if (string.IsNullOrEmpty(latestVersion)) return false;
 
-        var current = new System.Version(currentVersion);
-        var latest = new System.Version(latestVersion);
+        var current = new Version(currentVersion);
+        var latest = new Version(latestVersion);
         return latest > current;
     }
 
     public string Normalize(string? version)
     {
-       return (!string.IsNullOrEmpty(version) && version.StartsWith("v")) ? version[1..] : "";
+        return !string.IsNullOrEmpty(version) && version.StartsWith("v") ? version[1..] : "";
     }
 }

@@ -5,8 +5,9 @@ using Newtonsoft.Json;
 using System.Xml.Linq;
 using FlowSynx.IO.Serialization;
 using FlowSynx.Reflections;
+using FlowSynx.Cli.Services.Abstracts;
 
-namespace FlowSynx.Cli.Services;
+namespace FlowSynx.Cli.Services.Concretes;
 
 public class OutputFormatter : IOutputFormatter
 {

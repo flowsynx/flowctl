@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Services;
+﻿namespace FlowSynx.Cli.Services.Abstracts;
 
 public interface IGitHub
 {
