@@ -1,6 +1,6 @@
 ﻿using EnsureThat;
 using FlowSynx.Abstractions;
-using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
 

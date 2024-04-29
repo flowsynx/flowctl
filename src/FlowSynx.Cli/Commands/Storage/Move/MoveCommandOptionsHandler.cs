@@ -1,5 +1,5 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
 using FlowSynx.Environment;
@@ -10,7 +10,6 @@ internal class MoveCommandOptionsHandler : ICommandOptionsHandler<MoveCommandOpt
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IEndpoint _endpoint;
     private readonly IFlowSynxClient _flowSynxClient;
 
     public MoveCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,

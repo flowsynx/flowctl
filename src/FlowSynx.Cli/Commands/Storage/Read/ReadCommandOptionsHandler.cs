@@ -1,6 +1,6 @@
 ﻿using EnsureThat;
 using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
 
@@ -49,7 +49,7 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
 
             if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
-                await StreamHelper.WriteStream(filePath, result, cancellationToken);
+                StreamHelper.WriteStream(filePath, result);
             }
             else
             {

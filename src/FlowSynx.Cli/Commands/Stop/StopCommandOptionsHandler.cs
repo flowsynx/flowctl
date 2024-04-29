@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using EnsureThat;
-using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 
 namespace FlowSynx.Cli.Commands.Stop;
 

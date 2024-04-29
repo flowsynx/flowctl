@@ -1,6 +1,6 @@
 ﻿using EnsureThat;
 using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
 
@@ -77,7 +77,7 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
 
             if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
-                await StreamHelper.WriteStream(filePath, result.Data.Content, cancellationToken);
+                StreamHelper.WriteStream(filePath, result.Data.Content);
                 _outputFormatter.Write($"Data saved to the '{filePath}' successfully.");
             }
             else

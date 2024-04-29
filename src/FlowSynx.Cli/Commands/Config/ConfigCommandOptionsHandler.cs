@@ -1,8 +1,7 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Config;
-using FlowSynx.Client.Responses.Config;
 
 namespace FlowSynx.Cli.Commands.Config;
 
