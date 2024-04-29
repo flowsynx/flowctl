@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using FlowSynx.Cli.ApplicationBuilders;
 using FlowSynx.Cli.Extensions;
-using FlowSynx.Cli.Formatter;
+using FlowSynx.Cli.Services;
 
 IServiceCollection serviceCollection = new ServiceCollection()
     .AddLocation()
@@ -10,6 +10,8 @@ IServiceCollection serviceCollection = new ServiceCollection()
     .AddCommands()
     .AddFormatter()
     .AddVersion()
+    .AddGitHub()
+    .AddExtractor()
     .AddHttpClient();
 
 IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
