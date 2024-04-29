@@ -3,6 +3,7 @@ using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Services;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
+using FlowSynx.IO;
 
 namespace FlowSynx.Cli.Commands.Storage.Compress;
 
@@ -77,7 +78,7 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
 
             if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
-                StreamHelper.WriteStream(filePath, result.Data.Content);
+                result.Data.Content.WriteTo(filePath);
                 _outputFormatter.Write($"Data saved to the '{filePath}' successfully.");
             }
             else

@@ -3,6 +3,7 @@ using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Services;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
+using FlowSynx.IO;
 
 namespace FlowSynx.Cli.Commands.Storage.Read;
 
@@ -49,7 +50,7 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
 
             if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
-                StreamHelper.WriteStream(filePath, result);
+                result.WriteTo(filePath);
             }
             else
             {
