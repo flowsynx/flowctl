@@ -2,11 +2,7 @@
 using System.Runtime.InteropServices;
 using EnsureThat;
 using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Formatter;
 using FlowSynx.Cli.Services;
-using FlowSynx.Environment;
-using FlowSynx.IO.Compression;
-using FlowSynx.IO.Serialization;
 
 namespace FlowSynx.Cli.Commands.Update;
 
@@ -14,177 +10,208 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IVersion _version;
-    private readonly IOperatingSystemInfo _operatingSystemInfo;
-    private readonly IDeserializer _deserializer;
+    private readonly IVersionHandler _versionHandler;
     private readonly ILocation _location;
-    private readonly Func<CompressType, ICompression> _compressionFactory;
+    private readonly IGitHub _gitHub;
+    private readonly IExtractor _extractor;
 
     public UpdateCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IVersion version, IOperatingSystemInfo operatingSystemInfo,
-        IDeserializer deserializer, ILocation location,
-        Func<CompressType, ICompression> compressionFactory)
+        IVersionHandler versionHandler, ILocation location, IGitHub gitHub,
+        IExtractor extractor)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(version, nameof(version));
-        EnsureArg.IsNotNull(operatingSystemInfo, nameof(operatingSystemInfo));
-        EnsureArg.IsNotNull(deserializer, nameof(deserializer));
-        EnsureArg.IsNotNull(compressionFactory, nameof(compressionFactory));
+        EnsureArg.IsNotNull(versionHandler, nameof(versionHandler));
+        EnsureArg.IsNotNull(location, nameof(location));
+        EnsureArg.IsNotNull(gitHub, nameof(gitHub));
+        EnsureArg.IsNotNull(extractor, nameof(extractor));
+
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _version = version;
-        _operatingSystemInfo = operatingSystemInfo;
-        _deserializer = deserializer;
+        _versionHandler = versionHandler;
         _location = location;
-        _compressionFactory = compressionFactory;
+        _gitHub = gitHub;
+        _extractor = extractor;
     }
-
-    private string FlowSynxArchiveFileName => $"flowsynx-{ArchiveName.ToLower()}";
-    private string FlowSynxArchiveHashFileName => $"flowsynx-{ArchiveName.ToLower()}.sha256";
-    private string FlowSynxCliArchiveFileName => $"synx-{ArchiveName.ToLower()}";
-    private string FlowSynxCliArchiveHashFileName => $"synx-{ArchiveName.ToLower()}.sha256";
-    private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
-    private string Extension => string.Equals(_operatingSystemInfo.Type, "windows", StringComparison.OrdinalIgnoreCase) ? "zip" : "tar.gz";
 
     public async Task<int> HandleAsync(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
-        DownloadUpdateResult result = new();
-        await _spinner.DisplayLineSpinnerAsync(async () => result = await DownloadAndValidate(options, cancellationToken));
-
-        if (result.Success)
-        {
-            try
-            {
-                await Task
-                    .Run(() => ExtractFlowSynx(result.FlowSynxDownloadPath, cancellationToken), cancellationToken)
-                    .ContinueWith(t =>
-                    {
-                        if (t.IsCanceled || t.IsFaulted)
-                        {
-                            var exception = t.Exception;
-                            throw new Exception(exception?.Message);
-                        }
-                        ExtractFlowSynxCli(result.CliDownloadPath, cancellationToken);
-                    }, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                _outputFormatter.WriteError(ex.Message);
-            }
-        }
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task<DownloadUpdateResult> DownloadAndValidate(UpdateCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
-            _outputFormatter.Write("Checking for updates...");
+            _outputFormatter.Write("Checking for FlowSynx updates...");
+            await UpdateFlowSynx(options, cancellationToken);
 
-            if (options.Force)
-            {
-                ProcessHelper.TerminateProcess("flowsynx", ".");
-                _outputFormatter.Write("The FlowSynx system was stopped successfully.");
-            }
-            else
-            {
-                if (ProcessHelper.IsProcessRunning("flowsynx", "."))
-                {
-                    _outputFormatter.Write("The FlowSynx engine is running. Please stop it by run the command: 'Synx stop', and try update again.");
-                    return new DownloadUpdateResult { Success = false };
-                }
-            }
+            _outputFormatter.Write("Checking for Dashboard updates...");
+            await UpdateDashboard(options, cancellationToken);
 
-            var latestVersion = await GetLatestVersion(GitHubHelper.CliRepository);
-            var currentVersion = $"v{_version.Version}";
-
-            if (IsUpdateAvailable(latestVersion, currentVersion))
-            {
-                _outputFormatter.Write($"An update is available! Version {latestVersion}");
-                _outputFormatter.Write("Beginning update...");
-
-                var flowSynxDownloadPath = await DownloadFlowSynxAsset(latestVersion, Path.GetTempPath(), cancellationToken);
-                var isFlowSynxValid = await ValidateFlowSynxDownloadedAsset(flowSynxDownloadPath, latestVersion, cancellationToken);
-
-                var cliDownloadPath = await DownloadCliAsset(latestVersion, Path.GetTempPath(), cancellationToken);
-                var isCliValid = await ValidateCliDownloadedAsset(cliDownloadPath, latestVersion, cancellationToken);
-
-                if (isFlowSynxValid && isCliValid)
-                {
-                    return new DownloadUpdateResult
-                    {
-                        Success = true,
-                        FlowSynxDownloadPath = flowSynxDownloadPath,
-                        CliDownloadPath = cliDownloadPath
-                    };
-                }
-
-                _outputFormatter.Write("Validating download - Fail!");
-                _outputFormatter.Write("The downloaded data may has been corrupted!");
-                return new DownloadUpdateResult { Success = false };
-            }
-
-            _outputFormatter.Write("The current version is up to dated");
-            return new DownloadUpdateResult { Success = false };
+            _outputFormatter.Write("Checking for CLI updates...");
+            await UpdateCli(options, cancellationToken);
         }
         catch (Exception ex)
         {
             _outputFormatter.WriteError(ex.Message);
-            return new DownloadUpdateResult { Success = false };
         }
     }
 
-    private async Task<bool> ValidateFlowSynxDownloadedAsset(string path, string latestVersion, CancellationToken cancellationToken)
+    private async Task UpdateFlowSynx(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
-        var expectedHash = await DownloadFlowSynxHashAsset(latestVersion, cancellationToken);
-        var downloadHash = HashHelper.ComputeSha256Hash(path);
-
-        if (string.Equals(downloadHash.Trim(), expectedHash.Trim(), StringComparison.CurrentCultureIgnoreCase))
-            return true;
-
-        File.Delete(path);
-        return false;
-    }
-
-    private Task ExtractFlowSynx(string sourcePath, CancellationToken cancellationToken)
-    {
-        var enginePath = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine");
-        var extractTarget = Path.Combine(enginePath, "downloadedFiles");
-
-        ExtractFile(sourcePath, extractTarget);
-        File.Delete(sourcePath);
-
-        Directory.CreateDirectory(enginePath);
-
-        foreach (var newPath in Directory.GetFiles(extractTarget, "*.*", SearchOption.AllDirectories))
+        var latestVersion = await _gitHub.GetLatestVersion(_gitHub.FlowSynxRepository, cancellationToken);
+        var binaryFile = PathHelper.LookupFlowSynxBinaryFilePath(Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "engine"));
+        var checkVersionResult = CheckVersion(binaryFile, options.FlowSynxVersion, latestVersion);
+        if (checkVersionResult.IsUpdateAvailable)
         {
-            if (cancellationToken.IsCancellationRequested)
-                break;
+            var isProcessStopped = ProcessHelper.IsProcessStopped("flowsynx", ".", options.Force);
+            if (!isProcessStopped)
+            {
+                _outputFormatter.Write($"The FlowSynx system is running. Please stop it before doing uninstall again.");
+                return;
+            }
 
-            File.Copy(newPath, newPath.Replace(extractTarget, enginePath), true);
+            var downloadAndValidate = await DownloadAndValidateAndExtractFlowSynx(checkVersionResult.Version, cancellationToken);
+            if (!downloadAndValidate)
+                return;
         }
-
-        Directory.Delete(extractTarget, true);
-        return Task.CompletedTask;
+        else
+        {
+            _outputFormatter.Write("The current FlowSynx's version is up to dated");
+        }
     }
 
-    private async Task<bool> ValidateCliDownloadedAsset(string path, string latestVersion, CancellationToken cancellationToken)
+    private async Task UpdateDashboard(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
-        var expectedHash = await DownloadCliHashAsset(latestVersion, cancellationToken);
-        var downloadHash = HashHelper.ComputeSha256Hash(path);
+        var latestVersion = await _gitHub.GetLatestVersion(_gitHub.DashboardRepository, cancellationToken);
+        var binaryFile = PathHelper.LookupDashboardBinaryFilePath(Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "dashboard"));
+        var checkVersionResult = CheckVersion(binaryFile, options.DashboardVersion, latestVersion);
+        if (checkVersionResult.IsUpdateAvailable)
+        {
+            var isProcessStopped = ProcessHelper.IsProcessStopped("dashboard", ".", options.Force);
+            if (!isProcessStopped)
+            {
+                _outputFormatter.Write($"The Dashboard is running. Please stop it before doing uninstall again.");
+                return;
+            }
 
-        if (string.Equals(downloadHash.Trim(), expectedHash.Trim(), StringComparison.CurrentCultureIgnoreCase))
+            var downloadAndValidate = await DownloadAndValidateAndExtractDashboard(checkVersionResult.Version, cancellationToken);
+            if (!downloadAndValidate)
+                return;
+        }
+        else
+        {
+            _outputFormatter.Write("The current Dashboard's version is up to dated");
+        }
+    }
+
+    private async Task UpdateCli(UpdateCommandOptions options, CancellationToken cancellationToken)
+    {
+        var cliLatestVersion = await _gitHub.GetLatestVersion(_gitHub.CliRepository, cancellationToken);
+        cliLatestVersion = _versionHandler.Normalize(cliLatestVersion);
+
+        var cliCurrentVersion = _versionHandler.Version;
+
+        if (_versionHandler.CheckVersions(cliLatestVersion, cliCurrentVersion))
+        {
+            await DownloadAndValidateAndExtractCli(cliLatestVersion, cancellationToken);
+        }
+        else
+        {
+            _outputFormatter.Write("The current CLI version is up to dated");
+        }
+    }
+
+    private CheckVersionResult CheckVersion(string binaryPath, string? version, string latestVersion)
+    {
+        var currentVersion = _versionHandler.GetApplicationVersion(binaryPath);
+
+        latestVersion = _versionHandler.Normalize(latestVersion);
+        if (!string.IsNullOrEmpty(version))
+            latestVersion = _versionHandler.Normalize(version);
+
+        return new CheckVersionResult
+        {
+            IsUpdateAvailable = _versionHandler.CheckVersions(latestVersion, currentVersion),
+            Version = latestVersion
+        };
+    }
+
+    private async Task<bool> DownloadAndValidateAndExtractFlowSynx(string version, CancellationToken cancellationToken)
+    {
+        _outputFormatter.Write("Start download FlowSynx binary");
+        var flowSynxDownloadPath = await _gitHub.DownloadAsset(_gitHub.FlowSynxRepository, version, _gitHub.FlowSynxArchiveFileName, Path.GetTempPath(), cancellationToken);
+
+        _outputFormatter.Write("Start validating FlowSynx binary");
+        var isFlowSynxValid = await _gitHub.ValidateDownloadedAsset(flowSynxDownloadPath, _gitHub.FlowSynxRepository, version, _gitHub.FlowSynxArchiveHashFileName, cancellationToken);
+
+        if (isFlowSynxValid)
+        {
+            _outputFormatter.Write("Start extracting FlowSynx binary");
+            ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
             return true;
+        }
 
-        File.Delete(path);
+        _outputFormatter.Write("Validating download - Fail!");
+        _outputFormatter.Write("The downloaded data may has been corrupted!");
         return false;
     }
 
-    private Task ExtractFlowSynxCli(string sourcePath, CancellationToken cancellationToken)
+    private async Task<bool> DownloadAndValidateAndExtractDashboard(string version, CancellationToken cancellationToken)
+    {
+        _outputFormatter.Write("Start download Dashboard binary");
+        var dashboardDownloadPath = await _gitHub.DownloadAsset(_gitHub.DashboardRepository, version, _gitHub.DashboardArchiveFileName, Path.GetTempPath(), cancellationToken);
+
+        _outputFormatter.Write("Start validating Dashboard binary");
+        var isDashboardValid = await _gitHub.ValidateDownloadedAsset(dashboardDownloadPath, _gitHub.DashboardRepository, version, _gitHub.DashboardArchiveHashFileName, cancellationToken);
+
+        if (isDashboardValid)
+        {
+            _outputFormatter.Write("Start extracting Dashboard binary");
+            ExtractAsset(dashboardDownloadPath, "dashboard", cancellationToken);
+            return true;
+        }
+
+        _outputFormatter.Write("Validating download - Fail!");
+        _outputFormatter.Write("The downloaded data may has been corrupted!");
+        return false;
+    }
+
+    private async Task DownloadAndValidateAndExtractCli(string version, CancellationToken cancellationToken)
+    {
+        _outputFormatter.Write("Start download Cli binary");
+        var cliDownloadPath = await _gitHub.DownloadAsset(_gitHub.CliRepository, version, _gitHub.FlowSynxCliArchiveFileName, Path.GetTempPath(), cancellationToken);
+
+        _outputFormatter.Write("Start validating Cli binary");
+        var isCliValid = await _gitHub.ValidateDownloadedAsset(cliDownloadPath, _gitHub.CliRepository, version, _gitHub.FlowSynxCliArchiveHashFileName, cancellationToken);
+
+        if (isCliValid)
+            ExtractFlowSynxCli(cliDownloadPath, cancellationToken);
+
+        _outputFormatter.Write("Validating download - Fail!");
+        _outputFormatter.Write("The downloaded data may has been corrupted!");
+    }
+
+    private void ExtractAsset(string sourcePath, string destinationPathName, CancellationToken cancellationToken)
+    {
+        var extractTarget = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, destinationPathName, "downloadedFiles");
+        var destinationPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, destinationPathName);
+
+        Directory.CreateDirectory(extractTarget);
+        _extractor.ExtractFile(sourcePath, extractTarget);
+        Directory.CreateDirectory(destinationPath);
+        PathHelper.CopyFilesRecursively(extractTarget, destinationPath, cancellationToken);
+        Directory.Delete(extractTarget, true);
+    }
+
+    private async void ExtractFlowSynxCli(string sourcePath, CancellationToken cancellationToken)
     {
         const string extractTarget = "./downloadedFiles";
-        ExtractFile(sourcePath, extractTarget);
+        Directory.CreateDirectory(extractTarget);
+
+        _extractor.ExtractFile(sourcePath, extractTarget);
         File.Delete(sourcePath);
 
         var synxUpdateExeFile = Path.GetFullPath(PathHelper.LookupSynxBinaryFilePath(extractTarget));
@@ -201,90 +228,12 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         }
 
         var synxExeFile = Path.GetFullPath(PathHelper.LookupSynxBinaryFilePath(_location.RootLocation));
-        SelfUpdate(synxUpdateExeFile, synxExeFile);
-        return Task.CompletedTask;
+        await SelfUpdate(synxUpdateExeFile, synxExeFile, cancellationToken);
     }
-
-    private async Task<string> GetLatestVersion(string repositoryName)
+    
+    private async Task SelfUpdate(string updateFile, string selfFile, CancellationToken cancellationToken)
     {
-        var httpClient = new HttpClient();
-        var uri = $"https://api.github.com/repos/{GitHubHelper.Organization}/{repositoryName}/tags";
-        httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-        httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
-
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri(uri)
-        };
-
-        var response = await httpClient.SendAsync(request);
-        response.EnsureSuccessStatusCode();
-
-        var responseBody = await response.Content.ReadAsStringAsync();
-        var tags = _deserializer.Deserialize<List<GitHubTag>>(responseBody);
-        return tags.Count > 0 ? tags[0].Name : string.Empty;
-    }
-
-    private async Task<string> DownloadFlowSynxAsset(string version, string destinationPath, CancellationToken cancellationToken)
-    {
-        var uri = $"https://github.com/{GitHubHelper.Organization}/{GitHubHelper.FlowSynxRepository}/releases/download/v{version}/{FlowSynxArchiveFileName}";
-        var stream = await NetHelper.DownloadFile(uri, cancellationToken);
-        var path = Path.Combine(destinationPath, FlowSynxArchiveFileName);
-        StreamHelper.SaveStreamToFile(stream, path);
-        return path;
-    }
-
-    private async Task<string> DownloadCliAsset(string version, string destinationPath, CancellationToken cancellationToken)
-    {
-        var uri = $"https://github.com/{GitHubHelper.Organization}/{GitHubHelper.CliRepository}/releases/download/v{version}/{FlowSynxCliArchiveFileName}";
-        var stream = await NetHelper.DownloadFile(uri, cancellationToken);
-        var path = Path.Combine(destinationPath, FlowSynxCliArchiveFileName);
-        StreamHelper.SaveStreamToFile(stream, path);
-        return path;
-    }
-
-    private async Task<string> DownloadFlowSynxHashAsset(string version, CancellationToken cancellationToken)
-    {
-        var uri = $"https://github.com/{GitHubHelper.Organization}/{GitHubHelper.FlowSynxRepository}/releases/download/v{version}/{FlowSynxArchiveHashFileName}";
-        var stream = await NetHelper.DownloadFile(uri, cancellationToken);
-        return await HashHelper.GetAssetHashCode(stream, cancellationToken);
-    }
-
-    private async Task<string> DownloadCliHashAsset(string version, CancellationToken cancellationToken)
-    {
-        var uri = $"https://github.com/{GitHubHelper.Organization}/{GitHubHelper.CliRepository}/releases/download/v{version}/{FlowSynxCliArchiveHashFileName}";
-        var stream = await NetHelper.DownloadFile(uri, cancellationToken);
-        return await HashHelper.GetAssetHashCode(stream, cancellationToken);
-    }
-
-    private static bool IsUpdateAvailable(string latestVersion, string currentVersion)
-    {
-        if (string.IsNullOrEmpty(latestVersion)) return false;
-
-        var current = new System.Version(currentVersion[1..]);
-        var latest = new System.Version(latestVersion[1..]);
-        return latest > current;
-    }
-
-    private void ExtractFile(string sourcePath, string destinationPath)
-    {
-        var compressEntry = new CompressEntry
-        {
-            Stream = File.OpenWrite(sourcePath),
-            Name = Path.GetFileName(sourcePath),
-            ContentType = ""
-        };
-
-        if (Extension == "tar.gz")
-            _compressionFactory(CompressType.GZip).Decompress(compressEntry, destinationPath);
-        else
-            _compressionFactory(CompressType.Zip).Decompress(compressEntry, destinationPath);
-    }
-
-    private void SelfUpdate(string updateFile, string selfFile)
-    {
-        var stream = File.OpenRead(updateFile);
+        await using var stream = File.OpenRead(updateFile);
 
         var selfFileName = Path.GetFileName(selfFile);
         var directoryName = Path.GetDirectoryName(selfFile);
@@ -293,10 +242,10 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             return;
 
         string selfWithoutExt = Path.Combine(directoryName, Path.GetFileNameWithoutExtension(selfFile));
-        StreamHelper.SaveStreamToFile(stream, selfWithoutExt + GetUpdateFilePath());
+        StreamHelper.SaveStreamToFile(stream, selfWithoutExt + PathHelper.GetUpdateFilePath());
 
-        string updateExeFile = selfWithoutExt + GetUpdateFilePath();
-        string scriptFile = selfWithoutExt + GetScriptFilePath();
+        string updateExeFile = selfWithoutExt + PathHelper.GetUpdateFilePath();
+        string scriptFile = selfWithoutExt + PathHelper.GetScriptFilePath();
 
         var updateScript = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
             string.Format(Resources.UpdateScript_Bat, selfFileName, updateExeFile, selfFile, updateExeFile, downloadedFilesPath) :
@@ -327,35 +276,5 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             _outputFormatter.WriteError(ex.Message);
             System.Environment.Exit(0);
         }
-    }
-    
-    private static string GetUpdateFilePath()
-    {
-        var binFileName = "Update";
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            binFileName += ".exe";
-
-        return binFileName;
-    }
-
-    private static string GetScriptFilePath()
-    {
-        var scriptFileName = "Update.sh";
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            scriptFileName = "Update.bat";
-
-        return scriptFileName;
-    }
-
-    private class DownloadUpdateResult
-    {
-        public bool Success { get; init; }
-        public string FlowSynxDownloadPath { get; init; } = string.Empty;
-        public string CliDownloadPath { get; init; } = string.Empty;
-    }
-
-    private class GitHubTag
-    {
-        public required string Name { get; set; }
     }
 }
