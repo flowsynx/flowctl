@@ -9,17 +9,20 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
     private readonly IVersionHandler _versionHandler;
+    private readonly ILocation _location;
 
     public VersionCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-         IVersionHandler versionHandler)
+         IVersionHandler versionHandler, ILocation location)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(versionHandler, nameof(versionHandler));
+        EnsureArg.IsNotNull(location, nameof(location));
 
         _outputFormatter = outputFormatter;
         _spinner = spinner;
         _versionHandler = versionHandler;
+        _location = location;
     }
 
     public async Task<int> HandleAsync(VersionCommandOptions options, CancellationToken cancellationToken)
@@ -41,10 +44,10 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
                 return Task.CompletedTask;
             }
 
-            var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "engine"));
+            var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine"));
             var flowSynxVersion = _versionHandler.GetApplicationVersion(flowSynxBinaryFile);
 
-            var dashboardBinaryFile = PathHelper.LookupDashboardBinaryFilePath(Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "dashboard"));
+            var dashboardBinaryFile = _location.LookupDashboardBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "dashboard"));
             var dashboardVersion = _versionHandler.GetApplicationVersion(dashboardBinaryFile);
 
             var fullVersion = new VersionResponse
