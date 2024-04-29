@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using EnsureThat;
-using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Services;
+using FlowSynx.Cli.Services.Abstracts;
+using FlowSynx.IO.Serialization;
 
 namespace FlowSynx.Cli.Commands.Run;
 
@@ -9,14 +9,18 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ILocation _location;
+    private readonly ISerializer _serializer;
 
-    public RunCommandOptionsHandler(IOutputFormatter outputFormatter, ILocation location)
+    public RunCommandOptionsHandler(IOutputFormatter outputFormatter, ILocation location,
+        ISerializer serializer)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(location, nameof(location));
+        EnsureArg.IsNotNull(serializer, nameof(serializer));
 
         _outputFormatter = outputFormatter;
         _location = location;
+        _serializer = serializer;
     }
 
     public async Task<int> HandleAsync(RunCommandOptions options, CancellationToken cancellationToken)
@@ -65,8 +69,19 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
     {
         var argList = new List<string>();
 
+        string configFile;
         if (!string.IsNullOrEmpty(options.ConfigFile))
-            argList.Add($"--config-file {options.ConfigFile}");
+        {
+            configFile = options.ConfigFile;
+        }
+        else
+        {
+            configFile = Path.Combine(_location.DefaultFlowSynxDirectoryName, "configuration.json");
+            if (!File.Exists(configFile))
+                File.WriteAllText(configFile, _serializer.Serialize(new { }));
+        }
+
+        argList.Add($"--config-file \"{configFile}\"");
 
         argList.Add($"--enable-health-check {options.EnableHealthCheck}");
         argList.Add($"--enable-log {options.EnableLog}");
