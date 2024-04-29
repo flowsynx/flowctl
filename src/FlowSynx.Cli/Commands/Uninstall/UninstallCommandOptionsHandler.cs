@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using EnsureThat;
 using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Formatter;
 using FlowSynx.Cli.Services;
 
 namespace FlowSynx.Cli.Commands.Uninstall;
@@ -13,7 +12,8 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
     private readonly ISpinner _spinner;
     private readonly ILocation _location;
 
-    public UninstallCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, ILocation location)
+    public UninstallCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
+        ILocation location)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
@@ -36,20 +36,34 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
         {
             _outputFormatter.Write("Beginning uninstalling...");
 
-            if (options.Force)
+            if (ProcessHelper.IsProcessRunning("flowsynx", "."))
             {
-                ProcessHelper.TerminateProcess("flowsynx", ".");
-                _outputFormatter.Write("The FlowSynx system was stopped successfully.");
-            }
-            else
-            {
-                if (ProcessHelper.IsProcessRunning("flowsynx", "."))
+                if (options.Force)
+                {
+                    ProcessHelper.TerminateProcess("flowsynx", ".");
+                    _outputFormatter.Write("The FlowSynx system was stopped successfully.");
+                }
+                else
                 {
                     _outputFormatter.Write("The FlowSynx engine is running. Please stop it by run the command: 'Synx stop', and try uninstall again.");
                     return Task.CompletedTask;
                 }
             }
 
+            if (ProcessHelper.IsProcessRunning("dashboard", "."))
+            {
+                if (options.Force)
+                {
+                    ProcessHelper.TerminateProcess("dashboard", ".");
+                    _outputFormatter.Write("The FlowSynx dashboard was stopped successfully.");
+                }
+                else
+                {
+                    _outputFormatter.Write("The FlowSynx dashboard is running. Please stop it and try uninstall again.");
+                    return Task.CompletedTask;
+                }
+            }
+            
             if (Directory.Exists(PathHelper.DefaultFlowSynxDirectoryName))
                 Directory.Delete(PathHelper.DefaultFlowSynxDirectoryName, true);
 
