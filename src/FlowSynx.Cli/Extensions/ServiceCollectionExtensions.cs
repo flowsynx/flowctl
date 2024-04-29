@@ -6,7 +6,6 @@ using FlowSynx.Cli.Commands.Storage;
 using FlowSynx.Cli.Commands;
 using FlowSynx.Cli.ApplicationBuilders;
 using FlowSynx.Cli.Commands.Config;
-using FlowSynx.Cli.Formatter;
 using FlowSynx.Environment;
 using FlowSynx.IO;
 using FlowSynx.Logging;
@@ -20,6 +19,7 @@ using FlowSynx.Cli.Commands.Run;
 using FlowSynx.Cli.Commands.Stop;
 using FlowSynx.Cli.Commands.Uninstall;
 using FlowSynx.Client;
+using FlowSynx.Cli.Commands.Dashboard;
 
 namespace FlowSynx.Cli.Extensions;
 
@@ -27,37 +27,39 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddLocation(this IServiceCollection services)
     {
-        services.AddTransient<ILocation, CliLocation>();
+        services.AddTransient<ILocation, Location>();
         return services;
     }
-
+    
     public static IServiceCollection AddCommands(this IServiceCollection services)
     {
-        services.AddTransient<RootCommand, Root>();
-        services.AddTransient<Command, ConfigCommand>();
-        services.AddTransient<Command, HealthCommand>();
-        services.AddTransient<Command, InitCommand>();
-        services.AddTransient<Command, PluginsCommand>();
-        services.AddTransient<Command, RunCommand>();
-        services.AddTransient<Command, StorageCommand>();
-        services.AddTransient<Command, StopCommand>();
-        services.AddTransient<Command, UninstallCommand>();
-        services.AddTransient<Command, UpdateCommand>();
-        services.AddTransient<Command, VersionCommand>();
+        services.AddTransient<RootCommand, Root>()
+                .AddTransient<Command, ConfigCommand>()
+                .AddTransient<Command, DashboardCommand>()
+                .AddTransient<Command, HealthCommand>()
+                .AddTransient<Command, InitCommand>()
+                .AddTransient<Command, PluginsCommand>()
+                .AddTransient<Command, RunCommand>()
+                .AddTransient<Command, StorageCommand>()
+                .AddTransient<Command, StopCommand>()
+                .AddTransient<Command, UninstallCommand>()
+                .AddTransient<Command, UpdateCommand>()
+                .AddTransient<Command, VersionCommand>();
 
         return services;
     }
 
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddOperatingSystemInfo();
-        services.AddCompressions();
-        services.AddEndpoint();
-        services.AddSerialization();
-        services.AddSingleton(AnsiConsole.Console);
-        services.AddTransient<ICliApplicationBuilder, CliApplicationBuilder>();
-        services.AddScoped<IFlowSynxClient, FlowSynxClient>();
-        services.AddSingleton(new FlowSynxClientConnection());
+        services.AddOperatingSystemInfo()
+                .AddCompressions()
+                .AddEndpoint()
+                .AddSerialization()
+                .AddSingleton(AnsiConsole.Console)
+                .AddTransient<ICliApplicationBuilder, CliApplicationBuilder>()
+                .AddScoped<IFlowSynxClient, FlowSynxClient>()
+                .AddSingleton(new FlowSynxClientConnection());
+
         return services;
     }
 
@@ -75,14 +77,27 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddFormatter(this IServiceCollection services)
     {
-        services.AddTransient<ISpinner, Formatter.Spinner>();
-        services.AddTransient<IOutputFormatter, OutputFormatter>();
+        services.AddTransient<ISpinner, Services.Spinner>()
+                .AddTransient<IOutputFormatter, OutputFormatter>();
+
         return services;
     }
 
     public static IServiceCollection AddVersion(this IServiceCollection services)
     {
-        services.AddTransient<IVersion, CliVersion>();
+        services.AddTransient<IVersionHandler, VersionHandler>();
+        return services;
+    }
+
+    public static IServiceCollection AddGitHub(this IServiceCollection services)
+    {
+        services.AddTransient<IGitHub, GitHub>();
+        return services;
+    }
+
+    public static IServiceCollection AddExtractor(this IServiceCollection services)
+    {
+        services.AddTransient<IExtractor, Extractor>();
         return services;
     }
 }
