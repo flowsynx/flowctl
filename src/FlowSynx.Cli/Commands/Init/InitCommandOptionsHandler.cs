@@ -1,8 +1,6 @@
 ﻿using EnsureThat;
 using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Formatter;
-using FlowSynx.Environment;
-using FlowSynx.IO.Compression;
+using FlowSynx.Cli.Services;
 
 namespace FlowSynx.Cli.Commands.Init;
 
@@ -10,57 +8,66 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
-    private readonly IVersion _version;
-    private readonly IOperatingSystemInfo _operatingSystemInfo;
-    private readonly Func<CompressType, ICompression> _compressionFactory;
+    private readonly IVersionHandler _versionHandler;
+    private readonly IGitHub _gitHub;
+    private readonly IExtractor _extractor;
 
     public InitCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
-        IVersion version, IOperatingSystemInfo operatingSystemInfo,
-        Func<CompressType, ICompression> compressionFactory)
+        IVersionHandler versionHandler, IGitHub gitHub,
+        IExtractor extractor)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(spinner, nameof(spinner));
-        EnsureArg.IsNotNull(version, nameof(version));
-        EnsureArg.IsNotNull(operatingSystemInfo, nameof(operatingSystemInfo));
+        EnsureArg.IsNotNull(versionHandler, nameof(versionHandler));
+        EnsureArg.IsNotNull(gitHub, nameof(gitHub));
+        EnsureArg.IsNotNull(extractor, nameof(extractor));
+
         _outputFormatter = outputFormatter;
         _spinner = spinner;
-        _version = version;
-        _operatingSystemInfo = operatingSystemInfo;
-        _compressionFactory = compressionFactory;
+        _versionHandler = versionHandler;
+        _gitHub = gitHub;
+        _extractor = extractor;
     }
-
-    private string FlowSynxArchiveFileName => $"flowsynx-{ArchiveName.ToLower()}";
-    private string FlowSynxArchiveHashFileName => $"flowsynx-{ArchiveName.ToLower()}.sha256";
-    private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{Extension}";
-    private string Extension => string.Equals(_operatingSystemInfo.Type, "windows", StringComparison.OrdinalIgnoreCase) ? "zip" : "tar.gz";
-
+    
     public async Task<int> HandleAsync(InitCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(cancellationToken));
+        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
         return 0;
     }
 
-    private async Task Execute(CancellationToken cancellationToken)
+    private async Task Execute(InitCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
             _outputFormatter.Write("Beginning Initialize...");
 
-            var flowSynxPath = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine");
+            var flowSynxPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "engine");
             var flowSynxBinaryFile = PathHelper.LookupFlowSynxBinaryFilePath(flowSynxPath);
-            if (File.Exists(flowSynxBinaryFile))
+
+            var dashboardPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, "dashboard");
+            var dashboardBinaryFile = PathHelper.LookupDashboardBinaryFilePath(dashboardPath);
+
+            if (File.Exists(flowSynxBinaryFile) && File.Exists(dashboardBinaryFile))
             {
                 _outputFormatter.Write("The FlowSynx engine is already initialized.");
                 _outputFormatter.Write("You can use command 'Synx update' to check and update the FlowSynx.");
                 return;
             }
             Directory.CreateDirectory(flowSynxPath);
-            var initialized = await Init(cancellationToken);
+            Directory.CreateDirectory(dashboardPath);
 
-            if (!initialized)
+            var initFlowSynx = await InitFlowSynx(options.FlowSynxVersion, cancellationToken);
+            if (!initFlowSynx)
+                return;
+
+            var initDashboard = await InitDashboard(options.DashboardVersion, cancellationToken);
+            if (!initDashboard)
                 return;
 
             _outputFormatter.Write("Starting to change the execution mode of FlowSynx.");
+            PathHelper.MakeExecutable(flowSynxBinaryFile);
+
+            _outputFormatter.Write("Starting to change the execution mode of Dashboard.");
             PathHelper.MakeExecutable(flowSynxBinaryFile);
 
             _outputFormatter.Write("FlowSynx engine is downloaded and installed successfully.");
@@ -71,20 +78,24 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         }
     }
 
-    private async Task<bool> Init(CancellationToken cancellationToken)
+    private async Task<bool> InitFlowSynx(string? version, CancellationToken cancellationToken)
     {
-        var currentVersion = _version.Version;
+        var flowSynxVersion = await _gitHub.GetLatestVersion(_gitHub.FlowSynxRepository, cancellationToken);
+        if (!string.IsNullOrEmpty(version))
+            flowSynxVersion = version;
 
-        _outputFormatter.Write("Starting download FlowSynx binary");
-        var flowSynxDownloadPath = await DownloadFlowSynxAsset(currentVersion, Path.GetTempPath(), cancellationToken);
+        flowSynxVersion = _versionHandler.Normalize(flowSynxVersion);
 
-        _outputFormatter.Write("Starting validating FlowSynx binary");
-        var isFlowSynxValid = await ValidateFlowSynxDownloadedAsset(flowSynxDownloadPath, currentVersion, cancellationToken);
+        _outputFormatter.Write("Start download FlowSynx binary");
+        var flowSynxDownloadPath = await _gitHub.DownloadAsset(_gitHub.FlowSynxRepository, flowSynxVersion, _gitHub.FlowSynxArchiveFileName, Path.GetTempPath(), cancellationToken);
+
+        _outputFormatter.Write("Start validating FlowSynx binary");
+        var isFlowSynxValid = await _gitHub.ValidateDownloadedAsset(flowSynxDownloadPath, _gitHub.FlowSynxRepository, flowSynxVersion, _gitHub.FlowSynxArchiveHashFileName, cancellationToken);
 
         if (isFlowSynxValid)
         {
             _outputFormatter.Write("Starting extract FlowSynx binary");
-            await Task.Run(() => ExtractFlowSynx(flowSynxDownloadPath, cancellationToken), cancellationToken);
+            ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
             return true;
         }
 
@@ -93,66 +104,41 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         return false;
     }
 
-    private async Task<bool> ValidateFlowSynxDownloadedAsset(string path, string latestVersion, CancellationToken cancellationToken)
+    private async Task<bool> InitDashboard(string? version, CancellationToken cancellationToken)
     {
-        var expectedHash = await DownloadFlowSynxHashAsset(latestVersion, cancellationToken);
-        var downloadHash = HashHelper.ComputeSha256Hash(path);
+        var dashboardVersion = await _gitHub.GetLatestVersion(_gitHub.DashboardRepository, cancellationToken);
+        if (!string.IsNullOrEmpty(version))
+            dashboardVersion = version;
 
-        if (string.Equals(downloadHash.Trim(), expectedHash.Trim(), StringComparison.CurrentCultureIgnoreCase))
-            return true;
+        dashboardVersion = _versionHandler.Normalize(dashboardVersion);
 
-        File.Delete(path);
-        return false;
-    }
+        _outputFormatter.Write("Start download Dashboard binary");
+        var dashboardDownloadPath = await _gitHub.DownloadAsset(_gitHub.DashboardRepository, dashboardVersion, _gitHub.DashboardArchiveFileName, Path.GetTempPath(), cancellationToken);
 
-    private Task ExtractFlowSynx(string sourcePath, CancellationToken cancellationToken)
-    {
-        var extractTarget = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine", "downloadedFiles");
-        var enginePath = Path.Combine(PathHelper.DefaultFlowSynxDirectoryName, "engine");
+        _outputFormatter.Write("Start validating Dashboard binary");
+        var isFlowSynxValid = await _gitHub.ValidateDownloadedAsset(dashboardDownloadPath, _gitHub.DashboardRepository, dashboardVersion, _gitHub.DashboardArchiveHashFileName, cancellationToken);
 
-        ExtractFile(sourcePath, extractTarget);
-        Directory.CreateDirectory(enginePath);
-
-        foreach (var newPath in Directory.GetFiles(extractTarget, "*.*", SearchOption.AllDirectories))
+        if (isFlowSynxValid)
         {
-            if (cancellationToken.IsCancellationRequested)
-                break;
-
-            File.Copy(newPath, newPath.Replace(extractTarget, enginePath), true);
+            _outputFormatter.Write("Starting extract Dashboard binary");
+            ExtractAsset(dashboardDownloadPath, "dashboard", cancellationToken);
+            return true;
         }
 
-        Directory.Delete(extractTarget, true);
-        return Task.CompletedTask;
-    }
-
-    private async Task<string> DownloadFlowSynxAsset(string version, string destinationPath, CancellationToken cancellationToken)
-    {
-        var uri = $"https://github.com/{GitHubHelper.Organization}/{GitHubHelper.FlowSynxRepository}/releases/download/v{version}/{FlowSynxArchiveFileName}";
-        var stream = await NetHelper.DownloadFile(uri, cancellationToken);
-        var path = Path.Combine(destinationPath, FlowSynxArchiveFileName);
-        StreamHelper.SaveStreamToFile(stream, path);
-        return path;
-    }
-
-    private async Task<string> DownloadFlowSynxHashAsset(string version, CancellationToken cancellationToken)
-    {
-        var uri = $"https://github.com/{GitHubHelper.Organization}/{GitHubHelper.FlowSynxRepository}/releases/download/v{version}/{FlowSynxArchiveHashFileName}";
-        var stream = await NetHelper.DownloadFile(uri, cancellationToken);
-        return await HashHelper.GetAssetHashCode(stream, cancellationToken);
+        _outputFormatter.Write("Validating download - Fail!");
+        _outputFormatter.Write("The downloaded data may has been corrupted!");
+        return false;
     }
     
-    private void ExtractFile(string sourcePath, string destinationPath)
+    private void ExtractAsset(string sourcePath, string destinationPathName, CancellationToken cancellationToken)
     {
-        var compressEntry = new CompressEntry
-        {
-            Stream = File.OpenWrite(sourcePath),
-            Name = Path.GetFileName(sourcePath),
-            ContentType = ""
-        };
+        var extractTarget = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, destinationPathName, "downloadedFiles");
+        var destinationPath = Path.Combine(PathHelper.DefaultFlowSynxBinaryDirectoryName, destinationPathName);
 
-        if (Extension == "tar.gz")
-            _compressionFactory(CompressType.GZip).Decompress(compressEntry, destinationPath);
-        else
-            _compressionFactory(CompressType.Zip).Decompress(compressEntry, destinationPath);
+        Directory.CreateDirectory(extractTarget);
+        _extractor.ExtractFile(sourcePath, extractTarget);
+        Directory.CreateDirectory(destinationPath);
+        PathHelper.CopyFilesRecursively(extractTarget, destinationPath, cancellationToken);
+        Directory.Delete(extractTarget, true);
     }
 }
