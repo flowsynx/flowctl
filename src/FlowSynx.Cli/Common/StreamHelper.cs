@@ -2,17 +2,19 @@
 
 internal static class StreamHelper
 {
-    public static async Task WriteStream(string path, Stream stream, CancellationToken cancellationToken)
+    public static void WriteStream(string path, Stream stream)
     {
-        var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write);
-        await stream.CopyToAsync(fileStream, cancellationToken);
-        await fileStream.DisposeAsync();
+        using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
+        {
+            stream.CopyTo(fileStream);
+        }
     }
 
     public static void SaveStreamToFile(Stream stream, string path)
     {
-        var fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
-        stream.CopyTo(fileStream);
-        fileStream.Dispose();
+        using (var fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
+        {
+            stream.CopyTo(fileStream);
+        }
     }
 }
