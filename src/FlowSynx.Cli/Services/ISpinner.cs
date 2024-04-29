@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Formatter;
+﻿namespace FlowSynx.Cli.Services;
 
 public interface ISpinner
 {

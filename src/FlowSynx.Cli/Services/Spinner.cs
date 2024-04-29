@@ -1,6 +1,6 @@
 ﻿using Spectre.Console;
 
-namespace FlowSynx.Cli.Formatter;
+namespace FlowSynx.Cli.Services;
 
 public class Spinner : ISpinner
 {

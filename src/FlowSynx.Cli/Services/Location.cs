@@ -3,17 +3,12 @@ using Microsoft.Extensions.Logging;
 
 namespace FlowSynx.Cli.Services;
 
-public interface ILocation
+public class Location : ILocation
 {
-    public string RootLocation { get; }
-}
-
-public class CliLocation : ILocation
-{
-    private readonly ILogger<CliLocation> _logger;
+    private readonly ILogger<Location> _logger;
     private readonly string? _rootLocation = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
 
-    public CliLocation(ILogger<CliLocation> logger)
+    public Location(ILogger<Location> logger)
     {
         EnsureArg.IsNotNull(logger, nameof(logger));
         _logger = logger;

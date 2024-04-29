@@ -7,7 +7,7 @@ using FlowSynx.IO.Serialization;
 using FlowSynx.Reflections;
 using System.Collections.Generic;
 
-namespace FlowSynx.Cli.Formatter;
+namespace FlowSynx.Cli.Services;
 
 public class OutputFormatter : IOutputFormatter
 {
@@ -95,7 +95,7 @@ public class OutputFormatter : IOutputFormatter
     private Table GenerateTable<T>(T? data)
     {
         var dataTable = new Table();
-        var properties = typeof(T).Properties(bindingAttr:BindingFlags.Public | BindingFlags.Instance);
+        var properties = typeof(T).Properties(bindingAttr: BindingFlags.Public | BindingFlags.Instance);
 
         foreach (var property in properties)
             dataTable.AddColumns(property.Name);
@@ -187,7 +187,7 @@ public class OutputFormatter : IOutputFormatter
         var xml = JsonConvert.DeserializeXNode("{item:" + json + "}", "root");
         return xml == null ? string.Empty : xml.ToString(SaveOptions.None);
     }
-    
+
     public string GenerateYaml<T>(T? data)
     {
         if (data == null)
