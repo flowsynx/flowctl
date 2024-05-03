@@ -9,7 +9,7 @@ internal class ReadCommand : BaseCommand<ReadCommandOptions, ReadCommandOptionsH
         var pathOption = new Option<string>(new[] { "-p", "--path" },
             description: "The entity path to be read") { IsRequired = true };
 
-        var hashOption = new Option<bool?>(new[] { "-h", "--hashing" }, 
+        var hashOption = new Option<bool?>(new[] { "+h", "--hashing" }, 
             getDefaultValue: () => false,
             description: "Display hashing content in response data");
 

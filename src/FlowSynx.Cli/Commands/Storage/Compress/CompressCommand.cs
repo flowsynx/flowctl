@@ -43,7 +43,7 @@ internal class CompressCommand : BaseCommand<CompressCommandOptions, CompressCom
         var maxResultsOption = new Option<int?>(new[] { "-mr", "--max-results" },
             description: "The maximum number of results to return [default: off]");
 
-        var hashingOption = new Option<bool?>(new[] { "-h", "--hashing" }, 
+        var hashingOption = new Option<bool?>(new[] { "+h", "--hashing" }, 
             getDefaultValue: () => false,
             description: "Generate and display hashing content in response data");
 

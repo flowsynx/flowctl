@@ -46,7 +46,7 @@ internal class ListCommand : BaseCommand<ListCommandOptions, ListCommandOptionsH
             getDefaultValue: () => false, 
             description: "Apply recursion on filtering entities in the specified path");
 
-        var hashingOption = new Option<bool?>(new[] { "-h", "--hashing" }, 
+        var hashingOption = new Option<bool?>(new[] { "+h", "--hashing" }, 
             getDefaultValue: () => false, 
             description: "Display hashing content in response data");
 
