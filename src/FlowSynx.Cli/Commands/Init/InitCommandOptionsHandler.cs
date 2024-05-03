@@ -1,5 +1,4 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Services.Abstracts;
 using FlowSynx.IO;
 
@@ -54,7 +53,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             if (File.Exists(flowSynxBinaryFile) && File.Exists(dashboardBinaryFile))
             {
                 _outputFormatter.Write("The FlowSynx engine is already initialized.");
-                _outputFormatter.Write("You can use command 'Synx update' to check and update the FlowSynx.");
+                _outputFormatter.Write("You can use command 'Synx update' to check and update the FlowSynx and Dashboard.");
                 return;
             }
             Directory.CreateDirectory(flowSynxPath);
@@ -96,16 +95,16 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         _outputFormatter.Write("Start validating FlowSynx binary");
         var isFlowSynxValid = await _gitHub.ValidateDownloadedAsset(flowSynxDownloadPath, _gitHub.FlowSynxRepository, flowSynxVersion, _gitHub.FlowSynxArchiveHashFileName, cancellationToken);
 
-        if (isFlowSynxValid)
+        if (!isFlowSynxValid)
         {
-            _outputFormatter.Write("Starting extract FlowSynx binary");
-            ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
-            return true;
+            _outputFormatter.Write("Validating download - Fail!");
+            _outputFormatter.Write("The downloaded data may has been corrupted!");
+            return false;
         }
 
-        _outputFormatter.Write("Validating download - Fail!");
-        _outputFormatter.Write("The downloaded data may has been corrupted!");
-        return false;
+        _outputFormatter.Write("Starting extract FlowSynx binary");
+        ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
+        return true;
     }
 
     private async Task<bool> InitDashboard(string? version, CancellationToken cancellationToken)
@@ -120,18 +119,18 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         var dashboardDownloadPath = await _gitHub.DownloadAsset(_gitHub.DashboardRepository, dashboardVersion, _gitHub.DashboardArchiveFileName, Path.GetTempPath(), cancellationToken);
 
         _outputFormatter.Write("Start validating Dashboard binary");
-        var isFlowSynxValid = await _gitHub.ValidateDownloadedAsset(dashboardDownloadPath, _gitHub.DashboardRepository, dashboardVersion, _gitHub.DashboardArchiveHashFileName, cancellationToken);
+        var isDashboardValid = await _gitHub.ValidateDownloadedAsset(dashboardDownloadPath, _gitHub.DashboardRepository, dashboardVersion, _gitHub.DashboardArchiveHashFileName, cancellationToken);
 
-        if (isFlowSynxValid)
+        if (!isDashboardValid)
         {
-            _outputFormatter.Write("Starting extract Dashboard binary");
-            ExtractAsset(dashboardDownloadPath, "dashboard", cancellationToken);
-            return true;
+            _outputFormatter.Write("Validating download - Fail!");
+            _outputFormatter.Write("The downloaded data may has been corrupted!");
+            return false;
         }
 
-        _outputFormatter.Write("Validating download - Fail!");
-        _outputFormatter.Write("The downloaded data may has been corrupted!");
-        return false;
+        _outputFormatter.Write("Starting extract Dashboard binary");
+        ExtractAsset(dashboardDownloadPath, "dashboard", cancellationToken);
+        return true;
     }
     
     private void ExtractAsset(string sourcePath, string destinationPathName, CancellationToken cancellationToken)

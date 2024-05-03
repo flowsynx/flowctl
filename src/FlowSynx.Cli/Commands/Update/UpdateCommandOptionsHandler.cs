@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using EnsureThat;
-using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Services.Abstracts;
 using FlowSynx.Environment;
 using FlowSynx.IO;
@@ -132,9 +131,10 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     {
         var currentVersion = _versionHandler.GetApplicationVersion(binaryPath);
 
-        latestVersion = _versionHandler.Normalize(latestVersion);
         if (!string.IsNullOrEmpty(version))
-            latestVersion = _versionHandler.Normalize(version);
+            latestVersion = version;
+
+        latestVersion = _versionHandler.Normalize(latestVersion);
 
         return new CheckVersionResult
         {
@@ -151,16 +151,16 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         _outputFormatter.Write("Start validating FlowSynx binary");
         var isFlowSynxValid = await _gitHub.ValidateDownloadedAsset(flowSynxDownloadPath, _gitHub.FlowSynxRepository, version, _gitHub.FlowSynxArchiveHashFileName, cancellationToken);
 
-        if (isFlowSynxValid)
+        if (!isFlowSynxValid)
         {
-            _outputFormatter.Write("Start extracting FlowSynx binary");
-            ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
-            return true;
+            _outputFormatter.Write("Validating download - Fail!");
+            _outputFormatter.Write("The downloaded data may has been corrupted!");
+            return false;
         }
 
-        _outputFormatter.Write("Validating download - Fail!");
-        _outputFormatter.Write("The downloaded data may has been corrupted!");
-        return false;
+        _outputFormatter.Write("Start extracting FlowSynx binary");
+        ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
+        return true;
     }
 
     private async Task<bool> DownloadAndValidateAndExtractDashboard(string version, CancellationToken cancellationToken)
@@ -171,16 +171,16 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         _outputFormatter.Write("Start validating Dashboard binary");
         var isDashboardValid = await _gitHub.ValidateDownloadedAsset(dashboardDownloadPath, _gitHub.DashboardRepository, version, _gitHub.DashboardArchiveHashFileName, cancellationToken);
 
-        if (isDashboardValid)
+        if (!isDashboardValid)
         {
-            _outputFormatter.Write("Start extracting Dashboard binary");
-            ExtractAsset(dashboardDownloadPath, "dashboard", cancellationToken);
-            return true;
+            _outputFormatter.Write("Validating download - Fail!");
+            _outputFormatter.Write("The downloaded data may has been corrupted!");
+            return false;
         }
 
-        _outputFormatter.Write("Validating download - Fail!");
-        _outputFormatter.Write("The downloaded data may has been corrupted!");
-        return false;
+        _outputFormatter.Write("Start extracting Dashboard binary");
+        ExtractAsset(dashboardDownloadPath, "dashboard", cancellationToken);
+        return true;
     }
 
     private async Task DownloadAndValidateAndExtractCli(string version, CancellationToken cancellationToken)
@@ -191,11 +191,14 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         _outputFormatter.Write("Start validating Cli binary");
         var isCliValid = await _gitHub.ValidateDownloadedAsset(cliDownloadPath, _gitHub.CliRepository, version, _gitHub.FlowSynxCliArchiveHashFileName, cancellationToken);
 
-        if (isCliValid)
-            ExtractFlowSynxCli(cliDownloadPath, cancellationToken);
+        if (!isCliValid)
+        {
+            _outputFormatter.Write("Validating download - Fail!");
+            _outputFormatter.Write("The downloaded data may has been corrupted!");
+            return;
+        }
 
-        _outputFormatter.Write("Validating download - Fail!");
-        _outputFormatter.Write("The downloaded data may has been corrupted!");
+        ExtractFlowSynxCli(cliDownloadPath, cancellationToken);
     }
 
     private void ExtractAsset(string sourcePath, string destinationPathName, CancellationToken cancellationToken)
@@ -232,10 +235,10 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         }
 
         var synxExeFile = Path.GetFullPath(_location.LookupSynxBinaryFilePath(_location.RootLocation));
-        await SelfUpdate(synxUpdateExeFile, synxExeFile, cancellationToken);
+        await SelfUpdate(synxUpdateExeFile, synxExeFile);
     }
     
-    private async Task SelfUpdate(string updateFile, string selfFile, CancellationToken cancellationToken)
+    private async Task SelfUpdate(string updateFile, string selfFile)
     {
         await using var stream = File.OpenRead(updateFile);
 
@@ -245,11 +248,11 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         if (string.IsNullOrEmpty(directoryName))
             return;
 
-        string selfWithoutExt = Path.Combine(directoryName, Path.GetFileNameWithoutExtension(selfFile));
+        var selfWithoutExt = Path.Combine(directoryName, Path.GetFileNameWithoutExtension(selfFile));
         stream.WriteTo(selfWithoutExt + _location.GetUpdateFilePath());
 
-        string updateExeFile = selfWithoutExt + _location.GetUpdateFilePath();
-        string scriptFile = selfWithoutExt + _location.GetScriptFilePath();
+        var updateExeFile = selfWithoutExt + _location.GetUpdateFilePath();
+        var scriptFile = selfWithoutExt + _location.GetScriptFilePath();
 
         var updateScript = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
             string.Format(Resources.UpdateScript_Bat, selfFileName, updateExeFile, selfFile, updateExeFile, downloadedFilesPath) :
