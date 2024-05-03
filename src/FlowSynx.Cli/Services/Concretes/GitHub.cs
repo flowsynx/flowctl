@@ -70,7 +70,7 @@ public class GitHub : IGitHub
     public async Task<bool> ValidateDownloadedAsset(string path, string repository, string version, string assetName, CancellationToken cancellationToken)
     {
         var expectedHash = await DownloadHashAsset(repository, version, assetName, cancellationToken);
-        var downloadHash = HashHelper.Sha256.GetHash(path);
+        var downloadHash = HashHelper.Sha256.GetHash(new FileInfo(path));
 
         if (string.Equals(downloadHash.Trim(), expectedHash.Trim(), StringComparison.CurrentCultureIgnoreCase))
             return true;
