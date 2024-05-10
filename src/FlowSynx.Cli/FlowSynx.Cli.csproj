@@ -12,7 +12,7 @@
 	<Company>FlowSynx</Company>
 	<Description>The cli for manage and handle FlowSynx system</Description>
 	<Authors>FlowSynx</Authors>
-	<PackageProjectUrl>http://flowsynx.io</PackageProjectUrl>
+	<PackageProjectUrl>https://flowsynx.io</PackageProjectUrl>
 	<RepositoryType>git</RepositoryType>
 	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
