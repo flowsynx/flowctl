@@ -9,10 +9,10 @@ internal class DeleteConfigCommand : BaseCommand<DeleteConfigCommandOptions, Del
         var nameOption = new Option<string>(new[] { "-n", "--name" },
             description: "The configuration section name") { IsRequired = true };
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         AddOption(nameOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
     }
 }

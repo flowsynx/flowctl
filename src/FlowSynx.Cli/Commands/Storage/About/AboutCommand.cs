@@ -13,8 +13,8 @@ internal class AboutCommand : BaseCommand<AboutCommandOptions, AboutCommandOptio
             getDefaultValue: () => false,
             description: "Full numbers instead of human-readable");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         var outputFormatOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json,
@@ -22,7 +22,7 @@ internal class AboutCommand : BaseCommand<AboutCommandOptions, AboutCommandOptio
 
         AddOption(pathOption);
         AddOption(fullOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
         AddOption(outputFormatOption);
     }
 }

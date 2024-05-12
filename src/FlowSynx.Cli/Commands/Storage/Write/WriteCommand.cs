@@ -19,13 +19,13 @@ internal class WriteCommand : BaseCommand<WriteCommandOptions, WriteCommandOptio
         var fileToUploadOption = new Option<string?>(new[] { "-f", "--file-to-upload" },
             description: "The local file path to upload");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         AddOption(pathOption);
         AddOption(dataOption);
         AddOption(overWriteOption);
         AddOption(fileToUploadOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
     }
 }

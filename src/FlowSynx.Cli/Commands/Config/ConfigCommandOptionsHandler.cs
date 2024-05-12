@@ -33,8 +33,8 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
     {
         try
         {
-            if (!string.IsNullOrEmpty(options.Url))
-                _flowSynxClient.ChangeConnection(options.Url);
+            if (!string.IsNullOrEmpty(options.Address))
+                _flowSynxClient.ChangeConnection(options.Address);
 
             var request = new ConfigListRequest { Type = options.Type };
             var result = await _flowSynxClient.ConfigList(request, cancellationToken);

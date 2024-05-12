@@ -58,8 +58,8 @@ internal class CompressCommand : BaseCommand<CompressCommandOptions, CompressCom
             getDefaultValue: () => false,
             description: "Overwriting the streaming data if the file (save-to) exists");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         AddOption(pathOption);
         AddOption(kindOption);
@@ -76,6 +76,6 @@ internal class CompressCommand : BaseCommand<CompressCommandOptions, CompressCom
         AddOption(compressTypeOption);
         AddOption(savePathOption);
         AddOption(overWriteOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
     }
 }

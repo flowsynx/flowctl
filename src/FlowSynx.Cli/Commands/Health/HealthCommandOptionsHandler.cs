@@ -30,8 +30,8 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
     {
         try
         {
-            if (!string.IsNullOrEmpty(options.Url))
-                _flowSynxClient.ChangeConnection(options.Url);
+            if (!string.IsNullOrEmpty(options.Address))
+                _flowSynxClient.ChangeConnection(options.Address);
 
             var result = await _flowSynxClient.Health(cancellationToken);
             _outputFormatter.Write(result?.HealthChecks.ToList(), options.Output);

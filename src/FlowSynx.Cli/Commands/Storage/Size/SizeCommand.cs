@@ -46,8 +46,8 @@ internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsH
         var maxResultsOption = new Option<int?>(new[] { "-mr", "--max-results" },
             description: "The maximum number of results to return [default: off]");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json,
@@ -65,7 +65,7 @@ internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsH
         AddOption(caseSensitiveOption);
         AddOption(recurseOption);
         AddOption(maxResultsOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
         AddOption(outputOption);
     }
 }

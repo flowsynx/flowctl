@@ -14,5 +14,5 @@ internal class MoveCommandOptions : ICommandOptions
     public bool? Recurse { get; set; } = false;
     public bool? ClearDestinationPath { get; set; } = false;
     public bool? CreateEmptyDirectories { get; set; } = true;
-    public string? Url { get; set; } = string.Empty;
+    public string? Address { get; set; } = string.Empty;
 }

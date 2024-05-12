@@ -57,8 +57,8 @@ internal class ListCommand : BaseCommand<ListCommandOptions, ListCommandOptionsH
             getDefaultValue: () => false, 
             description: "Display entities metadata in response data");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" }, 
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json,
@@ -79,7 +79,7 @@ internal class ListCommand : BaseCommand<ListCommandOptions, ListCommandOptionsH
         AddOption(hashingOption);
         AddOption(maxResultsOption);
         AddOption(showMetadataOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
         AddOption(outputOption);
     }
 }

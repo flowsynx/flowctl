@@ -12,15 +12,15 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
         var typeOption = new Option<string>(new []{ "-t", "--type" },
             description: "The type of configuration item");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json,
             description: "Formatting CLI output");
 
         AddOption(typeOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
         AddOption(outputOption);
 
         AddCommand(new AddConfigCommand());

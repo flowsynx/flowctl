@@ -6,9 +6,9 @@ internal class DashboardCommand : BaseCommand<DashboardCommandOptions, Dashboard
 {
     public DashboardCommand() : base("dashboard", "Run and execute the FlowSynx dashboard")
     {
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
-        AddOption(urlOption);
+        AddOption(addressOption);
     }
 }

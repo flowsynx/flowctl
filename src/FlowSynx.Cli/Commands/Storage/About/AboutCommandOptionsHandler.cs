@@ -33,8 +33,8 @@ internal class AboutCommandOptionsHandler : ICommandOptionsHandler<AboutCommandO
     {
         try
         {
-            if (!string.IsNullOrEmpty(options.Url))
-                _flowSynxClient.ChangeConnection(options.Url);
+            if (!string.IsNullOrEmpty(options.Address))
+                _flowSynxClient.ChangeConnection(options.Address);
 
             var request = new AboutRequest { Path = options.Path, Full = options.Full };
             var result = await _flowSynxClient.About(request, cancellationToken);

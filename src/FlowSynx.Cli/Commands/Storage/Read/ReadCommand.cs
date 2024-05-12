@@ -20,13 +20,13 @@ internal class ReadCommand : BaseCommand<ReadCommandOptions, ReadCommandOptionsH
             getDefaultValue: () => false,
             description: "Overwriting the streaming data if the file (save-to) exists");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         AddOption(pathOption);
         AddOption(hashOption);
         AddOption(savePathOption);
         AddOption(overWriteOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
     }
 }

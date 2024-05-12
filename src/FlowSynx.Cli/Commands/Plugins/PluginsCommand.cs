@@ -10,15 +10,15 @@ internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsComman
         var typeOption = new Option<string>(new[] { "-t", "--type" },
             description: "The namespace of plugin (e.g., Storage)");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json,
             description: "Formatting CLI output");
 
         AddOption(typeOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
         AddOption(outputOption);
 
         AddCommand(new PluginDetailsCommand());

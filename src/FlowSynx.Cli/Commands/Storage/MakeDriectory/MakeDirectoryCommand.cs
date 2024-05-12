@@ -9,10 +9,10 @@ internal class MakeDirectoryCommand : BaseCommand<MakeDirectoryCommandOptions, M
         var pathOption = new Option<string>(new[] { "-p", "--path" },
             description: "The storage path to create the directory on") { IsRequired = true };
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         AddOption(pathOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
     }
 }

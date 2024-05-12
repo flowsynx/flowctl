@@ -15,12 +15,12 @@ internal class AddConfigCommand : BaseCommand<AddConfigCommandOptions, AddConfig
         var specificationsOption = new Option<string>(new[] { "-s", "--spec" },
             description: "The specifications regarding configuration section. They should be passed in pairs of key value");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         AddOption(nameOption);
         AddOption(typeOption);
         AddOption(specificationsOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
     }
 }

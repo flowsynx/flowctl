@@ -46,8 +46,8 @@ internal class CopyCommand : BaseCommand<CopyCommandOptions, CopyCommandOptionsH
             getDefaultValue: () => false,
             description: "Overwriting the data if the entity exists on the destination");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         AddOption(sourcePathOption);
         AddOption(destinationPathOption);
@@ -61,6 +61,6 @@ internal class CopyCommand : BaseCommand<CopyCommandOptions, CopyCommandOptionsH
         AddOption(recurseOption);
         AddOption(clearDestinationPathOption);
         AddOption(overWriteDataOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
     }
 }

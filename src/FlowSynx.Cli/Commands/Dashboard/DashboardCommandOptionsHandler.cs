@@ -65,8 +65,8 @@ internal class DashboardCommandOptionsHandler : ICommandOptionsHandler<Dashboard
     {
         var argList = new List<string>();
 
-        if (!string.IsNullOrEmpty(options.Url))
-            argList.Add($"--url {options.Url}");
+        if (!string.IsNullOrEmpty(options.Address))
+            argList.Add($"--address {options.Address}");
 
         return argList.Count == 0 ? string.Empty : string.Join(' ', argList);
     }

@@ -35,8 +35,8 @@ internal class DeleteCommand : BaseCommand<DeleteCommandOptions, DeleteCommandOp
             getDefaultValue: () => false, 
             description: "Apply recursion on filtering entities in the specified path");
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" }, 
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         AddOption(pathOption);
         AddOption(includeOption);
@@ -47,6 +47,6 @@ internal class DeleteCommand : BaseCommand<DeleteCommandOptions, DeleteCommandOp
         AddOption(maxSizeOption);
         AddOption(caseSensitiveOption);
         AddOption(recurseOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
     }
 }

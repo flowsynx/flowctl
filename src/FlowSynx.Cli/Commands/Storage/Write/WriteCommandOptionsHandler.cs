@@ -34,8 +34,8 @@ internal class WriteCommandOptionsHandler : ICommandOptionsHandler<WriteCommandO
     {
         try
         {
-            if (!string.IsNullOrEmpty(options.Url))
-                _flowSynxClient.ChangeConnection(options.Url);
+            if (!string.IsNullOrEmpty(options.Address))
+                _flowSynxClient.ChangeConnection(options.Address);
 
             if (string.IsNullOrEmpty(options.Data) && !string.IsNullOrEmpty(options.FileToUpload))
             {

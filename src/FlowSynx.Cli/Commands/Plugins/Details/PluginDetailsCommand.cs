@@ -9,15 +9,15 @@ internal class PluginDetailsCommand : BaseCommand<PluginDetailsCommandOptions, P
         var nameOption = new Option<Guid>(new[] { "-i", "--id" },
             description: "The identifier (Id) of the plugin") { IsRequired = true };
 
-        var urlOption = new Option<string?>(new[] { "-u", "--url" },
-            description: "The address that specify a URL to connect on remote FlowSynx system");
+        var addressOption = new Option<string?>(new[] { "-a", "--address" },
+            description: "The address that specify a http-based address to connect on remote FlowSynx system");
 
         var outputFormatOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json,
             description: "Formatting CLI output");
 
         AddOption(nameOption);
-        AddOption(urlOption);
+        AddOption(addressOption);
         AddOption(outputFormatOption);
     }
 }

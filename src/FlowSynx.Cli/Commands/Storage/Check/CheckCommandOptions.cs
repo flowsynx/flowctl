@@ -15,6 +15,6 @@ internal class CheckCommandOptions : ICommandOptions
     public bool? CheckSize { get; set; } = true;
     public bool? CheckHash { get; set; } = false;
     public bool? OneWay { get; set; } = false;
-    public string? Url { get; set; } = string.Empty;
+    public string? Address { get; set; } = string.Empty;
     public Output Output { get; set; } = Output.Json;
 }

@@ -33,8 +33,8 @@ internal class PurgeDirectoryCommandOptionsHandler : ICommandOptionsHandler<Purg
     {
         try
         {
-            if (!string.IsNullOrEmpty(options.Url))
-                _flowSynxClient.ChangeConnection(options.Url);
+            if (!string.IsNullOrEmpty(options.Address))
+                _flowSynxClient.ChangeConnection(options.Address);
 
             var request = new PurgeDirectoryRequest() { Path = options.Path };
             var result = await _flowSynxClient.PurgeDirectory(request, cancellationToken);
