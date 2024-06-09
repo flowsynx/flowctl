@@ -90,6 +90,8 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
         if (!string.IsNullOrEmpty(options.LogFile))
             argList.Add($"--log-file {options.LogFile}");
 
+        argList.Add($"--open-api {options.OpenApi}");
+
         return argList.Count == 0 ? string.Empty : string.Join(' ', argList);
     }
 

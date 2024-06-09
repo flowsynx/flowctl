@@ -25,10 +25,14 @@ internal class RunCommand : BaseCommand<RunCommandOptions, RunCommandOptionsHand
         var logFileOption = new Option<string?>("--log-file", 
             description: "Log file path to store system logs information");
 
+        var openApiOption = new Option<bool>(new[] { "--open-api" }, getDefaultValue: () => false,
+            description: "Enable OpenApi specification for FlowSynx");
+
         AddOption(configFileOption);
         AddOption(enableHealthCheckOption);
         AddOption(enableLogOption);
         AddOption(logLevelOption);
         AddOption(logFileOption);
+        AddOption(openApiOption);
     }
 }
