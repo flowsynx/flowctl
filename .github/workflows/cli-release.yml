@@ -1,4 +1,4 @@
-name: Publish the project for different OS and create release and tag
+name: cli
 
 on:      
   workflow_dispatch:
@@ -73,9 +73,6 @@ jobs:
           fi
           cd "${{github.workspace}}"
 
-          # Delete output directory
-          # rm -r "${{ env.ARCHIVE_OUTDIR }}/$release_name"
-
     - name: Upload bineries
       uses: actions/upload-artifact@v2
       with:
@@ -89,7 +86,7 @@ jobs:
     env:
       ARTIFACT_DIR: ./release
     steps:  
-    #Push NuGet package to GitHub packages
+    #Release and add artifacts to the release
     - name: Download nuget package artifact
       uses: actions/download-artifact@v1.0.0
       with:
