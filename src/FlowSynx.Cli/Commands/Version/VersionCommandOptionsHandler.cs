@@ -53,8 +53,8 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
             var fullVersion = new VersionResponse
             {
                 Cli = cliVersion,
-                FlowSynx = string.IsNullOrEmpty(flowSynxVersion) ? "Not initialized" : flowSynxVersion,
-                Dashboard = string.IsNullOrEmpty(dashboardVersion) ? "Not initialized" : dashboardVersion
+                FlowSynx = string.IsNullOrEmpty(flowSynxVersion) ? Resources.VersionCommandNotInitialized : flowSynxVersion,
+                Dashboard = string.IsNullOrEmpty(dashboardVersion) ? Resources.VersionCommandNotInitialized : dashboardVersion
             };
 
             _outputFormatter.Write(fullVersion, options.Output);

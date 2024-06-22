@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FlowSynx.Cli;
+using Microsoft.Extensions.DependencyInjection;
 using FlowSynx.Cli.ApplicationBuilders;
 using FlowSynx.Cli.Extensions;
 using FlowSynx.Cli.Services.Abstracts;
@@ -21,7 +22,7 @@ try
     var cli = serviceProvider.GetService<ICliApplicationBuilder>();
 
     if (cli == null)
-        throw new Exception("Something wrong happen during execute the application");
+        throw new Exception(Resources.SomethingWrongHappen);
 
     return await cli.RunAsync(args);
 }

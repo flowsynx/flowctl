@@ -4,24 +4,24 @@ namespace FlowSynx.Cli.Commands.Storage.Read;
 
 internal class ReadCommand : BaseCommand<ReadCommandOptions, ReadCommandOptionsHandler>
 {
-    public ReadCommand() : base("read", "Read and receive data stream about specific entity")
+    public ReadCommand() : base("read", Resources.ReadCommandDescription)
     {
         var pathOption = new Option<string>(new[] { "-p", "--path" },
-            description: "The entity path to be read") { IsRequired = true };
+            description: Resources.ReadCommandPathOption) { IsRequired = true };
 
         var hashOption = new Option<bool?>(new[] { "+h", "--hashing" }, 
             getDefaultValue: () => false,
-            description: "Display hashing content in response data");
+            description: Resources.ReadCommandHashingOption);
 
         var savePathOption = new Option<string>(new[] { "-s", "--save-to" },
-            description: "The path where the streaming data are going to be saved") { IsRequired = true };
+            description: Resources.ReadCommandSaveToOption) { IsRequired = true };
 
         var overWriteOption = new Option<bool?>(new[] { "-o", "--overwrite" }, 
             getDefaultValue: () => false,
-            description: "Overwriting the streaming data if the file (save-to) exists");
+            description: Resources.ReadCommandOverwriteOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: "The address that specify a http-based address to connect on remote FlowSynx system");
+            description: Resources.CommandAddressOption);
 
         AddOption(pathOption);
         AddOption(hashOption);

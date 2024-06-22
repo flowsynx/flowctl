@@ -4,17 +4,17 @@ namespace FlowSynx.Cli.Commands.Config.Details;
 
 internal class DetailsConfigCommand : BaseCommand<DetailsConfigCommandOptions, DetailsConfigCommandOptionsHandler>
 {
-    public DetailsConfigCommand() : base("details", "Get details about configuration section")
+    public DetailsConfigCommand() : base("details", Resources.DetailsConfigCommandDescription)
     {
         var nameOption = new Option<string>(new[] { "-n", "--name" },
-            description: "The configuration section name") { IsRequired = true };
+            description: Resources.DetailsConfigCommandNameOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: "The address that specify a http-based address to connect on remote FlowSynx system");
+            description: Resources.CommandAddressOption);
 
         var outputFormatOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json,
-            description: "Formatting CLI output");
+            description: Resources.CommandOutputOption);
 
         AddOption(nameOption);
         AddOption(addressOption);

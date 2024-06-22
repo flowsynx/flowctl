@@ -55,7 +55,7 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
         }
         catch (DeserializerException)
         {
-            _outputFormatter.WriteError("Could not parse the entered specifications. Please check it and try again!");
+            _outputFormatter.WriteError(Resources.AddConfigCommandCouldNotParseSpecifications);
         }
         catch (Exception ex)
         {

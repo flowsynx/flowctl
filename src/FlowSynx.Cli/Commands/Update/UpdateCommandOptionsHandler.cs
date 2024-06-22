@@ -47,13 +47,13 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     {
         try
         {
-            _outputFormatter.Write("Checking for FlowSynx updates...");
+            _outputFormatter.Write(Resources.UpdateCommandCheckingForFlowSynxUpdates);
             await UpdateFlowSynx(options, cancellationToken);
 
-            _outputFormatter.Write("Checking for Dashboard updates...");
+            _outputFormatter.Write(Resources.UpdateCommandCheckingForDashboardUpdates);
             await UpdateDashboard(options, cancellationToken);
 
-            _outputFormatter.Write("Checking for CLI updates...");
+            _outputFormatter.Write(Resources.UpdateCommandCheckingForCliUpdates);
             await UpdateCli(options, cancellationToken);
         }
         catch (Exception ex)
@@ -72,7 +72,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             var isProcessStopped = _processHandler.IsStopped("flowsynx", ".", options.Force);
             if (!isProcessStopped)
             {
-                _outputFormatter.Write($"The FlowSynx system is running. Please stop it before doing uninstall again.");
+                _outputFormatter.Write(Resources.UpdateCommandFlowSynxIsRunning);
                 return;
             }
 
@@ -82,7 +82,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         }
         else
         {
-            _outputFormatter.Write("The current FlowSynx's version is up to dated");
+            _outputFormatter.Write(Resources.UpdateCommandFlowSynxIsUpdated);
         }
     }
 
@@ -96,7 +96,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             var isProcessStopped = _processHandler.IsStopped("dashboard", ".", options.Force);
             if (!isProcessStopped)
             {
-                _outputFormatter.Write($"The Dashboard is running. Please stop it before doing uninstall again.");
+                _outputFormatter.Write(Resources.UpdateCommandDashboardIsRunning);
                 return;
             }
 
@@ -106,7 +106,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         }
         else
         {
-            _outputFormatter.Write("The current Dashboard's version is up to dated");
+            _outputFormatter.Write(Resources.UpdateCommandDashboardIsUpdated);
         }
     }
 
@@ -123,7 +123,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         }
         else
         {
-            _outputFormatter.Write("The current CLI version is up to dated");
+            _outputFormatter.Write(Resources.UpdateCommandCliIsUpdated);
         }
     }
 
@@ -145,56 +145,56 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
 
     private async Task<bool> DownloadAndValidateAndExtractFlowSynx(string version, CancellationToken cancellationToken)
     {
-        _outputFormatter.Write("Start download FlowSynx binary");
+        _outputFormatter.Write(Resources.StartDownloadFlowSynxBinary);
         var flowSynxDownloadPath = await _gitHub.DownloadAsset(_gitHub.FlowSynxRepository, version, _gitHub.FlowSynxArchiveFileName, Path.GetTempPath(), cancellationToken);
 
-        _outputFormatter.Write("Start validating FlowSynx binary");
+        _outputFormatter.Write(Resources.StartValidatingFlowSynxBinary);
         var isFlowSynxValid = await _gitHub.ValidateDownloadedAsset(flowSynxDownloadPath, _gitHub.FlowSynxRepository, version, _gitHub.FlowSynxArchiveHashFileName, cancellationToken);
 
         if (!isFlowSynxValid)
         {
-            _outputFormatter.Write("Validating download - Fail!");
-            _outputFormatter.Write("The downloaded data may has been corrupted!");
+            _outputFormatter.Write(Resources.ValidatingDownloadFail);
+            _outputFormatter.Write(Resources.TheDownloadedDataMayHasBeenCorrupted);
             return false;
         }
 
-        _outputFormatter.Write("Start extracting FlowSynx binary");
+        _outputFormatter.Write(Resources.StartingExtractFlowSynxBinary);
         ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
         return true;
     }
 
     private async Task<bool> DownloadAndValidateAndExtractDashboard(string version, CancellationToken cancellationToken)
     {
-        _outputFormatter.Write("Start download Dashboard binary");
+        _outputFormatter.Write(Resources.StartDownloadDashboardBinary);
         var dashboardDownloadPath = await _gitHub.DownloadAsset(_gitHub.DashboardRepository, version, _gitHub.DashboardArchiveFileName, Path.GetTempPath(), cancellationToken);
 
-        _outputFormatter.Write("Start validating Dashboard binary");
+        _outputFormatter.Write(Resources.StartValidatingDashboardBinary);
         var isDashboardValid = await _gitHub.ValidateDownloadedAsset(dashboardDownloadPath, _gitHub.DashboardRepository, version, _gitHub.DashboardArchiveHashFileName, cancellationToken);
 
         if (!isDashboardValid)
         {
-            _outputFormatter.Write("Validating download - Fail!");
-            _outputFormatter.Write("The downloaded data may has been corrupted!");
+            _outputFormatter.Write(Resources.ValidatingDownloadFail);
+            _outputFormatter.Write(Resources.TheDownloadedDataMayHasBeenCorrupted);
             return false;
         }
 
-        _outputFormatter.Write("Start extracting Dashboard binary");
+        _outputFormatter.Write(Resources.StartingExtractDashboardBinary);
         ExtractAsset(dashboardDownloadPath, "dashboard", cancellationToken);
         return true;
     }
 
     private async Task DownloadAndValidateAndExtractCli(string version, CancellationToken cancellationToken)
     {
-        _outputFormatter.Write("Start download Cli binary");
+        _outputFormatter.Write(Resources.StartDownloadCliBinary);
         var cliDownloadPath = await _gitHub.DownloadAsset(_gitHub.CliRepository, version, _gitHub.FlowSynxCliArchiveFileName, Path.GetTempPath(), cancellationToken);
 
-        _outputFormatter.Write("Start validating Cli binary");
+        _outputFormatter.Write(Resources.StartValidatingCliBinary);
         var isCliValid = await _gitHub.ValidateDownloadedAsset(cliDownloadPath, _gitHub.CliRepository, version, _gitHub.FlowSynxCliArchiveHashFileName, cancellationToken);
 
         if (!isCliValid)
         {
-            _outputFormatter.Write("Validating download - Fail!");
-            _outputFormatter.Write("The downloaded data may has been corrupted!");
+            _outputFormatter.Write(Resources.ValidatingDownloadFail);
+            _outputFormatter.Write(Resources.TheDownloadedDataMayHasBeenCorrupted);
             return;
         }
 
@@ -276,7 +276,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         try
         {
             Process.Start(startInfo);
-            _outputFormatter.Write("The FlowSynx system updated successfully.");
+            _outputFormatter.Write(Resources.UpdateCommandFlowSynxUpdatedSuccessfully);
         }
         catch (Exception ex)
         {

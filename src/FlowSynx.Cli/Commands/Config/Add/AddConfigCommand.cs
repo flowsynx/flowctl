@@ -4,19 +4,19 @@ namespace FlowSynx.Cli.Commands.Config.Add;
 
 internal class AddConfigCommand : BaseCommand<AddConfigCommandOptions, AddConfigCommandOptionsHandler>
 {
-    public AddConfigCommand() : base("add", "Add configuration section")
+    public AddConfigCommand() : base("add", Resources.AddConfigCommandDescription)
     {
         var nameOption = new Option<string>(new[] { "-n", "--name" },
-            description: "The unique configuration section name") { IsRequired = true };
+            description: Resources.AddConfigCommandNameOption) { IsRequired = true };
 
         var typeOption = new Option<string>(new[] { "-t", "--type" },
-            description: "The type of plugin supported by FlowSynx") { IsRequired = true };
+            description: Resources.AddConfigCommandTypeOption) { IsRequired = true };
 
         var specificationsOption = new Option<string>(new[] { "-s", "--spec" },
-            description: "The specifications regarding configuration section. They should be passed in pairs of key value");
+            description: Resources.AddConfigCommandSpecificationOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: "The address that specify a http-based address to connect on remote FlowSynx system");
+            description: Resources.CommandAddressOption);
 
         AddOption(nameOption);
         AddOption(typeOption);

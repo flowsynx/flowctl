@@ -40,14 +40,14 @@ internal class WriteCommandOptionsHandler : ICommandOptionsHandler<WriteCommandO
             if (string.IsNullOrEmpty(options.Data) && !string.IsNullOrEmpty(options.FileToUpload))
             {
                 if (!File.Exists(options.FileToUpload))
-                    throw new Exception($"The file {options.FileToUpload} is not exist!");
+                    throw new Exception(string.Format(Resources.WriteCommandFileNotExist, options.FileToUpload));
 
                 var fs = File.Open(options.FileToUpload, FileMode.Open);
                 options.Data = fs.ConvertToBase64();
             }
 
             if (options.Data is null)
-                throw new Exception("The content is empty. Please provide a Base64String data.");
+                throw new Exception(Resources.WriteCommandContentIsEmpty);
 
             var request = new WriteRequest { Path = options.Path, Data = options.Data, Overwrite = options.Overwrite };
             var result = await _flowSynxClient.Write(request, cancellationToken);

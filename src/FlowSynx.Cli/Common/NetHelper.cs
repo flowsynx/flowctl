@@ -11,10 +11,10 @@ internal static class NetHelper
         var response = await client.SendAsync(message, cancellationToken);
 
         if (response.StatusCode == HttpStatusCode.NotFound)
-            throw new Exception($"Version not found from url: {uri}");
+            throw new Exception(string.Format(Resources.VersionNotFoundFromUrl, uri));
 
         if (response.StatusCode != HttpStatusCode.OK)
-            throw new Exception($"Download failed with {response.StatusCode}");
+            throw new Exception(string.Format(Resources.DownloadFailedWithStatus, response.StatusCode));
 
         return await response.Content.ReadAsStreamAsync(cancellationToken);
     }

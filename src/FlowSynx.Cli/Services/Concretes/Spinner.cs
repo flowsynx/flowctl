@@ -16,7 +16,7 @@ public class Spinner : ISpinner
     {
         await _console.Status()
             .AutoRefresh(true)
-            .StartAsync("Fetching...", async ctx =>
+            .StartAsync(Resources.SpinnerFetching, async ctx =>
             {
                 ctx.Spinner(Spectre.Console.Spinner.Known.Line);
                 ctx.SpinnerStyle(Style.Parse("yellow"));

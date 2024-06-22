@@ -4,13 +4,13 @@ namespace FlowSynx.Cli.Commands.Storage.PurgeDirectory;
 
 internal class PurgeDirectoryCommand : BaseCommand<PurgeDirectoryCommandOptions, PurgeDirectoryCommandOptionsHandler>
 {
-    public PurgeDirectoryCommand() : base("purge", "Delete the directory and its entities and contents on specific storage path")
+    public PurgeDirectoryCommand() : base("purge", Resources.PurgeDirectoryCommandDescription)
     {
         var pathOption = new Option<string>(new[] { "-p", "--path" },
-            description: "The storage's path that are the directory to be purged") { IsRequired = true };
+            description: Resources.PurgeDirectoryCommandPathOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: "The address that specify a http-based address to connect on remote FlowSynx system");
+            description: Resources.CommandAddressOption);
 
         AddOption(pathOption);
         AddOption(addressOption);

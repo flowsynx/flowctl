@@ -4,15 +4,15 @@ namespace FlowSynx.Cli.Commands.Version;
 
 internal class VersionCommand : BaseCommand<VersionCommandOptions, VersionCommandOptionsHandler>
 {
-    public VersionCommand() : base("version", "Display the FlowSynx system, Dashboard, and Cli version")
+    public VersionCommand() : base("version", Resources.VersionCommandDescription)
     {
         var typeOption = new Option<bool>(new[] { "-f", "--full" }, 
             getDefaultValue: () => false,
-            description: "Display full details about the running FlowSynx system");
+            description: Resources.VersionCommandFullOption);
 
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json, 
-            description: "Formatting CLI output");
+            description: Resources.CommandOutputOption);
 
         AddOption(typeOption);
         AddOption(outputOption);

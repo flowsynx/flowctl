@@ -44,7 +44,7 @@ internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOpt
             foreach (var process in processes)
                 process.Kill();
 
-            _outputFormatter.Write("The FlowSynx system was stopped successfully.");
+            _outputFormatter.Write(Resources.StopCommandFlowSynxStopped);
         }
         catch (Exception ex)
         {

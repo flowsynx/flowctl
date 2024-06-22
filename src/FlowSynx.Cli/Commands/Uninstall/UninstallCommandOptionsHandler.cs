@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using EnsureThat;
-using FlowSynx.Cli.Common;
 using FlowSynx.Cli.Services.Abstracts;
 using FlowSynx.Environment;
 
@@ -37,18 +36,18 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
     {
         try
         {
-            _outputFormatter.Write("Beginning uninstalling...");
+            _outputFormatter.Write(Resources.UninstallCommandBeginningUninstalling);
 
             if (_processHandler.IsRunning("flowsynx", "."))
             {
                 if (options.Force)
                 {
                     _processHandler.Terminate("flowsynx", ".");
-                    _outputFormatter.Write("The FlowSynx system was stopped successfully.");
+                    _outputFormatter.Write(Resources.UninstallCommandFlowSynxStoppedSuccessfully);
                 }
                 else
                 {
-                    _outputFormatter.Write("The FlowSynx engine is running. Please stop it by run the command: 'Synx stop', and try uninstall again.");
+                    _outputFormatter.Write(Resources.UninstallCommandFlowSynxIsRunning);
                     return Task.CompletedTask;
                 }
             }
@@ -58,11 +57,11 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
                 if (options.Force)
                 {
                     _processHandler.Terminate("dashboard", ".");
-                    _outputFormatter.Write("The FlowSynx dashboard was stopped successfully.");
+                    _outputFormatter.Write(Resources.UninstallCommandDashboardStoppedSuccessfully);
                 }
                 else
                 {
-                    _outputFormatter.Write("The FlowSynx dashboard is running. Please stop it and try uninstall again.");
+                    _outputFormatter.Write(Resources.UninstallCommandDashboardIsRunning);
                     return Task.CompletedTask;
                 }
             }
@@ -71,7 +70,7 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
                 Directory.Delete(_location.DefaultFlowSynxDirectoryName, true);
 
             SelfDestruction();
-            _outputFormatter.Write("Uninstalling is done!");
+            _outputFormatter.Write(Resources.UninstallCommandUninstallingIsDone);
         }
         catch (Exception e)
         {

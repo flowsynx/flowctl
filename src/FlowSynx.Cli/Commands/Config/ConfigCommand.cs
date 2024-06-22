@@ -7,17 +7,17 @@ namespace FlowSynx.Cli.Commands.Config;
 
 internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOptionsHandler>
 {
-    public ConfigCommand() : base("config", "Manage configurations related to FlowSynx System")
+    public ConfigCommand() : base("config", Resources.ConfigCommandDescription)
     {
         var typeOption = new Option<string>(new []{ "-t", "--type" },
-            description: "The type of configuration item");
+            description: Resources.ConfigCommandTypeOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: "The address that specify a http-based address to connect on remote FlowSynx system");
+            description: Resources.CommandAddressOption);
 
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json,
-            description: "Formatting CLI output");
+            description: Resources.CommandOutputOption);
 
         AddOption(typeOption);
         AddOption(addressOption);

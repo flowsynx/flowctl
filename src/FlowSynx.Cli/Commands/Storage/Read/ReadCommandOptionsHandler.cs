@@ -54,7 +54,7 @@ internal class ReadCommandOptionsHandler : ICommandOptionsHandler<ReadCommandOpt
             }
             else
             {
-                throw new Exception($"File '{filePath}' is already exist!");
+                throw new Exception(string.Format(Resources.ReadCommandFileAlreadyExist, filePath));
             }
         }
         catch (Exception ex)

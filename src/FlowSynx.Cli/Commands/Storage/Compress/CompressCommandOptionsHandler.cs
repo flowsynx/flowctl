@@ -65,7 +65,7 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
 
             if (result.Data.Content == null)
             {
-                _outputFormatter.WriteError("No data received!");
+                _outputFormatter.WriteError(Resources.CompressCommandNoDataReceived);
                 return;
             }
 
@@ -79,11 +79,11 @@ internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCo
             if (!File.Exists(filePath) || (File.Exists(filePath) && options.Overwrite is true))
             {
                 result.Data.Content.WriteTo(filePath);
-                _outputFormatter.Write($"Data saved to the '{filePath}' successfully.");
+                _outputFormatter.Write(string.Format(Resources.CompressCommandDataSavedSuccessfully, filePath));
             }
             else
             {
-                throw new Exception($"File '{filePath}' is already exist!");
+                throw new Exception(string.Format(Resources.CompressCommandFilealreadyExist, filePath));
             }
         }
         catch (Exception ex)

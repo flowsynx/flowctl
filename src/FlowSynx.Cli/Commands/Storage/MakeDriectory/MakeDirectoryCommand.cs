@@ -4,13 +4,13 @@ namespace FlowSynx.Cli.Commands.Storage.MakeDriectory;
 
 internal class MakeDirectoryCommand : BaseCommand<MakeDirectoryCommandOptions, MakeDirectoryCommandOptionsHandler>
 {
-    public MakeDirectoryCommand() : base("mkdir", "Make the directory on specific storage path")
+    public MakeDirectoryCommand() : base("mkdir", Resources.MakeDirectoryCommandDescription)
     {
         var pathOption = new Option<string>(new[] { "-p", "--path" },
-            description: "The storage path to create the directory on") { IsRequired = true };
+            description: Resources.MakeDirectoryCommandPathOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: "The address that specify a http-based address to connect on remote FlowSynx system");
+            description: Resources.CommandAddressOption);
 
         AddOption(pathOption);
         AddOption(addressOption);

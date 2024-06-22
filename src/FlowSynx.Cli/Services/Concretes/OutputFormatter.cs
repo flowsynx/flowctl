@@ -146,7 +146,7 @@ public class OutputFormatter : IOutputFormatter
                 {
                     var keyValues = new List<string>();
                     if (value is Dictionary<string, string> dict)
-                        keyValues = dict.Select(item => $"{item.Key}={item.Value.ToString()}").ToList();
+                        keyValues = dict.Select(keyValuePair => $"{keyValuePair.Key}={keyValuePair.Value.ToString()}").ToList();
 
                     values.Add(string.Join(System.Environment.NewLine, keyValues));
                 }

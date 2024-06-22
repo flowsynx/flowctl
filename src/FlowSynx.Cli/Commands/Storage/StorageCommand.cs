@@ -17,7 +17,7 @@ namespace FlowSynx.Cli.Commands.Storage;
 
 internal class StorageCommand : BaseCommand
 {
-    public StorageCommand() : base("storage", "Execute supportable commands on different storage supported by FlowSynx system")
+    public StorageCommand() : base("storage", Resources.StorageCommandDescription)
     {
         AddCommand(new AboutCommand());
         AddCommand(new CheckCommand());

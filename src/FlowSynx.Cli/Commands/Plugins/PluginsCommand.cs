@@ -5,17 +5,17 @@ namespace FlowSynx.Cli.Commands.Plugins;
 
 internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsCommandOptionsHandler>
 {
-    public PluginsCommand() : base("plugins", "Display list and details of plugins supported by FlowSynx system")
+    public PluginsCommand() : base("plugins", Resources.PluginsCommandDescription)
     {
         var typeOption = new Option<string>(new[] { "-t", "--type" },
-            description: "The namespace of plugin (e.g., Storage)");
+            description: Resources.PluginsCommandTypeOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: "The address that specify a http-based address to connect on remote FlowSynx system");
+            description: Resources.CommandAddressOption);
 
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json,
-            description: "Formatting CLI output");
+            description: Resources.CommandOutputOption);
 
         AddOption(typeOption);
         AddOption(addressOption);

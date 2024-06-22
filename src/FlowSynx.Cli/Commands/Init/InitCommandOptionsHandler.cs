@@ -42,7 +42,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     {
         try
         {
-            _outputFormatter.Write("Beginning Initialize...");
+            _outputFormatter.Write(Resources.InitCommandBeginningInitialize);
 
             var flowSynxPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine");
             var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(flowSynxPath);
@@ -52,8 +52,8 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
 
             if (File.Exists(flowSynxBinaryFile) && File.Exists(dashboardBinaryFile))
             {
-                _outputFormatter.Write("The FlowSynx engine is already initialized.");
-                _outputFormatter.Write("You can use command 'Synx update' to check and update the FlowSynx and Dashboard.");
+                _outputFormatter.Write(Resources.TheFlowSynxEngineIsAlreadyInitialized);
+                _outputFormatter.Write(Resources.UseUpdateCommandToUpdateFlowSynxAndDashboard);
                 return;
             }
             Directory.CreateDirectory(flowSynxPath);
@@ -67,13 +67,13 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             if (!initDashboard)
                 return;
 
-            _outputFormatter.Write("Starting to change the execution mode of FlowSynx.");
+            _outputFormatter.Write(Resources.StartChangeFlowSynxExecutionMode);
             PathHelper.MakeExecutable(flowSynxBinaryFile);
 
-            _outputFormatter.Write("Starting to change the execution mode of Dashboard.");
+            _outputFormatter.Write(Resources.StartChangeDashboardExecutionMode);
             PathHelper.MakeExecutable(flowSynxBinaryFile);
 
-            _outputFormatter.Write("FlowSynx engine is downloaded and installed successfully.");
+            _outputFormatter.Write(Resources.FlowSynxEngineDownloadedAndInstalledSuccessfully);
         }
         catch (Exception e)
         {
@@ -89,20 +89,20 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
 
         flowSynxVersion = _versionHandler.Normalize(flowSynxVersion);
 
-        _outputFormatter.Write("Start download FlowSynx binary");
+        _outputFormatter.Write(Resources.StartDownloadFlowSynxBinary);
         var flowSynxDownloadPath = await _gitHub.DownloadAsset(_gitHub.FlowSynxRepository, flowSynxVersion, _gitHub.FlowSynxArchiveFileName, Path.GetTempPath(), cancellationToken);
 
-        _outputFormatter.Write("Start validating FlowSynx binary");
+        _outputFormatter.Write(Resources.StartValidatingFlowSynxBinary);
         var isFlowSynxValid = await _gitHub.ValidateDownloadedAsset(flowSynxDownloadPath, _gitHub.FlowSynxRepository, flowSynxVersion, _gitHub.FlowSynxArchiveHashFileName, cancellationToken);
 
         if (!isFlowSynxValid)
         {
-            _outputFormatter.Write("Validating download - Fail!");
-            _outputFormatter.Write("The downloaded data may has been corrupted!");
+            _outputFormatter.Write(Resources.ValidatingDownloadFail);
+            _outputFormatter.Write(Resources.TheDownloadedDataMayHasBeenCorrupted);
             return false;
         }
 
-        _outputFormatter.Write("Starting extract FlowSynx binary");
+        _outputFormatter.Write(Resources.StartingExtractFlowSynxBinary);
         ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
         return true;
     }
@@ -115,20 +115,20 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
 
         dashboardVersion = _versionHandler.Normalize(dashboardVersion);
 
-        _outputFormatter.Write("Start download Dashboard binary");
+        _outputFormatter.Write(Resources.StartDownloadDashboardBinary);
         var dashboardDownloadPath = await _gitHub.DownloadAsset(_gitHub.DashboardRepository, dashboardVersion, _gitHub.DashboardArchiveFileName, Path.GetTempPath(), cancellationToken);
 
-        _outputFormatter.Write("Start validating Dashboard binary");
+        _outputFormatter.Write(Resources.StartValidatingDashboardBinary);
         var isDashboardValid = await _gitHub.ValidateDownloadedAsset(dashboardDownloadPath, _gitHub.DashboardRepository, dashboardVersion, _gitHub.DashboardArchiveHashFileName, cancellationToken);
 
         if (!isDashboardValid)
         {
-            _outputFormatter.Write("Validating download - Fail!");
-            _outputFormatter.Write("The downloaded data may has been corrupted!");
+            _outputFormatter.Write(Resources.ValidatingDownloadFail);
+            _outputFormatter.Write(Resources.TheDownloadedDataMayHasBeenCorrupted);
             return false;
         }
 
-        _outputFormatter.Write("Starting extract Dashboard binary");
+        _outputFormatter.Write(Resources.StartingExtractDashboardBinary);
         ExtractAsset(dashboardDownloadPath, "dashboard", cancellationToken);
         return true;
     }

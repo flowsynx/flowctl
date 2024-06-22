@@ -4,39 +4,39 @@ namespace FlowSynx.Cli.Commands.Storage.Delete;
 
 internal class DeleteCommand : BaseCommand<DeleteCommandOptions, DeleteCommandOptionsHandler>
 {
-    public DeleteCommand() : base("delete", "Delete entities from specific storage path")
+    public DeleteCommand() : base("delete", Resources.DeleteCommandDescription)
     {
         var pathOption = new Option<string>(new[] { "-p", "--path" },
-            description: "The storage path from which the entities are to be deleted") { IsRequired = true };
+            description: Resources.DeleteCommandPathOption) { IsRequired = true };
 
         var includeOption = new Option<string?>("--include",
-            description: "Include entities matching pattern");
+            description: Resources.CommandIncludeOption);
 
         var excludeOption = new Option<string?>("--exclude",
-            description: "Exclude entities matching pattern");
+            description: Resources.CommandExcludeOption);
 
         var minAgeOption = new Option<string?>("--min-age",
-            description: "Filter entities older than this in s or suffix ms|s|m|h|d|w|M|y [default: off]");
+            description: Resources.CommandMinAgeOption);
 
         var maxAgeOption = new Option<string?>("--max-age",
-            description: "Filter entities younger than this in s or suffix ms|s|m|h|d|w|M|y [default: off]");
+            description: Resources.CommandMaxAgeOption);
 
         var minSizeOption = new Option<string?>("--min-size",
-            description: "Filter entities bigger than this in KiB or suffix B|K|M|G|T|P [default: off]");
+            description: Resources.CommandMinSizeOption);
 
         var maxSizeOption = new Option<string?>("--max-size", 
-            description: "Filter entities smaller than this in KiB or suffix B|K|M|G|T|P [default: off]");
+            description: Resources.CommandMaxSizeOption);
 
         var caseSensitiveOption = new Option<bool?>("--case-sensitive", 
             getDefaultValue: () => false, 
-            description: "Ignore or apply case sensitive in filters");
+            description: Resources.CommandCaseSensitiveOption);
 
         var recurseOption = new Option<bool?>(new[] { "-r", "--recurse" }, 
             getDefaultValue: () => false, 
-            description: "Apply recursion on filtering entities in the specified path");
+            description: Resources.CommandRecurseOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: "The address that specify a http-based address to connect on remote FlowSynx system");
+            description: Resources.CommandAddressOption);
 
         AddOption(pathOption);
         AddOption(includeOption);
