@@ -529,21 +529,6 @@ namespace FlowSynx.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to @ECHO OFF
-        ///TIMEOUT /t 1 /nobreak &gt; NUL
-        ///ATTRIB &quot;{0}&quot; -a -s -r -h
-        ///:Repeat
-        ///DEL &quot;{0}&quot;
-        ///IF exist &quot;{0}&quot; GOTO Repeat
-        ///DEL &quot;{1}&quot;.
-        /// </summary>
-        internal static string DeleteScript_Bat {
-            get {
-                return ResourceManager.GetString("DeleteScript_Bat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Get details about configuration section.
         /// </summary>
         internal static string DetailsConfigCommandDescription {

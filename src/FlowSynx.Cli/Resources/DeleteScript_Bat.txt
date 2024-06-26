@@ -1,7 +1,0 @@
-@ECHO OFF
-TIMEOUT /t 1 /nobreak > NUL
-ATTRIB "{0}" -a -s -r -h
-:Repeat
-DEL "{0}"
-IF exist "{0}" GOTO Repeat
-DEL "{1}"
