@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using EnsureThat;
+﻿using EnsureThat;
 using FlowSynx.Cli.Services.Abstracts;
 using FlowSynx.Environment;
 
@@ -68,8 +66,7 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
             
             if (Directory.Exists(_location.DefaultFlowSynxDirectoryName))
                 Directory.Delete(_location.DefaultFlowSynxDirectoryName, true);
-
-            SelfDestruction();
+            
             _outputFormatter.Write(Resources.UninstallCommandUninstallingIsDone);
         }
         catch (Exception e)
@@ -77,43 +74,5 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
             _outputFormatter.WriteError(e.Message);
         }
         return Task.CompletedTask;
-    }
-
-    private void SelfDestruction()
-    {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            const string scriptFile = "delete.bat";
-            var strPath = Path.Combine(Directory.GetCurrentDirectory(), scriptFile);
-            var strExe = new FileInfo(_location.LookupSynxBinaryFilePath(_location.RootLocation)).Name;
-            var directoryName = Path.GetDirectoryName(strPath);
-
-            var deleteScript = string.Format(Resources.DeleteScript_Bat, strExe, scriptFile);
-            StreamWriter streamWriter = new(strPath);
-            streamWriter.Write(deleteScript);
-            streamWriter.Close();
-
-            ProcessStartInfo startInfo = new(scriptFile)
-            {
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                WorkingDirectory = directoryName
-            };
-
-            try
-            {
-                Process.Start(startInfo);
-            }
-            catch (Exception ex)
-            {
-                _outputFormatter.WriteError(ex.Message);
-                System.Environment.Exit(0);
-            }
-        }
-        else
-        {
-            var strExe = new FileInfo(_location.LookupSynxBinaryFilePath(_location.RootLocation)).FullName;
-            File.Delete(strExe);
-        }
     }
 }
