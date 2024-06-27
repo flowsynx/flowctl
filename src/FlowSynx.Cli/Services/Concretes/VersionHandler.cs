@@ -35,6 +35,9 @@ public class VersionHandler : IVersionHandler
 
     public string Normalize(string? version)
     {
-        return !string.IsNullOrEmpty(version) && version.StartsWith("v") ? version[1..] : "";
+        if (string.IsNullOrEmpty(version))
+            return string.Empty;
+
+        return version.StartsWith("v") ? version[1..] : version;
     }
 }
