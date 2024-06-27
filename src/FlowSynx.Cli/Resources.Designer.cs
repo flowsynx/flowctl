@@ -574,7 +574,7 @@ namespace FlowSynx.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FlowSynx engine is downloaded and installed successfully..
+        ///   Looks up a localized string similar to FlowSynx engine is downloaded and installed successfully in path &apos;{0}&apos;..
         /// </summary>
         internal static string FlowSynxEngineDownloadedAndInstalledSuccessfully {
             get {

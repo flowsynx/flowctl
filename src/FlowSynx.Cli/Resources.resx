@@ -289,7 +289,7 @@
     <value>The entity's path that going to be checked for existence</value>
   </data>
   <data name="FlowSynxEngineDownloadedAndInstalledSuccessfully" xml:space="preserve">
-    <value>FlowSynx engine is downloaded and installed successfully.</value>
+    <value>FlowSynx engine is downloaded and installed successfully in path '{0}'.</value>
   </data>
   <data name="FlowSynxEngineIsNotInstalled" xml:space="preserve">
     <value>FlowSynx engine is not installed. Please run the 'synx init -h' command to see the details.</value>

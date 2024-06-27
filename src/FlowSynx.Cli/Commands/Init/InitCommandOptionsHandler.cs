@@ -73,7 +73,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             _outputFormatter.Write(Resources.StartChangeDashboardExecutionMode);
             PathHelper.MakeExecutable(flowSynxBinaryFile);
 
-            _outputFormatter.Write(Resources.FlowSynxEngineDownloadedAndInstalledSuccessfully);
+            _outputFormatter.Write(string.Format(Resources.FlowSynxEngineDownloadedAndInstalledSuccessfully, _location.DefaultFlowSynxBinaryDirectoryName));
         }
         catch (Exception e)
         {
