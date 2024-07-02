@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 ## Describe the documentation
-A clear and concise description of what the feature is?
+A clear and concise description of what the documentation is?
 
 ## Release Note
 RELEASE NOTE: Add any other context or release note about the documentation request here.
