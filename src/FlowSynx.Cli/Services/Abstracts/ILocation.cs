@@ -7,7 +7,7 @@ public interface ILocation
     string DefaultFlowSynxDirectoryName { get; }
     string DefaultFlowSynxBinaryDirectoryName { get; }
 
-    string LookupSynxBinaryFilePath(string path);
+    string LookupFlowSynxCliBinaryFilePath(string path);
     string LookupFlowSynxBinaryFilePath(string path);
     string LookupDashboardBinaryFilePath(string path);
     string GetUpdateFilePath();

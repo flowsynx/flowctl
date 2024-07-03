@@ -221,7 +221,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         _extractor.ExtractFile(sourcePath, extractTarget);
         File.Delete(sourcePath);
 
-        var synxUpdateExeFile = Path.GetFullPath(_location.LookupSynxBinaryFilePath(extractTarget));
+        var synxUpdateExeFile = Path.GetFullPath(_location.LookupFlowSynxCliBinaryFilePath(extractTarget));
         var files = Directory
             .GetFiles(extractTarget, "*.*", SearchOption.AllDirectories)
             .Where(name => !string.Equals(Path.GetFullPath(name), synxUpdateExeFile, StringComparison.InvariantCultureIgnoreCase));
@@ -234,7 +234,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             File.Copy(newPath, newPath.Replace(extractTarget, "."), true);
         }
 
-        var synxExeFile = Path.GetFullPath(_location.LookupSynxBinaryFilePath(_location.RootLocation));
+        var synxExeFile = Path.GetFullPath(_location.LookupFlowSynxCliBinaryFilePath(_location.RootLocation));
         await SelfUpdate(synxUpdateExeFile, synxExeFile);
     }
     
