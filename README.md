@@ -51,7 +51,7 @@ Each release of FlowSynx CLI includes various OSes and architectures. These bina
 ### Install FlowSynx as standalone mode
 In standalone mode, flowsynx can be initialized using the CLI.
 
-#### Initialize Dapr
+#### Initialize FlowSynx
 ```
 flowsynx init
 ```
