@@ -47,3 +47,32 @@ Each release of FlowSynx CLI includes various OSes and architectures. These bina
 3. Move it to your desired location.
 	- For Linux/MacOS - /usr/local/bin
 	- For Windows, create a directory and add this to your System PATH. For example create a directory called c:\flowsynx and add this directory to your path, by editing your system environment variable.
+
+### Install FlowSynx as standalone mode
+In standalone mode, flowsynx can be initialized using the CLI.
+
+#### Initialize Dapr
+```
+flowsynx init
+```
+
+#### Install a specific engine version
+You can install or upgrade to a specific version of the FlowSynx engine using `flowsynx init --engine-version`. 
+You can find the list of versions in [FlowSynx Release](https://github.com/flowsynx/flowsynx/releases).
+
+```
+# Install v0.2.0 engine
+flowsynx init --engine-version 0.2.0
+
+# Check the versions of CLI and engine
+flowsynx version --full
+CLI version: v0.2.0
+Engine version: v0.2.0
+```
+
+### Uninstall FlowSynx in a standalone mode
+Uninstalling will remove flowsynxe binary along with the dashboard.
+```
+flowsynx uninstall
+```
+The command above will remove the default flowsynx folder that was created on `flowsynx init`.
