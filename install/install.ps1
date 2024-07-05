@@ -10,7 +10,7 @@ $ErrorActionPreference = 'stop'
 $FlowSynxRootPath = $FlowSynxRootPath -replace ' ', '` '
 
 # Constants
-$FlowSynxCliFileName = "synx.exe"
+$FlowSynxCliFileName = "flowsynx.exe"
 $FlowSynxCliFilePath = "${FlowSynxRootPath}\${FlowSynxCliFileName}"
 
 # GitHub Org and repo hosting FlowSynx CLI
