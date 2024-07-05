@@ -35,26 +35,11 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
     {
         try
         {
-            var cliVersion = _versionHandler.Version;
-
-            if (options.Full is null or false)
-            {
-                var version = new { Cli = cliVersion };
-                _outputFormatter.Write(version, options.Output);
-                return Task.CompletedTask;
-            }
-
-            var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine"));
-            var flowSynxVersion = _versionHandler.GetApplicationVersion(flowSynxBinaryFile);
-
-            var dashboardBinaryFile = _location.LookupDashboardBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "dashboard"));
-            var dashboardVersion = _versionHandler.GetApplicationVersion(dashboardBinaryFile);
-
             var fullVersion = new VersionResponse
             {
-                Cli = cliVersion,
-                FlowSynx = string.IsNullOrEmpty(flowSynxVersion) ? Resources.VersionCommandNotInitialized : flowSynxVersion,
-                Dashboard = string.IsNullOrEmpty(dashboardVersion) ? Resources.VersionCommandNotInitialized : dashboardVersion
+                Cli = _versionHandler.Version,
+                FlowSynx = GetFlowSynxVersion(),
+                Dashboard = GetDashboardVersion()
             };
 
             _outputFormatter.Write(fullVersion, options.Output);
@@ -65,5 +50,19 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
             _outputFormatter.WriteError(ex.Message);
             return Task.CompletedTask;
         }
+    }
+
+    private string GetFlowSynxVersion()
+    {
+        var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine"));
+        var flowSynxVersion = _versionHandler.GetApplicationVersion(flowSynxBinaryFile);
+        return string.IsNullOrEmpty(flowSynxVersion) ? Resources.VersionCommandNotInitialized : flowSynxVersion;
+    }
+
+    private string GetDashboardVersion()
+    {
+        var dashboardBinaryFile = _location.LookupDashboardBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "dashboard"));
+        var dashboardVersion = _versionHandler.GetApplicationVersion(dashboardBinaryFile);
+        return string.IsNullOrEmpty(dashboardVersion) ? Resources.VersionCommandNotInitialized : dashboardVersion;
     }
 }
