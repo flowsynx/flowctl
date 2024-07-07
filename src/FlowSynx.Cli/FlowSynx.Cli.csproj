@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>flowsynx</AssemblyName>
+    <AssemblyName>flowctl</AssemblyName>
     <Copyright>© 2024 FlowSynx. All rights reserved.</Copyright>
 	<RepositoryUrl>https://github.com/flowsynx/flowctl</RepositoryUrl>
 	<Title>FlowSynx CLI</Title>
