@@ -1,7 +1,7 @@
-﻿using FlowSynx.Cli.Services.Abstracts;
+﻿using FlowCtl.Services.Abstracts;
 using Spectre.Console;
 
-namespace FlowSynx.Cli.Services.Concretes;
+namespace FlowCtl.Services.Concretes;
 
 public class Spinner : ISpinner
 {
