@@ -3,9 +3,9 @@ using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
 using Microsoft.Extensions.DependencyInjection;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 
-namespace FlowSynx.Cli.ApplicationBuilders;
+namespace FlowCtl.ApplicationBuilders;
 
 public class CliApplicationBuilder : ICliApplicationBuilder
 {

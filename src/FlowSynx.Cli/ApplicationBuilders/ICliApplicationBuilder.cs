@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.ApplicationBuilders;
+﻿namespace FlowCtl.ApplicationBuilders;
 
 public interface ICliApplicationBuilder
 {
