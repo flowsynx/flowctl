@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>flowsynx</AssemblyName>
     <Copyright>© 2024 FlowSynx. All rights reserved.</Copyright>
-	<RepositoryUrl>https://github.com/FlowSynx/Cli</RepositoryUrl>
+	<RepositoryUrl>https://github.com/flowsynx/flowctl</RepositoryUrl>
 	<Title>FlowSynx CLI</Title>
 	<Company>FlowSynx</Company>
 	<Description>The cli for manage and handle FlowSynx system</Description>
