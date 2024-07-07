@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace FlowSynx.Cli.Common;
+namespace FlowCtl.Common;
 
 internal static class NetHelper
 {
