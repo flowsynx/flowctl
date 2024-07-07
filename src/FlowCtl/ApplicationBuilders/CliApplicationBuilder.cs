@@ -42,11 +42,6 @@ public class CliApplicationBuilder : ICliApplicationBuilder
             .UseExceptionHandler()
             .CancelOnProcessTermination();
 
-        var console = _serviceProvider?.GetService<IOutputFormatter>();
-
-        if (!args.Any())
-            console?.Write(FlowSyncLogo());
-
         return await commandLineBuilder.Build().InvokeAsync(args);
     }
 
