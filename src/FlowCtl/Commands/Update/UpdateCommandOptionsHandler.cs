@@ -54,7 +54,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             await UpdateDashboard(options, cancellationToken);
 
             _outputFormatter.Write(Resources.UpdateCommandCheckingForCliUpdates);
-            await UpdateCli(options, cancellationToken);
+            await UpdateFlowCtl(options, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -110,16 +110,16 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         }
     }
 
-    private async Task UpdateCli(UpdateCommandOptions options, CancellationToken cancellationToken)
+    private async Task UpdateFlowCtl(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
-        var cliLatestVersion = await _gitHub.GetLatestVersion(_gitHub.CliRepository, cancellationToken);
+        var cliLatestVersion = await _gitHub.GetLatestVersion(_gitHub.FlowCtlRepository, cancellationToken);
         cliLatestVersion = _versionHandler.Normalize(cliLatestVersion);
 
         var cliCurrentVersion = _versionHandler.Version;
 
         if (_versionHandler.CheckVersions(cliLatestVersion, cliCurrentVersion))
         {
-            await DownloadAndValidateAndExtractCli(cliLatestVersion, cancellationToken);
+            await DownloadAndValidateAndExtractFlowCtl(cliLatestVersion, cancellationToken);
         }
         else
         {
@@ -183,13 +183,13 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         return true;
     }
 
-    private async Task DownloadAndValidateAndExtractCli(string version, CancellationToken cancellationToken)
+    private async Task DownloadAndValidateAndExtractFlowCtl(string version, CancellationToken cancellationToken)
     {
         _outputFormatter.Write(Resources.StartDownloadCliBinary);
-        var cliDownloadPath = await _gitHub.DownloadAsset(_gitHub.CliRepository, version, _gitHub.FlowSynxCliArchiveFileName, Path.GetTempPath(), cancellationToken);
+        var cliDownloadPath = await _gitHub.DownloadAsset(_gitHub.FlowCtlRepository, version, _gitHub.FlowCtlArchiveFileName, Path.GetTempPath(), cancellationToken);
 
         _outputFormatter.Write(Resources.StartValidatingCliBinary);
-        var isCliValid = await _gitHub.ValidateDownloadedAsset(cliDownloadPath, _gitHub.CliRepository, version, _gitHub.FlowSynxCliArchiveHashFileName, cancellationToken);
+        var isCliValid = await _gitHub.ValidateDownloadedAsset(cliDownloadPath, _gitHub.FlowCtlRepository, version, _gitHub.FlowCtlArchiveHashFileName, cancellationToken);
 
         if (!isCliValid)
         {
@@ -198,7 +198,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             return;
         }
 
-        ExtractFlowSynxCli(cliDownloadPath, cancellationToken);
+        ExtractFlowCtl(cliDownloadPath, cancellationToken);
     }
 
     private void ExtractAsset(string sourcePath, string destinationPathName, CancellationToken cancellationToken)
@@ -213,7 +213,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         Directory.Delete(extractTarget, true);
     }
 
-    private async void ExtractFlowSynxCli(string sourcePath, CancellationToken cancellationToken)
+    private async void ExtractFlowCtl(string sourcePath, CancellationToken cancellationToken)
     {
         const string extractTarget = "./downloadedFiles";
         Directory.CreateDirectory(extractTarget);
@@ -221,7 +221,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         _extractor.ExtractFile(sourcePath, extractTarget);
         File.Delete(sourcePath);
 
-        var synxUpdateExeFile = Path.GetFullPath(_location.LookupFlowSynxCliBinaryFilePath(extractTarget));
+        var synxUpdateExeFile = Path.GetFullPath(_location.LookupFlowCtlBinaryFilePath(extractTarget));
         var files = Directory
             .GetFiles(extractTarget, "*.*", SearchOption.AllDirectories)
             .Where(name => !string.Equals(Path.GetFullPath(name), synxUpdateExeFile, StringComparison.InvariantCultureIgnoreCase));
@@ -234,7 +234,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             File.Copy(newPath, newPath.Replace(extractTarget, "."), true);
         }
 
-        var synxExeFile = Path.GetFullPath(_location.LookupFlowSynxCliBinaryFilePath(_location.RootLocation));
+        var synxExeFile = Path.GetFullPath(_location.LookupFlowCtlBinaryFilePath(_location.RootLocation));
         await SelfUpdate(synxUpdateExeFile, synxExeFile);
     }
     

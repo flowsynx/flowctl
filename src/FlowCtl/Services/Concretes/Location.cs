@@ -66,9 +66,9 @@ public class Location : ILocation
         return Path.Combine(path, binFileName);
     }
 
-    public string LookupFlowSynxCliBinaryFilePath(string path)
+    public string LookupFlowCtlBinaryFilePath(string path)
     {
-        var binFileName = "flowsynx";
+        var binFileName = "flowctl";
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             binFileName += ".exe";
 
