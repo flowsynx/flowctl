@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Storage.Size;
+namespace FlowCtl.Commands.Storage.Size;
 
 internal class SizeCommand : BaseCommand<SizeCommandOptions, SizeCommandOptionsHandler>
 {

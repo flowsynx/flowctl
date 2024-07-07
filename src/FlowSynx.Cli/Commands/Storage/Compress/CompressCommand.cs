@@ -1,7 +1,7 @@
 ﻿using FlowSynx.IO.Compression;
 using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Storage.Compress;
+namespace FlowCtl.Commands.Storage.Compress;
 
 internal class CompressCommand : BaseCommand<CompressCommandOptions, CompressCommandOptionsHandler>
 {

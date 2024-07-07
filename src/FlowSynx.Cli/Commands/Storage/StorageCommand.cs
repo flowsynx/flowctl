@@ -1,19 +1,19 @@
-﻿using FlowSynx.Cli.Commands.Storage.About;
-using FlowSynx.Cli.Commands.Storage.Check;
-using FlowSynx.Cli.Commands.Storage.Compress;
-using FlowSynx.Cli.Commands.Storage.Copy;
-using FlowSynx.Cli.Commands.Storage.Delete;
-using FlowSynx.Cli.Commands.Storage.DeleteFile;
-using FlowSynx.Cli.Commands.Storage.ExistFile;
-using FlowSynx.Cli.Commands.Storage.List;
-using FlowSynx.Cli.Commands.Storage.MakeDriectory;
-using FlowSynx.Cli.Commands.Storage.Move;
-using FlowSynx.Cli.Commands.Storage.PurgeDirectory;
-using FlowSynx.Cli.Commands.Storage.Read;
-using FlowSynx.Cli.Commands.Storage.Size;
-using FlowSynx.Cli.Commands.Storage.Write;
+﻿using FlowCtl.Commands.Storage.About;
+using FlowCtl.Commands.Storage.Check;
+using FlowCtl.Commands.Storage.Compress;
+using FlowCtl.Commands.Storage.Copy;
+using FlowCtl.Commands.Storage.Delete;
+using FlowCtl.Commands.Storage.DeleteFile;
+using FlowCtl.Commands.Storage.ExistFile;
+using FlowCtl.Commands.Storage.List;
+using FlowCtl.Commands.Storage.MakeDriectory;
+using FlowCtl.Commands.Storage.Move;
+using FlowCtl.Commands.Storage.PurgeDirectory;
+using FlowCtl.Commands.Storage.Read;
+using FlowCtl.Commands.Storage.Size;
+using FlowCtl.Commands.Storage.Write;
 
-namespace FlowSynx.Cli.Commands.Storage;
+namespace FlowCtl.Commands.Storage;
 
 internal class StorageCommand : BaseCommand
 {

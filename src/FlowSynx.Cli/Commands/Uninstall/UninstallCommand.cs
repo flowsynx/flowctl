@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Uninstall;
+namespace FlowCtl.Commands.Uninstall;
 
 internal class UninstallCommand : BaseCommand<UninstallCommandOptions, UninstallCommandOptionsHandler>
 {

@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Storage.Delete;
+namespace FlowCtl.Commands.Storage.Delete;
 
 internal class DeleteCommand : BaseCommand<DeleteCommandOptions, DeleteCommandOptionsHandler>
 {

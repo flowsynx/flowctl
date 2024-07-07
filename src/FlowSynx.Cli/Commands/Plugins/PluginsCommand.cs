@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
-using FlowSynx.Cli.Commands.Plugins.Details;
+using FlowCtl.Commands.Plugins.Details;
 
-namespace FlowSynx.Cli.Commands.Plugins;
+namespace FlowCtl.Commands.Plugins;
 
 internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsCommandOptionsHandler>
 {

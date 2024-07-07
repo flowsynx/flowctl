@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands;
+﻿namespace FlowCtl.Commands;
 
 public interface ICommandOptionsHandler<in TOptions>
 {

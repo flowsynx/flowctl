@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Storage.Check;
+﻿namespace FlowCtl.Commands.Storage.Check;
 
 internal class CheckCommandOptions : ICommandOptions
 {

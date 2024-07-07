@@ -1,9 +1,9 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Config;
 
-namespace FlowSynx.Cli.Commands.Config;
+namespace FlowCtl.Commands.Config;
 
 internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigCommandOptions>
 {

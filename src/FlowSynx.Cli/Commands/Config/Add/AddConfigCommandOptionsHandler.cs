@@ -1,11 +1,11 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Config;
 using FlowSynx.IO.Exceptions;
 using FlowSynx.IO.Serialization;
 
-namespace FlowSynx.Cli.Commands.Config.Add;
+namespace FlowCtl.Commands.Config.Add;
 
 internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfigCommandOptions>
 {

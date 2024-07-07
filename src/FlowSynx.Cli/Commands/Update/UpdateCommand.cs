@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Update;
+namespace FlowCtl.Commands.Update;
 
 internal class UpdateCommand : BaseCommand<UpdateCommandOptions, UpdateCommandOptionsHandler>
 {

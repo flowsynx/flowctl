@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Config.Delete;
+﻿namespace FlowCtl.Commands.Config.Delete;
 
 internal class DeleteConfigCommandOptions : ICommandOptions
 {

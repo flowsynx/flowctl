@@ -1,3 +1,3 @@
-﻿namespace FlowSynx.Cli.Commands.Stop;
+﻿namespace FlowCtl.Commands.Stop;
 
 internal class StopCommandOptions : ICommandOptions {}

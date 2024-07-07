@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
 using FlowSynx.Logging;
 
-namespace FlowSynx.Cli.Commands.Run;
+namespace FlowCtl.Commands.Run;
 
 internal class RunCommand : BaseCommand<RunCommandOptions, RunCommandOptionsHandler>
 {

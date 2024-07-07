@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Storage.MakeDriectory;
+﻿namespace FlowCtl.Commands.Storage.MakeDriectory;
 
 internal class MakeDirectoryCommandOptions : ICommandOptions
 {

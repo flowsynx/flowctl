@@ -1,9 +1,9 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Plugins;
 
-namespace FlowSynx.Cli.Commands.Plugins.Details;
+namespace FlowCtl.Commands.Plugins.Details;
 
 internal class PluginDetailsCommandOptionsHandler : ICommandOptionsHandler<PluginDetailsCommandOptions>
 {

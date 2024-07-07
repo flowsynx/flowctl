@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Storage.MakeDriectory;
+namespace FlowCtl.Commands.Storage.MakeDriectory;
 
 internal class MakeDirectoryCommand : BaseCommand<MakeDirectoryCommandOptions, MakeDirectoryCommandOptionsHandler>
 {

@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Storage.Write;
+namespace FlowCtl.Commands.Storage.Write;
 
 internal class WriteCommand : BaseCommand<WriteCommandOptions, WriteCommandOptionsHandler>
 {

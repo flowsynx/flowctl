@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Environment;
 using FlowSynx.IO;
 
-namespace FlowSynx.Cli.Commands.Update;
+namespace FlowCtl.Commands.Update;
 
 internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateCommandOptions>
 {

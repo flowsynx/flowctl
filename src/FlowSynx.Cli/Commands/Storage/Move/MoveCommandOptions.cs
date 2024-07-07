@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Storage.Move;
+﻿namespace FlowCtl.Commands.Storage.Move;
 
 internal class MoveCommandOptions : ICommandOptions
 {

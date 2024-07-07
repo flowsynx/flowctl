@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Storage.ExistFile;
+﻿namespace FlowCtl.Commands.Storage.ExistFile;
 
 internal class ExistFileCommandOptions : ICommandOptions
 {

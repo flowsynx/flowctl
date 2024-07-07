@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Update;
+﻿namespace FlowCtl.Commands.Update;
 
 internal class UpdateCommandOptions : ICommandOptions
 {

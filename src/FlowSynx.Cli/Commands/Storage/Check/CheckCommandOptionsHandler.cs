@@ -1,9 +1,9 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
 
-namespace FlowSynx.Cli.Commands.Storage.Check;
+namespace FlowCtl.Commands.Storage.Check;
 
 internal class CheckCommandOptionsHandler : ICommandOptionsHandler<CheckCommandOptions>
 {

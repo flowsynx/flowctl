@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Stop;
+﻿namespace FlowCtl.Commands.Stop;
 
 internal class StopCommand : BaseCommand<StopCommandOptions, StopCommandOptionsHandler>
 {

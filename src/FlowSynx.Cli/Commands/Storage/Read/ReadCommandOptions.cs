@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Storage.Read;
+﻿namespace FlowCtl.Commands.Storage.Read;
 
 internal class ReadCommandOptions : ICommandOptions
 {

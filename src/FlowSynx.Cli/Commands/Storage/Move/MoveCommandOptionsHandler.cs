@@ -1,10 +1,10 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
 using FlowSynx.Environment;
 
-namespace FlowSynx.Cli.Commands.Storage.Move;
+namespace FlowCtl.Commands.Storage.Move;
 
 internal class MoveCommandOptionsHandler : ICommandOptionsHandler<MoveCommandOptions>
 {

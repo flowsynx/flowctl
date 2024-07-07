@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Config;
+﻿namespace FlowCtl.Commands.Config;
 
 internal class ConfigCommandOptions : ICommandOptions
 {

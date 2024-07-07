@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Storage.Size;
+﻿namespace FlowCtl.Commands.Storage.Size;
 
 internal class SizeCommandOptions : ICommandOptions
 {

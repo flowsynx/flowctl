@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Storage.Move;
+namespace FlowCtl.Commands.Storage.Move;
 
 internal class MoveCommand : BaseCommand<MoveCommandOptions, MoveCommandOptionsHandler>
 {

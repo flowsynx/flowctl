@@ -1,8 +1,8 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.IO;
 
-namespace FlowSynx.Cli.Commands.Init;
+namespace FlowCtl.Commands.Init;
 
 internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOptions>
 {

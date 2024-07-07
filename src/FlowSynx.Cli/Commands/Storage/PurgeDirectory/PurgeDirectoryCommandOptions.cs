@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Storage.PurgeDirectory;
+﻿namespace FlowCtl.Commands.Storage.PurgeDirectory;
 
 internal class PurgeDirectoryCommandOptions : ICommandOptions
 {

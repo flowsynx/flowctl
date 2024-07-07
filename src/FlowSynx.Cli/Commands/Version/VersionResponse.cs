@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Version;
+﻿namespace FlowCtl.Commands.Version;
 
 public class VersionResponse
 {

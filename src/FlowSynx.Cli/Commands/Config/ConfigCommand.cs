@@ -1,9 +1,9 @@
 ﻿using System.CommandLine;
-using FlowSynx.Cli.Commands.Config.Add;
-using FlowSynx.Cli.Commands.Config.Delete;
-using FlowSynx.Cli.Commands.Config.Details;
+using FlowCtl.Commands.Config.Add;
+using FlowCtl.Commands.Config.Delete;
+using FlowCtl.Commands.Config.Details;
 
-namespace FlowSynx.Cli.Commands.Config;
+namespace FlowCtl.Commands.Config;
 
 internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOptionsHandler>
 {

@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Storage.Copy;
+﻿namespace FlowCtl.Commands.Storage.Copy;
 
 internal class CopyCommandOptions : ICommandOptions
 {

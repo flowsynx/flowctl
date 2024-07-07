@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using EnsureThat;
-using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Common;
+using FlowCtl.Services.Abstracts;
 
-namespace FlowSynx.Cli.Commands.Dashboard;
+namespace FlowCtl.Commands.Dashboard;
 
 internal class DashboardCommandOptionsHandler : ICommandOptionsHandler<DashboardCommandOptions>
 {

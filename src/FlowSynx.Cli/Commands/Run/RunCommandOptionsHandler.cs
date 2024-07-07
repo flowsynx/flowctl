@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.IO.Serialization;
 
-namespace FlowSynx.Cli.Commands.Run;
+namespace FlowCtl.Commands.Run;
 
 internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptions>
 {

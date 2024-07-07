@@ -1,8 +1,8 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
 
-namespace FlowSynx.Cli.Commands.Health;
+namespace FlowCtl.Commands.Health;
 
 internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthCommandOptions>
 {

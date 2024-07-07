@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands;
+namespace FlowCtl.Commands;
 
 public class Root : RootCommand
 {

@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Health;
+namespace FlowCtl.Commands.Health;
 
 internal class HealthCommand : BaseCommand<HealthCommandOptions, HealthCommandOptionsHandler>
 {

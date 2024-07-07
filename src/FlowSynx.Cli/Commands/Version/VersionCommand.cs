@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Version;
+namespace FlowCtl.Commands.Version;
 
 internal class VersionCommand : BaseCommand<VersionCommandOptions, VersionCommandOptionsHandler>
 {

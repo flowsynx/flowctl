@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Init;
+﻿namespace FlowCtl.Commands.Init;
 
 internal class InitCommandOptions : ICommandOptions
 {

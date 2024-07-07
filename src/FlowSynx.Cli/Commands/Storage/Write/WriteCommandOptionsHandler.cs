@@ -1,10 +1,10 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
 using FlowSynx.IO;
 
-namespace FlowSynx.Cli.Commands.Storage.Write;
+namespace FlowCtl.Commands.Storage.Write;
 
 internal class WriteCommandOptionsHandler : ICommandOptionsHandler<WriteCommandOptions>
 {

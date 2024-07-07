@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 
-namespace FlowSynx.Cli.Commands.Stop;
+namespace FlowCtl.Commands.Stop;
 
 internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOptions>
 {

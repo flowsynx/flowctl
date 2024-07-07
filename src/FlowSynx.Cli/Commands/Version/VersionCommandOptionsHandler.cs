@@ -1,8 +1,8 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Common;
+using FlowCtl.Services.Abstracts;
 
-namespace FlowSynx.Cli.Commands.Version;
+namespace FlowCtl.Commands.Version;
 
 internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionCommandOptions>
 {

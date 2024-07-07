@@ -2,7 +2,7 @@
 using System.CommandLine.NamingConventionBinder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FlowSynx.Cli.Commands;
+namespace FlowCtl.Commands;
 
 public abstract class BaseCommand : Command
 {

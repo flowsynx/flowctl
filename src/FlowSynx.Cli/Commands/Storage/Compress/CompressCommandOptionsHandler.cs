@@ -1,11 +1,11 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Common;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Storage;
 using FlowSynx.IO;
 
-namespace FlowSynx.Cli.Commands.Storage.Compress;
+namespace FlowCtl.Commands.Storage.Compress;
 
 internal class CompressCommandOptionsHandler : ICommandOptionsHandler<CompressCommandOptions>
 {

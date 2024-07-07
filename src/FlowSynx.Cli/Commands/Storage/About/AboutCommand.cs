@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Storage.About;
+namespace FlowCtl.Commands.Storage.About;
 
 internal class AboutCommand : BaseCommand<AboutCommandOptions, AboutCommandOptionsHandler>
 {

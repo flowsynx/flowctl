@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Uninstall;
+﻿namespace FlowCtl.Commands.Uninstall;
 
 internal class UninstallCommandOptions : ICommandOptions
 {

@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Storage.Check;
+namespace FlowCtl.Commands.Storage.Check;
 
 internal class CheckCommand : BaseCommand<CheckCommandOptions, CheckCommandOptionsHandler>
 {

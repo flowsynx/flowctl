@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Init;
+namespace FlowCtl.Commands.Init;
 
 internal class InitCommand : BaseCommand<InitCommandOptions, InitCommandOptionsHandler>
 {

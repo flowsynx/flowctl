@@ -1,8 +1,8 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Environment;
 
-namespace FlowSynx.Cli.Commands.Uninstall;
+namespace FlowCtl.Commands.Uninstall;
 
 internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<UninstallCommandOptions>
 {

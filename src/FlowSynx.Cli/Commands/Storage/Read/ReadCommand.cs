@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace FlowSynx.Cli.Commands.Storage.Read;
+namespace FlowCtl.Commands.Storage.Read;
 
 internal class ReadCommand : BaseCommand<ReadCommandOptions, ReadCommandOptionsHandler>
 {

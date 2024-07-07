@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Storage.Delete;
+﻿namespace FlowCtl.Commands.Storage.Delete;
 
 internal class DeleteCommandOptions : ICommandOptions
 {

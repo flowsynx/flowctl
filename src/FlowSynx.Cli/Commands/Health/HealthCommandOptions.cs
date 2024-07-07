@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Health;
+﻿namespace FlowCtl.Commands.Health;
 
 internal class HealthCommandOptions : ICommandOptions
 {

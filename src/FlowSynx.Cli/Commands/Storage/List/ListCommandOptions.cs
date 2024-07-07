@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli.Commands.Storage.List;
+﻿namespace FlowCtl.Commands.Storage.List;
 
 internal class ListCommandOptions : ICommandOptions
 {

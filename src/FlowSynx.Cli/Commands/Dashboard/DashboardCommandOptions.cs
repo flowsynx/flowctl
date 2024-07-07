@@ -1,6 +1,6 @@
 ﻿using FlowSynx.Logging;
 
-namespace FlowSynx.Cli.Commands.Dashboard;
+namespace FlowCtl.Commands.Dashboard;
 
 internal class DashboardCommandOptions : ICommandOptions
 {
