@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 
-namespace FlowSynx.Cli.Services.Concretes;
+namespace FlowCtl.Services.Concretes;
 
 public class VersionHandler : IVersionHandler
 {

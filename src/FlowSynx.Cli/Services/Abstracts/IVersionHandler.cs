@@ -1,6 +1,6 @@
 ﻿using FlowSynx.Environment;
 
-namespace FlowSynx.Cli.Services.Abstracts;
+namespace FlowCtl.Services.Abstracts;
 
 internal interface IVersionHandler : IVersion
 {
