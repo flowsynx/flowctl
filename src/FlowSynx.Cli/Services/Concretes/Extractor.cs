@@ -1,8 +1,8 @@
-﻿using FlowSynx.Cli.Services.Abstracts;
+﻿using FlowCtl.Services.Abstracts;
 using FlowSynx.Environment;
 using FlowSynx.IO.Compression;
 
-namespace FlowSynx.Cli.Services.Concretes;
+namespace FlowCtl.Services.Concretes;
 
 internal class Extractor : IExtractor
 {
