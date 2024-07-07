@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowSynx.Cli", "src\FlowSynx.Cli\FlowSynx.Cli.csproj", "{3C2DE8AB-DE5E-4C9B-884C-5857B30F5A5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowCtl", "src\FlowSynx.Cli\FlowCtl.csproj", "{3C2DE8AB-DE5E-4C9B-884C-5857B30F5A5A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4DAB0B5E-75FA-4AF9-89D0-96017DF8200A}"
 EndProject
