@@ -1,6 +1,4 @@
-﻿using FlowSynx.IO.Compression;
-
-namespace FlowCtl.Commands.Storage.Compress;
+﻿namespace FlowCtl.Commands.Storage.Compress;
 
 internal class CompressCommandOptions : ICommandOptions
 {

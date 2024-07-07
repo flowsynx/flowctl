@@ -1,5 +1,4 @@
 ﻿using EnsureThat;
-using FlowCtl.Common;
 using FlowCtl.Services.Abstracts;
 
 namespace FlowCtl.Commands.Version;

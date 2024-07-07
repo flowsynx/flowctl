@@ -1,6 +1,4 @@
-﻿using FlowSynx.Logging;
-
-namespace FlowCtl.Commands.Dashboard;
+﻿namespace FlowCtl.Commands.Dashboard;
 
 internal class DashboardCommandOptions : ICommandOptions
 {
