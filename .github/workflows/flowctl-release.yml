@@ -1,4 +1,4 @@
-name: cli
+name: flowctl
 
 on:      
   workflow_dispatch:
@@ -61,8 +61,8 @@ jobs:
     - name: Publish
       shell: bash
       run: |
-          release_name="flowsynx-${{ matrix.title }}-${{ matrix.os_arch }}"
-          dotnet publish src/FlowSynx.Cli/FlowSynx.Cli.csproj /property:PublishSingleFile=true /property:PublishReadyToRun=true --runtime '${{ matrix.kind }}-${{ matrix.os_arch }}' -c Release --self-contained true /property:Version='${{ inputs.rel_version }}' -o "${{github.workspace}}/$release_name"
+          release_name="flowctl-${{ matrix.title }}-${{ matrix.os_arch }}"
+          dotnet publish src/FlowCtl/FlowCtl.csproj /property:PublishSingleFile=true /property:PublishReadyToRun=true --runtime '${{ matrix.kind }}-${{ matrix.os_arch }}' -c Release --self-contained true /property:Version='${{ inputs.rel_version }}' -o "${{github.workspace}}/$release_name"
           
           mkdir -p "${{github.workspace}}/dist"
           cd "${{github.workspace}}/${release_name}"
@@ -76,7 +76,7 @@ jobs:
     - name: Upload bineries
       uses: actions/upload-artifact@v2
       with:
-        name: cli_flowsynx
+        name: flowctl_
         path: "${{github.workspace}}/dist"
         
   release:
@@ -90,7 +90,7 @@ jobs:
     - name: Download nuget package artifact
       uses: actions/download-artifact@v1.0.0
       with:
-        name: cli_flowsynx
+        name: flowctl_
         path: ${{ env.ARTIFACT_DIR }}
     - name: generate checksum files
       run: cd ${ARTIFACT_DIR} && for i in *; do sha256sum -b $i > "$i.sha256"; done && cd -
@@ -98,8 +98,8 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         tag: v${{ inputs.rel_version }}
-        name: FlowSynx CLI v${{ inputs.rel_version }}
-        body: "This is the v${{ inputs.rel_version }} release of FlowSynx CLI"
+        name: FlowCtl v${{ inputs.rel_version }}
+        body: "This is the v${{ inputs.rel_version }} release of FlowCtl"
         artifacts: "**/*.*"
         token: ${{ secrets.GH_TOKEN }}
     - name: Create Branch
