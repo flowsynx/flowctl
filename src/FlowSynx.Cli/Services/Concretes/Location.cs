@@ -1,9 +1,9 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Services.Abstracts;
 using Microsoft.Extensions.Logging;
 using System.Runtime.InteropServices;
 
-namespace FlowSynx.Cli.Services.Concretes;
+namespace FlowCtl.Services.Concretes;
 
 public class Location : ILocation
 {
