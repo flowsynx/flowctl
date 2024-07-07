@@ -1,4 +1,4 @@
-﻿namespace FlowSynx.Cli;
+﻿namespace FlowCtl;
 
 public enum ItemKind
 {
