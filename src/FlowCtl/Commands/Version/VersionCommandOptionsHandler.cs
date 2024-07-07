@@ -37,7 +37,7 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
         {
             var fullVersion = new VersionResponse
             {
-                Cli = _versionHandler.Version,
+                FlowCtl = _versionHandler.Version,
                 FlowSynx = GetFlowSynxVersion(),
                 Dashboard = GetDashboardVersion()
             };
