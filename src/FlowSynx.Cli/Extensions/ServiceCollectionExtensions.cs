@@ -2,27 +2,27 @@
 using System.CommandLine;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
-using FlowSynx.Cli.Commands.Storage;
-using FlowSynx.Cli.Commands;
-using FlowSynx.Cli.ApplicationBuilders;
-using FlowSynx.Cli.Commands.Config;
+using FlowCtl.Commands.Storage;
+using FlowCtl.Commands;
+using FlowCtl.ApplicationBuilders;
+using FlowCtl.Commands.Config;
 using FlowSynx.Environment;
 using FlowSynx.IO;
 using FlowSynx.Logging;
-using FlowSynx.Cli.Commands.Plugins;
-using FlowSynx.Cli.Commands.Version;
-using FlowSynx.Cli.Commands.Health;
-using FlowSynx.Cli.Commands.Update;
-using FlowSynx.Cli.Commands.Init;
-using FlowSynx.Cli.Commands.Run;
-using FlowSynx.Cli.Commands.Stop;
-using FlowSynx.Cli.Commands.Uninstall;
+using FlowCtl.Commands.Plugins;
+using FlowCtl.Commands.Version;
+using FlowCtl.Commands.Health;
+using FlowCtl.Commands.Update;
+using FlowCtl.Commands.Init;
+using FlowCtl.Commands.Run;
+using FlowCtl.Commands.Stop;
+using FlowCtl.Commands.Uninstall;
 using FlowSynx.Client;
-using FlowSynx.Cli.Commands.Dashboard;
-using FlowSynx.Cli.Services.Abstracts;
-using FlowSynx.Cli.Services.Concretes;
+using FlowCtl.Commands.Dashboard;
+using FlowCtl.Services.Abstracts;
+using FlowCtl.Services.Concretes;
 
-namespace FlowSynx.Cli.Extensions;
+namespace FlowCtl.Extensions;
 
 public static class ServiceCollectionExtensions
 {
