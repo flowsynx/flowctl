@@ -321,10 +321,6 @@
   <data name="ListCommandPathOption" xml:space="preserve">
     <value>The storage path from which the entities list are to be retrieved</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Logo.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="MakeDirectoryCommandDescription" xml:space="preserve">
     <value>Make the directory on specific storage path</value>
   </data>
@@ -383,7 +379,8 @@
     <value>The path where the streaming data are going to be saved</value>
   </data>
   <data name="RootCommandDescription" xml:space="preserve">
-    <value>A system for managing and synchronizing data between different repositories and storage, including cloud, local, and etc.</value>
+    <value>flowctl controls the FlowSynx engine.
+Find more information at: https://flowsynx.io/docs/getting-started/install-flowctl</value>
   </data>
   <data name="RunCommandConfigFileOption" xml:space="preserve">
     <value>FlowSynx configuration file</value>
@@ -517,6 +514,7 @@
   <data name="UpdateCommandFlowSynxUpdatedSuccessfully" xml:space="preserve">
     <value>The FlowSynx system updated successfully.</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="UpdateScript_Bat" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\UpdateScript_Bat.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>

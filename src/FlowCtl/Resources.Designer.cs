@@ -673,21 +673,6 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to   _____ _               ____                   
-        /// |  ___| | _____      _/ ___| _   _ _ __ __  __
-        /// | |_  | |/ _ \ \ /\ / \___ \| | | | &apos;_ \\ \/ /
-        /// |  _| | | (_) \ V  V / ___) | |_| | | | |&gt;  &lt; 
-        /// |_|   |_|\___/ \_/\_/ |____/ \__, |_| |_/_/\_\
-        ///                              |___/            
-        ///.
-        /// </summary>
-        internal static string Logo {
-            get {
-                return ResourceManager.GetString("Logo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Make the directory on specific storage path.
         /// </summary>
         internal static string MakeDirectoryCommandDescription {
@@ -859,7 +844,8 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A system for managing and synchronizing data between different repositories and storage, including cloud, local, and etc..
+        ///   Looks up a localized string similar to flowctl controls the FlowSynx engine.
+        ///Find more information at: https://flowsynx.io/docs/getting-started/install-flowctl.
         /// </summary>
         internal static string RootCommandDescription {
             get {
