@@ -1,8 +1,8 @@
-﻿using FlowSynx.Cli;
+﻿using FlowCtl;
 using Microsoft.Extensions.DependencyInjection;
-using FlowSynx.Cli.ApplicationBuilders;
-using FlowSynx.Cli.Extensions;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.ApplicationBuilders;
+using FlowCtl.Extensions;
+using FlowCtl.Services.Abstracts;
 
 IServiceCollection serviceCollection = new ServiceCollection()
     .AddLocation()
