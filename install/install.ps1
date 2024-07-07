@@ -11,7 +11,7 @@ $FlowCtlRootPath = $FlowCtlRootPath -replace ' ', '` '
 
 # Constants
 $FlowCtlFileName = "flowctl.exe"
-$FlowCtlFilePath = "${FlowCtlRootPath}\${$FlowCtlFileName}"
+$FlowCtlFilePath = "${FlowCtlRootPath}\${FlowCtlFileName}"
 
 # GitHub Org and repo hosting FlowCtl
 $GitHubOrg = "flowsynx"
