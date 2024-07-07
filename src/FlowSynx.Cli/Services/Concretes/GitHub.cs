@@ -1,12 +1,12 @@
 ﻿using EnsureThat;
-using FlowSynx.Cli.Common;
-using FlowSynx.Cli.Services.Abstracts;
+using FlowCtl.Common;
+using FlowCtl.Services.Abstracts;
 using FlowSynx.Environment;
 using FlowSynx.IO;
 using FlowSynx.IO.Serialization;
 using FlowSynx.Security;
 
-namespace FlowSynx.Cli.Services.Concretes;
+namespace FlowCtl.Services.Concretes;
 
 public class GitHub : IGitHub
 {
