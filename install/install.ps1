@@ -1,21 +1,21 @@
 param (
     [string]$Version,
-    [string]$FlowSynxRootPath = "$Env:SystemDrive\flowsynx"
+    [string]$FlowCtlRootPath = "$Env:SystemDrive\flowctl"
 )
 
 Write-Output ""
 $ErrorActionPreference = 'stop'
 
 #Escape space of FlowSynxRoot path
-$FlowSynxRootPath = $FlowSynxRootPath -replace ' ', '` '
+$FlowCtlRootPath = $FlowCtlRootPath -replace ' ', '` '
 
 # Constants
-$FlowSynxCliFileName = "flowsynx.exe"
-$FlowSynxCliFilePath = "${FlowSynxRootPath}\${FlowSynxCliFileName}"
+$FlowCtlFileName = "flowctl.exe"
+$FlowCtlFilePath = "${FlowCtlRootPath}\${$FlowCtlFileName}"
 
-# GitHub Org and repo hosting FlowSynx CLI
+# GitHub Org and repo hosting FlowCtl
 $GitHubOrg = "flowsynx"
-$GitHubRepo = "cli"
+$GitHubRepo = "flowctl"
 
 # Set Github request authentication for basic authentication.
 if ($Env:GITHUB_USER) {
@@ -36,22 +36,22 @@ if ((Get-ExecutionPolicy) -gt 'RemoteSigned' -or (Get-ExecutionPolicy) -eq 'ByPa
 # Change security protocol to support TLS 1.2 / 1.1 / 1.0 - old powershell uses TLS 1.0 as a default protocol
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
-# Check if FlowSynx CLI is installed.
-if (Test-Path $FlowSynxCliFilePath -PathType Leaf) {
-    Write-Warning "FlowSynx is detected - $FlowSynxCliFilePath"
-    Invoke-Expression "$FlowSynxCliFilePath version"
-    Write-Output "Reinstalling FlowSynx..."
+# Check if FlowCtl is installed.
+if (Test-Path $FlowCtlFilePath -PathType Leaf) {
+    Write-Warning "FlowCtl is detected - $FlowCtlFilePath"
+    Invoke-Expression "$FlowCtlFilePath version"
+    Write-Output "Reinstalling FlowCtl..."
 }
 else {
-    Write-Output "Installing FlowSynx..."
+    Write-Output "Installing FlowCtl..."
 }
 
-# Create FlowSynx Directory
-Write-Output "Creating $FlowSynxRootPath directory"
-New-Item -ErrorAction Ignore -Path $FlowSynxRootPath -ItemType "directory"
-if (!(Test-Path $FlowSynxRootPath -PathType Container)) {
-    Write-Warning "Please visit http://flowsynx.io/docs/getting-started/install-flowsynx-cli/ for instructions on how to install without admin rights."
-    throw "Cannot create $FlowSynxRootPath"
+# Create FlowCtl Directory
+Write-Output "Creating $FlowCtlRootPath directory"
+New-Item -ErrorAction Ignore -Path $FlowCtlRootPath -ItemType "directory"
+if (!(Test-Path $FlowCtlRootPath -PathType Container)) {
+    Write-Warning "Please visit https://flowsynx.io/docs/getting-started/install-flowctl/ for instructions on how to install without admin rights."
+    throw "Cannot create $FlowCtlRootPath"
 }
 
 # Get the list of release from GitHub
@@ -59,7 +59,7 @@ $releaseJsonUrl = "https://api.github.com/repos/${GitHubOrg}/${GitHubRepo}/relea
 
 $releases = Invoke-RestMethod -Headers $githubHeader -Uri $releaseJsonUrl -Method Get
 if ($releases.Count -eq 0) {
-    throw "No releases from github.com/flowsynx/cli repo"
+    throw "No releases from github.com/flowsynx/flowctl repo"
 }
 
 # Get latest or specified version info from releases
@@ -86,7 +86,7 @@ function GetWindowsAsset {
     )
     $windowsAsset = $Release | Select-Object -ExpandProperty assets | Where-Object { $_.name -Like "*windows-x64.zip" }
     if (!$windowsAsset) {
-        throw "Cannot find the windows FlowSynx CLI binary"
+        throw "Cannot find the windows FlowCtl binary"
     }
     [hashtable]$return = @{}
     $return.url = $windowsAsset.url
@@ -97,13 +97,13 @@ function GetWindowsAsset {
 
 $release = GetVersionInfo -Version $Version -Releases $releases
 if (!$release) {
-    throw "Cannot find the specified FlowSynx CLI binary version"
+    throw "Cannot find the specified FlowCtl binary version"
 }
 $asset = GetWindowsAsset -Release $release
 $zipFileUrl = $asset.url
 $assetName = $asset.name
 
-$zipFilePath = $FlowSynxRootPath + "\" + $assetName
+$zipFilePath = $FlowCtlRootPath + "\" + $assetName
 Write-Output "Downloading $zipFileUrl ..."
 
 $githubHeader.Accept = "application/octet-stream"
@@ -112,34 +112,34 @@ $progressPreference = 'SilentlyContinue';
 Invoke-WebRequest -Headers $githubHeader -Uri $zipFileUrl -OutFile $zipFilePath
 $progressPreference = $oldProgressPreference;
 if (!(Test-Path $zipFilePath -PathType Leaf)) {
-    throw "Failed to download FlowSynx Cli binary - $zipFilePath"
+    throw "Failed to download FlowCtl binary - $zipFilePath"
 }
 
-# Extract FlowSynx CLI to $FlowSynxRootPath
+# Extract FlowCtl to $FlowCtlRootPath
 Write-Output "Extracting $zipFilePath..."
-Microsoft.Powershell.Archive\Expand-Archive -Force -Path $zipFilePath -DestinationPath $FlowSynxRootPath
-if (!(Test-Path $FlowSynxCliFilePath -PathType Leaf)) {
-    throw "Failed to download FlowSynx Cli archive - $zipFilePath"
+Microsoft.Powershell.Archive\Expand-Archive -Force -Path $zipFilePath -DestinationPath $FlowCtlRootPath
+if (!(Test-Path $FlowCtlFilePath -PathType Leaf)) {
+    throw "Failed to download FlowCtl archive - $zipFilePath"
 }
 
-# Check the FlowSynx CLI version
-# Invoke-Expression "$FlowSynxCliFilePath version"
+# Check the FlowCtl version
+# Invoke-Expression "$FlowCtlFilePath version"
 
 # Clean up zipfile
 Write-Output "Clean up $zipFilePath..."
 Remove-Item $zipFilePath -Force
 
-# Add FlowSynxRootPath directory to User Path environment variable
-Write-Output "Try to add $FlowSynxRootPath to User Path Environment variable..."
+# Add FlowCtlRootPath directory to User Path environment variable
+Write-Output "Try to add $FlowCtlRootPath to User Path Environment variable..."
 $UserPathEnvironmentVar = [Environment]::GetEnvironmentVariable("PATH", "User")
-if ($UserPathEnvironmentVar -like '*flowsynx*') {
-    Write-Output "Skipping to add $FlowSynxRootPath to User Path - $UserPathEnvironmentVar"
+if ($UserPathEnvironmentVar -like '*flowctl*') {
+    Write-Output "Skipping to add $FlowCtlRootPath to User Path - $UserPathEnvironmentVar"
 }
 else {
-    [System.Environment]::SetEnvironmentVariable("PATH", $UserPathEnvironmentVar + ";$FlowSynxRootPath", "User")
+    [System.Environment]::SetEnvironmentVariable("PATH", $UserPathEnvironmentVar + ";$FlowCtlRootPath", "User")
     $UserPathEnvironmentVar = [Environment]::GetEnvironmentVariable("PATH", "User")
-    Write-Output "Added $FlowSynxRootPath to User Path - $UserPathEnvironmentVar"
+    Write-Output "Added $FlowCtlRootPath to User Path - $UserPathEnvironmentVar"
 }
 
-Write-Output "`r`nFlowSynx CLI is installed successfully."
-Write-Output "To get started with FlowSynx, please visit http://flowsynx.io/docs/category/getting-started ."
+Write-Output "`r`nFlowCtl is installed successfully."
+Write-Output "To get started with FlowCtl, please visit https://flowsynx.io/docs/category/getting-started ."
