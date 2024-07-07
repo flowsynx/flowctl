@@ -44,6 +44,4 @@ public class CliApplicationBuilder : ICliApplicationBuilder
 
         return await commandLineBuilder.Build().InvokeAsync(args);
     }
-
-    private string FlowSyncLogo() => Resources.Logo;
 }
