@@ -7,11 +7,14 @@ namespace FlowCtl.Commands.Stop;
 internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
+    private readonly ILocation _location;
 
-    public StopCommandOptionsHandler(IOutputFormatter outputFormatter)
+    public StopCommandOptionsHandler(IOutputFormatter outputFormatter, ILocation location)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(location, nameof(location));
         _outputFormatter = outputFormatter;
+        _location = location;
     }
 
     public async Task<int> HandleAsync(StopCommandOptions options, CancellationToken cancellationToken)
@@ -24,7 +27,7 @@ internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOpt
     {
         try
         {
-            TerminateProcess("flowsynx", ".");
+            TerminateProcess(_location.FlowSynxBinaryName, ".");
         }
         catch (Exception e)
         {

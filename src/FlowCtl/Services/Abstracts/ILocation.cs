@@ -6,6 +6,8 @@ public interface ILocation
     string UserProfilePath { get; }
     string DefaultFlowSynxDirectoryName { get; }
     string DefaultFlowSynxBinaryDirectoryName { get; }
+    string FlowSynxBinaryName { get; }
+    string DashboardBinaryName { get; }
 
     string LookupFlowCtlBinaryFilePath(string path);
     string LookupFlowSynxBinaryFilePath(string path);

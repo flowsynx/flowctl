@@ -30,6 +30,10 @@ public class Location : ILocation
 
     public string DefaultFlowSynxBinaryDirectoryName => Path.Combine(DefaultFlowSynxDirectoryName, "bin");
 
+    public string FlowSynxBinaryName => "flowsynx";
+
+    public string DashboardBinaryName => "dashboard";
+
     public string GetScriptFilePath()
     {
         var scriptFileName = "Update.sh";

@@ -36,11 +36,11 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
         {
             _outputFormatter.Write(Resources.UninstallCommandBeginningUninstalling);
 
-            if (_processHandler.IsRunning("flowsynx", "."))
+            if (_processHandler.IsRunning(_location.FlowSynxBinaryName, "."))
             {
                 if (options.Force)
                 {
-                    _processHandler.Terminate("flowsynx", ".");
+                    _processHandler.Terminate(_location.FlowSynxBinaryName, ".");
                     _outputFormatter.Write(Resources.UninstallCommandFlowSynxStoppedSuccessfully);
                 }
                 else
@@ -50,11 +50,11 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
                 }
             }
 
-            if (_processHandler.IsRunning("dashboard", "."))
+            if (_processHandler.IsRunning(_location.DashboardBinaryName, "."))
             {
                 if (options.Force)
                 {
-                    _processHandler.Terminate("dashboard", ".");
+                    _processHandler.Terminate(_location.DashboardBinaryName, ".");
                     _outputFormatter.Write(Resources.UninstallCommandDashboardStoppedSuccessfully);
                 }
                 else
