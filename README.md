@@ -59,12 +59,13 @@ flowctl init
 #### Install a specific engine version
 You can install or upgrade to a specific version of the FlowSynx engine using `flowctl init --flowsynx-version`. 
 You can find the list of versions in [FlowSynx Release](https://github.com/flowsynx/flowsynx/releases).
-
+Below a command to init specific flowsynx version 
 ```
-# Install v0.2.0 engine
 flowctl init --flowsynx-version 0.3.1
+```
 
-# Check the versions of flowctl and engine
+#### Check the versions of flowctl and flowsynx engine
+```
 flowctl version
 {
   "FlowCtl": "0.3.3",
