@@ -67,6 +67,10 @@ flowctl init --flowsynx-version 0.3.1
 #### Check the versions of flowctl and flowsynx engine
 ```
 flowctl version
+```
+
+The result will be similar to this:
+```
 {
   "FlowCtl": "0.3.3",
   "FlowSynx": "0.3.1.0",
