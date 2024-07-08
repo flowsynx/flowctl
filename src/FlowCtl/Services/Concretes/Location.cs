@@ -63,7 +63,7 @@ public class Location : ILocation
 
     public string LookupFlowSynxBinaryFilePath(string path)
     {
-        var binFileName = "flowsynxe";
+        var binFileName = "flowsynx";
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             binFileName += ".exe";
 
