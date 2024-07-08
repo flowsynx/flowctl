@@ -24,14 +24,14 @@ public class GitHub : IGitHub
 
     public string Organization => "flowsynx";
     public string FlowSynxRepository => "flowsynx";
-    public string FlowCtlRepository => "cli";
+    public string FlowCtlRepository => "flowctl";
     public string DashboardRepository => "dashboard";
-    public string FlowSynxArchiveFileName => $"flowsynxe-{ArchiveName.ToLower()}";
-    public string FlowSynxArchiveHashFileName => $"flowsynxe-{ArchiveName.ToLower()}.{HashFileExtension}";
+    public string FlowSynxArchiveFileName => $"flowsynx-{ArchiveName.ToLower()}";
+    public string FlowSynxArchiveHashFileName => $"flowsynx-{ArchiveName.ToLower()}.{HashFileExtension}";
     public string DashboardArchiveFileName => $"dashboard-{ArchiveName.ToLower()}";
     public string DashboardArchiveHashFileName => $"dashboard-{ArchiveName.ToLower()}.{HashFileExtension}";
-    public string FlowCtlArchiveFileName => $"flowsynx-{ArchiveName.ToLower()}";
-    public string FlowCtlArchiveHashFileName => $"flowsynx-{ArchiveName.ToLower()}.{HashFileExtension}";
+    public string FlowCtlArchiveFileName => $"flowctl-{ArchiveName.ToLower()}";
+    public string FlowCtlArchiveHashFileName => $"flowctl-{ArchiveName.ToLower()}.{HashFileExtension}";
     private string ArchiveName => $"{_operatingSystemInfo.Type}-{_operatingSystemInfo.Architecture}.{CompressionFileExtension}";
     private string CompressionFileExtension => string.Equals(_operatingSystemInfo.Type, "windows", StringComparison.OrdinalIgnoreCase) ? "zip" : "tar.gz";
     private string HashFileExtension => "sha256";
