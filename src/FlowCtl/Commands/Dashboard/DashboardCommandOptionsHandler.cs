@@ -1,21 +1,32 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using EnsureThat;
 using FlowCtl.Services.Abstracts;
+using FlowSynx.Environment;
+using Microsoft.Extensions.Logging;
 
 namespace FlowCtl.Commands.Dashboard;
 
 internal class DashboardCommandOptionsHandler : ICommandOptionsHandler<DashboardCommandOptions>
 {
+    private readonly ILogger<DashboardCommandOptionsHandler> _logger;
     private readonly IOutputFormatter _outputFormatter;
     private readonly ILocation _location;
+    private readonly IEndpoint _endpoint;
 
-    public DashboardCommandOptionsHandler(IOutputFormatter outputFormatter, ILocation location)
+    public DashboardCommandOptionsHandler(ILogger<DashboardCommandOptionsHandler> logger, 
+        IOutputFormatter outputFormatter, ILocation location,
+        IEndpoint endpoint)
     {
+        EnsureArg.IsNotNull(logger, nameof(logger));
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(location, nameof(location));
+        EnsureArg.IsNotNull(endpoint, nameof(endpoint));
 
+        _logger = logger;
         _outputFormatter = outputFormatter;
         _location = location;
+        _endpoint = endpoint;
     }
 
     public async Task<int> HandleAsync(DashboardCommandOptions options, CancellationToken cancellationToken)
@@ -48,7 +59,15 @@ internal class DashboardCommandOptionsHandler : ICommandOptionsHandler<Dashboard
             var process = new Process { StartInfo = startInfo };
             process.OutputDataReceived += OutputDataHandler;
             process.ErrorDataReceived += ErrorDataHandler;
-            process.Start();
+            var processStarted = process.Start();
+
+            if (processStarted)
+            {
+                var dashboardUrl = _endpoint.FlowSynxDashboardHttpEndpoint();
+                OpenUrl(dashboardUrl);
+                _logger.LogInformation($"Dashboard with address '{dashboardUrl}' launched in the web browser.");
+            }
+
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             process?.WaitForExit();
@@ -78,5 +97,33 @@ internal class DashboardCommandOptionsHandler : ICommandOptionsHandler<Dashboard
     private void ErrorDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
     {
         if (outLine.Data != null) _outputFormatter.WriteError(outLine.Data);
+    }
+
+    private void OpenUrl(string url)
+    {
+        try
+        {
+            Process.Start(url);
+        }
+        catch (Exception ex)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                url = url.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Process.Start("xdg-open", url);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start("open", url);
+            }
+            else
+            {
+                _logger.LogWarning(ex.Message);
+            }
+        }
     }
 }
