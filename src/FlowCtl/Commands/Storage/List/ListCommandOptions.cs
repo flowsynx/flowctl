@@ -16,7 +16,7 @@ internal class ListCommandOptions : ICommandOptions
     public bool? Recurse { get; set; } = false;
     public bool? Hashing { get; set; } = false;
     public int? MaxResults { get; set; }
-    public bool ShowMetadata { get; set; } = false;
+    public bool IncludeMetadata { get; set; } = false;
     public string? Address { get; set; } = string.Empty;
     public Output Output { get; set; } = Output.Json;
 }

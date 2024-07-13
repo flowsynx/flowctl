@@ -53,7 +53,7 @@ internal class ListCommand : BaseCommand<ListCommandOptions, ListCommandOptionsH
         var maxResultsOption = new Option<int?>(new[] { "-mr", "--max-results" }, 
             description: Resources.CommandMaxResultsOption);
 
-        var showMetadataOption = new Option<bool?>(new[] { "-sm", "--show-metadata" }, 
+        var showMetadataOption = new Option<bool?>(new[] { "-im", "--include-metadata" }, 
             getDefaultValue: () => false, 
             description: Resources.ListCommandDisplayEntitiesMetadataOption);
 

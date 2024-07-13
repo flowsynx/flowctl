@@ -51,7 +51,7 @@ internal class ListCommandOptionsHandler : ICommandOptionsHandler<ListCommandOpt
                 Full = options.Full,
                 Sorting = options.Sorting,
                 MaxResults = options.MaxResults,
-                ShowMetadata = options.ShowMetadata
+                IncludeMetadata = options.IncludeMetadata
             };
 
             var result = await _flowSynxClient.List(request, cancellationToken);
