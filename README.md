@@ -4,7 +4,7 @@
 
 [mit-badge]: https://img.shields.io/github/license/flowsynx/flowctl?style=flat&label=License&logo=github
 [mit-url]: https://github.com/flowsynx/flowctl/blob/master/LICENSE
-[actions-badge]: https://github.com/flowsynx/flowctl/actions/workflows/flowctl-release.yml/badge.svg?event=push&branch=master
+[actions-badge]: https://github.com/flowsynx/flowctl/actions/workflows/flowctl-release.yml/badge.svg?branch=master
 [actions-url]: https://github.com/flowsynx/flowctl/actions?workflow=flowctl
 [fossa-badge]: https://app.fossa.com/api/projects/git%2Bgithub.com%2Fflowsynx%2Fcli.svg?type=shield&issueType=license
 [fossa-url]: https://app.fossa.com/projects/git%2Bgithub.com%2Fflowsynx%2Fcli?ref=badge_shield&issueType=license
