@@ -19,6 +19,7 @@ using FlowCtl.Commands.Stop;
 using FlowCtl.Commands.Uninstall;
 using FlowSynx.Client;
 using FlowCtl.Commands.Dashboard;
+using FlowCtl.Commands.Logs;
 using FlowCtl.Services.Abstracts;
 using FlowCtl.Services.Concretes;
 
@@ -39,6 +40,7 @@ public static class ServiceCollectionExtensions
                 .AddTransient<Command, DashboardCommand>()
                 .AddTransient<Command, HealthCommand>()
                 .AddTransient<Command, InitCommand>()
+                .AddTransient<Command, LogsCommand>()
                 .AddTransient<Command, PluginsCommand>()
                 .AddTransient<Command, RunCommand>()
                 .AddTransient<Command, StorageCommand>()
