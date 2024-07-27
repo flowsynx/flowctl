@@ -673,6 +673,15 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The log verbosity to controls the amount of detail emitted for each event that is logged. Valid values are Dbug|Info|Warn|Fail|Crit [default: off].
+        /// </summary>
+        internal static string LogsCommandLogLevelOption {
+            get {
+                return ResourceManager.GetString("LogsCommandLogLevelOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Make the directory on specific storage path.
         /// </summary>
         internal static string MakeDirectoryCommandDescription {

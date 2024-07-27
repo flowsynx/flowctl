@@ -13,9 +13,8 @@ internal class LogsCommand : BaseCommand<LogsCommandOptions, LogsCommandOptionsH
         var maxAgeOption = new Option<string?>(new[] { "+ma", "--max-age" },
             description: Resources.CommandMaxAgeOption);
 
-        var logLevelOption = new Option<LoggingLevel>(new[] { "-l", "--level" },
-            getDefaultValue: () => LoggingLevel.Info,
-            description: Resources.RunCommandLogLevelOption);
+        var logLevelOption = new Option<string?>(new[] { "-l", "--level" },
+            description: Resources.LogsCommandLogLevelOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);

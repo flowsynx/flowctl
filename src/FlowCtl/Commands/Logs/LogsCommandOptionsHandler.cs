@@ -36,7 +36,7 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var request = new LogsListRequest { MinAge = options.MinAge, MaxAge = options.MaxAge, Level = options.Level.ToString() };
+            var request = new LogsListRequest { MinAge = options.MinAge, MaxAge = options.MaxAge, Level = options.Level };
             var result = await _flowSynxClient.LogsList(request, cancellationToken);
 
             if (result is { Succeeded: false })
