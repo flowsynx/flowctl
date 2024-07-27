@@ -22,13 +22,13 @@ public class OutputFormatter : IOutputFormatter
 
     public void WriteError(string message)
     {
-        _console.MarkupLineInterpolated($"[red]{message}[/]");
+        _console.MarkupLineInterpolated($"[red]{message.EscapeMarkup()}[/]");
     }
 
     public void WriteError(object data)
     {
         var json = _serializer.Serialize(data, new JsonSerializationConfiguration() { Indented = true });
-        _console.MarkupLineInterpolated($"[red]{json}[/]");
+        _console.MarkupLineInterpolated($"[red]{json.EscapeMarkup()}[/]");
     }
 
     public void Write(string message)
@@ -146,13 +146,13 @@ public class OutputFormatter : IOutputFormatter
                 {
                     var keyValues = new List<string>();
                     if (value is Dictionary<string, string> dict)
-                        keyValues = dict.Select(keyValuePair => $"{keyValuePair.Key}={keyValuePair.Value.ToString()}").ToList();
+                        keyValues = dict.Select(keyValuePair => $"{keyValuePair.Key}={keyValuePair.Value.ToString().EscapeMarkup()}").ToList();
 
                     values.Add(string.Join(System.Environment.NewLine, keyValues));
                 }
                 else
                 {
-                    var val = value is null ? string.Empty : value.ToString();
+                    var val = value is null ? string.Empty : value.ToString().EscapeMarkup();
                     values.Add(val ?? string.Empty);
                 }
             }
