@@ -5,7 +5,7 @@ namespace FlowCtl.Commands.Logs;
 
 internal class LogsCommand : BaseCommand<LogsCommandOptions, LogsCommandOptionsHandler>
 {
-    public LogsCommand() : base("logs", Resources.ConfigCommandDescription)
+    public LogsCommand() : base("logs", Resources.LogsCommandDescription)
     {
         var minAgeOption = new Option<string?>(new[] { "-ma", "--min-age" },
             description: Resources.CommandMinAgeOption);

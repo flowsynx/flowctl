@@ -673,6 +673,15 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Get FlowSynx System logs.
+        /// </summary>
+        internal static string LogsCommandDescription {
+            get {
+                return ResourceManager.GetString("LogsCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The log verbosity to controls the amount of detail emitted for each event that is logged. Valid values are Dbug|Info|Warn|Fail|Crit [default: off].
         /// </summary>
         internal static string LogsCommandLogLevelOption {

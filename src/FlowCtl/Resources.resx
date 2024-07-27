@@ -321,6 +321,9 @@
   <data name="ListCommandPathOption" xml:space="preserve">
     <value>The storage path from which the entities list are to be retrieved</value>
   </data>
+  <data name="LogsCommandDescription" xml:space="preserve">
+    <value>Get FlowSynx System logs</value>
+  </data>
   <data name="LogsCommandLogLevelOption" xml:space="preserve">
     <value>The log verbosity to controls the amount of detail emitted for each event that is logged. Valid values are Dbug|Info|Warn|Fail|Crit [default: off]</value>
   </data>
