@@ -16,6 +16,9 @@ internal class LogsCommand : BaseCommand<LogsCommandOptions, LogsCommandOptionsH
         var logLevelOption = new Option<string?>(new[] { "-l", "--level" },
             description: Resources.LogsCommandLogLevelOption);
 
+        var exportPathOption = new Option<string?>(new[] { "-e", "--export-to" },
+            description: Resources.ReadCommandSaveToOption);
+
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
@@ -26,6 +29,7 @@ internal class LogsCommand : BaseCommand<LogsCommandOptions, LogsCommandOptionsH
         AddOption(minAgeOption);
         AddOption(maxAgeOption);
         AddOption(logLevelOption);
+        AddOption(exportPathOption);
         AddOption(addressOption);
         AddOption(outputOption);
     }
