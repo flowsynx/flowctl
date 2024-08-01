@@ -36,7 +36,7 @@ internal class PluginDetailsCommandOptionsHandler : ICommandOptionsHandler<Plugi
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var request = new PluginDetailsRequest {Id = options.Id};
+            var request = new PluginDetailsRequest {Type = options.Type};
             var result = await _flowSynxClient.PluginDetails(request, cancellationToken);
             
             if (result is { Succeeded: false })

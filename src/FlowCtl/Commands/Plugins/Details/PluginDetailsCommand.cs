@@ -6,8 +6,8 @@ internal class PluginDetailsCommand : BaseCommand<PluginDetailsCommandOptions, P
 {
     public PluginDetailsCommand() : base("details", Resources.PluginDetailsCommandDescription)
     {
-        var nameOption = new Option<Guid>(new[] { "-i", "--id" },
-            description: Resources.PluginDetailsCommandIdOption) { IsRequired = true };
+        var typeOption = new Option<string>(new[] { "-t", "--type" },
+            description: Resources.PluginDetailsCommandTypeOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
@@ -16,7 +16,7 @@ internal class PluginDetailsCommand : BaseCommand<PluginDetailsCommandOptions, P
             getDefaultValue: () => Output.Json,
             description: Resources.CommandOutputOption);
 
-        AddOption(nameOption);
+        AddOption(typeOption);
         AddOption(addressOption);
         AddOption(outputFormatOption);
     }

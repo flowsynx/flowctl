@@ -351,8 +351,8 @@
   <data name="PluginDetailsCommandDescription" xml:space="preserve">
     <value>Display details about a particular plugin</value>
   </data>
-  <data name="PluginDetailsCommandIdOption" xml:space="preserve">
-    <value>The identifier (Id) of the plugin</value>
+  <data name="PluginDetailsCommandTypeOption" xml:space="preserve">
+    <value>The type of the plugin</value>
   </data>
   <data name="PluginsCommandDescription" xml:space="preserve">
     <value>Display list and details of plugins supported by FlowSynx system</value>

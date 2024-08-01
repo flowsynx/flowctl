@@ -763,11 +763,11 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The identifier (Id) of the plugin.
+        ///   Looks up a localized string similar to The type of the plugin.
         /// </summary>
-        internal static string PluginDetailsCommandIdOption {
+        internal static string PluginDetailsCommandTypeOption {
             get {
-                return ResourceManager.GetString("PluginDetailsCommandIdOption", resourceCulture);
+                return ResourceManager.GetString("PluginDetailsCommandTypeOption", resourceCulture);
             }
         }
         
