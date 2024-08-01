@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
 using System.Xml.Serialization;
 using Spectre.Console;
 using Newtonsoft.Json;
@@ -105,17 +106,23 @@ public class OutputFormatter : IOutputFormatter
         {
             var value = property.GetPropertyValue(data);
             var isDict = property.IsGenericType() && property.IsDictionaryType();
+            var isList = typeof(ICollection).IsAssignableFrom(property.PropertyType);
+
             if (isDict)
             {
                 var keyValues = new List<string>();
                 if (value is Dictionary<string, string> dict)
-                    keyValues = dict.Select(item => $"{item.Key}={item.Value.ToString()}").ToList();
+                    keyValues = dict.Select(item => $"{item.Key}={item.Value.ToString().EscapeMarkup()}").ToList();
 
                 values.Add(string.Join(System.Environment.NewLine, keyValues));
             }
+            else if (isList)
+            {
+                values.Add(Resources.TableFormattingNotSupportList);
+            }
             else
             {
-                var val = value is null ? string.Empty : value.ToString();
+                var val = value is null ? string.Empty : value.ToString().EscapeMarkup();
                 values.Add(val ?? string.Empty);
             }
         }
@@ -142,6 +149,8 @@ public class OutputFormatter : IOutputFormatter
             {
                 var value = property.GetPropertyValue(item);
                 var isDict = property.IsGenericType() && property.IsDictionaryType();
+                var isList = typeof(ICollection).IsAssignableFrom(property.PropertyType);
+
                 if (isDict)
                 {
                     var keyValues = new List<string>();
@@ -149,6 +158,10 @@ public class OutputFormatter : IOutputFormatter
                         keyValues = dict.Select(keyValuePair => $"{keyValuePair.Key}={keyValuePair.Value.ToString().EscapeMarkup()}").ToList();
 
                     values.Add(string.Join(System.Environment.NewLine, keyValues));
+                }
+                else if (isList)
+                {
+                    values.Add(Resources.TableFormattingNotSupportList);
                 }
                 else
                 {

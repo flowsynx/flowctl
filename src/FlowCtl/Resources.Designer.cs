@@ -1097,6 +1097,15 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Table formatting doesn&apos;t support list of object. Please use other formats!.
+        /// </summary>
+        internal static string TableFormattingNotSupportList {
+            get {
+                return ResourceManager.GetString("TableFormattingNotSupportList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The downloaded data may has been corrupted!.
         /// </summary>
         internal static string TheDownloadedDataMayHasBeenCorrupted {

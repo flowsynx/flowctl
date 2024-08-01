@@ -463,6 +463,9 @@ Find more information at: https://flowsynx.io/docs/getting-started/install-flowc
   <data name="StorageCommandDescription" xml:space="preserve">
     <value>Execute supportable commands on different storage supported by FlowSynx system</value>
   </data>
+  <data name="TableFormattingNotSupportList" xml:space="preserve">
+    <value>Table formatting doesn't support list of object. Please use other formats!</value>
+  </data>
   <data name="TheDownloadedDataMayHasBeenCorrupted" xml:space="preserve">
     <value>The downloaded data may has been corrupted!</value>
   </data>
