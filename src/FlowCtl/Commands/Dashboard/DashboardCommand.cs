@@ -1,4 +1,5 @@
 ﻿using System.CommandLine;
+using FlowCtl.Commands.Dashboard.Version;
 
 namespace FlowCtl.Commands.Dashboard;
 
@@ -10,5 +11,6 @@ internal class DashboardCommand : BaseCommand<DashboardCommandOptions, Dashboard
             description: Resources.CommandAddressOption);
 
         AddOption(addressOption);
+        AddCommand(new DashboardVersionCommand());
     }
 }

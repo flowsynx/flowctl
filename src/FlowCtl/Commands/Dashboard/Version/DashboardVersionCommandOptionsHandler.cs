@@ -1,16 +1,16 @@
 ﻿using EnsureThat;
 using FlowCtl.Services.Abstracts;
 
-namespace FlowCtl.Commands.Version;
+namespace FlowCtl.Commands.Dashboard.Version;
 
-internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionCommandOptions>
+internal class DashboardVersionCommandOptionsHandler : ICommandOptionsHandler<DashboardVersionCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly ISpinner _spinner;
     private readonly IVersionHandler _versionHandler;
     private readonly ILocation _location;
 
-    public VersionCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
+    public DashboardVersionCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
          IVersionHandler versionHandler, ILocation location)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
@@ -24,20 +24,19 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
         _location = location;
     }
 
-    public async Task<int> HandleAsync(VersionCommandOptions options, CancellationToken cancellationToken)
+    public async Task<int> HandleAsync(DashboardVersionCommandOptions options, CancellationToken cancellationToken)
     {
         await _spinner.DisplayLineSpinnerAsync(() => Execute(options));
         return 0;
     }
 
-    private Task Execute(VersionCommandOptions options)
+    private Task Execute(DashboardVersionCommandOptions options)
     {
         try
         {
-            var fullVersion = new VersionResponse
+            var fullVersion = new
             {
-                FlowCtl = _versionHandler.Version,
-                FlowSynx = GetFlowSynxVersion()
+                Version = GetDashboardVersion()
             };
 
             _outputFormatter.Write(fullVersion, options.Output);
@@ -49,11 +48,11 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
             return Task.CompletedTask;
         }
     }
-
-    private string GetFlowSynxVersion()
+    
+    private string GetDashboardVersion()
     {
-        var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine"));
-        var flowSynxVersion = _versionHandler.GetApplicationVersion(flowSynxBinaryFile);
-        return string.IsNullOrEmpty(flowSynxVersion) ? Resources.VersionCommandNotInitialized : flowSynxVersion;
+        var dashboardBinaryFile = _location.LookupDashboardBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "dashboard"));
+        var dashboardVersion = _versionHandler.GetApplicationVersion(dashboardBinaryFile);
+        return string.IsNullOrEmpty(dashboardVersion) ? Resources.VersionCommandNotInitialized : dashboardVersion;
     }
 }

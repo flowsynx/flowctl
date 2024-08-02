@@ -4,5 +4,4 @@ public class VersionResponse
 {
     public string? FlowCtl { get; set; } = string.Empty;
     public string? FlowSynx { get; set; } = string.Empty;
-    public string? Dashboard { get; set; } = string.Empty;
 }
