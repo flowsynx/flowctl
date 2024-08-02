@@ -256,7 +256,7 @@
     <value>Run and execute the FlowSynx dashboard</value>
   </data>
   <data name="DashboardVersionCommandDescription" xml:space="preserve">
-    <value>Print the version for FlowSynx dashboard</value>
+    <value>Display the version for FlowSynx dashboard</value>
   </data>
   <data name="DeleteCommandDescription" xml:space="preserve">
     <value>Delete entities from specific storage path</value>

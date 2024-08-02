@@ -475,7 +475,7 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Print the version for FlowSynx dashboard.
+        ///   Looks up a localized string similar to Display the version for FlowSynx dashboard.
         /// </summary>
         internal static string DashboardVersionCommandDescription {
             get {
