@@ -28,6 +28,7 @@ internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOpt
         try
         {
             TerminateProcess(_location.FlowSynxBinaryName, ".");
+            TerminateProcess(_location.DashboardBinaryName, ".");
         }
         catch (Exception e)
         {

@@ -1061,7 +1061,7 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop the FlowSynx system which running on the current user profile.
+        ///   Looks up a localized string similar to Stop the FlowSynx system and its associated apps which running on the current user profile.
         /// </summary>
         internal static string StopCommandDescription {
             get {

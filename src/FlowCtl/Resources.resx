@@ -452,7 +452,7 @@ Find more information at: https://flowsynx.io/docs/getting-started/install-flowc
     <value>Start validating FlowSynx binary</value>
   </data>
   <data name="StopCommandDescription" xml:space="preserve">
-    <value>Stop the FlowSynx system which running on the current user profile</value>
+    <value>Stop the FlowSynx system and its associated apps which running on the current user profile</value>
   </data>
   <data name="StopCommandFlowSynxStopped" xml:space="preserve">
     <value>The FlowSynx system was stopped successfully.</value>
