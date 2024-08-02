@@ -475,6 +475,15 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Print the version for FlowSynx dashboard.
+        /// </summary>
+        internal static string DashboardVersionCommandDescription {
+            get {
+                return ResourceManager.GetString("DashboardVersionCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete entities from specific storage path.
         /// </summary>
         internal static string DeleteCommandDescription {
@@ -1326,7 +1335,7 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Display the FlowSynx system, Dashboard, and Cli version.
+        ///   Looks up a localized string similar to Display the FlowSynx system and Cli version.
         /// </summary>
         internal static string VersionCommandDescription {
             get {

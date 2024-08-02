@@ -4,7 +4,7 @@ namespace FlowCtl.Commands.Dashboard.Version;
 
 internal class DashboardVersionCommand : BaseCommand<DashboardVersionCommandOptions, DashboardVersionCommandOptionsHandler>
 {
-    public DashboardVersionCommand() : base("version", Resources.VersionCommandDescription)
+    public DashboardVersionCommand() : base("version", Resources.DashboardVersionCommandDescription)
     {
         var outputOption = new Option<Output>(new[] { "-o", "--output" }, 
             getDefaultValue: () => Output.Json, 

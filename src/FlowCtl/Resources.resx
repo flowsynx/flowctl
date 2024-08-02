@@ -255,6 +255,9 @@
   <data name="DashboardCommandDescription" xml:space="preserve">
     <value>Run and execute the FlowSynx dashboard</value>
   </data>
+  <data name="DashboardVersionCommandDescription" xml:space="preserve">
+    <value>Print the version for FlowSynx dashboard</value>
+  </data>
   <data name="DeleteCommandDescription" xml:space="preserve">
     <value>Delete entities from specific storage path</value>
   </data>
@@ -537,7 +540,7 @@ Find more information at: https://flowsynx.io/docs/getting-started/install-flowc
     <value>Validating download - Fail!</value>
   </data>
   <data name="VersionCommandDescription" xml:space="preserve">
-    <value>Display the FlowSynx system, Dashboard, and Cli version</value>
+    <value>Display the FlowSynx system and Cli version</value>
   </data>
   <data name="VersionCommandFullOption" xml:space="preserve">
     <value>Display full details about the running FlowSynx system</value>
