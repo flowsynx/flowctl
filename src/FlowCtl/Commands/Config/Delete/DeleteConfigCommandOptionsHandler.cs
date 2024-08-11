@@ -36,7 +36,14 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var request = new DeleteConfigRequest() { Name = options.Name };
+            var request = new DeleteConfigRequest()
+            {
+                Include = options.Include,
+                Exclude = options.Exclude,
+                CaseSensitive = options.CaseSensitive,
+                MinAge = options.MinAge,
+                MaxAge = options.MaxAge
+            };
             var result = await _flowSynxClient.DeleteConfig(request, cancellationToken);
             
             if (result is { Succeeded: false })

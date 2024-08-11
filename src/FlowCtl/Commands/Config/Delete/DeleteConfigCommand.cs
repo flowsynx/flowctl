@@ -6,13 +6,30 @@ internal class DeleteConfigCommand : BaseCommand<DeleteConfigCommandOptions, Del
 {
     public DeleteConfigCommand() : base("delete", Resources.DeleteConfigCommandDescription)
     {
-        var nameOption = new Option<string>(new[] { "-n", "--name" },
-            description: Resources.DeleteConfigCommandNameOption) { IsRequired = true };
+        var includeOption = new Option<string?>(new[] { "-i", "--include" },
+            description: Resources.CommandIncludeOption);
+
+        var excludeOption = new Option<string?>(new[] { "-e", "--exclude" },
+            description: Resources.CommandExcludeOption);
+
+        var minAgeOption = new Option<string?>(new[] { "-ma", "--min-age" },
+            description: Resources.CommandMinAgeOption);
+
+        var maxAgeOption = new Option<string?>(new[] { "+ma", "--max-age" },
+            description: Resources.CommandMaxAgeOption);
+
+        var caseSensitiveOption = new Option<bool?>(new[] { "-cs", "--case-sensitive" },
+            getDefaultValue: () => false,
+            description: Resources.CommandCaseSensitiveOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
-        AddOption(nameOption);
+        AddOption(includeOption);
+        AddOption(excludeOption);
+        AddOption(minAgeOption);
+        AddOption(maxAgeOption);
+        AddOption(caseSensitiveOption);
         AddOption(addressOption);
     }
 }
