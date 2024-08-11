@@ -9,17 +9,42 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
 {
     public ConfigCommand() : base("config", Resources.ConfigCommandDescription)
     {
-        var typeOption = new Option<string>(new []{ "-t", "--type" },
-            description: Resources.ConfigCommandTypeOption);
+        var includeOption = new Option<string?>(new[] { "-i", "--include" },
+            description: Resources.CommandIncludeOption);
+
+        var excludeOption = new Option<string?>(new[] { "-e", "--exclude" },
+            description: Resources.CommandExcludeOption);
+
+        var minAgeOption = new Option<string?>(new[] { "-ma", "--min-age" },
+            description: Resources.CommandMinAgeOption);
+
+        var maxAgeOption = new Option<string?>(new[] { "+ma", "--max-age" },
+            description: Resources.CommandMaxAgeOption);
+
+        var caseSensitiveOption = new Option<bool?>(new[] { "-cs", "--case-sensitive" },
+            getDefaultValue: () => false,
+            description: Resources.CommandCaseSensitiveOption);
+
+        var maxResultsOption = new Option<int?>(new[] { "-mr", "--max-results" },
+            description: Resources.CommandMaxResultsOption);
+
+        var sortingOption = new Option<string?>(new[] { "-so", "--sorting" },
+            description: Resources.CommandSortingOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
-        var outputOption = new Option<Output>(new[] { "-o", "--output" }, 
+        var outputOption = new Option<Output>(new[] { "-o", "--output" },
             getDefaultValue: () => Output.Json,
             description: Resources.CommandOutputOption);
-
-        AddOption(typeOption);
+        
+        AddOption(includeOption);
+        AddOption(excludeOption);
+        AddOption(minAgeOption);
+        AddOption(maxAgeOption);
+        AddOption(caseSensitiveOption);
+        AddOption(maxResultsOption);
+        AddOption(sortingOption);
         AddOption(addressOption);
         AddOption(outputOption);
 

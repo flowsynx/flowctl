@@ -36,7 +36,16 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var request = new ConfigListRequest { Type = options.Type };
+            var request = new ConfigListRequest
+            {
+                Include = options.Include, 
+                Exclude = options.Exclude,
+                CaseSensitive = options.CaseSensitive,
+                MinAge = options.MinAge,
+                MaxAge = options.MaxAge,
+                MaxResults = options.MaxResults,
+                Sorting = options.Sorting
+            };
             var result = await _flowSynxClient.ConfigList(request, cancellationToken);
 
             if (result is { Succeeded: false })
