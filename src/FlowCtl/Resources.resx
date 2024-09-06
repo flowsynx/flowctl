@@ -132,24 +132,6 @@
   <data name="AddConfigCommandTypeOption" xml:space="preserve">
     <value>The type of plugin supported by FlowSynx</value>
   </data>
-  <data name="CheckCommandCheckHashOption" xml:space="preserve">
-    <value>Compare and check the hashes of entities</value>
-  </data>
-  <data name="CheckCommandCheckSizeOption" xml:space="preserve">
-    <value>Compare and check the sizes of entities</value>
-  </data>
-  <data name="CheckCommandDescription" xml:space="preserve">
-    <value>Checks the files in the source and destination match</value>
-  </data>
-  <data name="CheckCommandDestinationPathOption" xml:space="preserve">
-    <value>The storage destination's path to be checked against</value>
-  </data>
-  <data name="CheckCommandOneWayOption" xml:space="preserve">
-    <value>Only check that entities in the source match the entities in the destination, not the other way around</value>
-  </data>
-  <data name="CheckCommandSourcePathOption" xml:space="preserve">
-    <value>The storage source's path that to be checked</value>
-  </data>
   <data name="CommandAddressOption" xml:space="preserve">
     <value>The address that specify a http-based address to connect on remote FlowSynx system</value>
   </data>
@@ -204,53 +186,11 @@
   <data name="CommandSortingOption" xml:space="preserve">
     <value>Sorting entities based on field name and ascending and descending. Like Property ASC, Property2 DESC [default: off]</value>
   </data>
-  <data name="CompressCommandCompressTypeOption" xml:space="preserve">
-    <value>Type of compression. Valid values are Zip, GZip, Tar</value>
-  </data>
-  <data name="CompressCommandDataSavedSuccessfully" xml:space="preserve">
-    <value>Data saved to the '{0}' successfully.</value>
-  </data>
-  <data name="CompressCommandDescription" xml:space="preserve">
-    <value>Compress of entities regarding specific path</value>
-  </data>
-  <data name="CompressCommandFilealreadyExist" xml:space="preserve">
-    <value>File '{0}' is already exist!</value>
-  </data>
-  <data name="CompressCommandHashingOption" xml:space="preserve">
-    <value>Generate and display hashing content in response data</value>
-  </data>
-  <data name="CompressCommandNoDataReceived" xml:space="preserve">
-    <value>No data received!</value>
-  </data>
-  <data name="CompressCommandOverwriteOption" xml:space="preserve">
-    <value>Overwriting the streaming data if the file (save-to) exists</value>
-  </data>
-  <data name="CompressCommandPathOption" xml:space="preserve">
-    <value>The storage path to be compressed</value>
-  </data>
-  <data name="CompressCommandSaveToOption" xml:space="preserve">
-    <value>The path where the streaming data are going to be saved</value>
-  </data>
   <data name="ConfigCommandDescription" xml:space="preserve">
     <value>Manage configurations related to FlowSynx System</value>
   </data>
   <data name="ConfigCommandTypeOption" xml:space="preserve">
     <value>The type of configuration item</value>
-  </data>
-  <data name="CopyCommandClearDestinationPathOption" xml:space="preserve">
-    <value>Clearing all entities and other things in the destination path before starting the copy operation</value>
-  </data>
-  <data name="CopyCommandDescription" xml:space="preserve">
-    <value>Copy entities from source storage to the destination</value>
-  </data>
-  <data name="CopyCommandDestinationPathOption" xml:space="preserve">
-    <value>The storage path to which the entities are to be copied</value>
-  </data>
-  <data name="CopyCommandOverwriteDataOption" xml:space="preserve">
-    <value>Overwriting the data if the entity exists on the destination</value>
-  </data>
-  <data name="CopyCommandSourcePathOption" xml:space="preserve">
-    <value>The storage path from which the entities are to be copied</value>
   </data>
   <data name="DashboardCommandDescription" xml:space="preserve">
     <value>Run and execute the FlowSynx dashboard</value>
@@ -258,23 +198,8 @@
   <data name="DashboardVersionCommandDescription" xml:space="preserve">
     <value>Display the version for FlowSynx dashboard</value>
   </data>
-  <data name="DeleteCommandDescription" xml:space="preserve">
-    <value>Delete entities from specific storage path</value>
-  </data>
-  <data name="DeleteCommandPathOption" xml:space="preserve">
-    <value>The storage path from which the entities are to be deleted</value>
-  </data>
   <data name="DeleteConfigCommandDescription" xml:space="preserve">
     <value>Delete configuration section</value>
-  </data>
-  <data name="DeleteConfigCommandNameOption" xml:space="preserve">
-    <value>The configuration section name</value>
-  </data>
-  <data name="DeleteFileCommandDescription" xml:space="preserve">
-    <value>Delete entity from specific storage path</value>
-  </data>
-  <data name="DeleteFileCommandPathOption" xml:space="preserve">
-    <value>The entity's path that are going to be deleted</value>
   </data>
   <data name="DetailsConfigCommandDescription" xml:space="preserve">
     <value>Get details about configuration section</value>
@@ -284,12 +209,6 @@
   </data>
   <data name="DownloadFailedWithStatus" xml:space="preserve">
     <value>Download failed with {0}</value>
-  </data>
-  <data name="ExistFileCommandDescription" xml:space="preserve">
-    <value>Check the entity exist on specific path</value>
-  </data>
-  <data name="ExistFileCommandPathOption" xml:space="preserve">
-    <value>The entity's path that going to be checked for existence</value>
   </data>
   <data name="FlowSynxEngineDownloadedAndInstalledSuccessfully" xml:space="preserve">
     <value>FlowSynx engine is downloaded and installed successfully in path '{0}'.</value>
@@ -327,44 +246,11 @@
   <data name="InvokeCommandVerbOption" xml:space="preserve">
     <value>The HTTP verb to use</value>
   </data>
-  <data name="ListCommandDescription" xml:space="preserve">
-    <value>List of entities regarding specific path</value>
-  </data>
-  <data name="ListCommandDisplayEntitiesMetadataOption" xml:space="preserve">
-    <value>Display entities metadata in response data</value>
-  </data>
-  <data name="ListCommandHashingOption" xml:space="preserve">
-    <value>Display hashing content in response data</value>
-  </data>
-  <data name="ListCommandPathOption" xml:space="preserve">
-    <value>The storage path from which the entities list are to be retrieved</value>
-  </data>
   <data name="LogsCommandDescription" xml:space="preserve">
     <value>Get FlowSynx System logs</value>
   </data>
   <data name="LogsCommandLogLevelOption" xml:space="preserve">
     <value>The log verbosity to controls the amount of detail emitted for each event that is logged. Valid values are Dbug|Info|Warn|Fail|Crit [default: off]</value>
-  </data>
-  <data name="MakeDirectoryCommandDescription" xml:space="preserve">
-    <value>Make the directory on specific storage path</value>
-  </data>
-  <data name="MakeDirectoryCommandPathOption" xml:space="preserve">
-    <value>The storage path to create the directory on</value>
-  </data>
-  <data name="MoveCommandClearDestinationPathOption" xml:space="preserve">
-    <value>Clearing all entities and other things in the destination path before starting the copy operation</value>
-  </data>
-  <data name="MoveCommandCreateEmptyDirectoriesPathOption" xml:space="preserve">
-    <value>Create empty source directories on destination after move</value>
-  </data>
-  <data name="MoveCommandDescription" xml:space="preserve">
-    <value>Move entities from source storage to the destination.</value>
-  </data>
-  <data name="MoveCommandDestinationPathOption" xml:space="preserve">
-    <value>The storage path to which the entities are to be moved</value>
-  </data>
-  <data name="MoveCommandSourcePathOption" xml:space="preserve">
-    <value>The storage path from which the entities are to be moved</value>
   </data>
   <data name="PluginDetailsCommandDescription" xml:space="preserve">
     <value>Display details about a particular plugin</value>
@@ -378,26 +264,8 @@
   <data name="PluginsCommandTypeOption" xml:space="preserve">
     <value>The namespace of plugin (e.g., Storage)</value>
   </data>
-  <data name="PurgeDirectoryCommandDescription" xml:space="preserve">
-    <value>Delete the directory and its entities and contents on specific storage path</value>
-  </data>
-  <data name="PurgeDirectoryCommandPathOption" xml:space="preserve">
-    <value>The storage's path that are the directory to be purged</value>
-  </data>
-  <data name="ReadCommandDescription" xml:space="preserve">
-    <value>Read and receive data stream about specific entity</value>
-  </data>
   <data name="ReadCommandFileAlreadyExist" xml:space="preserve">
     <value>File '{0}' is already exist!</value>
-  </data>
-  <data name="ReadCommandHashingOption" xml:space="preserve">
-    <value>Display hashing content in response data</value>
-  </data>
-  <data name="ReadCommandOverwriteOption" xml:space="preserve">
-    <value>Overwriting the streaming data if the file (save-to) exists</value>
-  </data>
-  <data name="ReadCommandPathOption" xml:space="preserve">
-    <value>The entity path to be read</value>
   </data>
   <data name="ReadCommandSaveToOption" xml:space="preserve">
     <value>The path where the streaming data are going to be saved</value>
@@ -426,12 +294,6 @@ Find more information at: https://flowsynx.io/docs/getting-started/install-flowc
   </data>
   <data name="RunCommandOpenApiOption" xml:space="preserve">
     <value>Enable OpenApi specification for FlowSynx</value>
-  </data>
-  <data name="SizeCommandDescription" xml:space="preserve">
-    <value>Calculate and display total size of entities in specific storage path</value>
-  </data>
-  <data name="SizeCommandPathOption" xml:space="preserve">
-    <value>The storage path from which the entities size are to be calculated</value>
   </data>
   <data name="SomethingWrongHappen" xml:space="preserve">
     <value>Something wrong happen during execute the application</value>
@@ -477,9 +339,6 @@ Find more information at: https://flowsynx.io/docs/getting-started/install-flowc
   </data>
   <data name="StorageAboutCommandDescription" xml:space="preserve">
     <value>Get about information from the storage</value>
-  </data>
-  <data name="StorageCommandDescription" xml:space="preserve">
-    <value>Execute supportable commands on different storage supported by FlowSynx system</value>
   </data>
   <data name="TableFormattingNotSupportList" xml:space="preserve">
     <value>Table formatting doesn't support list of object. Please use other formats!</value>
@@ -565,26 +424,5 @@ Find more information at: https://flowsynx.io/docs/getting-started/install-flowc
   </data>
   <data name="VersionNotFoundFromUrl" xml:space="preserve">
     <value>Version not found from url: {0}</value>
-  </data>
-  <data name="WriteCommandContentIsEmpty" xml:space="preserve">
-    <value>The content is empty. Please provide a Base64String data.</value>
-  </data>
-  <data name="WriteCommandDataOption" xml:space="preserve">
-    <value>Data (only string or base64 data is supported) should be written</value>
-  </data>
-  <data name="WriteCommandDescription" xml:space="preserve">
-    <value>Write data on specific entity path</value>
-  </data>
-  <data name="WriteCommandFileNotExist" xml:space="preserve">
-    <value>The file {options.FileToUpload} is not exist!</value>
-  </data>
-  <data name="WriteCommandFileToUploadOption" xml:space="preserve">
-    <value>The local file path to upload</value>
-  </data>
-  <data name="WriteCommandOverwriteOption" xml:space="preserve">
-    <value>Overwriting data on storage entity if the entity exists</value>
-  </data>
-  <data name="WriteCommandPathOption" xml:space="preserve">
-    <value>The storage's path to which the data is to be written</value>
   </data>
 </root>

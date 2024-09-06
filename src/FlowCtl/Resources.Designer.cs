@@ -106,60 +106,6 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compare and check the hashes of entities.
-        /// </summary>
-        internal static string CheckCommandCheckHashOption {
-            get {
-                return ResourceManager.GetString("CheckCommandCheckHashOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Compare and check the sizes of entities.
-        /// </summary>
-        internal static string CheckCommandCheckSizeOption {
-            get {
-                return ResourceManager.GetString("CheckCommandCheckSizeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Checks the files in the source and destination match.
-        /// </summary>
-        internal static string CheckCommandDescription {
-            get {
-                return ResourceManager.GetString("CheckCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage destination&apos;s path to be checked against.
-        /// </summary>
-        internal static string CheckCommandDestinationPathOption {
-            get {
-                return ResourceManager.GetString("CheckCommandDestinationPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only check that entities in the source match the entities in the destination, not the other way around.
-        /// </summary>
-        internal static string CheckCommandOneWayOption {
-            get {
-                return ResourceManager.GetString("CheckCommandOneWayOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage source&apos;s path that to be checked.
-        /// </summary>
-        internal static string CheckCommandSourcePathOption {
-            get {
-                return ResourceManager.GetString("CheckCommandSourcePathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The address that specify a http-based address to connect on remote FlowSynx system.
         /// </summary>
         internal static string CommandAddressOption {
@@ -322,87 +268,6 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type of compression. Valid values are Zip, GZip, Tar.
-        /// </summary>
-        internal static string CompressCommandCompressTypeOption {
-            get {
-                return ResourceManager.GetString("CompressCommandCompressTypeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data saved to the &apos;{0}&apos; successfully..
-        /// </summary>
-        internal static string CompressCommandDataSavedSuccessfully {
-            get {
-                return ResourceManager.GetString("CompressCommandDataSavedSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Compress of entities regarding specific path.
-        /// </summary>
-        internal static string CompressCommandDescription {
-            get {
-                return ResourceManager.GetString("CompressCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to File &apos;{0}&apos; is already exist!.
-        /// </summary>
-        internal static string CompressCommandFilealreadyExist {
-            get {
-                return ResourceManager.GetString("CompressCommandFilealreadyExist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Generate and display hashing content in response data.
-        /// </summary>
-        internal static string CompressCommandHashingOption {
-            get {
-                return ResourceManager.GetString("CompressCommandHashingOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No data received!.
-        /// </summary>
-        internal static string CompressCommandNoDataReceived {
-            get {
-                return ResourceManager.GetString("CompressCommandNoDataReceived", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Overwriting the streaming data if the file (save-to) exists.
-        /// </summary>
-        internal static string CompressCommandOverwriteOption {
-            get {
-                return ResourceManager.GetString("CompressCommandOverwriteOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage path to be compressed.
-        /// </summary>
-        internal static string CompressCommandPathOption {
-            get {
-                return ResourceManager.GetString("CompressCommandPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The path where the streaming data are going to be saved.
-        /// </summary>
-        internal static string CompressCommandSaveToOption {
-            get {
-                return ResourceManager.GetString("CompressCommandSaveToOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Manage configurations related to FlowSynx System.
         /// </summary>
         internal static string ConfigCommandDescription {
@@ -417,51 +282,6 @@ namespace FlowCtl {
         internal static string ConfigCommandTypeOption {
             get {
                 return ResourceManager.GetString("ConfigCommandTypeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clearing all entities and other things in the destination path before starting the copy operation.
-        /// </summary>
-        internal static string CopyCommandClearDestinationPathOption {
-            get {
-                return ResourceManager.GetString("CopyCommandClearDestinationPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Copy entities from source storage to the destination.
-        /// </summary>
-        internal static string CopyCommandDescription {
-            get {
-                return ResourceManager.GetString("CopyCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage path to which the entities are to be copied.
-        /// </summary>
-        internal static string CopyCommandDestinationPathOption {
-            get {
-                return ResourceManager.GetString("CopyCommandDestinationPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Overwriting the data if the entity exists on the destination.
-        /// </summary>
-        internal static string CopyCommandOverwriteDataOption {
-            get {
-                return ResourceManager.GetString("CopyCommandOverwriteDataOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage path from which the entities are to be copied.
-        /// </summary>
-        internal static string CopyCommandSourcePathOption {
-            get {
-                return ResourceManager.GetString("CopyCommandSourcePathOption", resourceCulture);
             }
         }
         
@@ -484,56 +304,11 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete entities from specific storage path.
-        /// </summary>
-        internal static string DeleteCommandDescription {
-            get {
-                return ResourceManager.GetString("DeleteCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage path from which the entities are to be deleted.
-        /// </summary>
-        internal static string DeleteCommandPathOption {
-            get {
-                return ResourceManager.GetString("DeleteCommandPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delete configuration section.
         /// </summary>
         internal static string DeleteConfigCommandDescription {
             get {
                 return ResourceManager.GetString("DeleteConfigCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The configuration section name.
-        /// </summary>
-        internal static string DeleteConfigCommandNameOption {
-            get {
-                return ResourceManager.GetString("DeleteConfigCommandNameOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete entity from specific storage path.
-        /// </summary>
-        internal static string DeleteFileCommandDescription {
-            get {
-                return ResourceManager.GetString("DeleteFileCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The entity&apos;s path that are going to be deleted.
-        /// </summary>
-        internal static string DeleteFileCommandPathOption {
-            get {
-                return ResourceManager.GetString("DeleteFileCommandPathOption", resourceCulture);
             }
         }
         
@@ -561,24 +336,6 @@ namespace FlowCtl {
         internal static string DownloadFailedWithStatus {
             get {
                 return ResourceManager.GetString("DownloadFailedWithStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check the entity exist on specific path.
-        /// </summary>
-        internal static string ExistFileCommandDescription {
-            get {
-                return ResourceManager.GetString("ExistFileCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The entity&apos;s path that going to be checked for existence.
-        /// </summary>
-        internal static string ExistFileCommandPathOption {
-            get {
-                return ResourceManager.GetString("ExistFileCommandPathOption", resourceCulture);
             }
         }
         
@@ -691,42 +448,6 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List of entities regarding specific path.
-        /// </summary>
-        internal static string ListCommandDescription {
-            get {
-                return ResourceManager.GetString("ListCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Display entities metadata in response data.
-        /// </summary>
-        internal static string ListCommandDisplayEntitiesMetadataOption {
-            get {
-                return ResourceManager.GetString("ListCommandDisplayEntitiesMetadataOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Display hashing content in response data.
-        /// </summary>
-        internal static string ListCommandHashingOption {
-            get {
-                return ResourceManager.GetString("ListCommandHashingOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage path from which the entities list are to be retrieved.
-        /// </summary>
-        internal static string ListCommandPathOption {
-            get {
-                return ResourceManager.GetString("ListCommandPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Get FlowSynx System logs.
         /// </summary>
         internal static string LogsCommandDescription {
@@ -741,69 +462,6 @@ namespace FlowCtl {
         internal static string LogsCommandLogLevelOption {
             get {
                 return ResourceManager.GetString("LogsCommandLogLevelOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Make the directory on specific storage path.
-        /// </summary>
-        internal static string MakeDirectoryCommandDescription {
-            get {
-                return ResourceManager.GetString("MakeDirectoryCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage path to create the directory on.
-        /// </summary>
-        internal static string MakeDirectoryCommandPathOption {
-            get {
-                return ResourceManager.GetString("MakeDirectoryCommandPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clearing all entities and other things in the destination path before starting the copy operation.
-        /// </summary>
-        internal static string MoveCommandClearDestinationPathOption {
-            get {
-                return ResourceManager.GetString("MoveCommandClearDestinationPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create empty source directories on destination after move.
-        /// </summary>
-        internal static string MoveCommandCreateEmptyDirectoriesPathOption {
-            get {
-                return ResourceManager.GetString("MoveCommandCreateEmptyDirectoriesPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Move entities from source storage to the destination..
-        /// </summary>
-        internal static string MoveCommandDescription {
-            get {
-                return ResourceManager.GetString("MoveCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage path to which the entities are to be moved.
-        /// </summary>
-        internal static string MoveCommandDestinationPathOption {
-            get {
-                return ResourceManager.GetString("MoveCommandDestinationPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage path from which the entities are to be moved.
-        /// </summary>
-        internal static string MoveCommandSourcePathOption {
-            get {
-                return ResourceManager.GetString("MoveCommandSourcePathOption", resourceCulture);
             }
         }
         
@@ -844,65 +502,11 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete the directory and its entities and contents on specific storage path.
-        /// </summary>
-        internal static string PurgeDirectoryCommandDescription {
-            get {
-                return ResourceManager.GetString("PurgeDirectoryCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage&apos;s path that are the directory to be purged.
-        /// </summary>
-        internal static string PurgeDirectoryCommandPathOption {
-            get {
-                return ResourceManager.GetString("PurgeDirectoryCommandPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Read and receive data stream about specific entity.
-        /// </summary>
-        internal static string ReadCommandDescription {
-            get {
-                return ResourceManager.GetString("ReadCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to File &apos;{0}&apos; is already exist!.
         /// </summary>
         internal static string ReadCommandFileAlreadyExist {
             get {
                 return ResourceManager.GetString("ReadCommandFileAlreadyExist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Display hashing content in response data.
-        /// </summary>
-        internal static string ReadCommandHashingOption {
-            get {
-                return ResourceManager.GetString("ReadCommandHashingOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Overwriting the streaming data if the file (save-to) exists.
-        /// </summary>
-        internal static string ReadCommandOverwriteOption {
-            get {
-                return ResourceManager.GetString("ReadCommandOverwriteOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The entity path to be read.
-        /// </summary>
-        internal static string ReadCommandPathOption {
-            get {
-                return ResourceManager.GetString("ReadCommandPathOption", resourceCulture);
             }
         }
         
@@ -985,24 +589,6 @@ namespace FlowCtl {
         internal static string RunCommandOpenApiOption {
             get {
                 return ResourceManager.GetString("RunCommandOpenApiOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Calculate and display total size of entities in specific storage path.
-        /// </summary>
-        internal static string SizeCommandDescription {
-            get {
-                return ResourceManager.GetString("SizeCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage path from which the entities size are to be calculated.
-        /// </summary>
-        internal static string SizeCommandPathOption {
-            get {
-                return ResourceManager.GetString("SizeCommandPathOption", resourceCulture);
             }
         }
         
@@ -1138,15 +724,6 @@ namespace FlowCtl {
         internal static string StorageAboutCommandDescription {
             get {
                 return ResourceManager.GetString("StorageAboutCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Execute supportable commands on different storage supported by FlowSynx system.
-        /// </summary>
-        internal static string StorageCommandDescription {
-            get {
-                return ResourceManager.GetString("StorageCommandDescription", resourceCulture);
             }
         }
         
@@ -1412,69 +989,6 @@ namespace FlowCtl {
         internal static string VersionNotFoundFromUrl {
             get {
                 return ResourceManager.GetString("VersionNotFoundFromUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The content is empty. Please provide a Base64String data..
-        /// </summary>
-        internal static string WriteCommandContentIsEmpty {
-            get {
-                return ResourceManager.GetString("WriteCommandContentIsEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data (only string or base64 data is supported) should be written.
-        /// </summary>
-        internal static string WriteCommandDataOption {
-            get {
-                return ResourceManager.GetString("WriteCommandDataOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Write data on specific entity path.
-        /// </summary>
-        internal static string WriteCommandDescription {
-            get {
-                return ResourceManager.GetString("WriteCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The file {options.FileToUpload} is not exist!.
-        /// </summary>
-        internal static string WriteCommandFileNotExist {
-            get {
-                return ResourceManager.GetString("WriteCommandFileNotExist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The local file path to upload.
-        /// </summary>
-        internal static string WriteCommandFileToUploadOption {
-            get {
-                return ResourceManager.GetString("WriteCommandFileToUploadOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Overwriting data on storage entity if the entity exists.
-        /// </summary>
-        internal static string WriteCommandOverwriteOption {
-            get {
-                return ResourceManager.GetString("WriteCommandOverwriteOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage&apos;s path to which the data is to be written.
-        /// </summary>
-        internal static string WriteCommandPathOption {
-            get {
-                return ResourceManager.GetString("WriteCommandPathOption", resourceCulture);
             }
         }
     }
