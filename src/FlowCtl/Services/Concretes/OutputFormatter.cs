@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Reflection;
-using System.Xml.Serialization;
+﻿using System.Dynamic;
 using Spectre.Console;
 using Newtonsoft.Json;
 using System.Xml.Linq;
 using FlowSynx.IO.Serialization;
-using FlowSynx.Reflections;
 using FlowCtl.Services.Abstracts;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 
 namespace FlowCtl.Services.Concretes;
 
@@ -37,131 +36,88 @@ public class OutputFormatter : IOutputFormatter
         _console.MarkupLineInterpolated($"{message}");
     }
 
-    public void Write<T>(T? data, Output output = Output.Json)
+    public void Write(object? data, Output output = Output.Json)
     {
+        var jsonSerializeObject = JsonConvert.SerializeObject(data, Formatting.Indented);
         switch (output)
         {
             case Output.Table:
-                var table = GenerateTable(data);
+                var table = GenerateTable(jsonSerializeObject);
                 table.Border = TableBorder.Simple;
                 _console.Write(table);
                 break;
             case Output.Xml:
-                var xml = GenerateXml(data);
+                var xml = GenerateXml(jsonSerializeObject);
                 Write(xml);
                 break;
             case Output.Yaml:
-                var yaml = GenerateYaml(data);
+                var yaml = GenerateYaml(jsonSerializeObject);
                 Write(yaml);
                 break;
             case Output.Json:
             default:
-                var json = GenerateJson(data);
+                var json = GenerateJson(jsonSerializeObject);
                 Write(json);
                 break;
         }
     }
 
-    public void Write<T>(IEnumerable<T>? data, Output output = Output.Json)
-    {
-        var list = data != null ? data.ToList() : new List<T>();
-        Write(list, output);
-    }
-
-    public void Write<T>(List<T>? data, Output output = Output.Json)
-    {
-        switch (output)
-        {
-            case Output.Table:
-                var table = GenerateTable(data);
-                table.Border = TableBorder.Simple;
-                _console.Write(table);
-                break;
-            case Output.Xml:
-                var xml = GenerateXml(data);
-                Write(xml);
-                break;
-            case Output.Yaml:
-                var yaml = GenerateYaml(data);
-                Write(yaml);
-                break;
-            case Output.Json:
-            default:
-                var json = GenerateJson(data);
-                Write(json);
-                break;
-        }
-    }
-
-    private Table GenerateTable<T>(T? data)
+    private Table GenerateTable(string? data)
     {
         var dataTable = new Table();
-        var properties = typeof(T).Properties(bindingAttr: BindingFlags.Public | BindingFlags.Instance);
-
-        foreach (var property in properties)
-            dataTable.AddColumns(property.Name);
-
-        var values = new List<string>(properties.Count());
-        foreach (var property in properties)
-        {
-            var value = property.GetPropertyValue(data);
-            var isDict = property.IsGenericType() && property.IsDictionaryType();
-            var isList = typeof(ICollection).IsAssignableFrom(property.PropertyType);
-
-            if (isDict)
-            {
-                var keyValues = new List<string>();
-                if (value is Dictionary<string, string> dict)
-                    keyValues = dict.Select(item => $"{item.Key}={item.Value.ToString().EscapeMarkup()}").ToList();
-
-                values.Add(string.Join(System.Environment.NewLine, keyValues));
-            }
-            else if (isList)
-            {
-                values.Add(Resources.TableFormattingNotSupportList);
-            }
-            else
-            {
-                var val = value is null ? string.Empty : value.ToString().EscapeMarkup();
-                values.Add(val ?? string.Empty);
-            }
-        }
-        dataTable.AddRow(values.ToArray());
-
-        return dataTable;
-    }
-
-    private Table GenerateTable<T>(List<T>? data)
-    {
-        var dataTable = new Table();
-        var properties = typeof(T).Properties(bindingAttr: BindingFlags.Public | BindingFlags.Instance);
-
-        foreach (var property in properties)
-            dataTable.AddColumns(property.Name);
 
         if (data is null)
             return dataTable;
 
-        foreach (var item in data)
-        {
-            var values = new List<string>(properties.Count);
-            foreach (var property in properties)
-            {
-                var value = property.GetPropertyValue(item);
-                var isDict = property.IsGenericType() && property.IsDictionaryType();
-                var isList = typeof(ICollection).IsAssignableFrom(property.PropertyType);
+        var expandoObjects = new List<ExpandoObject>();
+        var expConverter = new ExpandoObjectConverter();
+        var token = JToken.Parse(data);
 
-                if (isDict)
+        if (token.Type == JTokenType.Array)
+        {
+            var deserializedObject = JsonConvert.DeserializeObject<List<ExpandoObject>>(data, expConverter);
+            if (deserializedObject is null)
+                throw new Exception("Data conversion failed.");
+
+            expandoObjects.AddRange(deserializedObject);
+        }
+        else
+        {
+            var deserializedObject = JsonConvert.DeserializeObject<ExpandoObject>(data, expConverter);
+            if (deserializedObject is null)
+                throw new Exception("Data conversion failed.");
+
+            expandoObjects.Add(deserializedObject);
+        }
+
+        if (!expandoObjects.Any())
+            return dataTable;
+
+        var properties = (IDictionary<string, object?>)expandoObjects.First();
+
+        foreach (var property in properties)
+            dataTable.AddColumns(property.Key);
+
+        foreach (var itemExpandoObject in expandoObjects)
+        {
+            var values = new List<string>(properties.Count());
+            var properties2 = (IDictionary<string, object?>)itemExpandoObject;
+            foreach (var property in properties2)
+            {
+                var value = property.Value;
+                var isExpandoObject = value is ExpandoObject;
+
+                if (isExpandoObject)
                 {
-                    var keyValues = new List<string>();
-                    if (value is Dictionary<string, string> dict)
-                        keyValues = dict.Select(keyValuePair => $"{keyValuePair.Key}={keyValuePair.Value.ToString().EscapeMarkup()}").ToList();
+                    var valueDic = (IDictionary<string, object>?)value;
+                    if (valueDic == null) 
+                        continue;
+
+                    var keyValues = valueDic
+                        .Select(item => $"{item.Key}={item.Value.ToString().EscapeMarkup()}")
+                        .ToList();
 
                     values.Add(string.Join(System.Environment.NewLine, keyValues));
-                }
-                else if (isList)
-                {
-                    values.Add(Resources.TableFormattingNotSupportList);
                 }
                 else
                 {
@@ -175,33 +131,16 @@ public class OutputFormatter : IOutputFormatter
         return dataTable;
     }
 
-    public string GenerateXml<T>(T? data)
+    public string GenerateXml(string? data)
     {
         if (data == null)
             return string.Empty;
-
-        var xmlns = new XmlSerializerNamespaces();
-        xmlns.Add(string.Empty, string.Empty);
-
-        var json = _serializer.Serialize(data);
-        var xml = JsonConvert.DeserializeXNode(json, "root");
+        
+        var xml = JsonConvert.DeserializeXNode("{item:" + data + "}", "root");
         return xml == null ? string.Empty : xml.ToString(SaveOptions.None);
     }
-
-    public string GenerateXml<T>(List<T>? data)
-    {
-        if (data == null)
-            return string.Empty;
-
-        var xmlns = new XmlSerializerNamespaces();
-        xmlns.Add(string.Empty, string.Empty);
-
-        var json = _serializer.Serialize(data);
-        var xml = JsonConvert.DeserializeXNode("{item:" + json + "}", "root");
-        return xml == null ? string.Empty : xml.ToString(SaveOptions.None);
-    }
-
-    public string GenerateYaml<T>(T? data)
+    
+    public string GenerateYaml(string? data)
     {
         if (data == null)
             return string.Empty;
@@ -210,34 +149,23 @@ public class OutputFormatter : IOutputFormatter
             .WithNamingConvention(YamlDotNet.Serialization.NamingConventions.CamelCaseNamingConvention.Instance)
             .Build();
 
-        return serializer.Serialize(data);
+        var expConverter = new ExpandoObjectConverter();
+        var token = JToken.Parse(data);
+
+        if (token.Type == JTokenType.Array)
+        {
+            var deserializedObject = JsonConvert.DeserializeObject<List<ExpandoObject>>(data, expConverter);
+            return serializer.Serialize(deserializedObject);
+        }
+        else
+        {
+            var deserializedObject = JsonConvert.DeserializeObject<ExpandoObject>(data, expConverter);
+            return serializer.Serialize(deserializedObject);
+        }
     }
 
-    public string GenerateYaml<T>(List<T>? data)
+    public string GenerateJson(string? data)
     {
-        if (data == null)
-            return string.Empty;
-
-        var serializer = new YamlDotNet.Serialization.SerializerBuilder()
-            .WithNamingConvention(YamlDotNet.Serialization.NamingConventions.CamelCaseNamingConvention.Instance)
-            .Build();
-
-        return serializer.Serialize(data);
-    }
-
-    public string GenerateJson<T>(T? data)
-    {
-        if (data == null)
-            return string.Empty;
-
-        return _serializer.Serialize(data, new JsonSerializationConfiguration() { Indented = true });
-    }
-
-    public string GenerateJson<T>(List<T>? data)
-    {
-        if (data == null)
-            return string.Empty;
-
-        return _serializer.Serialize(data, new JsonSerializationConfiguration() { Indented = true });
+        return data ?? string.Empty;
     }
 }
