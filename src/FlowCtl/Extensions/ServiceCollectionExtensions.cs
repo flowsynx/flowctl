@@ -2,13 +2,11 @@
 using System.CommandLine;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
-using FlowCtl.Commands.Storage;
 using FlowCtl.Commands;
 using FlowCtl.ApplicationBuilders;
 using FlowCtl.Commands.Config;
 using FlowSynx.Environment;
 using FlowSynx.IO;
-using FlowSynx.Logging;
 using FlowCtl.Commands.Plugins;
 using FlowCtl.Commands.Version;
 using FlowCtl.Commands.Health;
@@ -19,9 +17,11 @@ using FlowCtl.Commands.Stop;
 using FlowCtl.Commands.Uninstall;
 using FlowSynx.Client;
 using FlowCtl.Commands.Dashboard;
+using FlowCtl.Commands.Invoke;
 using FlowCtl.Commands.Logs;
 using FlowCtl.Services.Abstracts;
 using FlowCtl.Services.Concretes;
+using FlowSynx.Logging.Extensions;
 
 namespace FlowCtl.Extensions;
 
@@ -43,7 +43,7 @@ public static class ServiceCollectionExtensions
                 .AddTransient<Command, LogsCommand>()
                 .AddTransient<Command, PluginsCommand>()
                 .AddTransient<Command, RunCommand>()
-                .AddTransient<Command, StorageCommand>()
+                .AddTransient<Command, InvokeCommand>()
                 .AddTransient<Command, StopCommand>()
                 .AddTransient<Command, UninstallCommand>()
                 .AddTransient<Command, UpdateCommand>()

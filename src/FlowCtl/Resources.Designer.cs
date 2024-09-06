@@ -646,6 +646,51 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A file containing the JSON serialized data.
+        /// </summary>
+        internal static string InvokeCommandDataFileOption {
+            get {
+                return ResourceManager.GetString("InvokeCommandDataFileOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The JSON serialized data string.
+        /// </summary>
+        internal static string InvokeCommandDataOption {
+            get {
+                return ResourceManager.GetString("InvokeCommandDataOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invoke a method on FlowSynx system.
+        /// </summary>
+        internal static string InvokeCommandDescription {
+            get {
+                return ResourceManager.GetString("InvokeCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method to invoke.
+        /// </summary>
+        internal static string InvokeCommandMethodOption {
+            get {
+                return ResourceManager.GetString("InvokeCommandMethodOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The HTTP verb to use.
+        /// </summary>
+        internal static string InvokeCommandVerbOption {
+            get {
+                return ResourceManager.GetString("InvokeCommandVerbOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of entities regarding specific path.
         /// </summary>
         internal static string ListCommandDescription {

@@ -312,6 +312,21 @@
   <data name="InitCommandDescription" xml:space="preserve">
     <value>Install and initialize FlowSynx system and Dashboard on the current user profile</value>
   </data>
+  <data name="InvokeCommandDataFileOption" xml:space="preserve">
+    <value>A file containing the JSON serialized data</value>
+  </data>
+  <data name="InvokeCommandDataOption" xml:space="preserve">
+    <value>The JSON serialized data string</value>
+  </data>
+  <data name="InvokeCommandDescription" xml:space="preserve">
+    <value>Invoke a method on FlowSynx system</value>
+  </data>
+  <data name="InvokeCommandMethodOption" xml:space="preserve">
+    <value>The method to invoke</value>
+  </data>
+  <data name="InvokeCommandVerbOption" xml:space="preserve">
+    <value>The HTTP verb to use</value>
+  </data>
   <data name="ListCommandDescription" xml:space="preserve">
     <value>List of entities regarding specific path</value>
   </data>
