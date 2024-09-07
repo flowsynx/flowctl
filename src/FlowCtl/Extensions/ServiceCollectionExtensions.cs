@@ -81,9 +81,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddFormatter(this IServiceCollection services)
     {
-        services.AddTransient<ISpinner, Services.Concretes.Spinner>()
-                .AddTransient<IOutputFormatter, OutputFormatter>();
-
+        services.AddTransient<IOutputFormatter, OutputFormatter>();
         return services;
     }
 
