@@ -38,7 +38,7 @@ public class OutputFormatter : IOutputFormatter
 
     public void Write(object? data, Output output = Output.Json)
     {
-        var jsonSerializeObject = JsonConvert.SerializeObject(data, Formatting.Indented);
+        var jsonSerializeObject = _serializer.Serialize(data, new JsonSerializationConfiguration() { Indented = true });
         switch (output)
         {
             case Output.Table:
