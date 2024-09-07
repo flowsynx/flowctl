@@ -35,10 +35,14 @@ internal class DetailsConfigCommandOptionsHandler : ICommandOptionsHandler<Detai
             var request = new ConfigDetailsRequest { Name = options.Name };
             var result = await _flowSynxClient.ConfigDetails(request, cancellationToken);
 
-            if (result is { Succeeded: false })
-                _outputFormatter.WriteError(result.Messages);
+            if (result.StatusCode != 200)
+                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+
+            var payload = result.Payload;
+            if (payload is { Succeeded: false })
+                _outputFormatter.WriteError(payload.Messages);
             else
-                _outputFormatter.Write(result?.Data, options.Output);
+                _outputFormatter.Write(payload.Data, options.Output);
         }
         catch (Exception ex)
         {

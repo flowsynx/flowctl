@@ -47,20 +47,24 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
             };
             var result = await _flowSynxClient.LogsList(request, cancellationToken);
 
-            if (result is { Succeeded: false })
-                _outputFormatter.WriteError(result.Messages);
+            if (result.StatusCode != 200)
+                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+
+            var payload = result.Payload;
+            if (payload is { Succeeded: false })
+                _outputFormatter.WriteError(payload.Messages);
             else
             {
                 var filePath = options.ExportTo;
                 if (!string.IsNullOrEmpty(filePath))
                 {
                     if (!File.Exists(filePath))
-                        SaveToLogFile(result.Data, filePath);
+                        SaveToLogFile(payload.Data, filePath);
                     else
                         throw new Exception(string.Format(Resources.ReadCommandFileAlreadyExist, filePath));
                 }
 
-                _outputFormatter.Write(result?.Data, options.Output);
+                _outputFormatter.Write(payload.Data, options.Output);
             }
         }
         catch (Exception ex)

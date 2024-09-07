@@ -210,6 +210,9 @@
   <data name="DownloadFailedWithStatus" xml:space="preserve">
     <value>Download failed with {0}</value>
   </data>
+  <data name="ErrorOccurredDuringProcessingRequest" xml:space="preserve">
+    <value>It seems there is an error occurred during processing the request.</value>
+  </data>
   <data name="FlowSynxEngineDownloadedAndInstalledSuccessfully" xml:space="preserve">
     <value>FlowSynx engine is downloaded and installed successfully in path '{0}'.</value>
   </data>

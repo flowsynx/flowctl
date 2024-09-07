@@ -32,7 +32,12 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
                 _flowSynxClient.ChangeConnection(options.Address);
 
             var result = await _flowSynxClient.Health(cancellationToken);
-            _outputFormatter.Write(result?.HealthChecks.ToList(), options.Output);
+
+            if (result.StatusCode != 200)
+                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+
+            var payload = result.Payload;
+            _outputFormatter.Write(payload.HealthChecks.ToList(), options.Output);
         }
         catch (Exception ex)
         {

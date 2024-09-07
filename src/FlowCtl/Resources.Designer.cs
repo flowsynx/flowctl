@@ -340,6 +340,15 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It seems there is an error occurred during processing the request..
+        /// </summary>
+        internal static string ErrorOccurredDuringProcessingRequest {
+            get {
+                return ResourceManager.GetString("ErrorOccurredDuringProcessingRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FlowSynx engine is downloaded and installed successfully in path &apos;{0}&apos;..
         /// </summary>
         internal static string FlowSynxEngineDownloadedAndInstalledSuccessfully {

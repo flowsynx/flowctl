@@ -45,10 +45,14 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
             var request = new AddConfigRequest { Name = options.Name, Type = options.Type, Specifications = specification };
             var result = await _flowSynxClient.AddConfig(request, cancellationToken);
 
-            if (result is { Succeeded: false })
-                _outputFormatter.WriteError(result.Messages);
+            if (result.StatusCode != 200)
+                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+
+            var payload = result.Payload;
+            if (payload is { Succeeded: false })
+                _outputFormatter.WriteError(payload.Messages);
             else
-                _outputFormatter.Write(result?.Data);
+                _outputFormatter.Write(payload.Data);
         }
         catch (DeserializerException)
         {

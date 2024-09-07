@@ -42,11 +42,15 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
                 MaxAge = options.MaxAge
             };
             var result = await _flowSynxClient.DeleteConfig(request, cancellationToken);
-            
-            if (result is { Succeeded: false })
-                _outputFormatter.WriteError(result.Messages);
+
+            if (result.StatusCode != 200)
+                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+
+            var payload = result.Payload;
+            if (payload is { Succeeded: false })
+                _outputFormatter.WriteError(payload.Messages);
             else
-                _outputFormatter.Write(result?.Data);
+                _outputFormatter.Write(payload.Data);
         }
         catch (Exception ex)
         {

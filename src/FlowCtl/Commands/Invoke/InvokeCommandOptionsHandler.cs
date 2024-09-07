@@ -79,27 +79,34 @@ internal class InvokeCommandOptionsHandler : ICommandOptionsHandler<InvokeComman
         };
     }
 
-    private void GenerateOutput(Result<object> result, Output output)
+    private void GenerateOutput(HttpResult<Result<object>> result, Output output)
     {
-        if (result is { Succeeded: false })
+        if (result.StatusCode != 200)
+            throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+
+        var payload = result.Payload;
+        if (payload is { Succeeded: false })
         {
-            _outputFormatter.WriteError(result.Messages);
+            _outputFormatter.WriteError(payload.Messages);
         }
         else
         {
-            if (result?.Data is not null)
-                _outputFormatter.Write(result.Data, output);
+            if (payload?.Data is not null)
+                _outputFormatter.Write(payload.Data, output);
             else
-                _outputFormatter.Write(result?.Messages);
+                _outputFormatter.Write(payload?.Messages);
         }
     }
 
-    private void GenerateOutput(Stream? result)
+    private void GenerateOutput(HttpResult<Stream> result)
     {
+        if (result.StatusCode != 200)
+            throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+
         using (var writer = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true })
         {
             Console.SetOut(writer);
-            using (var reader = new StreamReader(result))
+            using (var reader = new StreamReader(result.Payload))
             {
                 var output = reader.ReadToEnd();
                 writer.WriteLine(output);
@@ -108,4 +115,6 @@ internal class InvokeCommandOptionsHandler : ICommandOptionsHandler<InvokeComman
 
         Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
     }
+
+
 }
