@@ -98,37 +98,42 @@ public class OutputFormatter : IOutputFormatter
         foreach (var property in properties)
             dataTable.AddColumns(property.Key);
 
-        foreach (var itemExpandoObject in expandoObjects)
+        foreach (var item in expandoObjects)
         {
             var values = new List<string>(properties.Count());
-            var properties2 = (IDictionary<string, object?>)itemExpandoObject;
-            foreach (var property in properties2)
+            var expandoObjectsProperties = (IDictionary<string, object?>)item;
+            foreach (var property in expandoObjectsProperties)
             {
-                var value = property.Value;
-                var isExpandoObject = value is ExpandoObject;
-
-                if (isExpandoObject)
-                {
-                    var valueDic = (IDictionary<string, object>?)value;
-                    if (valueDic == null) 
-                        continue;
-
-                    var keyValues = valueDic
-                        .Select(item => $"{item.Key}={item.Value.ToString().EscapeMarkup()}")
-                        .ToList();
-
-                    values.Add(string.Join(System.Environment.NewLine, keyValues));
-                }
-                else
-                {
-                    var val = value is null ? string.Empty : value.ToString().EscapeMarkup();
-                    values.Add(val ?? string.Empty);
-                }
+                var propertyValue = property.Value;
+                var isExpandoObject = propertyValue is ExpandoObject;
+                values.Add(isExpandoObject ? ParseExpandoObject(propertyValue) : ParseNoneExpandoObject(propertyValue));
             }
             dataTable.AddRow(values.ToArray());
         }
 
         return dataTable;
+    }
+
+    private static string ParseExpandoObject(object? propertyValue)
+    {
+        var valueDic = (IDictionary<string, object?>?)propertyValue;
+        if (valueDic == null)
+            return string.Empty;
+
+        var keyValues = new List<string>();
+        foreach (var keyValue in valueDic)
+        {
+            var value = keyValue.Value is null ? string.Empty : keyValue.Value.ToString().EscapeMarkup();
+            keyValues.Add($"{keyValue.Key}={value}");
+        }
+
+        return string.Join(System.Environment.NewLine, keyValues);
+    }
+
+    private static string ParseNoneExpandoObject(object? propertyValue)
+    {
+        var val = propertyValue is null ? string.Empty : propertyValue.ToString().EscapeMarkup();
+        return val ?? string.Empty;
     }
 
     public string GenerateXml(string? data)
