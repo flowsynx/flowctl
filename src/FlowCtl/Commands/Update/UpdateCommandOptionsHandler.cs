@@ -10,26 +10,22 @@ namespace FlowCtl.Commands.Update;
 internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
-    private readonly ISpinner _spinner;
     private readonly IVersionHandler _versionHandler;
     private readonly ILocation _location;
     private readonly IGitHub _gitHub;
     private readonly IExtractor _extractor;
     private readonly IProcessHandler _processHandler;
 
-    public UpdateCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
+    public UpdateCommandOptionsHandler(IOutputFormatter outputFormatter,
         IVersionHandler versionHandler, ILocation location, IGitHub gitHub,
         IExtractor extractor, IProcessHandler processHandler)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(versionHandler, nameof(versionHandler));
         EnsureArg.IsNotNull(location, nameof(location));
         EnsureArg.IsNotNull(gitHub, nameof(gitHub));
         EnsureArg.IsNotNull(extractor, nameof(extractor));
-
         _outputFormatter = outputFormatter;
-        _spinner = spinner;
         _versionHandler = versionHandler;
         _location = location;
         _gitHub = gitHub;
@@ -39,7 +35,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
 
     public async Task<int> HandleAsync(UpdateCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
+        await Execute(options, cancellationToken);
         return 0;
     }
 

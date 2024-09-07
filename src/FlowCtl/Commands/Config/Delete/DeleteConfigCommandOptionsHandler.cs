@@ -8,24 +8,21 @@ namespace FlowCtl.Commands.Config.Delete;
 internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<DeleteConfigCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
-    private readonly ISpinner _spinner;
     private readonly IFlowSynxClient _flowSynxClient;
 
-    public DeleteConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
+    public DeleteConfigCommandOptionsHandler(IOutputFormatter outputFormatter,
         IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
         _outputFormatter = outputFormatter;
-        _spinner = spinner;
         _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(DeleteConfigCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
+        await Execute(options, cancellationToken);
         return 0;
     }
 

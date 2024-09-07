@@ -9,16 +9,14 @@ namespace FlowCtl.Commands.Invoke;
 internal class InvokeCommandOptionsHandler : ICommandOptionsHandler<InvokeCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
-    private readonly ISpinner _spinner;
     private readonly IFlowSynxClient _flowSynxClient;
 
-    public InvokeCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
+    public InvokeCommandOptionsHandler(IOutputFormatter outputFormatter, 
         IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
         _outputFormatter = outputFormatter;
-        _spinner = spinner;
         _flowSynxClient = flowSynxClient;
     }
 

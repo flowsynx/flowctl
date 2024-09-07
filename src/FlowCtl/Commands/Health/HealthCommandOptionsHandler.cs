@@ -7,22 +7,20 @@ namespace FlowCtl.Commands.Health;
 internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
-    private readonly ISpinner _spinner;
     private readonly IFlowSynxClient _flowSynxClient;
 
-    public HealthCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
+    public HealthCommandOptionsHandler(IOutputFormatter outputFormatter, 
         IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
         _outputFormatter = outputFormatter;
-        _spinner = spinner;
         _flowSynxClient = flowSynxClient;
     }
 
     public async Task<int> HandleAsync(HealthCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
+        await Execute(options, cancellationToken);
         return 0;
     }
 

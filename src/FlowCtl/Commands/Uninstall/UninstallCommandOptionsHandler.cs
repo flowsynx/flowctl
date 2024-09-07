@@ -7,26 +7,22 @@ namespace FlowCtl.Commands.Uninstall;
 internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<UninstallCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
-    private readonly ISpinner _spinner;
     private readonly ILocation _location;
     private readonly IProcessHandler _processHandler;
 
-    public UninstallCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner, 
+    public UninstallCommandOptionsHandler(IOutputFormatter outputFormatter, 
         ILocation location, IProcessHandler processHandler)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(location, nameof(location));
-
         _outputFormatter = outputFormatter;
-        _spinner = spinner;
         _location = location;
         _processHandler = processHandler;
     }
 
     public async Task<int> HandleAsync(UninstallCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(() => Execute(options));
+        await Execute(options);
         return 0;
     }
 

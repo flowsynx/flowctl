@@ -10,27 +10,24 @@ namespace FlowCtl.Commands.Config.Add;
 internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfigCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
-    private readonly ISpinner _spinner;
     private readonly IFlowSynxClient _flowSynxClient;
     private readonly IDeserializer _deserializer;
 
-    public AddConfigCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
+    public AddConfigCommandOptionsHandler(IOutputFormatter outputFormatter,
         IFlowSynxClient flowSynxClient, IDeserializer deserializer)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
         EnsureArg.IsNotNull(deserializer, nameof(deserializer));
 
         _outputFormatter = outputFormatter;
-        _spinner = spinner;
         _flowSynxClient = flowSynxClient;
         _deserializer = deserializer;
     }
 
     public async Task<int> HandleAsync(AddConfigCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(async () => await Execute(options, cancellationToken));
+        await Execute(options, cancellationToken);
         return 0;
     }
 

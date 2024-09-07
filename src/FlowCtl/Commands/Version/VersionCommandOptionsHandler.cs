@@ -6,27 +6,23 @@ namespace FlowCtl.Commands.Version;
 internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
-    private readonly ISpinner _spinner;
     private readonly IVersionHandler _versionHandler;
     private readonly ILocation _location;
 
-    public VersionCommandOptionsHandler(IOutputFormatter outputFormatter, ISpinner spinner,
+    public VersionCommandOptionsHandler(IOutputFormatter outputFormatter,
          IVersionHandler versionHandler, ILocation location)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(spinner, nameof(spinner));
         EnsureArg.IsNotNull(versionHandler, nameof(versionHandler));
         EnsureArg.IsNotNull(location, nameof(location));
-
         _outputFormatter = outputFormatter;
-        _spinner = spinner;
         _versionHandler = versionHandler;
         _location = location;
     }
 
     public async Task<int> HandleAsync(VersionCommandOptions options, CancellationToken cancellationToken)
     {
-        await _spinner.DisplayLineSpinnerAsync(() => Execute(options));
+        await Execute(options);
         return 0;
     }
 
