@@ -6,6 +6,7 @@ using FlowSynx.IO.Serialization;
 using FlowCtl.Services.Abstracts;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using EnsureThat;
 
 namespace FlowCtl.Services.Concretes;
 
@@ -13,11 +14,16 @@ public class OutputFormatter : IOutputFormatter
 {
     private readonly IAnsiConsole _console;
     private readonly ISerializer _serializer;
+    private readonly IDeserializer _deserializer;
 
-    public OutputFormatter(IAnsiConsole console, ISerializer serializer)
+    public OutputFormatter(IAnsiConsole console, ISerializer serializer, IDeserializer deserializer)
     {
+        EnsureArg.IsNotNull(console, nameof(console));
+        EnsureArg.IsNotNull(serializer, nameof(serializer));
+        EnsureArg.IsNotNull(deserializer, nameof(deserializer));
         _console = console;
         _serializer = serializer;
+        _deserializer = deserializer;
     }
 
     public void WriteError(string message)
@@ -71,11 +77,15 @@ public class OutputFormatter : IOutputFormatter
 
         var expandoObjects = new List<ExpandoObject>();
         var expConverter = new ExpandoObjectConverter();
+        var serializationConfiguration = new JsonSerializationConfiguration()
+        {
+            Converters = new List<object>() { expConverter }
+        };
         var token = JToken.Parse(data);
 
         if (token.Type == JTokenType.Array)
         {
-            var deserializedObject = JsonConvert.DeserializeObject<List<ExpandoObject>>(data, expConverter);
+            var deserializedObject = _deserializer.Deserialize<List<ExpandoObject>>(data, serializationConfiguration);
             if (deserializedObject is null)
                 throw new Exception("Data conversion failed.");
 
@@ -83,7 +93,7 @@ public class OutputFormatter : IOutputFormatter
         }
         else
         {
-            var deserializedObject = JsonConvert.DeserializeObject<ExpandoObject>(data, expConverter);
+            var deserializedObject = _deserializer.Deserialize<ExpandoObject>(data, serializationConfiguration);
             if (deserializedObject is null)
                 throw new Exception("Data conversion failed.");
 
@@ -155,16 +165,20 @@ public class OutputFormatter : IOutputFormatter
             .Build();
 
         var expConverter = new ExpandoObjectConverter();
+        var serializationConfiguration = new JsonSerializationConfiguration()
+        {
+            Converters = new List<object>() { expConverter }
+        };
         var token = JToken.Parse(data);
 
         if (token.Type == JTokenType.Array)
         {
-            var deserializedObject = JsonConvert.DeserializeObject<List<ExpandoObject>>(data, expConverter);
+            var deserializedObject = _deserializer.Deserialize<List<ExpandoObject>>(data, serializationConfiguration);
             return serializer.Serialize(deserializedObject);
         }
         else
         {
-            var deserializedObject = JsonConvert.DeserializeObject<ExpandoObject>(data, expConverter);
+            var deserializedObject = _deserializer.Deserialize<ExpandoObject>(data, serializationConfiguration);
             return serializer.Serialize(deserializedObject);
         }
     }
