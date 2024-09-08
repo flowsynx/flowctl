@@ -49,16 +49,16 @@ internal class InvokeCommandOptionsHandler : ICommandOptionsHandler<InvokeComman
             }
 
             var data = jsonData.JsonToObject();
-
-            if (string.Equals(options.Method, "read", StringComparison.OrdinalIgnoreCase))
+            switch (options.Method.ToLower())
             {
-                var result = await _flowSynxClient.InvokeMethod(httpMethod, options.Method, data, cancellationToken);
-                GenerateOutput(result);
-            }
-            else
-            {
-                var result = await _flowSynxClient.InvokeMethod<object?, object>(httpMethod, options.Method, data, cancellationToken);
-                GenerateOutput(result, options.Output);
+                case "read":
+                case "compress":
+                    GenerateOutput(await _flowSynxClient.InvokeMethod(httpMethod, options.Method, data, cancellationToken));
+                    break;
+                default:
+                    var result = await _flowSynxClient.InvokeMethod<object?, object>(httpMethod, options.Method, data, cancellationToken);
+                    GenerateOutput(result, options.Output);
+                    break;
             }
         }
         catch (Exception ex)
@@ -115,6 +115,4 @@ internal class InvokeCommandOptionsHandler : ICommandOptionsHandler<InvokeComman
 
         Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
     }
-
-
 }
