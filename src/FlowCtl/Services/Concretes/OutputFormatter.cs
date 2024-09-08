@@ -22,7 +22,7 @@ public class OutputFormatter : IOutputFormatter
 
     public void WriteError(string message)
     {
-        _console.MarkupLineInterpolated($"[red]{message.EscapeMarkup()}[/]");
+        WriteError(new { message });
     }
 
     public void WriteError(object data)
