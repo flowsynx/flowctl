@@ -133,11 +133,20 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exclude entities matching pattern.
+        ///   Looks up a localized string similar to Desplay desired fields related to the result objects.
         /// </summary>
-        internal static string CommandExcludeOption {
+        internal static string CommandFieldOption {
             get {
-                return ResourceManager.GetString("CommandExcludeOption", resourceCulture);
+                return ResourceManager.GetString("CommandFieldOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expressions filter to filter data.
+        /// </summary>
+        internal static string CommandFilterOption {
+            get {
+                return ResourceManager.GetString("CommandFilterOption", resourceCulture);
             }
         }
         
@@ -169,15 +178,6 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Include entities matching pattern.
-        /// </summary>
-        internal static string CommandIncludeOption {
-            get {
-                return ResourceManager.GetString("CommandIncludeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Kind of entity. Valid values are File, Directory, and FileAndDirectory.
         /// </summary>
         internal static string CommandKindOption {
@@ -187,47 +187,11 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filter entities younger than this in s or suffix ms|s|m|h|d|w|M|y [default: off].
+        ///   Looks up a localized string similar to The maximum number or percentage of results to return [default: off].
         /// </summary>
-        internal static string CommandMaxAgeOption {
+        internal static string CommandLimitOption {
             get {
-                return ResourceManager.GetString("CommandMaxAgeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The maximum number of results to return [default: off].
-        /// </summary>
-        internal static string CommandMaxResultsOption {
-            get {
-                return ResourceManager.GetString("CommandMaxResultsOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter entities smaller than this in KiB or suffix B|K|M|G|T|P [default: off].
-        /// </summary>
-        internal static string CommandMaxSizeOption {
-            get {
-                return ResourceManager.GetString("CommandMaxSizeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter entities older than this in s or suffix ms|s|m|h|d|w|M|y [default: off].
-        /// </summary>
-        internal static string CommandMinAgeOption {
-            get {
-                return ResourceManager.GetString("CommandMinAgeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter entities bigger than this in KiB or suffix B|K|M|G|T|P [default: off].
-        /// </summary>
-        internal static string CommandMinSizeOption {
-            get {
-                return ResourceManager.GetString("CommandMinSizeOption", resourceCulture);
+                return ResourceManager.GetString("CommandLimitOption", resourceCulture);
             }
         }
         
@@ -261,9 +225,9 @@ namespace FlowCtl {
         /// <summary>
         ///   Looks up a localized string similar to Sorting entities based on field name and ascending and descending. Like Property ASC, Property2 DESC [default: off].
         /// </summary>
-        internal static string CommandSortingOption {
+        internal static string CommandSortOption {
             get {
-                return ResourceManager.GetString("CommandSortingOption", resourceCulture);
+                return ResourceManager.GetString("CommandSortOption", resourceCulture);
             }
         }
         

@@ -8,23 +8,20 @@ internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsComman
     public PluginsCommand() : base("plugins", Resources.PluginsCommandDescription)
     {
         var fieldsOption = new Option<string[]?>(new[] { "-fd", "--fields" },
-            getDefaultValue: Array.Empty<string>,
-            description: Resources.CommandIncludeOption);
+            description: Resources.CommandFieldOption);
 
         var filterOption = new Option<string?>(new[] { "-f", "--filter" },
             getDefaultValue: () => string.Empty,
-            description: Resources.CommandExcludeOption);
+            description: Resources.CommandFilterOption);
 
-        var caseSensitiveOption = new Option<bool?>(new[] { "-cs", "--case-sensitive" },
+        var caseSensitiveOption = new Option<bool?>(new[] { "-c", "--case-sensitive" },
             getDefaultValue: () => false,
             description: Resources.CommandCaseSensitiveOption);
 
         var sortOption = new Option<string?>(new[] { "-s", "--sort" },
-            getDefaultValue: () => string.Empty,
-            description: Resources.CommandSortingOption);
+            description: Resources.CommandSortOption);
 
         var limitOption = new Option<string?>(new[] { "-l", "--limit" },
-            getDefaultValue: () => string.Empty,
             description: Resources.LogsCommandLogLevelOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },

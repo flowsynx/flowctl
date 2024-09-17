@@ -141,8 +141,11 @@
   <data name="CommandDashboardVersionOption" xml:space="preserve">
     <value>The version of the FlowSynx dashboard to install, for example: 0.1.0</value>
   </data>
-  <data name="CommandExcludeOption" xml:space="preserve">
-    <value>Exclude entities matching pattern</value>
+  <data name="CommandFieldOption" xml:space="preserve">
+    <value>Desplay desired fields related to the result objects</value>
+  </data>
+  <data name="CommandFilterOption" xml:space="preserve">
+    <value>Expressions filter to filter data</value>
   </data>
   <data name="CommandFlowSynxVersionOption" xml:space="preserve">
     <value>The version of the FlowSynx system to install, for example: 0.1.0</value>
@@ -153,26 +156,11 @@
   <data name="CommandFullOption" xml:space="preserve">
     <value>Full numbers instead of human-readable</value>
   </data>
-  <data name="CommandIncludeOption" xml:space="preserve">
-    <value>Include entities matching pattern</value>
-  </data>
   <data name="CommandKindOption" xml:space="preserve">
     <value>Kind of entity. Valid values are File, Directory, and FileAndDirectory</value>
   </data>
-  <data name="CommandMaxAgeOption" xml:space="preserve">
-    <value>Filter entities younger than this in s or suffix ms|s|m|h|d|w|M|y [default: off]</value>
-  </data>
-  <data name="CommandMaxResultsOption" xml:space="preserve">
-    <value>The maximum number of results to return [default: off]</value>
-  </data>
-  <data name="CommandMaxSizeOption" xml:space="preserve">
-    <value>Filter entities smaller than this in KiB or suffix B|K|M|G|T|P [default: off]</value>
-  </data>
-  <data name="CommandMinAgeOption" xml:space="preserve">
-    <value>Filter entities older than this in s or suffix ms|s|m|h|d|w|M|y [default: off]</value>
-  </data>
-  <data name="CommandMinSizeOption" xml:space="preserve">
-    <value>Filter entities bigger than this in KiB or suffix B|K|M|G|T|P [default: off]</value>
+  <data name="CommandLimitOption" xml:space="preserve">
+    <value>The maximum number or percentage of results to return [default: off]</value>
   </data>
   <data name="CommandOutputOption" xml:space="preserve">
     <value>Formatting CLI output</value>
@@ -183,7 +171,7 @@
   <data name="CommandRecurseOption" xml:space="preserve">
     <value>Apply recursion on filtering entities in the specified path</value>
   </data>
-  <data name="CommandSortingOption" xml:space="preserve">
+  <data name="CommandSortOption" xml:space="preserve">
     <value>Sorting entities based on field name and ascending and descending. Like Property ASC, Property2 DESC [default: off]</value>
   </data>
   <data name="ConfigCommandDescription" xml:space="preserve">

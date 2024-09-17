@@ -8,31 +8,25 @@ internal class LogsCommand : BaseCommand<LogsCommandOptions, LogsCommandOptionsH
     public LogsCommand() : base("logs", Resources.LogsCommandDescription)
     {
         var fieldsOption = new Option<string[]?>(new[] { "-fd", "--fields" },
-            getDefaultValue: Array.Empty<string>,
-            description: Resources.CommandIncludeOption);
+            description: Resources.CommandFieldOption);
 
         var filterOption = new Option<string?>(new[] { "-f", "--filter" },
-            getDefaultValue: () => string.Empty,
-            description: Resources.CommandExcludeOption);
+            description: Resources.CommandFilterOption);
 
-        var caseSensitiveOption = new Option<bool?>(new[] { "-cs", "--case-sensitive" },
+        var caseSensitiveOption = new Option<bool?>(new[] { "-c", "--case-sensitive" },
             getDefaultValue: () => false,
             description: Resources.CommandCaseSensitiveOption);
 
         var sortOption = new Option<string?>(new[] { "-s", "--sort" },
-            getDefaultValue: () => string.Empty,
-            description: Resources.CommandSortingOption);
+            description: Resources.CommandSortOption);
 
         var limitOption = new Option<string?>(new[] { "-l", "--limit" },
-            getDefaultValue: () => string.Empty,
-            description: Resources.LogsCommandLogLevelOption);
+            description: Resources.CommandLimitOption);
 
-        var exportPathOption = new Option<string?>(new[] { "-et", "--export-to" },
-            getDefaultValue: () => string.Empty,
+        var exportPathOption = new Option<string?>(new[] { "-e", "--export-to" },
             description: Resources.ReadCommandSaveToOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            getDefaultValue: () => string.Empty,
             description: Resources.CommandAddressOption);
 
         var outputOption = new Option<Output>(new[] { "-o", "--output" },
