@@ -23,7 +23,7 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
             description: Resources.CommandSortOption);
 
         var limitOption = new Option<string?>(new[] { "-l", "--limit" },
-            description: Resources.LogsCommandLogLevelOption);
+            description: Resources.CommandLimitOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
