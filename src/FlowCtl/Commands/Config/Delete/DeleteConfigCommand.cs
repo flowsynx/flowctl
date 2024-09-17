@@ -6,29 +6,26 @@ internal class DeleteConfigCommand : BaseCommand<DeleteConfigCommandOptions, Del
 {
     public DeleteConfigCommand() : base("delete", Resources.DeleteConfigCommandDescription)
     {
-        var includeOption = new Option<string?>(new[] { "-i", "--include" },
-            description: Resources.CommandIncludeOption);
+        var filterOption = new Option<string?>(new[] { "-f", "--filter" },
+            description: Resources.CommandFilterOption);
 
-        var excludeOption = new Option<string?>(new[] { "-e", "--exclude" },
-            description: Resources.CommandExcludeOption);
-
-        var minAgeOption = new Option<string?>(new[] { "-ma", "--min-age" },
-            description: Resources.CommandMinAgeOption);
-
-        var maxAgeOption = new Option<string?>(new[] { "+ma", "--max-age" },
-            description: Resources.CommandMaxAgeOption);
-
-        var caseSensitiveOption = new Option<bool?>(new[] { "-cs", "--case-sensitive" },
+        var caseSensitiveOption = new Option<bool?>(new[] { "-c", "--case-sensitive" },
             getDefaultValue: () => false,
             description: Resources.CommandCaseSensitiveOption);
+
+        var sortOption = new Option<string?>(new[] { "-s", "--sort" },
+            description: Resources.CommandSortOption);
+
+        var limitOption = new Option<string?>(new[] { "-l", "--limit" },
+            description: Resources.LogsCommandLogLevelOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
-        AddOption(includeOption);
-        AddOption(excludeOption);
-        AddOption(minAgeOption);
-        AddOption(maxAgeOption);
+        AddOption(filterOption);
+        AddOption(caseSensitiveOption);
+        AddOption(sortOption);
+        AddOption(limitOption);
         AddOption(caseSensitiveOption);
         AddOption(addressOption);
     }

@@ -35,11 +35,10 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
 
             var request = new DeleteConfigRequest()
             {
-                Include = options.Include,
-                Exclude = options.Exclude,
+                Filter = options.Filter,
                 CaseSensitive = options.CaseSensitive,
-                MinAge = options.MinAge,
-                MaxAge = options.MaxAge
+                Sort = options.Sort,
+                Limit = options.Limit
             };
             var result = await _flowSynxClient.DeleteConfig(request, cancellationToken);
 
