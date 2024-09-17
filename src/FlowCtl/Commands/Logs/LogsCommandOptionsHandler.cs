@@ -3,7 +3,6 @@ using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Logs;
 using System.ComponentModel;
-using FlowSynx.Client.Responses.Logs;
 
 namespace FlowCtl.Commands.Logs;
 
@@ -36,14 +35,11 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
 
             var request = new LogsListRequest
             {
-                Include = options.Include,
-                Exclude = options.Exclude,
+                Fields = options.Fields,
+                Filter = options.Filter,
                 CaseSensitive = options.CaseSensitive,
-                MinAge = options.MinAge, 
-                MaxAge = options.MaxAge, 
-                Level = options.Level,
-                Sorting = options.Sorting,
-                MaxResults = options.MaxResults
+                Sort = options.Sort,
+                Limit = options.Limit
             };
             var result = await _flowSynxClient.LogsList(request, cancellationToken);
 
@@ -73,10 +69,10 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
         }
     }
 
-    private void SaveToLogFile(IEnumerable<LogsListResponse> reportData, string path)
+    private void SaveToLogFile(IEnumerable<object> reportData, string path)
     {
         var lines = new List<string>();
-        IEnumerable<PropertyDescriptor> props = TypeDescriptor.GetProperties(typeof(LogsListResponse)).OfType<PropertyDescriptor>();
+        IEnumerable<PropertyDescriptor> props = TypeDescriptor.GetProperties(typeof(object)).OfType<PropertyDescriptor>();
         var header = string.Join(",", props.ToList().Select(x => x.Name));
         lines.Add(header);
         var valueLines = reportData.Select(row => string.Join(",", header.Split(',').Select(a => row.GetType().GetProperty(a)?.GetValue(row, null))));

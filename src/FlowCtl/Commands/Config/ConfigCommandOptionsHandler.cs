@@ -34,13 +34,11 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
 
             var request = new ConfigListRequest
             {
-                Include = options.Include, 
-                Exclude = options.Exclude,
+                Fields = options.Fields,
+                Filter = options.Filter,
                 CaseSensitive = options.CaseSensitive,
-                MinAge = options.MinAge,
-                MaxAge = options.MaxAge,
-                MaxResults = options.MaxResults,
-                Sorting = options.Sorting
+                Sort = options.Sort,
+                Limit = options.Limit
             };
             var result = await _flowSynxClient.ConfigList(request, cancellationToken);
 

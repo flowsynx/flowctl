@@ -9,27 +9,25 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
 {
     public ConfigCommand() : base("config", Resources.ConfigCommandDescription)
     {
-        var includeOption = new Option<string?>(new[] { "-i", "--include" },
+        var fieldsOption = new Option<string[]?>(new[] { "-fd", "--fields" },
+            getDefaultValue: Array.Empty<string>,
             description: Resources.CommandIncludeOption);
 
-        var excludeOption = new Option<string?>(new[] { "-e", "--exclude" },
+        var filterOption = new Option<string?>(new[] { "-f", "--filter" },
+            getDefaultValue: () => string.Empty,
             description: Resources.CommandExcludeOption);
-
-        var minAgeOption = new Option<string?>(new[] { "-ma", "--min-age" },
-            description: Resources.CommandMinAgeOption);
-
-        var maxAgeOption = new Option<string?>(new[] { "+ma", "--max-age" },
-            description: Resources.CommandMaxAgeOption);
 
         var caseSensitiveOption = new Option<bool?>(new[] { "-cs", "--case-sensitive" },
             getDefaultValue: () => false,
             description: Resources.CommandCaseSensitiveOption);
 
-        var maxResultsOption = new Option<int?>(new[] { "-mr", "--max-results" },
-            description: Resources.CommandMaxResultsOption);
-
-        var sortingOption = new Option<string?>(new[] { "-so", "--sorting" },
+        var sortOption = new Option<string?>(new[] { "-s", "--sort" },
+            getDefaultValue: () => string.Empty,
             description: Resources.CommandSortingOption);
+
+        var limitOption = new Option<string?>(new[] { "-l", "--limit" },
+            getDefaultValue: () => string.Empty,
+            description: Resources.LogsCommandLogLevelOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
@@ -38,13 +36,11 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
             getDefaultValue: () => Output.Json,
             description: Resources.CommandOutputOption);
         
-        AddOption(includeOption);
-        AddOption(excludeOption);
-        AddOption(minAgeOption);
-        AddOption(maxAgeOption);
+        AddOption(fieldsOption);
+        AddOption(filterOption);
         AddOption(caseSensitiveOption);
-        AddOption(maxResultsOption);
-        AddOption(sortingOption);
+        AddOption(sortOption);
+        AddOption(limitOption);
         AddOption(addressOption);
         AddOption(outputOption);
 

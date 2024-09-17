@@ -34,11 +34,11 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
 
             var request = new PluginsListRequest
             {
-                Include = options.Include,
-                Exclude = options.Exclude,
+                Fields = options.Fields,
+                Filter = options.Filter,
                 CaseSensitive = options.CaseSensitive,
-                MaxResults = options.MaxResults,
-                Sorting = options.Sorting
+                Sort = options.Sort,
+                Limit = options.Limit
             };
             var result = await _flowSynxClient.PluginsList(request, cancellationToken);
 

@@ -25,7 +25,8 @@ internal class RunCommand : BaseCommand<RunCommandOptions, RunCommandOptionsHand
         var logFileOption = new Option<string?>("--log-file", 
             description: Resources.RunCommandLogFileOption);
 
-        var openApiOption = new Option<bool>(new[] { "--open-api" }, getDefaultValue: () => false,
+        var openApiOption = new Option<bool>(new[] { "--open-api" }, 
+            getDefaultValue: () => false,
             description: Resources.RunCommandOpenApiOption);
 
         AddOption(configFileOption);
