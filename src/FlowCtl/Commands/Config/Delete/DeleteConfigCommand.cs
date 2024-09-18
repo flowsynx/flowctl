@@ -6,7 +6,7 @@ internal class DeleteConfigCommand : BaseCommand<DeleteConfigCommandOptions, Del
 {
     public DeleteConfigCommand() : base("delete", Resources.DeleteConfigCommandDescription)
     {
-        var filterOption = new Option<string?>(new[] { "-f", "--filter" },
+        var filterOption = new Option<string?>(new[] { "+f", "--filter" },
             description: Resources.CommandFilterOption);
 
         var caseSensitiveOption = new Option<bool?>(new[] { "-c", "--case-sensitive" },

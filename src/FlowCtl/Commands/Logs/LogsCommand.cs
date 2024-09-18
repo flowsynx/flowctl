@@ -7,10 +7,10 @@ internal class LogsCommand : BaseCommand<LogsCommandOptions, LogsCommandOptionsH
 {
     public LogsCommand() : base("logs", Resources.LogsCommandDescription)
     {
-        var fieldsOption = new Option<string[]?>(new[] { "-fd", "--fields" },
+        var fieldsOption = new Option<string[]?>(new[] { "-f", "--fields" },
             description: Resources.CommandFieldOption);
 
-        var filterOption = new Option<string?>(new[] { "-f", "--filter" },
+        var filterOption = new Option<string?>(new[] { "+f", "--filter" },
             description: Resources.CommandFilterOption);
 
         var caseSensitiveOption = new Option<bool?>(new[] { "-c", "--case-sensitive" },

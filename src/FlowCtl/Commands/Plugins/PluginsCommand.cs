@@ -7,11 +7,10 @@ internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsComman
 {
     public PluginsCommand() : base("plugins", Resources.PluginsCommandDescription)
     {
-        var fieldsOption = new Option<string[]?>(new[] { "-fd", "--fields" },
+        var fieldsOption = new Option<string[]?>(new[] { "-f", "--fields" },
             description: Resources.CommandFieldOption);
 
-        var filterOption = new Option<string?>(new[] { "-f", "--filter" },
-            getDefaultValue: () => string.Empty,
+        var filterOption = new Option<string?>(new[] { "+f", "--filter" },
             description: Resources.CommandFilterOption);
 
         var caseSensitiveOption = new Option<bool?>(new[] { "-c", "--case-sensitive" },
