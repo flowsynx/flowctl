@@ -74,9 +74,9 @@ jobs:
           cd "${{github.workspace}}"
 
     - name: Upload bineries
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-        name: flowctl_
+        name: flowctl-${{ matrix.title }}-${{ matrix.os_arch }}
         path: "${{github.workspace}}/dist"
         
   release:
@@ -88,10 +88,11 @@ jobs:
     steps:  
     #Release and add artifacts to the release
     - name: Download nuget package artifact
-      uses: actions/download-artifact@v1.0.0
+      uses: actions/download-artifact@v4
       with:
-        name: flowctl_
+        pattern: flowctl-*
         path: ${{ env.ARTIFACT_DIR }}
+        merge-multiple: true
     - name: generate checksum files
       run: cd ${ARTIFACT_DIR} && for i in *; do sha256sum -b $i > "$i.sha256"; done && cd -
     - name: Create Release
