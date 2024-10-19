@@ -19,10 +19,10 @@ internal class Extractor : IExtractor
 
     public void ExtractFile(string sourcePath, string destinationPath)
     {
-        using var stream = File.Open(sourcePath, FileMode.Open, FileAccess.ReadWrite);
+        var content = File.ReadAllBytes(sourcePath);
         var compressEntry = new CompressEntry
         {
-            Stream = stream,
+            Content = content,
             Name = Path.GetFileName(sourcePath),
             ContentType = ""
         };

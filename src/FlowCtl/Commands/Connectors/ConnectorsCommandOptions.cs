@@ -1,6 +1,6 @@
-﻿namespace FlowCtl.Commands.Plugins;
+﻿namespace FlowCtl.Commands.Connectors;
 
-internal class PluginsCommandOptions : ICommandOptions
+internal class ConnectorsCommandOptions : ICommandOptions
 {
     public string[]? Fields { get; set; } = Array.Empty<string>();
     public string? Filter { get; set; } = string.Empty;

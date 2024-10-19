@@ -1,13 +1,13 @@
 ﻿using System.CommandLine;
 
-namespace FlowCtl.Commands.Plugins.Details;
+namespace FlowCtl.Commands.Connectors.Details;
 
-internal class PluginDetailsCommand : BaseCommand<PluginDetailsCommandOptions, PluginDetailsCommandOptionsHandler>
+internal class ConnectorDetailsCommand : BaseCommand<ConnectorDetailsCommandOptions, ConnectorDetailsCommandOptionsHandler>
 {
-    public PluginDetailsCommand() : base("details", Resources.PluginDetailsCommandDescription)
+    public ConnectorDetailsCommand() : base("details", Resources.ConnectorDetailsCommandDescription)
     {
         var typeOption = new Option<string>(new[] { "-t", "--type" },
-            description: Resources.PluginDetailsCommandTypeOption) { IsRequired = true };
+            description: Resources.ConnectorDetailsCommandTypeOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);

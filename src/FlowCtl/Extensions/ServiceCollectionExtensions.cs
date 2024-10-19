@@ -7,7 +7,7 @@ using FlowCtl.ApplicationBuilders;
 using FlowCtl.Commands.Config;
 using FlowSynx.Environment;
 using FlowSynx.IO;
-using FlowCtl.Commands.Plugins;
+using FlowCtl.Commands.Connectors;
 using FlowCtl.Commands.Version;
 using FlowCtl.Commands.Health;
 using FlowCtl.Commands.Update;
@@ -37,11 +37,11 @@ public static class ServiceCollectionExtensions
     {
         services.AddTransient<RootCommand, Root>()
                 .AddTransient<Command, ConfigCommand>()
+                .AddTransient<Command, ConnectorsCommand>()
                 .AddTransient<Command, DashboardCommand>()
                 .AddTransient<Command, HealthCommand>()
                 .AddTransient<Command, InitCommand>()
                 .AddTransient<Command, LogsCommand>()
-                .AddTransient<Command, PluginsCommand>()
                 .AddTransient<Command, RunCommand>()
                 .AddTransient<Command, InvokeCommand>()
                 .AddTransient<Command, StopCommand>()

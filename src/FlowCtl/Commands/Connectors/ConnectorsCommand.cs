@@ -1,11 +1,11 @@
 ﻿using System.CommandLine;
-using FlowCtl.Commands.Plugins.Details;
+using FlowCtl.Commands.Connectors.Details;
 
-namespace FlowCtl.Commands.Plugins;
+namespace FlowCtl.Commands.Connectors;
 
-internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsCommandOptionsHandler>
+internal class ConnectorsCommand : BaseCommand<ConnectorsCommandOptions, ConnectorsCommandOptionsHandler>
 {
-    public PluginsCommand() : base("plugins", Resources.PluginsCommandDescription)
+    public ConnectorsCommand() : base("connectors", Resources.ConnectorsCommandDescription)
     {
         var fieldsOption = new Option<string[]?>(new[] { "-f", "--fields" },
             description: Resources.CommandFieldOption);
@@ -38,6 +38,6 @@ internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsComman
         AddOption(addressOption);
         AddOption(outputOption);
 
-        AddCommand(new PluginDetailsCommand());
+        AddCommand(new ConnectorDetailsCommand());
     }
 }

@@ -1,16 +1,16 @@
 ﻿using EnsureThat;
 using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.Plugins;
+using FlowSynx.Client.Requests.Connectors;
 
-namespace FlowCtl.Commands.Plugins;
+namespace FlowCtl.Commands.Connectors;
 
-internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsCommandOptions>
+internal class ConnectorsCommandOptionsHandler : ICommandOptionsHandler<ConnectorsCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly IFlowSynxClient _flowSynxClient;
 
-    public PluginsCommandOptionsHandler(IOutputFormatter outputFormatter,
+    public ConnectorsCommandOptionsHandler(IOutputFormatter outputFormatter,
         IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
@@ -19,20 +19,20 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
         _flowSynxClient = flowSynxClient;
     }
 
-    public async Task<int> HandleAsync(PluginsCommandOptions options, CancellationToken cancellationToken)
+    public async Task<int> HandleAsync(ConnectorsCommandOptions options, CancellationToken cancellationToken)
     {
         await Execute(options, cancellationToken);
         return 0;
     }
 
-    private async Task Execute(PluginsCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(ConnectorsCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var request = new PluginsListRequest
+            var request = new ConnectorsListRequest
             {
                 Fields = options.Fields,
                 Filter = options.Filter,
@@ -40,7 +40,7 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
                 Sort = options.Sort,
                 Limit = options.Limit
             };
-            var result = await _flowSynxClient.PluginsList(request, cancellationToken);
+            var result = await _flowSynxClient.ConnectorsList(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);

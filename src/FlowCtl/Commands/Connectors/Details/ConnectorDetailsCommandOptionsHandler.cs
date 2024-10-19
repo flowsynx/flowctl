@@ -1,16 +1,16 @@
 ﻿using EnsureThat;
 using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.Plugins;
+using FlowSynx.Client.Requests.Connectors;
 
-namespace FlowCtl.Commands.Plugins.Details;
+namespace FlowCtl.Commands.Connectors.Details;
 
-internal class PluginDetailsCommandOptionsHandler : ICommandOptionsHandler<PluginDetailsCommandOptions>
+internal class ConnectorDetailsCommandOptionsHandler : ICommandOptionsHandler<ConnectorDetailsCommandOptions>
 {
     private readonly IOutputFormatter _outputFormatter;
     private readonly IFlowSynxClient _flowSynxClient;
 
-    public PluginDetailsCommandOptionsHandler(IOutputFormatter outputFormatter,
+    public ConnectorDetailsCommandOptionsHandler(IOutputFormatter outputFormatter,
         IFlowSynxClient flowSynxClient)
     {
         EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
@@ -19,21 +19,21 @@ internal class PluginDetailsCommandOptionsHandler : ICommandOptionsHandler<Plugi
         _flowSynxClient = flowSynxClient;
     }
 
-    public async Task<int> HandleAsync(PluginDetailsCommandOptions options, CancellationToken cancellationToken)
+    public async Task<int> HandleAsync(ConnectorDetailsCommandOptions options, CancellationToken cancellationToken)
     {
         await Execute(options, cancellationToken);
         return 0;
     }
 
-    private async Task Execute(PluginDetailsCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(ConnectorDetailsCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var request = new PluginDetailsRequest {Type = options.Type};
-            var result = await _flowSynxClient.PluginDetails(request, cancellationToken);
+            var request = new ConnectorDetailsRequest { Type = options.Type};
+            var result = await _flowSynxClient.ConnectorDetails(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);

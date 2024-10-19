@@ -130,7 +130,7 @@
     <value>The specifications regarding configuration section. They should be passed in pairs of key value</value>
   </data>
   <data name="AddConfigCommandTypeOption" xml:space="preserve">
-    <value>The type of plugin supported by FlowSynx</value>
+    <value>The type of connector supported by FlowSynx</value>
   </data>
   <data name="CommandAddressOption" xml:space="preserve">
     <value>The address that specify a http-based address to connect on remote FlowSynx system</value>
@@ -243,17 +243,17 @@
   <data name="LogsCommandLogLevelOption" xml:space="preserve">
     <value>The log verbosity to controls the amount of detail emitted for each event that is logged. Valid values are Dbug|Info|Warn|Fail|Crit [default: off]</value>
   </data>
-  <data name="PluginDetailsCommandDescription" xml:space="preserve">
-    <value>Display details about a particular plugin</value>
+  <data name="ConnectorDetailsCommandDescription" xml:space="preserve">
+    <value>Display details about a particular connector</value>
   </data>
-  <data name="PluginDetailsCommandTypeOption" xml:space="preserve">
-    <value>The type of the plugin</value>
+  <data name="ConnectorDetailsCommandTypeOption" xml:space="preserve">
+    <value>The type of the connector</value>
   </data>
-  <data name="PluginsCommandDescription" xml:space="preserve">
-    <value>Display list and details of plugins supported by FlowSynx system</value>
+  <data name="ConnectorsCommandDescription" xml:space="preserve">
+    <value>Display list and details of connectors supported by FlowSynx system</value>
   </data>
-  <data name="PluginsCommandTypeOption" xml:space="preserve">
-    <value>The namespace of plugin (e.g., Storage)</value>
+  <data name="ConnectorsCommandTypeOption" xml:space="preserve">
+    <value>The namespace of connector (e.g., Storage)</value>
   </data>
   <data name="ReadCommandFileAlreadyExist" xml:space="preserve">
     <value>File '{0}' is already exist!</value>

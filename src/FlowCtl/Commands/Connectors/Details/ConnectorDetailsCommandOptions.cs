@@ -1,6 +1,6 @@
-﻿namespace FlowCtl.Commands.Plugins.Details;
+﻿namespace FlowCtl.Commands.Connectors.Details;
 
-internal class PluginDetailsCommandOptions : ICommandOptions
+internal class ConnectorDetailsCommandOptions : ICommandOptions
 {
     public string Type { get; set; } = string.Empty;
     public string? Address { get; set; } = string.Empty;

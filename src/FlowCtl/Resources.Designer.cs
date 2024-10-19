@@ -97,7 +97,7 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type of plugin supported by FlowSynx.
+        ///   Looks up a localized string similar to The type of connector supported by FlowSynx.
         /// </summary>
         internal static string AddConfigCommandTypeOption {
             get {
@@ -246,6 +246,42 @@ namespace FlowCtl {
         internal static string ConfigCommandTypeOption {
             get {
                 return ResourceManager.GetString("ConfigCommandTypeOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display details about a particular connector.
+        /// </summary>
+        internal static string ConnectorDetailsCommandDescription {
+            get {
+                return ResourceManager.GetString("ConnectorDetailsCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type of the connector.
+        /// </summary>
+        internal static string ConnectorDetailsCommandTypeOption {
+            get {
+                return ResourceManager.GetString("ConnectorDetailsCommandTypeOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display list and details of connectors supported by FlowSynx system.
+        /// </summary>
+        internal static string ConnectorsCommandDescription {
+            get {
+                return ResourceManager.GetString("ConnectorsCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The namespace of connector (e.g., Storage).
+        /// </summary>
+        internal static string ConnectorsCommandTypeOption {
+            get {
+                return ResourceManager.GetString("ConnectorsCommandTypeOption", resourceCulture);
             }
         }
         
@@ -435,42 +471,6 @@ namespace FlowCtl {
         internal static string LogsCommandLogLevelOption {
             get {
                 return ResourceManager.GetString("LogsCommandLogLevelOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Display details about a particular plugin.
-        /// </summary>
-        internal static string PluginDetailsCommandDescription {
-            get {
-                return ResourceManager.GetString("PluginDetailsCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The type of the plugin.
-        /// </summary>
-        internal static string PluginDetailsCommandTypeOption {
-            get {
-                return ResourceManager.GetString("PluginDetailsCommandTypeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Display list and details of plugins supported by FlowSynx system.
-        /// </summary>
-        internal static string PluginsCommandDescription {
-            get {
-                return ResourceManager.GetString("PluginsCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The namespace of plugin (e.g., Storage).
-        /// </summary>
-        internal static string PluginsCommandTypeOption {
-            get {
-                return ResourceManager.GetString("PluginsCommandTypeOption", resourceCulture);
             }
         }
         
