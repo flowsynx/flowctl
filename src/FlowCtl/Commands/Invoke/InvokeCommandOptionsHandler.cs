@@ -98,21 +98,14 @@ internal class InvokeCommandOptionsHandler : ICommandOptionsHandler<InvokeComman
         }
     }
 
-    private void GenerateOutput(HttpResult<Stream> result)
+    private void GenerateOutput(HttpResult<byte[]> result)
     {
         if (result.StatusCode != 200)
             throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
 
-        using (var writer = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true })
+        using (Stream stdout = Console.OpenStandardOutput())
         {
-            Console.SetOut(writer);
-            using (var reader = new StreamReader(result.Payload))
-            {
-                var output = reader.ReadToEnd();
-                writer.WriteLine(output);
-            }
+            stdout.Write(result.Payload, 0, result.Payload.Length);
         }
-
-        Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
     }
 }
