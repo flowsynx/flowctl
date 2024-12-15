@@ -6,21 +6,17 @@ internal class AddConfigCommand : BaseCommand<AddConfigCommandOptions, AddConfig
 {
     public AddConfigCommand() : base("add", Resources.AddConfigCommandDescription)
     {
-        var nameOption = new Option<string>(new[] { "-n", "--name" },
-            description: Resources.AddConfigCommandNameOption) { IsRequired = true };
+        var dataOption = new Option<string?>(new[] { "-d", "--data" },
+            description: Resources.CommandFieldOption) { IsRequired = true };
 
-        var typeOption = new Option<string>(new[] { "-t", "--type" },
-            description: Resources.AddConfigCommandTypeOption) { IsRequired = true };
-
-        var specificationsOption = new Option<string>(new[] { "-s", "--spec" },
-            description: Resources.AddConfigCommandSpecificationOption);
+        var dataFileOption = new Option<string?>(new[] { "-f", "--data-file" },
+            description: Resources.InvokeCommandDataFileOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
-        AddOption(nameOption);
-        AddOption(typeOption);
-        AddOption(specificationsOption);
+        AddOption(dataOption);
+        AddOption(dataFileOption);
         AddOption(addressOption);
     }
 }

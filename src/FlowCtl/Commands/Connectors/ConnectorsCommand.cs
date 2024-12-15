@@ -7,21 +7,11 @@ internal class ConnectorsCommand : BaseCommand<ConnectorsCommandOptions, Connect
 {
     public ConnectorsCommand() : base("connectors", Resources.ConnectorsCommandDescription)
     {
-        var fieldsOption = new Option<string[]?>(new[] { "-f", "--fields" },
-            description: Resources.CommandFieldOption);
+        var dataOption = new Option<string?>(new[] { "-d", "--data" },
+            description: Resources.InvokeCommandDataOption);
 
-        var filterOption = new Option<string?>(new[] { "+f", "--filter" },
-            description: Resources.CommandFilterOption);
-
-        var caseSensitiveOption = new Option<bool?>(new[] { "-c", "--case-sensitive" },
-            getDefaultValue: () => false,
-            description: Resources.CommandCaseSensitiveOption);
-
-        var sortOption = new Option<string?>(new[] { "-s", "--sort" },
-            description: Resources.CommandSortOption);
-
-        var limitOption = new Option<string?>(new[] { "-l", "--limit" },
-            description: Resources.CommandLimitOption);
+        var dataFileOption = new Option<string?>(new[] { "-f", "--data-file" },
+            description: Resources.InvokeCommandDataFileOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
@@ -30,11 +20,8 @@ internal class ConnectorsCommand : BaseCommand<ConnectorsCommandOptions, Connect
             getDefaultValue: () => Output.Json,
             description: Resources.CommandOutputOption);
 
-        AddOption(fieldsOption);
-        AddOption(filterOption);
-        AddOption(caseSensitiveOption);
-        AddOption(sortOption);
-        AddOption(limitOption);
+        AddOption(dataOption);
+        AddOption(dataFileOption);
         AddOption(addressOption);
         AddOption(outputOption);
 

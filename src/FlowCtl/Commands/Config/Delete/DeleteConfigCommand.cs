@@ -6,26 +6,17 @@ internal class DeleteConfigCommand : BaseCommand<DeleteConfigCommandOptions, Del
 {
     public DeleteConfigCommand() : base("delete", Resources.DeleteConfigCommandDescription)
     {
-        var filterOption = new Option<string?>(new[] { "+f", "--filter" },
-            description: Resources.CommandFilterOption);
+        var dataOption = new Option<string?>(new[] { "-d", "--data" },
+            description: Resources.CommandFieldOption);
 
-        var caseSensitiveOption = new Option<bool?>(new[] { "-c", "--case-sensitive" },
-            getDefaultValue: () => false,
-            description: Resources.CommandCaseSensitiveOption);
-
-        var sortOption = new Option<string?>(new[] { "-s", "--sort" },
-            description: Resources.CommandSortOption);
-
-        var limitOption = new Option<string?>(new[] { "-l", "--limit" },
-            description: Resources.CommandLimitOption);
+        var dataFileOption = new Option<string?>(new[] { "-f", "--data-file" },
+            description: Resources.InvokeCommandDataFileOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
-        AddOption(filterOption);
-        AddOption(caseSensitiveOption);
-        AddOption(sortOption);
-        AddOption(limitOption);
+        AddOption(dataOption);
+        AddOption(dataFileOption);
         AddOption(addressOption);
     }
 }

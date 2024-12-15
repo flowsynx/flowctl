@@ -38,11 +38,20 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var specification = new Dictionary<string, string?>();
-            if (!string.IsNullOrEmpty(options.Spec))
-                specification = _deserializer.Deserialize<Dictionary<string, string?>>(options.Spec);
-            
-            var request = new AddConfigRequest { Name = options.Name, Type = options.Type, Specifications = specification };
+            string? jsonData;
+            if (!string.IsNullOrEmpty(options.DataFile))
+            {
+                if (!File.Exists(options.DataFile))
+                    throw new Exception($"Entered data file '{options.DataFile}' is not exist.");
+
+                jsonData = await File.ReadAllTextAsync(options.DataFile, cancellationToken);
+            }
+            else
+            {
+                jsonData = options.Data;
+            }
+
+            var request = AddConfigData(jsonData);
             var result = await _flowSynxClient.AddConfig(request, cancellationToken);
 
             if (result.StatusCode != 200)
@@ -62,5 +71,10 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
         {
             _outputFormatter.WriteError(ex.Message);
         }
+    }
+
+    private AddConfigRequest AddConfigData(string? json)
+    {
+        return _deserializer.Deserialize<AddConfigRequest>(json);
     }
 }

@@ -2,8 +2,7 @@
 
 internal class AddConfigCommandOptions : ICommandOptions
 {
-    public string Name { get; set; } = string.Empty;
-    public string Type { get; set; } = string.Empty;
-    public string Spec { get; set; } = string.Empty;
+    public string Data { get; set; } = string.Empty;
+    public string? DataFile { get; set; }
     public string? Address { get; set; } = string.Empty;
 }
