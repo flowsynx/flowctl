@@ -1,20 +1,20 @@
 ﻿using EnsureThat;
-using FlowCtl.Services.Abstracts;
+using FlowCtl.Core.Logger;
 using FlowSynx.Client;
 
 namespace FlowCtl.Commands.Health;
 
 internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthCommandOptions>
 {
-    private readonly IOutputFormatter _outputFormatter;
+    private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
 
-    public HealthCommandOptionsHandler(IOutputFormatter outputFormatter, 
+    public HealthCommandOptionsHandler(IFlowCtlLogger flowCtlLogger, 
         IFlowSynxClient flowSynxClient)
     {
-        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
-        _outputFormatter = outputFormatter;
+        _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
     }
 
@@ -37,11 +37,11 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
                 throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
 
             var payload = result.Payload;
-            _outputFormatter.Write(payload.HealthChecks.ToList(), options.Output);
+            _flowCtlLogger.Write(payload.HealthChecks.ToList(), options.Output);
         }
         catch (Exception ex)
         {
-            _outputFormatter.WriteError(ex.Message);
+            _flowCtlLogger.WriteError(ex.Message);
         }
     }
 }

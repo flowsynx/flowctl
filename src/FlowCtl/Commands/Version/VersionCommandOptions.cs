@@ -1,6 +1,8 @@
-﻿namespace FlowCtl.Commands.Version;
+﻿using FlowCtl.Core.Logger;
+
+namespace FlowCtl.Commands.Version;
 
 internal class VersionCommandOptions : ICommandOptions
 {
-    public Output Output { get; set; } = Output.Json;
+    public OutputType Output { get; set; } = OutputType.Json;
 }

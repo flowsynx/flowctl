@@ -1,26 +1,25 @@
 ﻿using EnsureThat;
-using FlowCtl.Services.Abstracts;
+using FlowCtl.Core.Logger;
+using FlowCtl.Core.Serialization;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Config;
-using FlowSynx.IO.Exceptions;
-using FlowSynx.IO.Serialization;
 
 namespace FlowCtl.Commands.Config.Add;
 
 internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfigCommandOptions>
 {
-    private readonly IOutputFormatter _outputFormatter;
+    private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
-    private readonly IDeserializer _deserializer;
+    private readonly IJsonDeserializer _deserializer;
 
-    public AddConfigCommandOptionsHandler(IOutputFormatter outputFormatter,
-        IFlowSynxClient flowSynxClient, IDeserializer deserializer)
+    public AddConfigCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
+        IFlowSynxClient flowSynxClient, IJsonDeserializer deserializer)
     {
-        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
         EnsureArg.IsNotNull(deserializer, nameof(deserializer));
 
-        _outputFormatter = outputFormatter;
+        _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
         _deserializer = deserializer;
     }
@@ -59,17 +58,17 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
 
             var payload = result.Payload;
             if (payload is { Succeeded: false })
-                _outputFormatter.WriteError(payload.Messages);
+                _flowCtlLogger.WriteError(payload.Messages);
             else
-                _outputFormatter.Write(payload.Data);
+                _flowCtlLogger.Write(payload.Data);
         }
-        catch (DeserializerException)
-        {
-            _outputFormatter.WriteError(Resources.AddConfigCommandCouldNotParseSpecifications);
-        }
+        //catch (DeserializerException)
+        //{
+        //    _flowCtlLogger.WriteError(Resources.AddConfigCommandCouldNotParseSpecifications);
+        //}
         catch (Exception ex)
         {
-            _outputFormatter.WriteError(ex.Message);
+            _flowCtlLogger.WriteError(ex.Message);
         }
     }
 

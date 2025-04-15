@@ -881,37 +881,6 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to @ECHO OFF
-        ///TIMEOUT /t 1 /nobreak &gt; NUL
-        ///TASKKILL /F /IM &quot;{0}&quot; &gt; NUL
-        ///COPY &quot;{1}&quot; &quot;{2}&quot;
-        ///DEL &quot;{3}&quot;
-        ///RD /s /q &quot;{4}&quot;
-        ///DEL &quot;%~f0&quot;.
-        /// </summary>
-        internal static string UpdateScript_Bat {
-            get {
-                return ResourceManager.GetString("UpdateScript_Bat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #!/bin/sh
-        ///
-        ///cp -fr &quot;{0}&quot; &quot;{1}&quot;
-        ///sleep 9999999 &lt;{2} &amp;
-        ///rm &quot;{3}&quot;
-        ///rm -rf &quot;{4}&quot;
-        ///rm -- &quot;$0&quot;
-        ///kill $!.
-        /// </summary>
-        internal static string UpdateScript_Shell {
-            get {
-                return ResourceManager.GetString("UpdateScript_Shell", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to You can use command &apos;Synx update&apos; to check and update the FlowSynx and Dashboard..
         /// </summary>
         internal static string UseUpdateCommandToUpdateFlowSynxAndDashboard {

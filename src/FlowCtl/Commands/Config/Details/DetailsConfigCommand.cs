@@ -1,4 +1,5 @@
-﻿using System.CommandLine;
+﻿using FlowCtl.Core.Logger;
+using System.CommandLine;
 
 namespace FlowCtl.Commands.Config.Details;
 
@@ -12,8 +13,8 @@ internal class DetailsConfigCommand : BaseCommand<DetailsConfigCommandOptions, D
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
-        var outputFormatOption = new Option<Output>(new[] { "-o", "--output" }, 
-            getDefaultValue: () => Output.Json,
+        var outputFormatOption = new Option<OutputType>(new[] { "-o", "--output" }, 
+            getDefaultValue: () => OutputType.Json,
             description: Resources.CommandOutputOption);
 
         AddOption(nameOption);

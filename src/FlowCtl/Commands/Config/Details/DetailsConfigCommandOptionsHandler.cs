@@ -1,5 +1,5 @@
 ﻿using EnsureThat;
-using FlowCtl.Services.Abstracts;
+using FlowCtl.Core.Logger;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Config;
 
@@ -7,15 +7,15 @@ namespace FlowCtl.Commands.Config.Details;
 
 internal class DetailsConfigCommandOptionsHandler : ICommandOptionsHandler<DetailsConfigCommandOptions>
 {
-    private readonly IOutputFormatter _outputFormatter;
+    private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
 
-    public DetailsConfigCommandOptionsHandler(IOutputFormatter outputFormatter,
+    public DetailsConfigCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
         IFlowSynxClient flowSynxClient)
     {
-        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
-        _outputFormatter = outputFormatter;
+        _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
     }
 
@@ -40,13 +40,13 @@ internal class DetailsConfigCommandOptionsHandler : ICommandOptionsHandler<Detai
 
             var payload = result.Payload;
             if (payload is { Succeeded: false })
-                _outputFormatter.WriteError(payload.Messages);
+                _flowCtlLogger.WriteError(payload.Messages);
             else
-                _outputFormatter.Write(payload.Data, options.Output);
+                _flowCtlLogger.Write(payload.Data, options.Output);
         }
         catch (Exception ex)
         {
-            _outputFormatter.WriteError(ex.Message);
+            _flowCtlLogger.WriteError(ex.Message);
         }
     }
 }

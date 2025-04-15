@@ -1,21 +1,21 @@
 ﻿using EnsureThat;
-using FlowCtl.Services.Abstracts;
-using FlowSynx.Environment;
+using FlowCtl.Core.Logger;
+using FlowCtl.Core.Services;
 
 namespace FlowCtl.Commands.Uninstall;
 
 internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<UninstallCommandOptions>
 {
-    private readonly IOutputFormatter _outputFormatter;
+    private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly ILocation _location;
     private readonly IProcessHandler _processHandler;
 
-    public UninstallCommandOptionsHandler(IOutputFormatter outputFormatter, 
+    public UninstallCommandOptionsHandler(IFlowCtlLogger flowCtlLogger, 
         ILocation location, IProcessHandler processHandler)
     {
-        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
         EnsureArg.IsNotNull(location, nameof(location));
-        _outputFormatter = outputFormatter;
+        _flowCtlLogger = flowCtlLogger;
         _location = location;
         _processHandler = processHandler;
     }
@@ -30,44 +30,30 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
     {
         try
         {
-            _outputFormatter.Write(Resources.UninstallCommandBeginningUninstalling);
+            _flowCtlLogger.Write(Resources.UninstallCommandBeginningUninstalling);
 
             if (_processHandler.IsRunning(_location.FlowSynxBinaryName, "."))
             {
                 if (options.Force)
                 {
                     _processHandler.Terminate(_location.FlowSynxBinaryName, ".");
-                    _outputFormatter.Write(Resources.UninstallCommandFlowSynxStoppedSuccessfully);
+                    _flowCtlLogger.Write(Resources.UninstallCommandFlowSynxStoppedSuccessfully);
                 }
                 else
                 {
-                    _outputFormatter.Write(Resources.UninstallCommandFlowSynxIsRunning);
+                    _flowCtlLogger.Write(Resources.UninstallCommandFlowSynxIsRunning);
                     return Task.CompletedTask;
                 }
             }
 
-            if (_processHandler.IsRunning(_location.DashboardBinaryName, "."))
-            {
-                if (options.Force)
-                {
-                    _processHandler.Terminate(_location.DashboardBinaryName, ".");
-                    _outputFormatter.Write(Resources.UninstallCommandDashboardStoppedSuccessfully);
-                }
-                else
-                {
-                    _outputFormatter.Write(Resources.UninstallCommandDashboardIsRunning);
-                    return Task.CompletedTask;
-                }
-            }
-            
             if (Directory.Exists(_location.DefaultFlowSynxDirectoryName))
                 Directory.Delete(_location.DefaultFlowSynxDirectoryName, true);
             
-            _outputFormatter.Write(Resources.UninstallCommandUninstallingIsDone);
+            _flowCtlLogger.Write(Resources.UninstallCommandUninstallingIsDone);
         }
         catch (Exception e)
         {
-            _outputFormatter.WriteError(e.Message);
+            _flowCtlLogger.WriteError(e.Message);
         }
         return Task.CompletedTask;
     }

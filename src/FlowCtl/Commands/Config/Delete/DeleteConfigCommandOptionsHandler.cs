@@ -1,24 +1,24 @@
 ﻿using EnsureThat;
-using FlowCtl.Services.Abstracts;
+using FlowCtl.Core.Logger;
+using FlowCtl.Core.Serialization;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Config;
-using FlowSynx.IO.Serialization;
 
 namespace FlowCtl.Commands.Config.Delete;
 
 internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<DeleteConfigCommandOptions>
 {
-    private readonly IOutputFormatter _outputFormatter;
+    private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
-    private readonly IDeserializer _deserializer;
+    private readonly IJsonDeserializer _deserializer;
 
-    public DeleteConfigCommandOptionsHandler(IOutputFormatter outputFormatter,
-        IFlowSynxClient flowSynxClient, IDeserializer deserializer)
+    public DeleteConfigCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
+        IFlowSynxClient flowSynxClient, IJsonDeserializer deserializer)
     {
-        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
 
-        _outputFormatter = outputFormatter;
+        _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
         _deserializer = deserializer;
     }
@@ -57,13 +57,13 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
 
             var payload = result.Payload;
             if (payload is { Succeeded: false })
-                _outputFormatter.WriteError(payload.Messages);
+                _flowCtlLogger.WriteError(payload.Messages);
             else
-                _outputFormatter.Write(payload.Data);
+                _flowCtlLogger.Write(payload.Data);
         }
         catch (Exception ex)
         {
-            _outputFormatter.WriteError(ex.Message);
+            _flowCtlLogger.WriteError(ex.Message);
         }
     }
 

@@ -1,33 +1,32 @@
 ﻿using EnsureThat;
-using FlowCtl.Services.Abstracts;
-using FlowSynx.IO;
+using FlowCtl.Core.Github;
+using FlowCtl.Core.Logger;
+using FlowCtl.Core.Services;
+using System.Runtime.InteropServices;
 
 namespace FlowCtl.Commands.Init;
 
 internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOptions>
 {
-    private readonly IOutputFormatter _outputFormatter;
-    private readonly IVersionHandler _versionHandler;
-    private readonly IGitHub _gitHub;
-    private readonly IExtractor _extractor;
+    private readonly IFlowCtlLogger _flowCtlLogger;
+    private readonly IGitHubReleaseManager _gitHubReleaseManager;
     private readonly ILocation _location;
+    private readonly IArchiveExtractor _archiveExtractor;
 
-    public InitCommandOptionsHandler(IOutputFormatter outputFormatter,
-        IVersionHandler versionHandler, IGitHub gitHub,
-        IExtractor extractor, ILocation location)
+    public InitCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
+        IGitHubReleaseManager gitHubReleaseManager, ILocation location, 
+        IArchiveExtractor archiveExtractor)
     {
-        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
-        EnsureArg.IsNotNull(versionHandler, nameof(versionHandler));
-        EnsureArg.IsNotNull(gitHub, nameof(gitHub));
-        EnsureArg.IsNotNull(extractor, nameof(extractor));
+        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
+        EnsureArg.IsNotNull(gitHubReleaseManager, nameof(gitHubReleaseManager));
         EnsureArg.IsNotNull(location, nameof(location));
-        _outputFormatter = outputFormatter;
-        _versionHandler = versionHandler;
-        _gitHub = gitHub;
-        _extractor = extractor;
+        EnsureArg.IsNotNull(archiveExtractor, nameof(archiveExtractor));
+        _flowCtlLogger = flowCtlLogger;
+        _gitHubReleaseManager = gitHubReleaseManager;
         _location = location;
+        _archiveExtractor = archiveExtractor;
     }
-    
+
     public async Task<int> HandleAsync(InitCommandOptions options, CancellationToken cancellationToken)
     {
         await Execute(options, cancellationToken);
@@ -38,106 +37,113 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     {
         try
         {
-            _outputFormatter.Write(Resources.InitCommandBeginningInitialize);
+            _flowCtlLogger.Write(Resources.InitCommandBeginningInitialize);
 
             var flowSynxPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine");
             var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(flowSynxPath);
 
-            var dashboardPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "dashboard");
-            var dashboardBinaryFile = _location.LookupDashboardBinaryFilePath(dashboardPath);
-
-            if (File.Exists(flowSynxBinaryFile) && File.Exists(dashboardBinaryFile))
+            if (File.Exists(flowSynxBinaryFile))
             {
-                _outputFormatter.Write(Resources.TheFlowSynxEngineIsAlreadyInitialized);
-                _outputFormatter.Write(Resources.UseUpdateCommandToUpdateFlowSynxAndDashboard);
+                _flowCtlLogger.Write(Resources.TheFlowSynxEngineIsAlreadyInitialized);
                 return;
             }
+
             Directory.CreateDirectory(flowSynxPath);
-            Directory.CreateDirectory(dashboardPath);
 
             var initFlowSynx = await InitFlowSynx(options.FlowSynxVersion, cancellationToken);
             if (!initFlowSynx)
                 return;
 
-            var initDashboard = await InitDashboard(options.DashboardVersion, cancellationToken);
-            if (!initDashboard)
-                return;
+            _flowCtlLogger.Write(Resources.StartChangeFlowSynxExecutionMode);
+            MakeExecutable(flowSynxBinaryFile);
 
-            _outputFormatter.Write(Resources.StartChangeFlowSynxExecutionMode);
-            PathHelper.MakeExecutable(flowSynxBinaryFile);
-
-            _outputFormatter.Write(Resources.StartChangeDashboardExecutionMode);
-            PathHelper.MakeExecutable(flowSynxBinaryFile);
-
-            _outputFormatter.Write(string.Format(Resources.FlowSynxEngineDownloadedAndInstalledSuccessfully, _location.DefaultFlowSynxBinaryDirectoryName));
+            _flowCtlLogger.Write(string.Format(Resources.FlowSynxEngineDownloadedAndInstalledSuccessfully, _location.DefaultFlowSynxBinaryDirectoryName));
         }
         catch (Exception e)
         {
-            _outputFormatter.WriteError(e.Message);
+            _flowCtlLogger.WriteError(e.Message);
         }
     }
 
     private async Task<bool> InitFlowSynx(string? version, CancellationToken cancellationToken)
     {
-        var flowSynxVersion = await _gitHub.GetLatestVersion(_gitHub.FlowSynxRepository, cancellationToken);
+        var flowSynxVersion = await _gitHubReleaseManager.GetLatestVersion(GitHubSettings.Organization, GitHubSettings.FlowSynxRepository);
         if (!string.IsNullOrEmpty(version))
             flowSynxVersion = version;
 
-        flowSynxVersion = _versionHandler.Normalize(flowSynxVersion);
+        flowSynxVersion = NormalizeVersion(flowSynxVersion);
 
-        _outputFormatter.Write(Resources.StartDownloadFlowSynxBinary);
-        var flowSynxDownloadPath = await _gitHub.DownloadAsset(_gitHub.FlowSynxRepository, flowSynxVersion, _gitHub.FlowSynxArchiveFileName, Path.GetTempPath(), cancellationToken);
+        _flowCtlLogger.Write(Resources.StartDownloadFlowSynxBinary);
+        string tempPath = Path.Combine(Path.GetTempPath(), GitHubSettings.FlowSynxArchiveTemporaryFileName);
+        var flowSynxDownloadPath = await _gitHubReleaseManager.DownloadAsset(GitHubSettings.Organization, 
+            GitHubSettings.FlowSynxRepository, GitHubSettings.FlowSynxArchiveFileName, tempPath, flowSynxVersion);
 
-        _outputFormatter.Write(Resources.StartValidatingFlowSynxBinary);
-        var isFlowSynxValid = await _gitHub.ValidateDownloadedAsset(flowSynxDownloadPath, _gitHub.FlowSynxRepository, flowSynxVersion, _gitHub.FlowSynxArchiveHashFileName, cancellationToken);
+        string tempHashPath = Path.Combine(Path.GetTempPath(), GitHubSettings.FlowSynxArchiveTemporaryHashFileName);
+        var flowSynxHashDownloadPath = await _gitHubReleaseManager.DownloadAsset(GitHubSettings.Organization, 
+            GitHubSettings.FlowSynxRepository, GitHubSettings.FlowSynxArchiveHashFileName, tempHashPath, flowSynxVersion);
+
+        _flowCtlLogger.Write(Resources.StartValidatingFlowSynxBinary);
+        var isFlowSynxValid = _gitHubReleaseManager.ValidateDownloadedAsset(flowSynxDownloadPath, flowSynxHashDownloadPath);
 
         if (!isFlowSynxValid)
         {
-            _outputFormatter.Write(Resources.ValidatingDownloadFail);
-            _outputFormatter.Write(Resources.TheDownloadedDataMayHasBeenCorrupted);
+            _flowCtlLogger.Write(Resources.ValidatingDownloadFail);
+            _flowCtlLogger.Write(Resources.TheDownloadedDataMayHasBeenCorrupted);
             return false;
         }
 
-        _outputFormatter.Write(Resources.StartingExtractFlowSynxBinary);
+        _flowCtlLogger.Write(Resources.StartingExtractFlowSynxBinary);
         ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
         return true;
     }
-
-    private async Task<bool> InitDashboard(string? version, CancellationToken cancellationToken)
-    {
-        var dashboardVersion = await _gitHub.GetLatestVersion(_gitHub.DashboardRepository, cancellationToken);
-        if (!string.IsNullOrEmpty(version))
-            dashboardVersion = version;
-
-        dashboardVersion = _versionHandler.Normalize(dashboardVersion);
-
-        _outputFormatter.Write(Resources.StartDownloadDashboardBinary);
-        var dashboardDownloadPath = await _gitHub.DownloadAsset(_gitHub.DashboardRepository, dashboardVersion, _gitHub.DashboardArchiveFileName, Path.GetTempPath(), cancellationToken);
-
-        _outputFormatter.Write(Resources.StartValidatingDashboardBinary);
-        var isDashboardValid = await _gitHub.ValidateDownloadedAsset(dashboardDownloadPath, _gitHub.DashboardRepository, dashboardVersion, _gitHub.DashboardArchiveHashFileName, cancellationToken);
-
-        if (!isDashboardValid)
-        {
-            _outputFormatter.Write(Resources.ValidatingDownloadFail);
-            _outputFormatter.Write(Resources.TheDownloadedDataMayHasBeenCorrupted);
-            return false;
-        }
-
-        _outputFormatter.Write(Resources.StartingExtractDashboardBinary);
-        ExtractAsset(dashboardDownloadPath, "dashboard", cancellationToken);
-        return true;
-    }
-    
+        
     private void ExtractAsset(string sourcePath, string destinationPathName, CancellationToken cancellationToken)
     {
         var extractTarget = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, destinationPathName, "downloadedFiles");
         var destinationPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, destinationPathName);
 
         Directory.CreateDirectory(extractTarget);
-        _extractor.ExtractFile(sourcePath, extractTarget);
+        _archiveExtractor.ExtractArchive(sourcePath, extractTarget);
         Directory.CreateDirectory(destinationPath);
-        PathHelper.CopyFilesRecursively(extractTarget, destinationPath, cancellationToken);
+        CopyFilesRecursively(extractTarget, destinationPath, cancellationToken);
         Directory.Delete(extractTarget, true);
+    }
+
+    private string NormalizeVersion(string? version)
+    {
+        if (string.IsNullOrEmpty(version))
+            return string.Empty;
+
+        return !version.StartsWith("v") ? $"v{version}" : version;
+    }
+
+    private void CopyFilesRecursively(string sourcePath, string targetPath, CancellationToken cancellationToken)
+    {
+        foreach (var dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+        {
+            if (cancellationToken.IsCancellationRequested)
+                break;
+
+            Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
+        }
+
+        foreach (var newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+        {
+            if (cancellationToken.IsCancellationRequested)
+                break;
+
+            File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
+        }
+    }
+
+    private void MakeExecutable(string path)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return;
+
+        const UnixFileMode ownershipPermissions = UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute |
+                                                  UnixFileMode.GroupRead | UnixFileMode.GroupWrite | UnixFileMode.GroupExecute |
+                                                  UnixFileMode.OtherRead | UnixFileMode.OtherWrite | UnixFileMode.OtherExecute;
+
+        File.SetUnixFileMode(path, ownershipPermissions);
     }
 }

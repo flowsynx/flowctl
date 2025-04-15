@@ -391,13 +391,6 @@ Find more information at: https://flowsynx.io/docs/getting-started/install-flowc
   <data name="UpdateCommandFlowSynxUpdatedSuccessfully" xml:space="preserve">
     <value>The FlowSynx system updated successfully.</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="UpdateScript_Bat" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\UpdateScript_Bat.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="UpdateScript_Shell" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\UpdateScript_Shell.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="UseUpdateCommandToUpdateFlowSynxAndDashboard" xml:space="preserve">
     <value>You can use command 'Synx update' to check and update the FlowSynx and Dashboard.</value>
   </data>

@@ -2,6 +2,7 @@
 using FlowCtl.Commands.Config.Add;
 using FlowCtl.Commands.Config.Delete;
 using FlowCtl.Commands.Config.Details;
+using FlowCtl.Core.Logger;
 
 namespace FlowCtl.Commands.Config;
 
@@ -18,8 +19,8 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
-        var outputOption = new Option<Output>(new[] { "-o", "--output" },
-            getDefaultValue: () => Output.Json,
+        var outputOption = new Option<OutputType>(new[] { "-o", "--output" },
+            getDefaultValue: () => OutputType.Json,
             description: Resources.CommandOutputOption);
         
         AddOption(dataOption);

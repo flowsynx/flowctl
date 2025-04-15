@@ -1,6 +1,6 @@
 ﻿using EnsureThat;
+using FlowCtl.Core.Logger;
 using FlowCtl.Extensions;
-using FlowCtl.Services.Abstracts;
 using FlowSynx.Client;
 using FlowSynx.Client.Responses;
 
@@ -8,15 +8,15 @@ namespace FlowCtl.Commands.Invoke;
 
 internal class InvokeCommandOptionsHandler : ICommandOptionsHandler<InvokeCommandOptions>
 {
-    private readonly IOutputFormatter _outputFormatter;
+    private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
 
-    public InvokeCommandOptionsHandler(IOutputFormatter outputFormatter, 
+    public InvokeCommandOptionsHandler(IFlowCtlLogger flowCtlLogger, 
         IFlowSynxClient flowSynxClient)
     {
-        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
-        _outputFormatter = outputFormatter;
+        _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
     }
 
@@ -63,7 +63,7 @@ internal class InvokeCommandOptionsHandler : ICommandOptionsHandler<InvokeComman
         }
         catch (Exception ex)
         {
-            _outputFormatter.WriteError(ex.Message);
+            _flowCtlLogger.WriteError(ex.Message);
         }
     }
 
@@ -79,7 +79,7 @@ internal class InvokeCommandOptionsHandler : ICommandOptionsHandler<InvokeComman
         };
     }
 
-    private void GenerateOutput(HttpResult<Result<object>> result, Output output)
+    private void GenerateOutput(HttpResult<Result<object>> result, OutputType outputType)
     {
         if (result.StatusCode != 200)
             throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
@@ -87,14 +87,14 @@ internal class InvokeCommandOptionsHandler : ICommandOptionsHandler<InvokeComman
         var payload = result.Payload;
         if (payload is { Succeeded: false })
         {
-            _outputFormatter.WriteError(payload.Messages);
+            _flowCtlLogger.WriteError(payload.Messages);
         }
         else
         {
             if (payload?.Data is not null)
-                _outputFormatter.Write(payload.Data, output);
+                _flowCtlLogger.Write(payload.Data, outputType);
             else
-                _outputFormatter.Write(payload?.Messages);
+                _flowCtlLogger.Write(payload?.Messages);
         }
     }
 

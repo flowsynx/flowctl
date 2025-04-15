@@ -3,7 +3,6 @@ using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
 using Microsoft.Extensions.DependencyInjection;
-using FlowCtl.Services.Abstracts;
 
 namespace FlowCtl.ApplicationBuilders;
 

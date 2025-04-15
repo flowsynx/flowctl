@@ -1,19 +1,20 @@
 ﻿using System.Diagnostics;
 using EnsureThat;
-using FlowCtl.Services.Abstracts;
+using FlowCtl.Core.Logger;
+using FlowCtl.Core.Services;
 
 namespace FlowCtl.Commands.Stop;
 
 internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOptions>
 {
-    private readonly IOutputFormatter _outputFormatter;
+    private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly ILocation _location;
 
-    public StopCommandOptionsHandler(IOutputFormatter outputFormatter, ILocation location)
+    public StopCommandOptionsHandler(IFlowCtlLogger flowCtlLogger, ILocation location)
     {
-        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
         EnsureArg.IsNotNull(location, nameof(location));
-        _outputFormatter = outputFormatter;
+        _flowCtlLogger = flowCtlLogger;
         _location = location;
     }
 
@@ -28,11 +29,10 @@ internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOpt
         try
         {
             TerminateProcess(_location.FlowSynxBinaryName, ".");
-            TerminateProcess(_location.DashboardBinaryName, ".");
         }
         catch (Exception e)
         {
-            _outputFormatter.WriteError(e.Message);
+            _flowCtlLogger.WriteError(e.Message);
         }
         return Task.CompletedTask;
     }
@@ -48,11 +48,11 @@ internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOpt
             foreach (var process in processes)
                 process.Kill();
 
-            _outputFormatter.Write(Resources.StopCommandFlowSynxStopped);
+            _flowCtlLogger.Write(Resources.StopCommandFlowSynxStopped);
         }
         catch (Exception ex)
         {
-            _outputFormatter.WriteError(ex.Message);
+            _flowCtlLogger.WriteError(ex.Message);
         }
     }
 }

@@ -1,26 +1,22 @@
 ﻿using System.Diagnostics;
 using EnsureThat;
-using FlowCtl.Services.Abstracts;
-using FlowSynx.IO.Serialization;
+using FlowCtl.Core.Logger;
+using FlowCtl.Core.Services;
 
 namespace FlowCtl.Commands.Run;
 
 internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptions>
 {
-    private readonly IOutputFormatter _outputFormatter;
+    private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly ILocation _location;
-    private readonly ISerializer _serializer;
 
-    public RunCommandOptionsHandler(IOutputFormatter outputFormatter, ILocation location,
-        ISerializer serializer)
+    public RunCommandOptionsHandler(IFlowCtlLogger flowCtlLogger, ILocation location)
     {
-        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
         EnsureArg.IsNotNull(location, nameof(location));
-        EnsureArg.IsNotNull(serializer, nameof(serializer));
 
-        _outputFormatter = outputFormatter;
+        _flowCtlLogger = flowCtlLogger;
         _location = location;
-        _serializer = serializer;
     }
 
     public async Task<int> HandleAsync(RunCommandOptions options, CancellationToken cancellationToken)
@@ -37,7 +33,7 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
             var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(flowSynxPath);
             if (!Path.Exists(flowSynxBinaryFile))
             {
-                _outputFormatter.WriteError(Resources.FlowSynxEngineIsNotInstalled);
+                _flowCtlLogger.WriteError(Resources.FlowSynxEngineIsNotInstalled);
                 return Task.CompletedTask;
             }
 
@@ -60,48 +56,28 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
         }
         catch (Exception e)
         {
-            _outputFormatter.WriteError(e.Message);
+            _flowCtlLogger.WriteError(e.Message);
         }
         return Task.CompletedTask;
     }
 
     private string GetArgumentStr(RunCommandOptions options)
     {
-        var argList = new List<string>();
-
-        string configFile;
-        if (!string.IsNullOrEmpty(options.ConfigFile))
+        var argList = new List<string>
         {
-            configFile = options.ConfigFile;
-        }
-        else
-        {
-            configFile = Path.Combine(_location.DefaultFlowSynxDirectoryName, "configuration.json");
-            if (!File.Exists(configFile))
-                File.WriteAllText(configFile, _serializer.Serialize(new { }));
-        }
-
-        argList.Add($"--config-file \"{configFile}\"");
-
-        argList.Add($"--enable-health-check {options.EnableHealthCheck}");
-        argList.Add($"--enable-log {options.EnableLog}");
-        argList.Add($"--log-level {options.LogLevel}");
-
-        if (!string.IsNullOrEmpty(options.LogFile))
-            argList.Add($"--log-file {options.LogFile}");
-
-        argList.Add($"--open-api {options.OpenApi}");
+            "--start"
+        };
 
         return argList.Count == 0 ? string.Empty : string.Join(' ', argList);
     }
 
     private void OutputDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
     {
-        if (outLine.Data != null) _outputFormatter.Write(outLine.Data);
+        if (outLine.Data != null) _flowCtlLogger.Write(outLine.Data);
     }
 
     private void ErrorDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
     {
-        if (outLine.Data != null) _outputFormatter.WriteError(outLine.Data);
+        if (outLine.Data != null) _flowCtlLogger.WriteError(outLine.Data);
     }
 }

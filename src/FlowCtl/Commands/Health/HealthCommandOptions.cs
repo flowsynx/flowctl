@@ -1,7 +1,9 @@
-﻿namespace FlowCtl.Commands.Health;
+﻿using FlowCtl.Core.Logger;
+
+namespace FlowCtl.Commands.Health;
 
 internal class HealthCommandOptions : ICommandOptions
 {
     public string? Address { get; set; } = string.Empty;
-    public Output Output { get; set; } = Output.Json;
+    public OutputType Output { get; set; } = OutputType.Json;
 }

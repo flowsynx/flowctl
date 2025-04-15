@@ -2,23 +2,23 @@
 using Microsoft.Extensions.DependencyInjection;
 using FlowCtl.ApplicationBuilders;
 using FlowCtl.Extensions;
-using FlowCtl.Services.Abstracts;
+using FlowCtl.Services;
+using FlowCtl.Core.Logger;
 
-IServiceCollection serviceCollection = new ServiceCollection()
-    .AddLocation()
-    .AddLoggingService()
-    .AddApplication()
-    .AddCommands()
-    .AddFormatter()
-    .AddVersion()
-    .AddGitHub()
-    .AddExtractor()
-    .AddHttpClient();
-
-IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+IServiceProvider serviceProvider = default!;
 
 try
 {
+    IServiceCollection services = new ServiceCollection();
+
+    services
+        .AddCancellationTokenSource()
+        .AddApplication()
+        .AddCommands()
+        .AddHttpClient();
+
+    serviceProvider = services.BuildServiceProvider();
+
     var cli = serviceProvider.GetService<ICliApplicationBuilder>();
 
     if (cli == null)
@@ -28,7 +28,14 @@ try
 }
 catch (Exception ex)
 {
-    var formatter = serviceProvider.GetService<IOutputFormatter>();
-    formatter?.WriteError(ex.Message);
+    if (serviceProvider != null)
+    {
+        var formatter = serviceProvider.GetService<IFlowCtlLogger>();
+        formatter?.WriteError(ex.Message);
+    }
+    else
+    {
+        Console.WriteLine(ex.Message);
+    }
     return 0;
 }

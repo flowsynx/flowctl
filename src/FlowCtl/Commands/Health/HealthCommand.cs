@@ -1,4 +1,5 @@
-﻿using System.CommandLine;
+﻿using FlowCtl.Core.Logger;
+using System.CommandLine;
 
 namespace FlowCtl.Commands.Health;
 
@@ -9,8 +10,8 @@ internal class HealthCommand : BaseCommand<HealthCommandOptions, HealthCommandOp
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
-        var outputOption = new Option<Output>(new[] { "-o", "--output" }, 
-            getDefaultValue: () => Output.Json,
+        var outputOption = new Option<OutputType>(new[] { "-o", "--output" }, 
+            getDefaultValue: () => OutputType.Json,
             description: Resources.CommandOutputOption);
 
         AddOption(addressOption);

@@ -1,24 +1,24 @@
 ﻿using EnsureThat;
-using FlowCtl.Services.Abstracts;
+using FlowCtl.Core.Logger;
+using FlowCtl.Core.Serialization;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Logs;
-using FlowSynx.IO.Serialization;
 using System.ComponentModel;
 
 namespace FlowCtl.Commands.Logs;
 
 internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOptions>
 {
-    private readonly IOutputFormatter _outputFormatter;
+    private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
-    private readonly IDeserializer _deserializer;
+    private readonly IJsonDeserializer _deserializer;
 
-    public LogsCommandOptionsHandler(IOutputFormatter outputFormatter,
-        IFlowSynxClient flowSynxClient, IDeserializer deserializer)
+    public LogsCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
+        IFlowSynxClient flowSynxClient, IJsonDeserializer deserializer)
     {
-        EnsureArg.IsNotNull(outputFormatter, nameof(outputFormatter));
+        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
-        _outputFormatter = outputFormatter;
+        _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
         _deserializer = deserializer;
     }
@@ -57,7 +57,7 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
 
             var payload = result.Payload;
             if (payload is { Succeeded: false })
-                _outputFormatter.WriteError(payload.Messages);
+                _flowCtlLogger.WriteError(payload.Messages);
             else
             {
                 var filePath = options.ExportTo;
@@ -69,12 +69,12 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
                         throw new Exception(string.Format(Resources.ReadCommandFileAlreadyExist, filePath));
                 }
 
-                _outputFormatter.Write(payload.Data, options.Output);
+                _flowCtlLogger.Write(payload.Data, options.Output);
             }
         }
         catch (Exception ex)
         {
-            _outputFormatter.WriteError(ex.Message);
+            _flowCtlLogger.WriteError(ex.Message);
         }
     }
 
