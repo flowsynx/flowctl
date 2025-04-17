@@ -24,17 +24,17 @@ internal class LoginCommandOptionsHandler : ICommandOptionsHandler<LoginCommandO
         return 0;
     }
 
-    private Task Execute(LoginCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(LoginCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
-            if (options.Basic is true) 
+            if (options.Basic is true)
             {
                 if (string.IsNullOrEmpty(options.Username) || string.IsNullOrEmpty(options.Password))
                     throw new InvalidOperationException("Please enter Username and Password!");
 
                 _authenticationManager.LoginBasic(options.Username!, options.Password!);
-                Console.WriteLine("Logged in with Basic Auth.");
+                _flowCtlLogger.Write("Logged in with Basic Auth.");
             }
             else if (options.Bearer is true)
             {
@@ -42,19 +42,27 @@ internal class LoginCommandOptionsHandler : ICommandOptionsHandler<LoginCommandO
                     throw new InvalidOperationException("Please enter token!");
 
                 _authenticationManager.LoginBearer(options.Token);
-                Console.WriteLine("Logged in with Bearer Token.");
+                _flowCtlLogger.Write("Logged in with Bearer Token.");
+            }
+            else if (options.OAuth is true)
+            {
+                if (string.IsNullOrWhiteSpace(options.Authority) || string.IsNullOrWhiteSpace(options.ClientId))
+                    throw new InvalidOperationException("Please provide --authority and --client-id for OAuth login.");
+                
+                var result = await _authenticationManager.LoginOAuthAsync(options.Authority, options.ClientId, options.Scope);
+                _flowCtlLogger.Write("Logged in with OAuth.");
             }
             else
             {
-                throw new InvalidOperationException("Please specify either --basic or --bearer.");
+                throw new InvalidOperationException("Please specify one of: --basic, --bearer, or --oauth");
             }
 
-            return Task.CompletedTask;
+            return;
         }
         catch (Exception ex)
         {
             _flowCtlLogger.WriteError(ex.Message);
-            return Task.CompletedTask;
+            return;
         }
     }
 }

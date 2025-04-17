@@ -1,8 +1,10 @@
 ﻿using EnsureThat;
+using FlowCtl.Core.Authentication;
 using FlowCtl.Core.Logger;
 using FlowCtl.Core.Serialization;
+using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.Config;
+using Microsoft.Extensions.Logging;
 
 namespace FlowCtl.Commands.Config;
 
@@ -10,16 +12,17 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
 {
     private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
-    private readonly IJsonDeserializer _deserializer;
+    private readonly IAuthenticationManager _authenticationManager;
 
     public ConfigCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
-        IFlowSynxClient flowSynxClient, IJsonDeserializer deserializer)
+        IFlowSynxClient flowSynxClient, IAuthenticationManager authenticationManager)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
+        ArgumentNullException.ThrowIfNull(flowCtlLogger);
+        ArgumentNullException.ThrowIfNull(flowSynxClient);
+        ArgumentNullException.ThrowIfNull(authenticationManager);
         _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
-        _deserializer = deserializer;
+        _authenticationManager = authenticationManager;
     }
 
     public async Task<int> HandleAsync(ConfigCommandOptions options, CancellationToken cancellationToken)
@@ -32,24 +35,12 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
     {
         try
         {
+            _authenticationManager.AuthenticateClient(_flowSynxClient);
+
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            string? jsonData;
-            if (!string.IsNullOrEmpty(options.DataFile))
-            {
-                if (!File.Exists(options.DataFile))
-                    throw new Exception($"Entered data file '{options.DataFile}' is not exist.");
-
-                jsonData = await File.ReadAllTextAsync(options.DataFile, cancellationToken);
-            }
-            else
-            {
-                jsonData = options.Data;
-            }
-
-            var request = GetConfigListData(jsonData);
-            var result = await _flowSynxClient.ConfigList(request, cancellationToken);
+            var result = await _flowSynxClient.PluginConfigList(cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
@@ -64,15 +55,5 @@ internal class ConfigCommandOptionsHandler : ICommandOptionsHandler<ConfigComman
         {
             _flowCtlLogger.WriteError(ex.Message);
         }
-    }
-
-    private ConfigListRequest GetConfigListData(string? json)
-    {
-        var result = new ConfigListRequest();
-
-        if (!string.IsNullOrEmpty(json))
-            return _deserializer.Deserialize<ConfigListRequest>(json);
-        
-        return result;
     }
 }

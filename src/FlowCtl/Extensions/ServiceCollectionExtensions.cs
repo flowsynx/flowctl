@@ -12,18 +12,18 @@ using FlowCtl.Commands.Run;
 using FlowCtl.Commands.Stop;
 using FlowCtl.Commands.Uninstall;
 using FlowSynx.Client;
-using FlowCtl.Commands.Invoke;
 using FlowCtl.Commands.Logs;
 using FlowCtl.Services;
 using FlowCtl.Infrastructure.Extensions;
 using FlowCtl.Core.Services;
-using FlowCtl.Infrastructure.Services;
 using FlowCtl.Commands.Login;
 using Spectre.Console;
 using FlowCtl.Core.Serialization;
 using FlowCtl.Infrastructure.Serialization;
 using FlowCtl.ApplicationBuilders;
 using FlowCtl.Core.Logger;
+using FlowCtl.Commands.Logout;
+using FlowCtl.Commands.Workflows;
 
 namespace FlowCtl.Extensions;
 
@@ -39,18 +39,19 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddCommands(this IServiceCollection services)
     {
         services.AddTransient<RootCommand, Root>()
-                .AddTransient<Command, LoginCommand>()
                 .AddTransient<Command, ConfigCommand>()
-                .AddTransient<Command, PluginsCommand>()
                 .AddTransient<Command, HealthCommand>()
                 .AddTransient<Command, InitCommand>()
+                .AddTransient<Command, LoginCommand>()
+                .AddTransient<Command, LogoutCommand>()
                 .AddTransient<Command, LogsCommand>()
+                .AddTransient<Command, PluginsCommand>()
                 .AddTransient<Command, RunCommand>()
-                .AddTransient<Command, InvokeCommand>()
                 .AddTransient<Command, StopCommand>()
                 .AddTransient<Command, UninstallCommand>()
                 .AddTransient<Command, UpdateCommand>()
-                .AddTransient<Command, VersionCommand>();
+                .AddTransient<Command, VersionCommand>()
+                .AddTransient<Command, WorkflowsCommand>();
 
         return services;
     }
@@ -72,6 +73,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<IJsonDeserializer, JsonDeserializer>()
             .AddTransient<ICliApplicationBuilder, CliApplicationBuilder>()
             .AddSingleton(AnsiConsole.Console)
+            .AddScoped<IFlowSynxClient, FlowSynxClient>()
             .AddSingleton(new FlowSynxClientConnection());
 
         return services;

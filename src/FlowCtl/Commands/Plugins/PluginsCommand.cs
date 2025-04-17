@@ -1,5 +1,8 @@
 ﻿using System.CommandLine;
+using FlowCtl.Commands.Plugins.Add;
+using FlowCtl.Commands.Plugins.Delete;
 using FlowCtl.Commands.Plugins.Details;
+using FlowCtl.Commands.Plugins.Update;
 using FlowCtl.Core.Logger;
 
 namespace FlowCtl.Commands.Plugins;
@@ -18,6 +21,9 @@ internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsComman
         AddOption(addressOption);
         AddOption(outputOption);
 
+        AddCommand(new AddPluginCommand());
+        AddCommand(new DeletePluginCommand());
         AddCommand(new PluginDetailsCommand());
+        AddCommand(new UpdatePluginCommand());
     }
 }

@@ -10,12 +10,6 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
 {
     public ConfigCommand() : base("config", Resources.ConfigCommandDescription)
     {
-        var dataOption = new Option<string?>(new[] { "-d", "--data" },
-            description: Resources.CommandFieldOption);
-
-        var dataFileOption = new Option<string?>(new[] { "-f", "--data-file" },
-            description: Resources.InvokeCommandDataFileOption);
-
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
@@ -23,8 +17,6 @@ internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOp
             getDefaultValue: () => OutputType.Json,
             description: Resources.CommandOutputOption);
         
-        AddOption(dataOption);
-        AddOption(dataFileOption);
         AddOption(addressOption);
         AddOption(outputOption);
 

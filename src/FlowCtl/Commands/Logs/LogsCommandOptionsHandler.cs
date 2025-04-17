@@ -1,6 +1,7 @@
 ﻿using EnsureThat;
+using FlowCtl.Core.Authentication;
 using FlowCtl.Core.Logger;
-using FlowCtl.Core.Serialization;
+using FlowCtl.Extensions;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Logs;
 using System.ComponentModel;
@@ -11,16 +12,17 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
 {
     private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
-    private readonly IJsonDeserializer _deserializer;
+    private readonly IAuthenticationManager _authenticationManager;
 
     public LogsCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
-        IFlowSynxClient flowSynxClient, IJsonDeserializer deserializer)
+        IFlowSynxClient flowSynxClient, IAuthenticationManager authenticationManager)
     {
         EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
         EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
+        EnsureArg.IsNotNull(authenticationManager, nameof(authenticationManager));
         _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
-        _deserializer = deserializer;
+        _authenticationManager = authenticationManager;
     }
 
     public async Task<int> HandleAsync(LogsCommandOptions options, CancellationToken cancellationToken)
@@ -33,23 +35,17 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
     {
         try
         {
+            _authenticationManager.AuthenticateClient(_flowSynxClient);
+
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            string? jsonData;
-            if (!string.IsNullOrEmpty(options.DataFile))
-            {
-                if (!File.Exists(options.DataFile))
-                    throw new Exception($"Entered data file '{options.DataFile}' is not exist.");
-
-                jsonData = await File.ReadAllTextAsync(options.DataFile, cancellationToken);
-            }
-            else
-            {
-                jsonData = options.Data;
-            }
-
-            var request = GetLogsListData(jsonData);
+            var request = new LogsListRequest { 
+                Level = options.Level, 
+                FromDate = options.FromDate, 
+                ToDate = options.ToDate, 
+                Message = options.Message
+            };
             var result = await _flowSynxClient.LogsList(request, cancellationToken);
 
             if (result.StatusCode != 200)
@@ -76,16 +72,6 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
         {
             _flowCtlLogger.WriteError(ex.Message);
         }
-    }
-
-    private LogsListRequest GetLogsListData(string? json)
-    {
-        var result = new LogsListRequest();
-
-        if (!string.IsNullOrEmpty(json))
-            return _deserializer.Deserialize<LogsListRequest>(json);
-
-        return result;
     }
 
     private void SaveToLogFile(IEnumerable<object> reportData, string path)

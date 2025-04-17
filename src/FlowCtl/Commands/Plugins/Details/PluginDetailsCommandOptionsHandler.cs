@@ -1,7 +1,8 @@
-﻿using EnsureThat;
+﻿using FlowCtl.Core.Authentication;
 using FlowCtl.Core.Logger;
+using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.Connectors;
+using FlowSynx.Client.Requests.Plugins;
 
 namespace FlowCtl.Commands.Plugins.Details;
 
@@ -9,14 +10,17 @@ internal class PluginDetailsCommandOptionsHandler : ICommandOptionsHandler<Plugi
 {
     private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
+    private readonly IAuthenticationManager _authenticationManager;
 
     public PluginDetailsCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
-        IFlowSynxClient flowSynxClient)
+        IFlowSynxClient flowSynxClient, IAuthenticationManager authenticationManager)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
+        ArgumentNullException.ThrowIfNull(flowCtlLogger);
+        ArgumentNullException.ThrowIfNull(flowSynxClient);
+        ArgumentNullException.ThrowIfNull(flowCtlLogger);
         _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
+        _authenticationManager = authenticationManager;
     }
 
     public async Task<int> HandleAsync(PluginDetailsCommandOptions options, CancellationToken cancellationToken)
@@ -29,11 +33,13 @@ internal class PluginDetailsCommandOptionsHandler : ICommandOptionsHandler<Plugi
     {
         try
         {
+            _authenticationManager.AuthenticateClient(_flowSynxClient);
+
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var request = new ConnectorDetailsRequest { Type = options.Type};
-            var result = await _flowSynxClient.ConnectorDetails(request, cancellationToken);
+            var request = new PluginDetailsRequest { Id = Guid.Parse(options.Id) };
+            var result = await _flowSynxClient.PluginDetails(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);

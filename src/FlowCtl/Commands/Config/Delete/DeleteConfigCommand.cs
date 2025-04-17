@@ -6,17 +6,13 @@ internal class DeleteConfigCommand : BaseCommand<DeleteConfigCommandOptions, Del
 {
     public DeleteConfigCommand() : base("delete", Resources.DeleteConfigCommandDescription)
     {
-        var dataOption = new Option<string?>(new[] { "-d", "--data" },
-            description: Resources.CommandFieldOption);
-
-        var dataFileOption = new Option<string?>(new[] { "-f", "--data-file" },
-            description: Resources.InvokeCommandDataFileOption);
+        var identityOption = new Option<string>(new[] { "-i", "--id" },
+            description: Resources.CommandFieldOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.CommandAddressOption);
 
-        AddOption(dataOption);
-        AddOption(dataFileOption);
+        AddOption(identityOption);
         AddOption(addressOption);
     }
 }

@@ -7,18 +7,14 @@ internal class DetailsConfigCommand : BaseCommand<DetailsConfigCommandOptions, D
 {
     public DetailsConfigCommand() : base("details", Resources.DetailsConfigCommandDescription)
     {
-        var nameOption = new Option<string>(new[] { "-n", "--name" },
+        var identityOption = new Option<string>(new[] { "-i", "--id" },
             description: Resources.DetailsConfigCommandNameOption) { IsRequired = true };
-
-        var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: Resources.CommandAddressOption);
 
         var outputFormatOption = new Option<OutputType>(new[] { "-o", "--output" }, 
             getDefaultValue: () => OutputType.Json,
             description: Resources.CommandOutputOption);
 
-        AddOption(nameOption);
-        AddOption(addressOption);
+        AddOption(identityOption);
         AddOption(outputFormatOption);
     }
 }

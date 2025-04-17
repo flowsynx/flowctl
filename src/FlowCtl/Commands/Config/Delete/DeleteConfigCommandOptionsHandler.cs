@@ -1,8 +1,8 @@
-﻿using EnsureThat;
+﻿using FlowCtl.Core.Authentication;
 using FlowCtl.Core.Logger;
-using FlowCtl.Core.Serialization;
+using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.Config;
+using FlowSynx.Client.Requests.PluginConfig;
 
 namespace FlowCtl.Commands.Config.Delete;
 
@@ -10,17 +10,17 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
 {
     private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
-    private readonly IJsonDeserializer _deserializer;
+    private readonly IAuthenticationManager _authenticationManager;
 
     public DeleteConfigCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
-        IFlowSynxClient flowSynxClient, IJsonDeserializer deserializer)
+        IFlowSynxClient flowSynxClient, IAuthenticationManager authenticationManager)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
-
+        ArgumentNullException.ThrowIfNull(flowCtlLogger);
+        ArgumentNullException.ThrowIfNull(flowSynxClient);
+        ArgumentNullException.ThrowIfNull(authenticationManager);
         _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
-        _deserializer = deserializer;
+        _authenticationManager = authenticationManager;
     }
 
     public async Task<int> HandleAsync(DeleteConfigCommandOptions options, CancellationToken cancellationToken)
@@ -33,24 +33,13 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
     {
         try
         {
+            _authenticationManager.AuthenticateClient(_flowSynxClient);
+
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            string? jsonData;
-            if (!string.IsNullOrEmpty(options.DataFile))
-            {
-                if (!File.Exists(options.DataFile))
-                    throw new Exception($"Entered data file '{options.DataFile}' is not exist.");
-
-                jsonData = await File.ReadAllTextAsync(options.DataFile, cancellationToken);
-            }
-            else
-            {
-                jsonData = options.Data;
-            }
-
-            var request = DeleteConfigData(jsonData);
-            var result = await _flowSynxClient.DeleteConfig(request, cancellationToken);
+            var request = new DeletePluginConfigRequest { Id = Guid.Parse(options.Id) };
+            var result = await _flowSynxClient.DeletePluginConfig(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
@@ -65,10 +54,5 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
         {
             _flowCtlLogger.WriteError(ex.Message);
         }
-    }
-
-    private DeleteConfigRequest DeleteConfigData(string? json)
-    {
-        return _deserializer.Deserialize<DeleteConfigRequest>(json);
     }
 }

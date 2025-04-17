@@ -18,7 +18,7 @@ public class JsonDeserializer : IJsonDeserializer
         {
             if (string.IsNullOrWhiteSpace(input))
             {
-                throw new FlowCtlException((int)ErrorCode.Serialization, "Input value can't be empty or null.");
+                throw new FlowCtlException("Input value can't be empty or null.");
             }
 
             var settings = new JsonSerializerSettings
@@ -36,8 +36,7 @@ public class JsonDeserializer : IJsonDeserializer
         }
         catch (Exception ex)
         {
-            var errorMessage = new ErrorMessage((int)ErrorCode.Serialization, ex.Message);
-            throw new FlowCtlException(errorMessage);
+            throw new FlowCtlException(ex.Message);
         }
     }
 }

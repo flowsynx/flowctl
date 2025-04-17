@@ -1,8 +1,7 @@
 {
   "profiles": {
     "FlowCtl": {
-      "commandName": "Project",
-      "commandLineArgs": "init"
+      "commandName": "Project"
     }
   }
 }

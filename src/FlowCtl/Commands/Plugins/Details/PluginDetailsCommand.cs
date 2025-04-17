@@ -7,7 +7,7 @@ internal class PluginDetailsCommand : BaseCommand<PluginDetailsCommandOptions, P
 {
     public PluginDetailsCommand() : base("details", Resources.ConnectorDetailsCommandDescription)
     {
-        var typeOption = new Option<string>(new[] { "-t", "--type" },
+        var identityOption = new Option<string>(new[] { "-i", "--id" },
             description: Resources.ConnectorDetailsCommandTypeOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
@@ -17,7 +17,7 @@ internal class PluginDetailsCommand : BaseCommand<PluginDetailsCommandOptions, P
             getDefaultValue: () => OutputType.Json,
             description: Resources.CommandOutputOption);
 
-        AddOption(typeOption);
+        AddOption(identityOption);
         AddOption(addressOption);
         AddOption(outputFormatOption);
     }

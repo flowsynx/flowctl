@@ -20,7 +20,7 @@ public class JsonSerializer : IJsonSerializer
         {
             if (input is null)
             {
-                throw new FlowCtlException((int)ErrorCode.Serialization, "Input value can't be empty or null.");
+                throw new FlowCtlException("Input value can't be empty or null.");
             }
 
             var settings = new JsonSerializerSettings
@@ -38,8 +38,7 @@ public class JsonSerializer : IJsonSerializer
         }
         catch (Exception ex)
         {
-            var errorMessage = new ErrorMessage((int)ErrorCode.Serialization, ex.Message);
-            throw new FlowCtlException(errorMessage);
+            throw new FlowCtlException(ex.Message);
         }
     }
 }
