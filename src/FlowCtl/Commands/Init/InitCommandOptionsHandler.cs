@@ -1,7 +1,7 @@
-﻿using EnsureThat;
-using FlowCtl.Core.Github;
-using FlowCtl.Core.Logger;
-using FlowCtl.Core.Services;
+﻿using FlowCtl.Core.Services.Extractor;
+using FlowCtl.Core.Services.Github;
+using FlowCtl.Core.Services.Location;
+using FlowCtl.Core.Services.Logger;
 using System.Runtime.InteropServices;
 
 namespace FlowCtl.Commands.Init;
@@ -17,14 +17,10 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         IGitHubReleaseManager gitHubReleaseManager, ILocation location, 
         IArchiveExtractor archiveExtractor)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(gitHubReleaseManager, nameof(gitHubReleaseManager));
-        EnsureArg.IsNotNull(location, nameof(location));
-        EnsureArg.IsNotNull(archiveExtractor, nameof(archiveExtractor));
-        _flowCtlLogger = flowCtlLogger;
-        _gitHubReleaseManager = gitHubReleaseManager;
-        _location = location;
-        _archiveExtractor = archiveExtractor;
+        _flowCtlLogger = flowCtlLogger ?? throw new ArgumentNullException(nameof(flowCtlLogger));
+        _gitHubReleaseManager = gitHubReleaseManager ?? throw new ArgumentNullException(nameof(gitHubReleaseManager));
+        _location = location ?? throw new ArgumentNullException(nameof(location));
+        _archiveExtractor = archiveExtractor ?? throw new ArgumentNullException(nameof(archiveExtractor));
     }
 
     public async Task<int> HandleAsync(InitCommandOptions options, CancellationToken cancellationToken)

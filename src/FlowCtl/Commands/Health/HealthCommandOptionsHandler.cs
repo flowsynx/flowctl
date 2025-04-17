@@ -1,5 +1,4 @@
-﻿using EnsureThat;
-using FlowCtl.Core.Logger;
+﻿using FlowCtl.Core.Services.Logger;
 using FlowSynx.Client;
 
 namespace FlowCtl.Commands.Health;
@@ -12,10 +11,8 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
     public HealthCommandOptionsHandler(IFlowCtlLogger flowCtlLogger, 
         IFlowSynxClient flowSynxClient)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
-        _flowCtlLogger = flowCtlLogger;
-        _flowSynxClient = flowSynxClient;
+        _flowCtlLogger = flowCtlLogger ?? throw new ArgumentNullException(nameof(flowCtlLogger));
+        _flowSynxClient = flowSynxClient ?? throw new ArgumentNullException(nameof(flowSynxClient));
     }
 
     public async Task<int> HandleAsync(HealthCommandOptions options, CancellationToken cancellationToken)

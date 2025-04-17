@@ -4,7 +4,7 @@ using FlowCtl.Commands.Workflows.Delete;
 using FlowCtl.Commands.Workflows.Details;
 using FlowCtl.Commands.Workflows.Execute;
 using FlowCtl.Commands.Workflows.Update;
-using FlowCtl.Core.Logger;
+using FlowCtl.Core.Services.Logger;
 
 namespace FlowCtl.Commands.Workflows;
 

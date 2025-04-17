@@ -3,7 +3,7 @@ using FlowCtl.Commands.Plugins.Add;
 using FlowCtl.Commands.Plugins.Delete;
 using FlowCtl.Commands.Plugins.Details;
 using FlowCtl.Commands.Plugins.Update;
-using FlowCtl.Core.Logger;
+using FlowCtl.Core.Services.Logger;
 
 namespace FlowCtl.Commands.Plugins;
 

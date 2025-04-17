@@ -1,6 +1,5 @@
-﻿using EnsureThat;
-using FlowCtl.Core.Authentication;
-using FlowCtl.Core.Logger;
+﻿using FlowCtl.Core.Services.Authentication;
+using FlowCtl.Core.Services.Logger;
 
 namespace FlowCtl.Commands.Login;
 
@@ -12,10 +11,8 @@ internal class LoginCommandOptionsHandler : ICommandOptionsHandler<LoginCommandO
     public LoginCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
         IAuthenticationManager authenticationManager)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(authenticationManager, nameof(authenticationManager));
-        _authenticationManager = authenticationManager;
-        _flowCtlLogger = flowCtlLogger;
+        _flowCtlLogger = flowCtlLogger ?? throw new ArgumentNullException(nameof(flowCtlLogger));
+        _authenticationManager = authenticationManager ?? throw new ArgumentNullException(nameof(authenticationManager));
     }
 
     public async Task<int> HandleAsync(LoginCommandOptions options, CancellationToken cancellationToken)

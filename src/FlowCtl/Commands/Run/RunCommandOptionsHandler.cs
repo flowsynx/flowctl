@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
-using EnsureThat;
-using FlowCtl.Core.Logger;
-using FlowCtl.Core.Services;
+using FlowCtl.Core.Services.Location;
+using FlowCtl.Core.Services.Logger;
 
 namespace FlowCtl.Commands.Run;
 
@@ -12,11 +11,8 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
 
     public RunCommandOptionsHandler(IFlowCtlLogger flowCtlLogger, ILocation location)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(location, nameof(location));
-
-        _flowCtlLogger = flowCtlLogger;
-        _location = location;
+        _flowCtlLogger = flowCtlLogger ?? throw new ArgumentNullException(nameof(flowCtlLogger));
+        _location = location ?? throw new ArgumentNullException(nameof(location));
     }
 
     public async Task<int> HandleAsync(RunCommandOptions options, CancellationToken cancellationToken)

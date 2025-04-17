@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using FlowCtl.ApplicationBuilders;
 using FlowCtl.Extensions;
 using FlowCtl.Services;
-using FlowCtl.Core.Logger;
+using FlowCtl.Core.Services.Logger;
 
 IServiceProvider serviceProvider = default!;
 

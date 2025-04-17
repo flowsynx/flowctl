@@ -1,8 +1,11 @@
-﻿using FlowCtl.Core.Authentication;
-using FlowCtl.Core.Github;
-using FlowCtl.Core.Services;
-using FlowCtl.Infrastructure.Github;
-using FlowCtl.Infrastructure.Services;
+﻿using FlowCtl.Core.Services.Authentication;
+using FlowCtl.Core.Services.Extractor;
+using FlowCtl.Core.Services.Github;
+using FlowCtl.Core.Services.ProcessHost;
+using FlowCtl.Infrastructure.Services.Authentication;
+using FlowCtl.Infrastructure.Services.Extractor;
+using FlowCtl.Infrastructure.Services.Github;
+using FlowCtl.Infrastructure.Services.ProcessHost;
 using Microsoft.Extensions.DependencyInjection;
 using Octokit;
 
@@ -15,6 +18,7 @@ public static class ServiceCollectionExtensions
         services
                 .AddSingleton(new GitHubClient(new ProductHeaderValue("flowsynx")))
                 .AddSingleton<IGitHubReleaseManager, GitHubReleaseManager>()
+                .AddScoped<IProcessProvider, DefaultProcessProvider>()
                 .AddScoped<IProcessHandler, ProcessHandler>()
                 .AddScoped<IArchiveExtractor, ArchiveExtractor>()
                 .AddScoped<IAuthenticationManager, AuthenticationManager>();

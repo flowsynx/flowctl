@@ -1,6 +1,6 @@
-﻿using FlowCtl.Core.Authentication;
-using FlowCtl.Core.Logger;
-using FlowCtl.Core.Serialization;
+﻿using FlowCtl.Core.Serialization;
+using FlowCtl.Core.Services.Authentication;
+using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.PluginConfig;

@@ -1,4 +1,4 @@
-﻿using FlowCtl.Core.Authentication;
+﻿using FlowCtl.Core.Services.Authentication;
 using FlowSynx.Client;
 
 namespace FlowCtl.Extensions;

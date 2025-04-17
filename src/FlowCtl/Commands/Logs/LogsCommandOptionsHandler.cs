@@ -1,6 +1,5 @@
-﻿using EnsureThat;
-using FlowCtl.Core.Authentication;
-using FlowCtl.Core.Logger;
+﻿using FlowCtl.Core.Services.Authentication;
+using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Logs;
@@ -17,12 +16,9 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
     public LogsCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
         IFlowSynxClient flowSynxClient, IAuthenticationManager authenticationManager)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(flowSynxClient, nameof(flowSynxClient));
-        EnsureArg.IsNotNull(authenticationManager, nameof(authenticationManager));
-        _flowCtlLogger = flowCtlLogger;
-        _flowSynxClient = flowSynxClient;
-        _authenticationManager = authenticationManager;
+        _flowCtlLogger = flowCtlLogger ?? throw new ArgumentNullException(nameof(flowCtlLogger));
+        _flowSynxClient = flowSynxClient ?? throw new ArgumentNullException(nameof(flowSynxClient));
+        _authenticationManager = authenticationManager ?? throw new ArgumentNullException(nameof(authenticationManager));
     }
 
     public async Task<int> HandleAsync(LogsCommandOptions options, CancellationToken cancellationToken)

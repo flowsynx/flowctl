@@ -1,6 +1,4 @@
-﻿using FlowCtl.Core.Logger;
-
-namespace FlowCtl.Commands.Plugins.Add;
+﻿namespace FlowCtl.Commands.Plugins.Add;
 
 internal class AddPluginCommandOptions : ICommandOptions
 {

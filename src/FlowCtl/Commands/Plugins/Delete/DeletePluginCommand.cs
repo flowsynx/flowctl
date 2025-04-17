@@ -1,5 +1,4 @@
-﻿using FlowCtl.Core.Logger;
-using System.CommandLine;
+﻿using System.CommandLine;
 
 namespace FlowCtl.Commands.Plugins.Delete;
 

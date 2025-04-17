@@ -13,17 +13,19 @@ using FlowCtl.Commands.Stop;
 using FlowCtl.Commands.Uninstall;
 using FlowSynx.Client;
 using FlowCtl.Commands.Logs;
-using FlowCtl.Services;
 using FlowCtl.Infrastructure.Extensions;
-using FlowCtl.Core.Services;
 using FlowCtl.Commands.Login;
 using Spectre.Console;
 using FlowCtl.Core.Serialization;
 using FlowCtl.Infrastructure.Serialization;
 using FlowCtl.ApplicationBuilders;
-using FlowCtl.Core.Logger;
 using FlowCtl.Commands.Logout;
 using FlowCtl.Commands.Workflows;
+using FlowCtl.Services.Version;
+using FlowCtl.Core.Services.Logger;
+using FlowCtl.Core.Services.Location;
+using FlowCtl.Services.Location;
+using FlowCtl.Services.Logger;
 
 namespace FlowCtl.Extensions;
 
@@ -66,8 +68,10 @@ public static class ServiceCollectionExtensions
         services
             .AddInfrastructure()
             .AddLogging(c => c.ClearProviders())
-            .AddScoped<ILocation, Location>()
+            .AddScoped<ILocation, LocationService>()
             .AddScoped<IFlowCtlLogger, SpectreConsoleLogger>()
+            .AddScoped<IFileSystem, FileSystemWrapper>()
+            .AddScoped<IVersionInfoProvider, VersionInfoProvider>()
             .AddTransient<IVersion, VersionHandler>()
             .AddScoped<IJsonSerializer, JsonSerializer>()
             .AddScoped<IJsonDeserializer, JsonDeserializer>()

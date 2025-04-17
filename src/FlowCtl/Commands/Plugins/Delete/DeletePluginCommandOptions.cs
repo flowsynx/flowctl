@@ -1,6 +1,4 @@
-﻿using FlowCtl.Core.Logger;
-
-namespace FlowCtl.Commands.Plugins.Delete;
+﻿namespace FlowCtl.Commands.Plugins.Delete;
 
 internal class DeletePluginCommandOptions : ICommandOptions
 {

@@ -1,4 +1,4 @@
-﻿using FlowCtl.Core.Logger;
+﻿using FlowCtl.Core.Services.Logger;
 
 namespace FlowCtl.Commands.Workflows;
 

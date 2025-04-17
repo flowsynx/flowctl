@@ -1,4 +1,4 @@
-﻿using EnsureThat;
+﻿using System;
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
@@ -13,11 +13,8 @@ public class CliApplicationBuilder : ICliApplicationBuilder
 
     public CliApplicationBuilder(IServiceProvider serviceProvider, RootCommand rootCommand)
     {
-        EnsureArg.IsNotNull(serviceProvider, nameof(serviceProvider));
-        EnsureArg.IsNotNull(rootCommand, nameof(rootCommand));
-
-        _serviceProvider = serviceProvider;
-        _rootCommand = rootCommand;
+        _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        _rootCommand = rootCommand ?? throw new ArgumentNullException(nameof(rootCommand));
     }
 
     public async Task<int> RunAsync(string[] args)

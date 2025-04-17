@@ -1,6 +1,6 @@
-﻿using EnsureThat;
-using FlowCtl.Core.Logger;
-using FlowCtl.Core.Services;
+﻿using FlowCtl.Core.Services.Location;
+using FlowCtl.Core.Services.Logger;
+using FlowCtl.Core.Services.ProcessHost;
 
 namespace FlowCtl.Commands.Uninstall;
 
@@ -13,11 +13,9 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
     public UninstallCommandOptionsHandler(IFlowCtlLogger flowCtlLogger, 
         ILocation location, IProcessHandler processHandler)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(location, nameof(location));
-        _flowCtlLogger = flowCtlLogger;
-        _location = location;
-        _processHandler = processHandler;
+        _flowCtlLogger = flowCtlLogger ?? throw new ArgumentNullException(nameof(flowCtlLogger));
+        _location = location ?? throw new ArgumentNullException(nameof(location));
+        _processHandler = processHandler ?? throw new ArgumentNullException(nameof(processHandler));
     }
 
     public async Task<int> HandleAsync(UninstallCommandOptions options, CancellationToken cancellationToken)

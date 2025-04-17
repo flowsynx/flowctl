@@ -1,8 +1,9 @@
-﻿using EnsureThat;
-using FlowCtl.Core.Github;
-using FlowCtl.Core.Logger;
-using FlowCtl.Core.Services;
-using FlowCtl.Services;
+﻿using FlowCtl.Core.Services.Extractor;
+using FlowCtl.Core.Services.Github;
+using FlowCtl.Core.Services.Location;
+using FlowCtl.Core.Services.Logger;
+using FlowCtl.Core.Services.ProcessHost;
+using FlowCtl.Services.Version;
 
 namespace FlowCtl.Commands.Update;
 
@@ -19,18 +20,12 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         IGitHubReleaseManager gitHubReleaseManager, IArchiveExtractor archiveExtractor, 
         IProcessHandler processHandler, IVersion version, ILocation location)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(gitHubReleaseManager, nameof(gitHubReleaseManager));
-        EnsureArg.IsNotNull(archiveExtractor, nameof(archiveExtractor));
-        EnsureArg.IsNotNull(location, nameof(processHandler));
-        EnsureArg.IsNotNull(location, nameof(version));
-        EnsureArg.IsNotNull(location, nameof(location));
-        _flowCtlLogger = flowCtlLogger;
-        _gitHubReleaseManager = gitHubReleaseManager;
-        _archiveExtractor = archiveExtractor;
-        _processHandler = processHandler;
-        _version = version;
-        _location = location;
+        _flowCtlLogger = flowCtlLogger ?? throw new ArgumentNullException(nameof(flowCtlLogger));
+        _gitHubReleaseManager = gitHubReleaseManager ?? throw new ArgumentNullException(nameof(gitHubReleaseManager));
+        _archiveExtractor = archiveExtractor ?? throw new ArgumentNullException(nameof(archiveExtractor));
+        _processHandler = processHandler ?? throw new ArgumentNullException(nameof(processHandler));
+        _version = version ?? throw new ArgumentNullException(nameof(version));
+        _location = location ?? throw new ArgumentNullException(nameof(location));
     }
 
     public async Task<int> HandleAsync(UpdateCommandOptions options, CancellationToken cancellationToken)

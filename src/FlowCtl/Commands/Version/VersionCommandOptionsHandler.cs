@@ -1,7 +1,6 @@
-﻿using EnsureThat;
-using FlowCtl.Core.Logger;
-using FlowCtl.Core.Services;
-using FlowCtl.Services;
+﻿using FlowCtl.Core.Services.Location;
+using FlowCtl.Core.Services.Logger;
+using FlowCtl.Services.Version;
 
 namespace FlowCtl.Commands.Version;
 
@@ -14,11 +13,9 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
     public VersionCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
         ILocation location, IVersion version)
     {
-        EnsureArg.IsNotNull(flowCtlLogger, nameof(flowCtlLogger));
-        EnsureArg.IsNotNull(location, nameof(location));
-        _flowCtlLogger = flowCtlLogger;
-        _location = location;
-        _version = version;
+        _flowCtlLogger = flowCtlLogger ?? throw new ArgumentNullException(nameof(flowCtlLogger));
+        _location = location ?? throw new ArgumentNullException(nameof(location));
+        _version = version ?? throw new ArgumentNullException(nameof(version));
     }
 
     public async Task<int> HandleAsync(VersionCommandOptions options, CancellationToken cancellationToken)

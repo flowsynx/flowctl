@@ -2,7 +2,7 @@
 using FlowCtl.Commands.Config.Add;
 using FlowCtl.Commands.Config.Delete;
 using FlowCtl.Commands.Config.Details;
-using FlowCtl.Core.Logger;
+using FlowCtl.Core.Services.Logger;
 
 namespace FlowCtl.Commands.Config;
 
