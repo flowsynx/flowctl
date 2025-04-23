@@ -38,7 +38,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
     {
         try
         {
-            _flowCtlLogger.Write(Resources.UpdateCommandCheckingForFlowSynxUpdates);
+            _flowCtlLogger.Write(Resources.Commands_Update_CheckingForFlowSynxSystemUpdates);
             await UpdateFlowSynx(options, cancellationToken);
         }
         catch (Exception ex)
@@ -57,7 +57,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
             var isProcessStopped = _processHandler.IsStopped("flowsynx", ".", options.Force);
             if (!isProcessStopped)
             {
-                _flowCtlLogger.Write(Resources.UpdateCommandFlowSynxIsRunning);
+                _flowCtlLogger.Write(Resources.Commands_Update_FlowSynxSystemIsRunning);
                 return;
             }
 
@@ -67,7 +67,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         }
         else
         {
-            _flowCtlLogger.Write(Resources.UpdateCommandFlowSynxIsUpdated);
+            _flowCtlLogger.Write(Resources.Commands_Update_FlowSynxSystemIsUpToDate);
         }
     }
 
@@ -89,7 +89,7 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
 
     private async Task<bool> DownloadAndValidateAndExtractFlowSynx(string version, CancellationToken cancellationToken)
     {
-        _flowCtlLogger.Write(Resources.StartDownloadFlowSynxBinary);
+        _flowCtlLogger.Write(Resources.Commands_Update_StartDownloadFlowSynxSystemBinary);
 
         string tempPath = Path.Combine(Path.GetTempPath(), GitHubSettings.FlowSynxArchiveTemporaryFileName);
         var flowSynxDownloadPath = await _gitHubReleaseManager.DownloadAsset(GitHubSettings.Organization,
@@ -99,17 +99,17 @@ internal class UpdateCommandOptionsHandler : ICommandOptionsHandler<UpdateComman
         var flowSynxHashDownloadPath = await _gitHubReleaseManager.DownloadAsset(GitHubSettings.Organization,
             GitHubSettings.FlowSynxRepository, GitHubSettings.FlowSynxArchiveHashFileName, tempHashPath, version);
 
-        _flowCtlLogger.Write(Resources.StartValidatingFlowSynxBinary);
+        _flowCtlLogger.Write(Resources.Commands_Update_StartValidatingFlowSynxSystemBinary);
         var isFlowSynxValid = _gitHubReleaseManager.ValidateDownloadedAsset(flowSynxDownloadPath, flowSynxHashDownloadPath);
 
         if (!isFlowSynxValid)
         {
-            _flowCtlLogger.Write(Resources.ValidatingDownloadFail);
-            _flowCtlLogger.Write(Resources.TheDownloadedDataMayHasBeenCorrupted);
+            _flowCtlLogger.Write(Resources.Commands_Update_ValidatingFlowSynxSystemFailed);
+            _flowCtlLogger.Write(Resources.Commands_Update_DownloadedDataCorrupted);
             return false;
         }
 
-        _flowCtlLogger.Write(Resources.StartingExtractFlowSynxBinary);
+        _flowCtlLogger.Write(Resources.Commands_Update_StartExtractingFlowSynxSystemBinary);
         ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
         return true;
     }

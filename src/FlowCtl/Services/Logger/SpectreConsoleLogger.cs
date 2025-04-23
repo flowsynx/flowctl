@@ -91,11 +91,13 @@ public class SpectreConsoleLogger : IFlowCtlLogger
         if (token.Type == JTokenType.Array)
         {
             var list = _deserializer.Deserialize<List<ExpandoObject>>(json, config);
-            return list ?? throw new Exception("Data conversion failed.");
+            return list ?? throw new Exception(Resources.ConsoleLogger_DataConversionError);
         }
 
         var single = _deserializer.Deserialize<ExpandoObject>(json, config);
-        return single != null ? new List<ExpandoObject> { single } : throw new Exception("Data conversion failed.");
+        return single != null 
+            ? new List<ExpandoObject> { single } 
+            : throw new Exception(Resources.ConsoleLogger_DataConversionError);
     }
 
     private static string FormatValue(object? value)

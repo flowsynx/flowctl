@@ -9,8 +9,8 @@ public class LocationService : ILocation
 
     public LocationService()
     {
-        _rootLocation = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)
-            ?? throw new Exception(Resources.FlowSynxLocationBaseLocationNotFound);
+        _rootLocation = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory) 
+            ?? throw new DirectoryNotFoundException(Resources.LocationService_ErrorDuringGettingRootLocation);
     }
 
     public string RootLocation => _rootLocation;

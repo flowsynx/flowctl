@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using FlowCtl.ApplicationBuilders;
 using FlowCtl.Extensions;
-using FlowCtl.Services;
 using FlowCtl.Core.Services.Logger;
 
 IServiceProvider serviceProvider = default!;
@@ -22,7 +21,7 @@ try
     var cli = serviceProvider.GetService<ICliApplicationBuilder>();
 
     if (cli == null)
-        throw new Exception(Resources.SomethingWrongHappen);
+        throw new Exception(Resources.Error_During_Initializing_Application);
 
     return await cli.RunAsync(args);
 }

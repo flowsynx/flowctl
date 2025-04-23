@@ -4,11 +4,11 @@ namespace FlowCtl.Commands.Uninstall;
 
 internal class UninstallCommand : BaseCommand<UninstallCommandOptions, UninstallCommandOptionsHandler>
 {
-    public UninstallCommand() : base("uninstall", Resources.UninstallCommandDescription)
+    public UninstallCommand() : base("uninstall", Resources.Commands_Uninstall_Description)
     {
         var forceOption = new Option<bool>(new[] { "-f", "--force" }, 
             getDefaultValue :() => false, 
-            description: Resources.CommandForceOption);
+            description: Resources.Commands_Uninstall_ForceTerminateOption);
 
         AddOption(forceOption);
     }

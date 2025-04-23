@@ -40,7 +40,7 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
             var result = await _flowSynxClient.PluginsList(cancellationToken);
 
             if (result.StatusCode != 200)
-                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+                throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
 
             var payload = result.Payload;
             if (payload is { Succeeded: false })

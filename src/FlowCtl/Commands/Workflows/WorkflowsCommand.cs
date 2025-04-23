@@ -10,14 +10,14 @@ namespace FlowCtl.Commands.Workflows;
 
 internal class WorkflowsCommand : BaseCommand<WorkflowsCommandOptions, WorkflowsCommandOptionsHandler>
 {
-    public WorkflowsCommand() : base("workflows", Resources.ConnectorsCommandDescription)
+    public WorkflowsCommand() : base("workflows", Resources.Commands_Workflows_Description)
     {
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: Resources.CommandAddressOption);
+            description: Resources.Commands_FlowSynxAddress);
 
         var outputOption = new Option<OutputType>(new[] { "-o", "--output" },
             getDefaultValue: () => OutputType.Json,
-            description: Resources.CommandOutputOption);
+            description: Resources.Commands_Output_Format);
 
         AddOption(addressOption);
         AddOption(outputOption);

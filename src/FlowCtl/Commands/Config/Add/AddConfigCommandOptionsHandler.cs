@@ -47,7 +47,7 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
             if (!string.IsNullOrEmpty(options.DataFile))
             {
                 if (!File.Exists(options.DataFile))
-                    throw new Exception($"Entered data file '{options.DataFile}' is not exist.");
+                    throw new Exception(string.Format(Resources.Commands_AddConfig_DataFileDoesNotExist, options.DataFile));
 
                 jsonData = await File.ReadAllTextAsync(options.DataFile, cancellationToken);
             }
@@ -60,7 +60,7 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
             var result = await _flowSynxClient.AddPluginConfig(request, cancellationToken);
 
             if (result.StatusCode != 200)
-                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+                throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
 
             var payload = result.Payload;
             if (payload is { Succeeded: false })

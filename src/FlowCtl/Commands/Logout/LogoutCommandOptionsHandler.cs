@@ -26,7 +26,7 @@ internal class LogoutCommandOptionsHandler : ICommandOptionsHandler<LogoutComman
         try
         {
             _authenticationManager.Logout();
-            _flowCtlLogger.Write("Logout successfully.");
+            _flowCtlLogger.Write(Resources.Commands_Logout_LogoutSuccessfully);
         }
         catch (Exception ex)
         {

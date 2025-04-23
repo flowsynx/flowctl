@@ -48,6 +48,6 @@ internal class VersionCommandOptionsHandler : ICommandOptionsHandler<VersionComm
     {
         var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine"));
         var flowSynxVersion = _version.GetVersionFromPath(flowSynxBinaryFile);
-        return string.IsNullOrEmpty(flowSynxVersion) ? Resources.VersionCommandNotInitialized : flowSynxVersion;
+        return string.IsNullOrEmpty(flowSynxVersion) ? Resources.Commands_Version_NotInitialized : flowSynxVersion;
     }
 }

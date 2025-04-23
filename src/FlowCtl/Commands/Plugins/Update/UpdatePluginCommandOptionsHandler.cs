@@ -47,7 +47,7 @@ internal class UpdatePluginCommandOptionsHandler : ICommandOptionsHandler<Update
             var result = await _flowSynxClient.UpdatePlugin(request, cancellationToken);
 
             if (result.StatusCode != 200)
-                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+                throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
 
             var payload = result.Payload;
             if (payload is { Succeeded: false })

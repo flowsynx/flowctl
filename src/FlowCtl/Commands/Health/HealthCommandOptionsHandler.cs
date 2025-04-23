@@ -31,7 +31,7 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
             var result = await _flowSynxClient.Health(cancellationToken);
 
             if (result.StatusCode != 200)
-                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+                throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
 
             var payload = result.Payload;
             _flowCtlLogger.Write(payload.HealthChecks.ToList(), options.Output);

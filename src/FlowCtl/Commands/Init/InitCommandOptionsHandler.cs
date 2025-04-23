@@ -33,14 +33,14 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
     {
         try
         {
-            _flowCtlLogger.Write(Resources.InitCommandBeginningInitialize);
+            _flowCtlLogger.Write(Resources.Commands_Init_BeginningInitialize);
 
             var flowSynxPath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "engine");
             var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(flowSynxPath);
 
             if (File.Exists(flowSynxBinaryFile))
             {
-                _flowCtlLogger.Write(Resources.TheFlowSynxEngineIsAlreadyInitialized);
+                _flowCtlLogger.Write(Resources.Commands_Init_FlowSynxSystemIsAlreadyInitialized);
                 return;
             }
 
@@ -50,10 +50,11 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             if (!initFlowSynx)
                 return;
 
-            _flowCtlLogger.Write(Resources.StartChangeFlowSynxExecutionMode);
+            _flowCtlLogger.Write(Resources.Commands_Init_StartChangeExecutionMode);
             MakeExecutable(flowSynxBinaryFile);
 
-            _flowCtlLogger.Write(string.Format(Resources.FlowSynxEngineDownloadedAndInstalledSuccessfully, _location.DefaultFlowSynxBinaryDirectoryName));
+            _flowCtlLogger.Write(string.Format(Resources.Commands_Init_FlowSynxSystemDownloadedAndInstalledSuccessfully, 
+                _location.DefaultFlowSynxBinaryDirectoryName));
         }
         catch (Exception e)
         {
@@ -69,7 +70,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
 
         flowSynxVersion = NormalizeVersion(flowSynxVersion);
 
-        _flowCtlLogger.Write(Resources.StartDownloadFlowSynxBinary);
+        _flowCtlLogger.Write(Resources.Commands_Init_StartDownloadFlowSynxSystemBinary);
         string tempPath = Path.Combine(Path.GetTempPath(), GitHubSettings.FlowSynxArchiveTemporaryFileName);
         var flowSynxDownloadPath = await _gitHubReleaseManager.DownloadAsset(GitHubSettings.Organization, 
             GitHubSettings.FlowSynxRepository, GitHubSettings.FlowSynxArchiveFileName, tempPath, flowSynxVersion);
@@ -78,17 +79,17 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         var flowSynxHashDownloadPath = await _gitHubReleaseManager.DownloadAsset(GitHubSettings.Organization, 
             GitHubSettings.FlowSynxRepository, GitHubSettings.FlowSynxArchiveHashFileName, tempHashPath, flowSynxVersion);
 
-        _flowCtlLogger.Write(Resources.StartValidatingFlowSynxBinary);
+        _flowCtlLogger.Write(Resources.Commands_Init_StartValidatingFlowSynxSystemBinary);
         var isFlowSynxValid = _gitHubReleaseManager.ValidateDownloadedAsset(flowSynxDownloadPath, flowSynxHashDownloadPath);
 
         if (!isFlowSynxValid)
         {
-            _flowCtlLogger.Write(Resources.ValidatingDownloadFail);
-            _flowCtlLogger.Write(Resources.TheDownloadedDataMayHasBeenCorrupted);
+            _flowCtlLogger.Write(Resources.Commands_Init_ValidatingFlowSynxSystemFailed);
+            _flowCtlLogger.Write(Resources.Commands_Init_DownloadedDataCorrupted);
             return false;
         }
 
-        _flowCtlLogger.Write(Resources.StartingExtractFlowSynxBinary);
+        _flowCtlLogger.Write(Resources.Commands_Init_StartExtractingFlowSynxSystemBinary);
         ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
         return true;
     }

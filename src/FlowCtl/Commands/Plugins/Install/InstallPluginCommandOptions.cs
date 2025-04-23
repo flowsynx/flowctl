@@ -1,6 +1,6 @@
-﻿namespace FlowCtl.Commands.Plugins.Delete;
+﻿namespace FlowCtl.Commands.Plugins.Install;
 
-internal class DeletePluginCommandOptions : ICommandOptions
+internal class InstallPluginCommandOptions : ICommandOptions
 {
     public required string Type { get; set; }
     public required string Version { get; set; }

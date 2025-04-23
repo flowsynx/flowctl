@@ -28,30 +28,30 @@ internal class LoginCommandOptionsHandler : ICommandOptionsHandler<LoginCommandO
             if (options.Basic is true)
             {
                 if (string.IsNullOrEmpty(options.Username) || string.IsNullOrEmpty(options.Password))
-                    throw new InvalidOperationException("Please enter Username and Password!");
+                    throw new InvalidOperationException(Resources.Commands_Login_BasicAuthentication_EnterUsernameAndPassword);
 
                 _authenticationManager.LoginBasic(options.Username!, options.Password!);
-                _flowCtlLogger.Write("Logged in with Basic Auth.");
+                _flowCtlLogger.Write(Resources.Commands_Login_BasicAuthenticationLoggedSuccessfully);
             }
             else if (options.Bearer is true)
             {
                 if (string.IsNullOrEmpty(options.Token))
-                    throw new InvalidOperationException("Please enter token!");
+                    throw new InvalidOperationException(Resources.Commands_Login_BearerAuthenticationEnterToken);
 
                 _authenticationManager.LoginBearer(options.Token);
-                _flowCtlLogger.Write("Logged in with Bearer Token.");
+                _flowCtlLogger.Write(Resources.Commands_Login_BearerAuthenticationLoggedSuccessfully);
             }
             else if (options.OAuth is true)
             {
                 if (string.IsNullOrWhiteSpace(options.Authority) || string.IsNullOrWhiteSpace(options.ClientId))
-                    throw new InvalidOperationException("Please provide --authority and --client-id for OAuth login.");
+                    throw new InvalidOperationException(Resources.Commands_Login_OAuth2AuthenticationEnterAuthorityAndClientId);
                 
                 var result = await _authenticationManager.LoginOAuthAsync(options.Authority, options.ClientId, options.Scope);
-                _flowCtlLogger.Write("Logged in with OAuth.");
+                _flowCtlLogger.Write(Resources.Commands_Login_OAuth2AuthenticationLoggedSuccessfully);
             }
             else
             {
-                throw new InvalidOperationException("Please specify one of: --basic, --bearer, or --oauth");
+                throw new InvalidOperationException(Resources.Commands_Login_SpecifyAuthenticationType);
             }
 
             return;

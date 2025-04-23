@@ -5,14 +5,14 @@ namespace FlowCtl.Commands.Config.Details;
 
 internal class DetailsConfigCommand : BaseCommand<DetailsConfigCommandOptions, DetailsConfigCommandOptionsHandler>
 {
-    public DetailsConfigCommand() : base("details", Resources.DetailsConfigCommandDescription)
+    public DetailsConfigCommand() : base("details", Resources.Commands_DetailsConfig_Description)
     {
         var identityOption = new Option<string>(new[] { "-i", "--id" },
-            description: Resources.DetailsConfigCommandNameOption) { IsRequired = true };
+            description: Resources.Commands_DetailsConfig_IdentityOption) { IsRequired = true };
 
         var outputFormatOption = new Option<OutputType>(new[] { "-o", "--output" }, 
             getDefaultValue: () => OutputType.Json,
-            description: Resources.CommandOutputOption);
+            description: Resources.Commands_Output_Format);
 
         AddOption(identityOption);
         AddOption(outputFormatOption);

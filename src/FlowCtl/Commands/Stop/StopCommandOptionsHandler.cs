@@ -45,7 +45,7 @@ internal class StopCommandOptionsHandler : ICommandOptionsHandler<StopCommandOpt
             foreach (var process in processes)
                 process.Kill();
 
-            _flowCtlLogger.Write(Resources.StopCommandFlowSynxStopped);
+            _flowCtlLogger.Write(Resources.Commands_Stop_StopSuccessfully);
         }
         catch (Exception ex)
         {

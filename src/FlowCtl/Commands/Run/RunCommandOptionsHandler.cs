@@ -29,7 +29,7 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
             var flowSynxBinaryFile = _location.LookupFlowSynxBinaryFilePath(flowSynxPath);
             if (!Path.Exists(flowSynxBinaryFile))
             {
-                _flowCtlLogger.WriteError(Resources.FlowSynxEngineIsNotInstalled);
+                _flowCtlLogger.WriteError(Resources.Commands_Run_FlowSynxIsNotInstalled);
                 return Task.CompletedTask;
             }
 

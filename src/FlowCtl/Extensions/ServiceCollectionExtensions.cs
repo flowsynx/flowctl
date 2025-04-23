@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System.CommandLine;
 using Microsoft.Extensions.Logging;
+using System.CommandLine;
 using FlowCtl.Commands;
 using FlowCtl.Commands.Config;
 using FlowCtl.Commands.Plugins;
@@ -11,21 +11,21 @@ using FlowCtl.Commands.Init;
 using FlowCtl.Commands.Run;
 using FlowCtl.Commands.Stop;
 using FlowCtl.Commands.Uninstall;
-using FlowSynx.Client;
 using FlowCtl.Commands.Logs;
-using FlowCtl.Infrastructure.Extensions;
 using FlowCtl.Commands.Login;
-using Spectre.Console;
-using FlowCtl.Core.Serialization;
-using FlowCtl.Infrastructure.Serialization;
-using FlowCtl.ApplicationBuilders;
 using FlowCtl.Commands.Logout;
 using FlowCtl.Commands.Workflows;
-using FlowCtl.Services.Version;
+using FlowCtl.Core.Serialization;
+using FlowCtl.Infrastructure.Serialization;
+using FlowCtl.Infrastructure.Extensions;
+using FlowCtl.ApplicationBuilders;
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Core.Services.Location;
 using FlowCtl.Services.Location;
+using FlowCtl.Services.Version;
 using FlowCtl.Services.Logger;
+using FlowSynx.Client;
+using Spectre.Console;
 
 namespace FlowCtl.Extensions;
 

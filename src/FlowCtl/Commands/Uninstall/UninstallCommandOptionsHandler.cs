@@ -28,18 +28,18 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
     {
         try
         {
-            _flowCtlLogger.Write(Resources.UninstallCommandBeginningUninstalling);
+            _flowCtlLogger.Write(Resources.Commands_Uninstall_BeginningUninstalling);
 
             if (_processHandler.IsRunning(_location.FlowSynxBinaryName, "."))
             {
                 if (options.Force)
                 {
                     _processHandler.Terminate(_location.FlowSynxBinaryName, ".");
-                    _flowCtlLogger.Write(Resources.UninstallCommandFlowSynxStoppedSuccessfully);
+                    _flowCtlLogger.Write(Resources.Commands_Uninstall_StopSuccessfully);
                 }
                 else
                 {
-                    _flowCtlLogger.Write(Resources.UninstallCommandFlowSynxIsRunning);
+                    _flowCtlLogger.Write(Resources.Commands_Uninstall_FlowSynxSystemIsRunning);
                     return Task.CompletedTask;
                 }
             }
@@ -47,7 +47,7 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
             if (Directory.Exists(_location.DefaultFlowSynxDirectoryName))
                 Directory.Delete(_location.DefaultFlowSynxDirectoryName, true);
             
-            _flowCtlLogger.Write(Resources.UninstallCommandUninstallingIsDone);
+            _flowCtlLogger.Write(Resources.Commands_Uninstall_UninstalledSuccessfully);
         }
         catch (Exception e)
         {

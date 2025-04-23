@@ -4,10 +4,10 @@ namespace FlowCtl.Commands.Init;
 
 internal class InitCommand : BaseCommand<InitCommandOptions, InitCommandOptionsHandler>
 {
-    public InitCommand() : base("init", Resources.InitCommandDescription)
+    public InitCommand() : base("init", Resources.Commands_Init_Description)
     {
         var flowSynxVersionOption = new Option<string?>("--flowsynx-version",
-            description: Resources.CommandFlowSynxVersionOption);
+            description: Resources.Commands_Init_FlowSynxVersionOption);
 
         AddOption(flowSynxVersionOption);
     }

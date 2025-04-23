@@ -4,15 +4,15 @@ using FlowCtl.Extensions;
 using FlowSynx.Client;
 using FlowSynx.Client.Requests.Plugins;
 
-namespace FlowCtl.Commands.Plugins.Add;
+namespace FlowCtl.Commands.Plugins.Uninstall;
 
-internal class AddPluginCommandOptionsHandler : ICommandOptionsHandler<AddPluginCommandOptions>
+internal class UninstallPluginCommandOptionsHandler : ICommandOptionsHandler<UninstallPluginCommandOptions>
 {
     private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
     private readonly IAuthenticationManager _authenticationManager;
 
-    public AddPluginCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
+    public UninstallPluginCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
         IFlowSynxClient flowSynxClient, IAuthenticationManager authenticationManager)
     {
         ArgumentNullException.ThrowIfNull(flowCtlLogger);
@@ -23,13 +23,13 @@ internal class AddPluginCommandOptionsHandler : ICommandOptionsHandler<AddPlugin
         _authenticationManager = authenticationManager;
     }
 
-    public async Task<int> HandleAsync(AddPluginCommandOptions options, CancellationToken cancellationToken)
+    public async Task<int> HandleAsync(UninstallPluginCommandOptions options, CancellationToken cancellationToken)
     {
         await Execute(options, cancellationToken);
         return 0;
     }
 
-    private async Task Execute(AddPluginCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(UninstallPluginCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
@@ -38,11 +38,11 @@ internal class AddPluginCommandOptionsHandler : ICommandOptionsHandler<AddPlugin
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var request = new AddPluginRequest { Type = options.Type, Version = options.Version };
-            var result = await _flowSynxClient.AddPlugin(request, cancellationToken);
+            var request = new DeletePluginRequest { Type = options.Type, Version = options.Version };
+            var result = await _flowSynxClient.DeletePlugin(request, cancellationToken);
 
             if (result.StatusCode != 200)
-                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+                throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
 
             var payload = result.Payload;
             if (payload is { Succeeded: false })

@@ -61,876 +61,920 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not parse the entered specifications. Please check it and try again!.
+        ///   Looks up a localized string similar to Authentication required. Please log in first, then try again. Use login -h for more info..
         /// </summary>
-        internal static string AddConfigCommandCouldNotParseSpecifications {
+        internal static string AuthenticationExtensions_AuthenticationIsRequired {
             get {
-                return ResourceManager.GetString("AddConfigCommandCouldNotParseSpecifications", resourceCulture);
+                return ResourceManager.GetString("AuthenticationExtensions_AuthenticationIsRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add configuration section.
+        ///   Looks up a localized string similar to A JSON-serialized data.
         /// </summary>
-        internal static string AddConfigCommandDescription {
+        internal static string Commands_AddConfig_Data {
             get {
-                return ResourceManager.GetString("AddConfigCommandDescription", resourceCulture);
+                return ResourceManager.GetString("Commands_AddConfig_Data", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The unique configuration section name.
+        ///   Looks up a localized string similar to A file containing JSON-serialized data.
         /// </summary>
-        internal static string AddConfigCommandNameOption {
+        internal static string Commands_AddConfig_DataFile {
             get {
-                return ResourceManager.GetString("AddConfigCommandNameOption", resourceCulture);
+                return ResourceManager.GetString("Commands_AddConfig_DataFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specifications regarding configuration section. They should be passed in pairs of key value.
+        ///   Looks up a localized string similar to The specified data file &apos;{0}&apos; does not exist..
         /// </summary>
-        internal static string AddConfigCommandSpecificationOption {
+        internal static string Commands_AddConfig_DataFileDoesNotExist {
             get {
-                return ResourceManager.GetString("AddConfigCommandSpecificationOption", resourceCulture);
+                return ResourceManager.GetString("Commands_AddConfig_DataFileDoesNotExist", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type of connector supported by FlowSynx.
+        ///   Looks up a localized string similar to Add plugin configuration.
         /// </summary>
-        internal static string AddConfigCommandTypeOption {
+        internal static string Commands_AddConfig_Description {
             get {
-                return ResourceManager.GetString("AddConfigCommandTypeOption", resourceCulture);
+                return ResourceManager.GetString("Commands_AddConfig_Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The address that specify a http-based address to connect on remote FlowSynx system.
+        ///   Looks up a localized string similar to Manage and display the list and details of plugin configuration.
         /// </summary>
-        internal static string CommandAddressOption {
+        internal static string Commands_Config_Description {
             get {
-                return ResourceManager.GetString("CommandAddressOption", resourceCulture);
+                return ResourceManager.GetString("Commands_Config_Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ignore or apply case sensitive in filters.
+        ///   Looks up a localized string similar to Delete plugin configuration.
         /// </summary>
-        internal static string CommandCaseSensitiveOption {
+        internal static string Commands_DeleteConfig_Description {
             get {
-                return ResourceManager.GetString("CommandCaseSensitiveOption", resourceCulture);
+                return ResourceManager.GetString("Commands_DeleteConfig_Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The version of the FlowSynx dashboard to install, for example: 0.1.0.
+        ///   Looks up a localized string similar to Plugin config identity.
         /// </summary>
-        internal static string CommandDashboardVersionOption {
+        internal static string Commands_DeleteConfig_IdentityOption {
             get {
-                return ResourceManager.GetString("CommandDashboardVersionOption", resourceCulture);
+                return ResourceManager.GetString("Commands_DeleteConfig_IdentityOption", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Desplay desired fields related to the result objects.
+        ///   Looks up a localized string similar to Get details about plugin configuration.
         /// </summary>
-        internal static string CommandFieldOption {
+        internal static string Commands_DetailsConfig_Description {
             get {
-                return ResourceManager.GetString("CommandFieldOption", resourceCulture);
+                return ResourceManager.GetString("Commands_DetailsConfig_Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expressions filter to filter data.
+        ///   Looks up a localized string similar to Plugin config identity.
         /// </summary>
-        internal static string CommandFilterOption {
+        internal static string Commands_DetailsConfig_IdentityOption {
             get {
-                return ResourceManager.GetString("CommandFilterOption", resourceCulture);
+                return ResourceManager.GetString("Commands_DetailsConfig_IdentityOption", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The version of the FlowSynx system to install, for example: 0.1.0.
+        ///   Looks up a localized string similar to An error occurred during the processing of the request..
         /// </summary>
-        internal static string CommandFlowSynxVersionOption {
+        internal static string Commands_Error_DuringProcessingRequest {
             get {
-                return ResourceManager.GetString("CommandFlowSynxVersionOption", resourceCulture);
+                return ResourceManager.GetString("Commands_Error_DuringProcessingRequest", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Force terminate FlowSynx system and Dashboard if they are running.
+        ///   Looks up a localized string similar to The address that specifies the HTTP endpoint used to connect to the flowsynx system.
         /// </summary>
-        internal static string CommandForceOption {
+        internal static string Commands_FlowSynxAddress {
             get {
-                return ResourceManager.GetString("CommandForceOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Full numbers instead of human-readable.
-        /// </summary>
-        internal static string CommandFullOption {
-            get {
-                return ResourceManager.GetString("CommandFullOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kind of entity. Valid values are File, Directory, and FileAndDirectory.
-        /// </summary>
-        internal static string CommandKindOption {
-            get {
-                return ResourceManager.GetString("CommandKindOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The maximum number or percentage of results to return [default: off].
-        /// </summary>
-        internal static string CommandLimitOption {
-            get {
-                return ResourceManager.GetString("CommandLimitOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Formatting CLI output.
-        /// </summary>
-        internal static string CommandOutputOption {
-            get {
-                return ResourceManager.GetString("CommandOutputOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The storage path from which the about information is to be retrieved.
-        /// </summary>
-        internal static string CommandPathOption {
-            get {
-                return ResourceManager.GetString("CommandPathOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Apply recursion on filtering entities in the specified path.
-        /// </summary>
-        internal static string CommandRecurseOption {
-            get {
-                return ResourceManager.GetString("CommandRecurseOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sorting entities based on field name and ascending and descending. Like Property ASC, Property2 DESC [default: off].
-        /// </summary>
-        internal static string CommandSortOption {
-            get {
-                return ResourceManager.GetString("CommandSortOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Manage configurations related to FlowSynx System.
-        /// </summary>
-        internal static string ConfigCommandDescription {
-            get {
-                return ResourceManager.GetString("ConfigCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The type of configuration item.
-        /// </summary>
-        internal static string ConfigCommandTypeOption {
-            get {
-                return ResourceManager.GetString("ConfigCommandTypeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Display details about a particular connector.
-        /// </summary>
-        internal static string ConnectorDetailsCommandDescription {
-            get {
-                return ResourceManager.GetString("ConnectorDetailsCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The type of the connector.
-        /// </summary>
-        internal static string ConnectorDetailsCommandTypeOption {
-            get {
-                return ResourceManager.GetString("ConnectorDetailsCommandTypeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Display list and details of connectors supported by FlowSynx system.
-        /// </summary>
-        internal static string ConnectorsCommandDescription {
-            get {
-                return ResourceManager.GetString("ConnectorsCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The namespace of connector (e.g., Storage).
-        /// </summary>
-        internal static string ConnectorsCommandTypeOption {
-            get {
-                return ResourceManager.GetString("ConnectorsCommandTypeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Run and execute the FlowSynx dashboard.
-        /// </summary>
-        internal static string DashboardCommandDescription {
-            get {
-                return ResourceManager.GetString("DashboardCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Display the version for FlowSynx dashboard.
-        /// </summary>
-        internal static string DashboardVersionCommandDescription {
-            get {
-                return ResourceManager.GetString("DashboardVersionCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete configuration section.
-        /// </summary>
-        internal static string DeleteConfigCommandDescription {
-            get {
-                return ResourceManager.GetString("DeleteConfigCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Get details about configuration section.
-        /// </summary>
-        internal static string DetailsConfigCommandDescription {
-            get {
-                return ResourceManager.GetString("DetailsConfigCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The configuration section name.
-        /// </summary>
-        internal static string DetailsConfigCommandNameOption {
-            get {
-                return ResourceManager.GetString("DetailsConfigCommandNameOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download failed with {0}.
-        /// </summary>
-        internal static string DownloadFailedWithStatus {
-            get {
-                return ResourceManager.GetString("DownloadFailedWithStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to It seems there is an error occurred during processing the request..
-        /// </summary>
-        internal static string ErrorOccurredDuringProcessingRequest {
-            get {
-                return ResourceManager.GetString("ErrorOccurredDuringProcessingRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FlowSynx engine is downloaded and installed successfully in path &apos;{0}&apos;..
-        /// </summary>
-        internal static string FlowSynxEngineDownloadedAndInstalledSuccessfully {
-            get {
-                return ResourceManager.GetString("FlowSynxEngineDownloadedAndInstalledSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FlowSynx engine is not installed. Please run the &apos;synx init -h&apos; command to see the details..
-        /// </summary>
-        internal static string FlowSynxEngineIsNotInstalled {
-            get {
-                return ResourceManager.GetString("FlowSynxEngineIsNotInstalled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Base location not found.
-        /// </summary>
-        internal static string FlowSynxLocationBaseLocationNotFound {
-            get {
-                return ResourceManager.GetString("FlowSynxLocationBaseLocationNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Root location not found.
-        /// </summary>
-        internal static string FlowSynxLocationRootLocationNotFound {
-            get {
-                return ResourceManager.GetString("FlowSynxLocationRootLocationNotFound", resourceCulture);
+                return ResourceManager.GetString("Commands_FlowSynxAddress", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Display the health status of FlowSynx System.
         /// </summary>
-        internal static string HealthCommandDescription {
+        internal static string Commands_Health_Description {
             get {
-                return ResourceManager.GetString("HealthCommandDescription", resourceCulture);
+                return ResourceManager.GetString("Commands_Health_Description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Beginning Initialize....
         /// </summary>
-        internal static string InitCommandBeginningInitialize {
+        internal static string Commands_Init_BeginningInitialize {
             get {
-                return ResourceManager.GetString("InitCommandBeginningInitialize", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_BeginningInitialize", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Install and initialize FlowSynx system and Dashboard on the current user profile.
+        ///   Looks up a localized string similar to Installs and initializes the FlowSynx system for the current user profile..
         /// </summary>
-        internal static string InitCommandDescription {
+        internal static string Commands_Init_Description {
             get {
-                return ResourceManager.GetString("InitCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A file containing the JSON serialized data.
-        /// </summary>
-        internal static string InvokeCommandDataFileOption {
-            get {
-                return ResourceManager.GetString("InvokeCommandDataFileOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The JSON serialized data string.
-        /// </summary>
-        internal static string InvokeCommandDataOption {
-            get {
-                return ResourceManager.GetString("InvokeCommandDataOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invoke a method on FlowSynx system.
-        /// </summary>
-        internal static string InvokeCommandDescription {
-            get {
-                return ResourceManager.GetString("InvokeCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The method to invoke.
-        /// </summary>
-        internal static string InvokeCommandMethodOption {
-            get {
-                return ResourceManager.GetString("InvokeCommandMethodOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The HTTP verb to use.
-        /// </summary>
-        internal static string InvokeCommandVerbOption {
-            get {
-                return ResourceManager.GetString("InvokeCommandVerbOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Get FlowSynx System logs.
-        /// </summary>
-        internal static string LogsCommandDescription {
-            get {
-                return ResourceManager.GetString("LogsCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The log verbosity to controls the amount of detail emitted for each event that is logged. Valid values are Dbug|Info|Warn|Fail|Crit [default: off].
-        /// </summary>
-        internal static string LogsCommandLogLevelOption {
-            get {
-                return ResourceManager.GetString("LogsCommandLogLevelOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to File &apos;{0}&apos; is already exist!.
-        /// </summary>
-        internal static string ReadCommandFileAlreadyExist {
-            get {
-                return ResourceManager.GetString("ReadCommandFileAlreadyExist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The path where the streaming data are going to be saved.
-        /// </summary>
-        internal static string ReadCommandSaveToOption {
-            get {
-                return ResourceManager.GetString("ReadCommandSaveToOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to flowctl controls the FlowSynx engine.
-        ///Find more information at: https://flowsynx.io/docs/getting-started/install-flowctl.
-        /// </summary>
-        internal static string RootCommandDescription {
-            get {
-                return ResourceManager.GetString("RootCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FlowSynx configuration file.
-        /// </summary>
-        internal static string RunCommandConfigFileOption {
-            get {
-                return ResourceManager.GetString("RunCommandConfigFileOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Run and execute the FlowSynx system on the current user profile.
-        /// </summary>
-        internal static string RunCommandDescription {
-            get {
-                return ResourceManager.GetString("RunCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enable health checks for the FlowSynx.
-        /// </summary>
-        internal static string RunCommandEnableHealthCheckOption {
-            get {
-                return ResourceManager.GetString("RunCommandEnableHealthCheckOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enable logging to records the details of events during FlowSynx running.
-        /// </summary>
-        internal static string RunCommandEnableLogOption {
-            get {
-                return ResourceManager.GetString("RunCommandEnableLogOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Log file path to store system logs information.
-        /// </summary>
-        internal static string RunCommandLogFileOption {
-            get {
-                return ResourceManager.GetString("RunCommandLogFileOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The log verbosity to controls the amount of detail emitted for each event that is logged.
-        /// </summary>
-        internal static string RunCommandLogLevelOption {
-            get {
-                return ResourceManager.GetString("RunCommandLogLevelOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enable OpenApi specification for FlowSynx.
-        /// </summary>
-        internal static string RunCommandOpenApiOption {
-            get {
-                return ResourceManager.GetString("RunCommandOpenApiOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Something wrong happen during execute the application.
-        /// </summary>
-        internal static string SomethingWrongHappen {
-            get {
-                return ResourceManager.GetString("SomethingWrongHappen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fetching....
-        /// </summary>
-        internal static string SpinnerFetching {
-            get {
-                return ResourceManager.GetString("SpinnerFetching", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starting to change the execution mode of Dashboard..
-        /// </summary>
-        internal static string StartChangeDashboardExecutionMode {
-            get {
-                return ResourceManager.GetString("StartChangeDashboardExecutionMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starting to change the execution mode of FlowSynx..
-        /// </summary>
-        internal static string StartChangeFlowSynxExecutionMode {
-            get {
-                return ResourceManager.GetString("StartChangeFlowSynxExecutionMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start download Cli binary.
-        /// </summary>
-        internal static string StartDownloadCliBinary {
-            get {
-                return ResourceManager.GetString("StartDownloadCliBinary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start download Dashboard binary.
-        /// </summary>
-        internal static string StartDownloadDashboardBinary {
-            get {
-                return ResourceManager.GetString("StartDownloadDashboardBinary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start download FlowSynx binary.
-        /// </summary>
-        internal static string StartDownloadFlowSynxBinary {
-            get {
-                return ResourceManager.GetString("StartDownloadFlowSynxBinary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starting extract Dashboard binary.
-        /// </summary>
-        internal static string StartingExtractDashboardBinary {
-            get {
-                return ResourceManager.GetString("StartingExtractDashboardBinary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starting extract FlowSynx binary.
-        /// </summary>
-        internal static string StartingExtractFlowSynxBinary {
-            get {
-                return ResourceManager.GetString("StartingExtractFlowSynxBinary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start validating Cli binary.
-        /// </summary>
-        internal static string StartValidatingCliBinary {
-            get {
-                return ResourceManager.GetString("StartValidatingCliBinary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start validating Dashboard binary.
-        /// </summary>
-        internal static string StartValidatingDashboardBinary {
-            get {
-                return ResourceManager.GetString("StartValidatingDashboardBinary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start validating FlowSynx binary.
-        /// </summary>
-        internal static string StartValidatingFlowSynxBinary {
-            get {
-                return ResourceManager.GetString("StartValidatingFlowSynxBinary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stop the FlowSynx system and its associated apps which running on the current user profile.
-        /// </summary>
-        internal static string StopCommandDescription {
-            get {
-                return ResourceManager.GetString("StopCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The FlowSynx system was stopped successfully..
-        /// </summary>
-        internal static string StopCommandFlowSynxStopped {
-            get {
-                return ResourceManager.GetString("StopCommandFlowSynxStopped", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Get about information from the storage.
-        /// </summary>
-        internal static string StorageAboutCommandDescription {
-            get {
-                return ResourceManager.GetString("StorageAboutCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Table formatting doesn&apos;t support list of object. Please use other formats!.
-        /// </summary>
-        internal static string TableFormattingNotSupportList {
-            get {
-                return ResourceManager.GetString("TableFormattingNotSupportList", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_Description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The downloaded data may has been corrupted!.
         /// </summary>
-        internal static string TheDownloadedDataMayHasBeenCorrupted {
+        internal static string Commands_Init_DownloadedDataCorrupted {
             get {
-                return ResourceManager.GetString("TheDownloadedDataMayHasBeenCorrupted", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_DownloadedDataCorrupted", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The FlowSynx engine is already initialized..
+        ///   Looks up a localized string similar to FlowSynx system is downloaded and installed successfully in path &apos;{0}&apos;..
         /// </summary>
-        internal static string TheFlowSynxEngineIsAlreadyInitialized {
+        internal static string Commands_Init_FlowSynxSystemDownloadedAndInstalledSuccessfully {
             get {
-                return ResourceManager.GetString("TheFlowSynxEngineIsAlreadyInitialized", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_FlowSynxSystemDownloadedAndInstalledSuccessfully", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Beginning uninstalling....
+        ///   Looks up a localized string similar to The FlowSynx system is already initialized..
         /// </summary>
-        internal static string UninstallCommandBeginningUninstalling {
+        internal static string Commands_Init_FlowSynxSystemIsAlreadyInitialized {
             get {
-                return ResourceManager.GetString("UninstallCommandBeginningUninstalling", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_FlowSynxSystemIsAlreadyInitialized", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The FlowSynx dashboard is running. Please stop it and try uninstall again..
+        ///   Looks up a localized string similar to The version of the FlowSynx system to install, for example: 1.0.0.
         /// </summary>
-        internal static string UninstallCommandDashboardIsRunning {
+        internal static string Commands_Init_FlowSynxVersionOption {
             get {
-                return ResourceManager.GetString("UninstallCommandDashboardIsRunning", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_FlowSynxVersionOption", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The FlowSynx dashboard was stopped successfully..
+        ///   Looks up a localized string similar to Starting to change the execution mode of FlowSynx..
         /// </summary>
-        internal static string UninstallCommandDashboardStoppedSuccessfully {
+        internal static string Commands_Init_StartChangeExecutionMode {
             get {
-                return ResourceManager.GetString("UninstallCommandDashboardStoppedSuccessfully", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_StartChangeExecutionMode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uninstalling FlowSynx system, Dashboard, and Cli from the current user profile and machine.
+        ///   Looks up a localized string similar to Start download FlowSynx system binary.
         /// </summary>
-        internal static string UninstallCommandDescription {
+        internal static string Commands_Init_StartDownloadFlowSynxSystemBinary {
             get {
-                return ResourceManager.GetString("UninstallCommandDescription", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_StartDownloadFlowSynxSystemBinary", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The FlowSynx engine is running. Please stop it by run the command: &apos;Synx stop&apos;, and try uninstall again..
+        ///   Looks up a localized string similar to Starting extract FlowSynx system binary.
         /// </summary>
-        internal static string UninstallCommandFlowSynxIsRunning {
+        internal static string Commands_Init_StartExtractingFlowSynxSystemBinary {
             get {
-                return ResourceManager.GetString("UninstallCommandFlowSynxIsRunning", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_StartExtractingFlowSynxSystemBinary", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The FlowSynx system was stopped successfully..
+        ///   Looks up a localized string similar to Start validating FlowSynx system binary.
         /// </summary>
-        internal static string UninstallCommandFlowSynxStoppedSuccessfully {
+        internal static string Commands_Init_StartValidatingFlowSynxSystemBinary {
             get {
-                return ResourceManager.GetString("UninstallCommandFlowSynxStoppedSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uninstalling is done!.
-        /// </summary>
-        internal static string UninstallCommandUninstallingIsDone {
-            get {
-                return ResourceManager.GetString("UninstallCommandUninstallingIsDone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Checking for CLI updates....
-        /// </summary>
-        internal static string UpdateCommandCheckingForCliUpdates {
-            get {
-                return ResourceManager.GetString("UpdateCommandCheckingForCliUpdates", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Checking for Dashboard updates....
-        /// </summary>
-        internal static string UpdateCommandCheckingForDashboardUpdates {
-            get {
-                return ResourceManager.GetString("UpdateCommandCheckingForDashboardUpdates", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Checking for FlowSynx updates....
-        /// </summary>
-        internal static string UpdateCommandCheckingForFlowSynxUpdates {
-            get {
-                return ResourceManager.GetString("UpdateCommandCheckingForFlowSynxUpdates", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The current CLI version is up to dated.
-        /// </summary>
-        internal static string UpdateCommandCliIsUpdated {
-            get {
-                return ResourceManager.GetString("UpdateCommandCliIsUpdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Dashboard is running. Please stop it before doing uninstall again..
-        /// </summary>
-        internal static string UpdateCommandDashboardIsRunning {
-            get {
-                return ResourceManager.GetString("UpdateCommandDashboardIsRunning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The current Dashboard&apos;s version is up to dated.
-        /// </summary>
-        internal static string UpdateCommandDashboardIsUpdated {
-            get {
-                return ResourceManager.GetString("UpdateCommandDashboardIsUpdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update FlowSynx system, Dashboard, and Cli.
-        /// </summary>
-        internal static string UpdateCommandDescription {
-            get {
-                return ResourceManager.GetString("UpdateCommandDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The FlowSynx system is running. Please stop it before doing uninstall again..
-        /// </summary>
-        internal static string UpdateCommandFlowSynxIsRunning {
-            get {
-                return ResourceManager.GetString("UpdateCommandFlowSynxIsRunning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The current FlowSynx&apos;s version is up to dated.
-        /// </summary>
-        internal static string UpdateCommandFlowSynxIsUpdated {
-            get {
-                return ResourceManager.GetString("UpdateCommandFlowSynxIsUpdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The FlowSynx system updated successfully..
-        /// </summary>
-        internal static string UpdateCommandFlowSynxUpdatedSuccessfully {
-            get {
-                return ResourceManager.GetString("UpdateCommandFlowSynxUpdatedSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You can use command &apos;Synx update&apos; to check and update the FlowSynx and Dashboard..
-        /// </summary>
-        internal static string UseUpdateCommandToUpdateFlowSynxAndDashboard {
-            get {
-                return ResourceManager.GetString("UseUpdateCommandToUpdateFlowSynxAndDashboard", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_StartValidatingFlowSynxSystemBinary", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Validating download - Fail!.
         /// </summary>
-        internal static string ValidatingDownloadFail {
+        internal static string Commands_Init_ValidatingFlowSynxSystemFailed {
             get {
-                return ResourceManager.GetString("ValidatingDownloadFail", resourceCulture);
+                return ResourceManager.GetString("Commands_Init_ValidatingFlowSynxSystemFailed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Display the FlowSynx system and Cli version.
+        ///   Looks up a localized string similar to Please enter Username and Password!.
         /// </summary>
-        internal static string VersionCommandDescription {
+        internal static string Commands_Login_BasicAuthentication_EnterUsernameAndPassword {
             get {
-                return ResourceManager.GetString("VersionCommandDescription", resourceCulture);
+                return ResourceManager.GetString("Commands_Login_BasicAuthentication_EnterUsernameAndPassword", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Display full details about the running FlowSynx system.
+        ///   Looks up a localized string similar to Logged in with Basic Authentication successfully..
         /// </summary>
-        internal static string VersionCommandFullOption {
+        internal static string Commands_Login_BasicAuthenticationLoggedSuccessfully {
             get {
-                return ResourceManager.GetString("VersionCommandFullOption", resourceCulture);
+                return ResourceManager.GetString("Commands_Login_BasicAuthenticationLoggedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login using basic authentication.
+        /// </summary>
+        internal static string Commands_Login_BasicAuthenticationOption {
+            get {
+                return ResourceManager.GetString("Commands_Login_BasicAuthenticationOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the password for basic authentication.
+        /// </summary>
+        internal static string Commands_Login_BasicAuthenticationPasswordOption {
+            get {
+                return ResourceManager.GetString("Commands_Login_BasicAuthenticationPasswordOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the username for basic authentication.
+        /// </summary>
+        internal static string Commands_Login_BasicAuthenticationUsernameOption {
+            get {
+                return ResourceManager.GetString("Commands_Login_BasicAuthenticationUsernameOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter token!.
+        /// </summary>
+        internal static string Commands_Login_BearerAuthenticationEnterToken {
+            get {
+                return ResourceManager.GetString("Commands_Login_BearerAuthenticationEnterToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logged in with Bearer Token successfully..
+        /// </summary>
+        internal static string Commands_Login_BearerAuthenticationLoggedSuccessfully {
+            get {
+                return ResourceManager.GetString("Commands_Login_BearerAuthenticationLoggedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login using bearer authentication.
+        /// </summary>
+        internal static string Commands_Login_BearerAuthenticationOption {
+            get {
+                return ResourceManager.GetString("Commands_Login_BearerAuthenticationOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the token for bearer authentication.
+        /// </summary>
+        internal static string Commands_Login_BearerAuthenticationTokenOption {
+            get {
+                return ResourceManager.GetString("Commands_Login_BearerAuthenticationTokenOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticates the user and establishes a session with the FlowSynx system.
+        /// </summary>
+        internal static string Commands_Login_Description {
+            get {
+                return ResourceManager.GetString("Commands_Login_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the OAuth2 authority URL.
+        /// </summary>
+        internal static string Commands_Login_OAuth2AuthenticationAuthorityUrlOption {
+            get {
+                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationAuthorityUrlOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the OAuth2 client ID.
+        /// </summary>
+        internal static string Commands_Login_OAuth2AuthenticationClientIdOption {
+            get {
+                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationClientIdOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please provide --authority and --client-id for OAuth2 login..
+        /// </summary>
+        internal static string Commands_Login_OAuth2AuthenticationEnterAuthorityAndClientId {
+            get {
+                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationEnterAuthorityAndClientId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logged in with OAuth successfully..
+        /// </summary>
+        internal static string Commands_Login_OAuth2AuthenticationLoggedSuccessfully {
+            get {
+                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationLoggedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login using OAuth2 via browser.
+        /// </summary>
+        internal static string Commands_Login_OAuth2AuthenticationOption {
+            get {
+                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the OAuth2 scopes like profile email.
+        /// </summary>
+        internal static string Commands_Login_OAuth2AuthenticationScopeOption {
+            get {
+                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationScopeOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify one of the authentication type: --basic, --bearer, or --oauth.
+        /// </summary>
+        internal static string Commands_Login_SpecifyAuthenticationType {
+            get {
+                return ResourceManager.GetString("Commands_Login_SpecifyAuthenticationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close authentication session with the FlowSynx system.
+        /// </summary>
+        internal static string Commands_Logout_Description {
+            get {
+                return ResourceManager.GetString("Commands_Logout_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout successfully..
+        /// </summary>
+        internal static string Commands_Logout_LogoutSuccessfully {
+            get {
+                return ResourceManager.GetString("Commands_Logout_LogoutSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get FlowSynx System logs.
+        /// </summary>
+        internal static string Commands_Logs_Description {
+            get {
+                return ResourceManager.GetString("Commands_Logs_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the end date from which log entries should be retrieved..
+        /// </summary>
+        internal static string Commands_Logs_EndDateOption {
+            get {
+                return ResourceManager.GetString("Commands_Logs_EndDateOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File &apos;{0}&apos; is already exist!.
+        /// </summary>
+        internal static string Commands_Logs_ExportToFileIsAlreadyExist {
+            get {
+                return ResourceManager.GetString("Commands_Logs_ExportToFileIsAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The path where the logs data are going to exported.
+        /// </summary>
+        internal static string Commands_Logs_ExportToOption {
+            get {
+                return ResourceManager.GetString("Commands_Logs_ExportToOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the start date from which log entries should be retrieved..
+        /// </summary>
+        internal static string Commands_Logs_FromDateOption {
+            get {
+                return ResourceManager.GetString("Commands_Logs_FromDateOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The log verbosity to controls the amount of detail emitted for each event that is logged. Valid values are Dbug|Info|Warn|Fail|Crit [default: off].
+        /// </summary>
+        internal static string Commands_Logs_LogLevelOption {
+            get {
+                return ResourceManager.GetString("Commands_Logs_LogLevelOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the log message content to be searched.
+        /// </summary>
+        internal static string Commands_Logs_MessageOption {
+            get {
+                return ResourceManager.GetString("Commands_Logs_MessageOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Formatting Command-Line output.
+        /// </summary>
+        internal static string Commands_Output_Format {
+            get {
+                return ResourceManager.GetString("Commands_Output_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage and display the list and details of plugins supported by the FlowSynx system..
+        /// </summary>
+        internal static string Commands_Plugins_Description {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get details about plugin.
+        /// </summary>
+        internal static string Commands_Plugins_DetailsDescription {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_DetailsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugin identity.
+        /// </summary>
+        internal static string Commands_Plugins_DetailsIdentityOption {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_DetailsIdentityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install plugin.
+        /// </summary>
+        internal static string Commands_Plugins_InstallDescription {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_InstallDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the new plugin version should be installed..
+        /// </summary>
+        internal static string Commands_Plugins_NewVersionOption {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_NewVersionOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the old plugin version should be uninstalled..
+        /// </summary>
+        internal static string Commands_Plugins_OldVersionOption {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_OldVersionOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the plugin type should be installed..
+        /// </summary>
+        internal static string Commands_Plugins_TypeOption {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_TypeOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uninstall plugin.
+        /// </summary>
+        internal static string Commands_Plugins_UninstallDescription {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_UninstallDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update plugin.
+        /// </summary>
+        internal static string Commands_Plugins_UpdateDescription {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_UpdateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies the plugin version should be installed..
+        /// </summary>
+        internal static string Commands_Plugins_VersionOption {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_VersionOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to flowctl controls the FlowSynx engine.
+        /// </summary>
+        internal static string Commands_RootDescription {
+            get {
+                return ResourceManager.GetString("Commands_RootDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and execute the FlowSynx system under the current user profile.
+        /// </summary>
+        internal static string Commands_Run_Description {
+            get {
+                return ResourceManager.GetString("Commands_Run_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The FlowSynx system is not installed. Please run the &apos;synx init -h&apos; command for more details..
+        /// </summary>
+        internal static string Commands_Run_FlowSynxIsNotInstalled {
+            get {
+                return ResourceManager.GetString("Commands_Run_FlowSynxIsNotInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop the FlowSynx system and its associated applications running under the current user profile..
+        /// </summary>
+        internal static string Commands_Stop_Description {
+            get {
+                return ResourceManager.GetString("Commands_Stop_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The FlowSynx system has been successfully stopped..
+        /// </summary>
+        internal static string Commands_Stop_StopSuccessfully {
+            get {
+                return ResourceManager.GetString("Commands_Stop_StopSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beginning uninstalling....
+        /// </summary>
+        internal static string Commands_Uninstall_BeginningUninstalling {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_BeginningUninstalling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uninstalling the FlowSynx System from the current user&apos;s profile and local machine environment.
+        /// </summary>
+        internal static string Commands_Uninstall_Description {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The FlowSynx system is currently running. Please stop it before attempting to uninstall it..
+        /// </summary>
+        internal static string Commands_Uninstall_FlowSynxSystemIsRunning {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_FlowSynxSystemIsRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forcefully terminates the FlowSynx system processes if it is currently running..
+        /// </summary>
+        internal static string Commands_Uninstall_ForceTerminateOption {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_ForceTerminateOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The FlowSynx system has been successfully stopped..
+        /// </summary>
+        internal static string Commands_Uninstall_StopSuccessfully {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_StopSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The FlowSynx system has been uninstalled successfully..
+        /// </summary>
+        internal static string Commands_Uninstall_UninstalledSuccessfully {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_UninstalledSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking for FlowSynx updates....
+        /// </summary>
+        internal static string Commands_Update_CheckingForFlowSynxSystemUpdates {
+            get {
+                return ResourceManager.GetString("Commands_Update_CheckingForFlowSynxSystemUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates the FlowSynx system.
+        /// </summary>
+        internal static string Commands_Update_Description {
+            get {
+                return ResourceManager.GetString("Commands_Update_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The downloaded data may has been corrupted!.
+        /// </summary>
+        internal static string Commands_Update_DownloadedDataCorrupted {
+            get {
+                return ResourceManager.GetString("Commands_Update_DownloadedDataCorrupted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The FlowSynx system is currently running. Please stop it before attempting to update it..
+        /// </summary>
+        internal static string Commands_Update_FlowSynxSystemIsRunning {
+            get {
+                return ResourceManager.GetString("Commands_Update_FlowSynxSystemIsRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The current version of FlowSynx system is up to date.
+        /// </summary>
+        internal static string Commands_Update_FlowSynxSystemIsUpToDate {
+            get {
+                return ResourceManager.GetString("Commands_Update_FlowSynxSystemIsUpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The version of the FlowSynx system to update, for example: 1.0.0.
+        /// </summary>
+        internal static string Commands_Update_FlowSynxVersionOption {
+            get {
+                return ResourceManager.GetString("Commands_Update_FlowSynxVersionOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forcefully terminates the FlowSynx system processes if it is currently running..
+        /// </summary>
+        internal static string Commands_Update_ForceTerminateOption {
+            get {
+                return ResourceManager.GetString("Commands_Update_ForceTerminateOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start download FlowSynx system binary.
+        /// </summary>
+        internal static string Commands_Update_StartDownloadFlowSynxSystemBinary {
+            get {
+                return ResourceManager.GetString("Commands_Update_StartDownloadFlowSynxSystemBinary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting extract FlowSynx system binary.
+        /// </summary>
+        internal static string Commands_Update_StartExtractingFlowSynxSystemBinary {
+            get {
+                return ResourceManager.GetString("Commands_Update_StartExtractingFlowSynxSystemBinary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start validating FlowSynx system binary.
+        /// </summary>
+        internal static string Commands_Update_StartValidatingFlowSynxSystemBinary {
+            get {
+                return ResourceManager.GetString("Commands_Update_StartValidatingFlowSynxSystemBinary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validating download - Fail!.
+        /// </summary>
+        internal static string Commands_Update_ValidatingFlowSynxSystemFailed {
+            get {
+                return ResourceManager.GetString("Commands_Update_ValidatingFlowSynxSystemFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Displays the FlowSynx system version and CLI version..
+        /// </summary>
+        internal static string Commands_Version_Description {
+            get {
+                return ResourceManager.GetString("Commands_Version_Description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Not initialized.
         /// </summary>
-        internal static string VersionCommandNotInitialized {
+        internal static string Commands_Version_NotInitialized {
             get {
-                return ResourceManager.GetString("VersionCommandNotInitialized", resourceCulture);
+                return ResourceManager.GetString("Commands_Version_NotInitialized", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Version not found from url: {0}.
+        ///   Looks up a localized string similar to A JSON-serialized definition data.
         /// </summary>
-        internal static string VersionNotFoundFromUrl {
+        internal static string Commands_Workflows_Add_DefinitionData {
             get {
-                return ResourceManager.GetString("VersionNotFoundFromUrl", resourceCulture);
+                return ResourceManager.GetString("Commands_Workflows_Add_DefinitionData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file containing JSON-serialized definition data.
+        /// </summary>
+        internal static string Commands_Workflows_Add_DefinitionDataFile {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Add_DefinitionDataFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add workflow.
+        /// </summary>
+        internal static string Commands_Workflows_AddDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_AddDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete workflow.
+        /// </summary>
+        internal static string Commands_Workflows_DeleteDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_DeleteDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow identity.
+        /// </summary>
+        internal static string Commands_Workflows_DeleteIdentityOption {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_DeleteIdentityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage and display the list and details of workflows..
+        /// </summary>
+        internal static string Commands_Workflows_Description {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get details about workflow.
+        /// </summary>
+        internal static string Commands_Workflows_DetailsDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_DetailsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow identity.
+        /// </summary>
+        internal static string Commands_Workflows_DetailsIdentityOption {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_DetailsIdentityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute workflow.
+        /// </summary>
+        internal static string Commands_Workflows_ExecuteDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_ExecuteDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow identity.
+        /// </summary>
+        internal static string Commands_Workflows_ExecuteIdentityOption {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_ExecuteIdentityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A JSON-serialized definition data.
+        /// </summary>
+        internal static string Commands_Workflows_Update_DefinitionData {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Update_DefinitionData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file containing JSON-serialized definition data.
+        /// </summary>
+        internal static string Commands_Workflows_Update_DefinitionDataFile {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Update_DefinitionDataFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update workflow.
+        /// </summary>
+        internal static string Commands_Workflows_UpdateDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_UpdateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow identity.
+        /// </summary>
+        internal static string Commands_Workflows_UpdateIdentityOption {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_UpdateIdentityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data conversion encountered an error. The system couldn&apos;t process the data format..
+        /// </summary>
+        internal static string ConsoleLogger_DataConversionError {
+            get {
+                return ResourceManager.GetString("ConsoleLogger_DataConversionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Something wrong happen during execute the application.
+        /// </summary>
+        internal static string Error_During_Initializing_Application {
+            get {
+                return ResourceManager.GetString("Error_During_Initializing_Application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The base location could not be found..
+        /// </summary>
+        internal static string LocationService_ErrorDuringGettingRootLocation {
+            get {
+                return ResourceManager.GetString("LocationService_ErrorDuringGettingRootLocation", resourceCulture);
             }
         }
     }

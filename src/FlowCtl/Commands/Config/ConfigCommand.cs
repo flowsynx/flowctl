@@ -8,14 +8,14 @@ namespace FlowCtl.Commands.Config;
 
 internal class ConfigCommand : BaseCommand<ConfigCommandOptions, ConfigCommandOptionsHandler>
 {
-    public ConfigCommand() : base("config", Resources.ConfigCommandDescription)
+    public ConfigCommand() : base("config", Resources.Commands_Config_Description)
     {
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: Resources.CommandAddressOption);
+            description: Resources.Commands_FlowSynxAddress);
 
         var outputOption = new Option<OutputType>(new[] { "-o", "--output" },
             getDefaultValue: () => OutputType.Json,
-            description: Resources.CommandOutputOption);
+            description: Resources.Commands_Output_Format);
         
         AddOption(addressOption);
         AddOption(outputOption);

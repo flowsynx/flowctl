@@ -4,20 +4,16 @@ namespace FlowCtl.Commands.Update;
 
 internal class UpdateCommand : BaseCommand<UpdateCommandOptions, UpdateCommandOptionsHandler>
 {
-    public UpdateCommand() : base("update", Resources.UpdateCommandDescription)
+    public UpdateCommand() : base("update", Resources.Commands_Update_Description)
     {
         var forceOption = new Option<bool>(new[] { "-f", "--force" }, 
             getDefaultValue: () => false, 
-            description: Resources.CommandForceOption);
+            description: Resources.Commands_Update_ForceTerminateOption);
 
         var flowSynxVersionOption = new Option<string?>("--flowsynx-version",
-            description: Resources.CommandFlowSynxVersionOption);
-
-        var dashboardVersionOption = new Option<string?>("--dashboard-version",
-            description: Resources.CommandDashboardVersionOption);
+            description: Resources.Commands_Update_FlowSynxVersionOption);
 
         AddOption(forceOption);
         AddOption(flowSynxVersionOption);
-        AddOption(dashboardVersionOption);
     }
 }

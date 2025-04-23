@@ -1,6 +1,6 @@
-﻿namespace FlowCtl.Commands.Plugins.Add;
+﻿namespace FlowCtl.Commands.Plugins.Uninstall;
 
-internal class AddPluginCommandOptions : ICommandOptions
+internal class UninstallPluginCommandOptions : ICommandOptions
 {
     public required string Type { get; set; }
     public required string Version { get; set; }

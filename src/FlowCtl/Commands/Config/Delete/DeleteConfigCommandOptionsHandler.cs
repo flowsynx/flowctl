@@ -42,7 +42,7 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
             var result = await _flowSynxClient.DeletePluginConfig(request, cancellationToken);
 
             if (result.StatusCode != 200)
-                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+                throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
 
             var payload = result.Payload;
             if (payload is { Succeeded: false })

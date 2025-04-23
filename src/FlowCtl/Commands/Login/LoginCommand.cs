@@ -4,37 +4,37 @@ namespace FlowCtl.Commands.Login;
 
 internal class LoginCommand : BaseCommand<LoginCommandOptions, LoginCommandOptionsHandler>
 {
-    public LoginCommand() : base("login", Resources.HealthCommandDescription)
+    public LoginCommand() : base("login", Resources.Commands_Login_Description)
     {
         var basicOption = new Option<bool?>("--basic", 
             getDefaultValue: () => false, 
-            description: "Login using basic authentication");
+            description: Resources.Commands_Login_BasicAuthenticationOption);
 
         var bearerOption = new Option<bool?>("--bearer",
             getDefaultValue: () => false,
-            description: "Login using bearer authentication");
+            description: Resources.Commands_Login_BearerAuthenticationOption);
 
         var oAuthOption = new Option<bool?>("--oauth",
             getDefaultValue: () => false,
-            description: "Login using OAuth2 via browser");
+            description: Resources.Commands_Login_OAuth2AuthenticationOption);
 
         var userameOption = new Option<string?>(new string[] { "-u", "--username" },
-            description: "User name for basic authentication");
+            description: Resources.Commands_Login_BasicAuthenticationUsernameOption);
 
         var passwordOption = new Option<string?>(new string[] { "-p", "--password" },
-            description: "Password for basic authentication");
+            description: Resources.Commands_Login_BasicAuthenticationPasswordOption);
 
         var tokenOption = new Option<string?>(new string[] { "-t", "--token" },
-            description: "Token for bearer authentication");
+            description: Resources.Commands_Login_BearerAuthenticationTokenOption);
 
         var authorityOption = new Option<string?>(new string[] { "-a", "--authority" },
-            description: "OAuth2 authority URL");
+            description: Resources.Commands_Login_OAuth2AuthenticationAuthorityUrlOption);
 
         var clientIdOption = new Option<string?>(new string[] { "-c", "--client-id" },
-            description: "OAuth2 client ID");
+            description: Resources.Commands_Login_OAuth2AuthenticationClientIdOption);
 
         var scopeOption = new Option<string?>(new string[] { "-s", "--scope" },
-            description: "Openid profile email, OAuth2 scopes");
+            description: Resources.Commands_Login_OAuth2AuthenticationScopeOption);
 
 
         AddOption(basicOption);

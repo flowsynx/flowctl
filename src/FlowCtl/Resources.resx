@@ -117,296 +117,310 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddConfigCommandCouldNotParseSpecifications" xml:space="preserve">
-    <value>Could not parse the entered specifications. Please check it and try again!</value>
+  <data name="AuthenticationExtensions_AuthenticationIsRequired" xml:space="preserve">
+    <value>Authentication required. Please log in first, then try again. Use login -h for more info.</value>
   </data>
-  <data name="AddConfigCommandDescription" xml:space="preserve">
-    <value>Add configuration section</value>
+  <data name="Commands_AddConfig_Data" xml:space="preserve">
+    <value>A JSON-serialized data</value>
   </data>
-  <data name="AddConfigCommandNameOption" xml:space="preserve">
-    <value>The unique configuration section name</value>
+  <data name="Commands_AddConfig_DataFile" xml:space="preserve">
+    <value>A file containing JSON-serialized data</value>
   </data>
-  <data name="AddConfigCommandSpecificationOption" xml:space="preserve">
-    <value>The specifications regarding configuration section. They should be passed in pairs of key value</value>
+  <data name="Commands_AddConfig_DataFileDoesNotExist" xml:space="preserve">
+    <value>The specified data file '{0}' does not exist.</value>
   </data>
-  <data name="AddConfigCommandTypeOption" xml:space="preserve">
-    <value>The type of connector supported by FlowSynx</value>
+  <data name="Commands_AddConfig_Description" xml:space="preserve">
+    <value>Add plugin configuration</value>
   </data>
-  <data name="CommandAddressOption" xml:space="preserve">
-    <value>The address that specify a http-based address to connect on remote FlowSynx system</value>
+  <data name="Commands_Config_Description" xml:space="preserve">
+    <value>Manage and display the list and details of plugin configuration</value>
   </data>
-  <data name="CommandCaseSensitiveOption" xml:space="preserve">
-    <value>Ignore or apply case sensitive in filters</value>
+  <data name="Commands_DeleteConfig_Description" xml:space="preserve">
+    <value>Delete plugin configuration</value>
   </data>
-  <data name="CommandDashboardVersionOption" xml:space="preserve">
-    <value>The version of the FlowSynx dashboard to install, for example: 0.1.0</value>
+  <data name="Commands_DeleteConfig_IdentityOption" xml:space="preserve">
+    <value>Plugin config identity</value>
   </data>
-  <data name="CommandFieldOption" xml:space="preserve">
-    <value>Desplay desired fields related to the result objects</value>
+  <data name="Commands_DetailsConfig_Description" xml:space="preserve">
+    <value>Get details about plugin configuration</value>
   </data>
-  <data name="CommandFilterOption" xml:space="preserve">
-    <value>Expressions filter to filter data</value>
+  <data name="Commands_DetailsConfig_IdentityOption" xml:space="preserve">
+    <value>Plugin config identity</value>
   </data>
-  <data name="CommandFlowSynxVersionOption" xml:space="preserve">
-    <value>The version of the FlowSynx system to install, for example: 0.1.0</value>
+  <data name="Commands_Error_DuringProcessingRequest" xml:space="preserve">
+    <value>An error occurred during the processing of the request.</value>
   </data>
-  <data name="CommandForceOption" xml:space="preserve">
-    <value>Force terminate FlowSynx system and Dashboard if they are running</value>
+  <data name="Commands_FlowSynxAddress" xml:space="preserve">
+    <value>The address that specifies the HTTP endpoint used to connect to the flowsynx system</value>
   </data>
-  <data name="CommandFullOption" xml:space="preserve">
-    <value>Full numbers instead of human-readable</value>
-  </data>
-  <data name="CommandKindOption" xml:space="preserve">
-    <value>Kind of entity. Valid values are File, Directory, and FileAndDirectory</value>
-  </data>
-  <data name="CommandLimitOption" xml:space="preserve">
-    <value>The maximum number or percentage of results to return [default: off]</value>
-  </data>
-  <data name="CommandOutputOption" xml:space="preserve">
-    <value>Formatting CLI output</value>
-  </data>
-  <data name="CommandPathOption" xml:space="preserve">
-    <value>The storage path from which the about information is to be retrieved</value>
-  </data>
-  <data name="CommandRecurseOption" xml:space="preserve">
-    <value>Apply recursion on filtering entities in the specified path</value>
-  </data>
-  <data name="CommandSortOption" xml:space="preserve">
-    <value>Sorting entities based on field name and ascending and descending. Like Property ASC, Property2 DESC [default: off]</value>
-  </data>
-  <data name="ConfigCommandDescription" xml:space="preserve">
-    <value>Manage configurations related to FlowSynx System</value>
-  </data>
-  <data name="ConfigCommandTypeOption" xml:space="preserve">
-    <value>The type of configuration item</value>
-  </data>
-  <data name="DashboardCommandDescription" xml:space="preserve">
-    <value>Run and execute the FlowSynx dashboard</value>
-  </data>
-  <data name="DashboardVersionCommandDescription" xml:space="preserve">
-    <value>Display the version for FlowSynx dashboard</value>
-  </data>
-  <data name="DeleteConfigCommandDescription" xml:space="preserve">
-    <value>Delete configuration section</value>
-  </data>
-  <data name="DetailsConfigCommandDescription" xml:space="preserve">
-    <value>Get details about configuration section</value>
-  </data>
-  <data name="DetailsConfigCommandNameOption" xml:space="preserve">
-    <value>The configuration section name</value>
-  </data>
-  <data name="DownloadFailedWithStatus" xml:space="preserve">
-    <value>Download failed with {0}</value>
-  </data>
-  <data name="ErrorOccurredDuringProcessingRequest" xml:space="preserve">
-    <value>It seems there is an error occurred during processing the request.</value>
-  </data>
-  <data name="FlowSynxEngineDownloadedAndInstalledSuccessfully" xml:space="preserve">
-    <value>FlowSynx engine is downloaded and installed successfully in path '{0}'.</value>
-  </data>
-  <data name="FlowSynxEngineIsNotInstalled" xml:space="preserve">
-    <value>FlowSynx engine is not installed. Please run the 'synx init -h' command to see the details.</value>
-  </data>
-  <data name="FlowSynxLocationBaseLocationNotFound" xml:space="preserve">
-    <value>Base location not found</value>
-  </data>
-  <data name="FlowSynxLocationRootLocationNotFound" xml:space="preserve">
-    <value>Root location not found</value>
-  </data>
-  <data name="HealthCommandDescription" xml:space="preserve">
+  <data name="Commands_Health_Description" xml:space="preserve">
     <value>Display the health status of FlowSynx System</value>
   </data>
-  <data name="InitCommandBeginningInitialize" xml:space="preserve">
+  <data name="Commands_Init_BeginningInitialize" xml:space="preserve">
     <value>Beginning Initialize...</value>
   </data>
-  <data name="InitCommandDescription" xml:space="preserve">
-    <value>Install and initialize FlowSynx system and Dashboard on the current user profile</value>
+  <data name="Commands_Init_Description" xml:space="preserve">
+    <value>Installs and initializes the FlowSynx system for the current user profile.</value>
   </data>
-  <data name="InvokeCommandDataFileOption" xml:space="preserve">
-    <value>A file containing the JSON serialized data</value>
-  </data>
-  <data name="InvokeCommandDataOption" xml:space="preserve">
-    <value>The JSON serialized data string</value>
-  </data>
-  <data name="InvokeCommandDescription" xml:space="preserve">
-    <value>Invoke a method on FlowSynx system</value>
-  </data>
-  <data name="InvokeCommandMethodOption" xml:space="preserve">
-    <value>The method to invoke</value>
-  </data>
-  <data name="InvokeCommandVerbOption" xml:space="preserve">
-    <value>The HTTP verb to use</value>
-  </data>
-  <data name="LogsCommandDescription" xml:space="preserve">
-    <value>Get FlowSynx System logs</value>
-  </data>
-  <data name="LogsCommandLogLevelOption" xml:space="preserve">
-    <value>The log verbosity to controls the amount of detail emitted for each event that is logged. Valid values are Dbug|Info|Warn|Fail|Crit [default: off]</value>
-  </data>
-  <data name="ConnectorDetailsCommandDescription" xml:space="preserve">
-    <value>Display details about a particular connector</value>
-  </data>
-  <data name="ConnectorDetailsCommandTypeOption" xml:space="preserve">
-    <value>The type of the connector</value>
-  </data>
-  <data name="ConnectorsCommandDescription" xml:space="preserve">
-    <value>Display list and details of connectors supported by FlowSynx system</value>
-  </data>
-  <data name="ConnectorsCommandTypeOption" xml:space="preserve">
-    <value>The namespace of connector (e.g., Storage)</value>
-  </data>
-  <data name="ReadCommandFileAlreadyExist" xml:space="preserve">
-    <value>File '{0}' is already exist!</value>
-  </data>
-  <data name="ReadCommandSaveToOption" xml:space="preserve">
-    <value>The path where the streaming data are going to be saved</value>
-  </data>
-  <data name="RootCommandDescription" xml:space="preserve">
-    <value>flowctl controls the FlowSynx engine.
-Find more information at: https://flowsynx.io/docs/getting-started/install-flowctl</value>
-  </data>
-  <data name="RunCommandConfigFileOption" xml:space="preserve">
-    <value>FlowSynx configuration file</value>
-  </data>
-  <data name="RunCommandDescription" xml:space="preserve">
-    <value>Run and execute the FlowSynx system on the current user profile</value>
-  </data>
-  <data name="RunCommandEnableHealthCheckOption" xml:space="preserve">
-    <value>Enable health checks for the FlowSynx</value>
-  </data>
-  <data name="RunCommandEnableLogOption" xml:space="preserve">
-    <value>Enable logging to records the details of events during FlowSynx running</value>
-  </data>
-  <data name="RunCommandLogFileOption" xml:space="preserve">
-    <value>Log file path to store system logs information</value>
-  </data>
-  <data name="RunCommandLogLevelOption" xml:space="preserve">
-    <value>The log verbosity to controls the amount of detail emitted for each event that is logged</value>
-  </data>
-  <data name="RunCommandOpenApiOption" xml:space="preserve">
-    <value>Enable OpenApi specification for FlowSynx</value>
-  </data>
-  <data name="SomethingWrongHappen" xml:space="preserve">
-    <value>Something wrong happen during execute the application</value>
-  </data>
-  <data name="SpinnerFetching" xml:space="preserve">
-    <value>Fetching...</value>
-  </data>
-  <data name="StartChangeDashboardExecutionMode" xml:space="preserve">
-    <value>Starting to change the execution mode of Dashboard.</value>
-  </data>
-  <data name="StartChangeFlowSynxExecutionMode" xml:space="preserve">
-    <value>Starting to change the execution mode of FlowSynx.</value>
-  </data>
-  <data name="StartDownloadCliBinary" xml:space="preserve">
-    <value>Start download Cli binary</value>
-  </data>
-  <data name="StartDownloadDashboardBinary" xml:space="preserve">
-    <value>Start download Dashboard binary</value>
-  </data>
-  <data name="StartDownloadFlowSynxBinary" xml:space="preserve">
-    <value>Start download FlowSynx binary</value>
-  </data>
-  <data name="StartingExtractDashboardBinary" xml:space="preserve">
-    <value>Starting extract Dashboard binary</value>
-  </data>
-  <data name="StartingExtractFlowSynxBinary" xml:space="preserve">
-    <value>Starting extract FlowSynx binary</value>
-  </data>
-  <data name="StartValidatingCliBinary" xml:space="preserve">
-    <value>Start validating Cli binary</value>
-  </data>
-  <data name="StartValidatingDashboardBinary" xml:space="preserve">
-    <value>Start validating Dashboard binary</value>
-  </data>
-  <data name="StartValidatingFlowSynxBinary" xml:space="preserve">
-    <value>Start validating FlowSynx binary</value>
-  </data>
-  <data name="StopCommandDescription" xml:space="preserve">
-    <value>Stop the FlowSynx system and its associated apps which running on the current user profile</value>
-  </data>
-  <data name="StopCommandFlowSynxStopped" xml:space="preserve">
-    <value>The FlowSynx system was stopped successfully.</value>
-  </data>
-  <data name="StorageAboutCommandDescription" xml:space="preserve">
-    <value>Get about information from the storage</value>
-  </data>
-  <data name="TableFormattingNotSupportList" xml:space="preserve">
-    <value>Table formatting doesn't support list of object. Please use other formats!</value>
-  </data>
-  <data name="TheDownloadedDataMayHasBeenCorrupted" xml:space="preserve">
+  <data name="Commands_Init_DownloadedDataCorrupted" xml:space="preserve">
     <value>The downloaded data may has been corrupted!</value>
   </data>
-  <data name="TheFlowSynxEngineIsAlreadyInitialized" xml:space="preserve">
-    <value>The FlowSynx engine is already initialized.</value>
+  <data name="Commands_Init_FlowSynxSystemDownloadedAndInstalledSuccessfully" xml:space="preserve">
+    <value>FlowSynx system is downloaded and installed successfully in path '{0}'.</value>
   </data>
-  <data name="UninstallCommandBeginningUninstalling" xml:space="preserve">
-    <value>Beginning uninstalling...</value>
+  <data name="Commands_Init_FlowSynxSystemIsAlreadyInitialized" xml:space="preserve">
+    <value>The FlowSynx system is already initialized.</value>
   </data>
-  <data name="UninstallCommandDashboardIsRunning" xml:space="preserve">
-    <value>The FlowSynx dashboard is running. Please stop it and try uninstall again.</value>
+  <data name="Commands_Init_FlowSynxVersionOption" xml:space="preserve">
+    <value>The version of the FlowSynx system to install, for example: 1.0.0</value>
   </data>
-  <data name="UninstallCommandDashboardStoppedSuccessfully" xml:space="preserve">
-    <value>The FlowSynx dashboard was stopped successfully.</value>
+  <data name="Commands_Init_StartChangeExecutionMode" xml:space="preserve">
+    <value>Starting to change the execution mode of FlowSynx.</value>
   </data>
-  <data name="UninstallCommandDescription" xml:space="preserve">
-    <value>Uninstalling FlowSynx system, Dashboard, and Cli from the current user profile and machine</value>
+  <data name="Commands_Init_StartDownloadFlowSynxSystemBinary" xml:space="preserve">
+    <value>Start download FlowSynx system binary</value>
   </data>
-  <data name="UninstallCommandFlowSynxIsRunning" xml:space="preserve">
-    <value>The FlowSynx engine is running. Please stop it by run the command: 'Synx stop', and try uninstall again.</value>
+  <data name="Commands_Init_StartExtractingFlowSynxSystemBinary" xml:space="preserve">
+    <value>Starting extract FlowSynx system binary</value>
   </data>
-  <data name="UninstallCommandFlowSynxStoppedSuccessfully" xml:space="preserve">
-    <value>The FlowSynx system was stopped successfully.</value>
+  <data name="Commands_Init_StartValidatingFlowSynxSystemBinary" xml:space="preserve">
+    <value>Start validating FlowSynx system binary</value>
   </data>
-  <data name="UninstallCommandUninstallingIsDone" xml:space="preserve">
-    <value>Uninstalling is done!</value>
-  </data>
-  <data name="UpdateCommandCheckingForCliUpdates" xml:space="preserve">
-    <value>Checking for CLI updates...</value>
-  </data>
-  <data name="UpdateCommandCheckingForDashboardUpdates" xml:space="preserve">
-    <value>Checking for Dashboard updates...</value>
-  </data>
-  <data name="UpdateCommandCheckingForFlowSynxUpdates" xml:space="preserve">
-    <value>Checking for FlowSynx updates...</value>
-  </data>
-  <data name="UpdateCommandCliIsUpdated" xml:space="preserve">
-    <value>The current CLI version is up to dated</value>
-  </data>
-  <data name="UpdateCommandDashboardIsRunning" xml:space="preserve">
-    <value>The Dashboard is running. Please stop it before doing uninstall again.</value>
-  </data>
-  <data name="UpdateCommandDashboardIsUpdated" xml:space="preserve">
-    <value>The current Dashboard's version is up to dated</value>
-  </data>
-  <data name="UpdateCommandDescription" xml:space="preserve">
-    <value>Update FlowSynx system, Dashboard, and Cli</value>
-  </data>
-  <data name="UpdateCommandFlowSynxIsRunning" xml:space="preserve">
-    <value>The FlowSynx system is running. Please stop it before doing uninstall again.</value>
-  </data>
-  <data name="UpdateCommandFlowSynxIsUpdated" xml:space="preserve">
-    <value>The current FlowSynx's version is up to dated</value>
-  </data>
-  <data name="UpdateCommandFlowSynxUpdatedSuccessfully" xml:space="preserve">
-    <value>The FlowSynx system updated successfully.</value>
-  </data>
-  <data name="UseUpdateCommandToUpdateFlowSynxAndDashboard" xml:space="preserve">
-    <value>You can use command 'Synx update' to check and update the FlowSynx and Dashboard.</value>
-  </data>
-  <data name="ValidatingDownloadFail" xml:space="preserve">
+  <data name="Commands_Init_ValidatingFlowSynxSystemFailed" xml:space="preserve">
     <value>Validating download - Fail!</value>
   </data>
-  <data name="VersionCommandDescription" xml:space="preserve">
-    <value>Display the FlowSynx system and Cli version</value>
+  <data name="Commands_Login_BasicAuthenticationLoggedSuccessfully" xml:space="preserve">
+    <value>Logged in with Basic Authentication successfully.</value>
   </data>
-  <data name="VersionCommandFullOption" xml:space="preserve">
-    <value>Display full details about the running FlowSynx system</value>
+  <data name="Commands_Login_BasicAuthenticationOption" xml:space="preserve">
+    <value>Login using basic authentication</value>
   </data>
-  <data name="VersionCommandNotInitialized" xml:space="preserve">
+  <data name="Commands_Login_BasicAuthenticationPasswordOption" xml:space="preserve">
+    <value>Specifies the password for basic authentication</value>
+  </data>
+  <data name="Commands_Login_BasicAuthenticationUsernameOption" xml:space="preserve">
+    <value>Specifies the username for basic authentication</value>
+  </data>
+  <data name="Commands_Login_BasicAuthentication_EnterUsernameAndPassword" xml:space="preserve">
+    <value>Please enter Username and Password!</value>
+  </data>
+  <data name="Commands_Login_BearerAuthenticationEnterToken" xml:space="preserve">
+    <value>Please enter token!</value>
+  </data>
+  <data name="Commands_Login_BearerAuthenticationLoggedSuccessfully" xml:space="preserve">
+    <value>Logged in with Bearer Token successfully.</value>
+  </data>
+  <data name="Commands_Login_BearerAuthenticationOption" xml:space="preserve">
+    <value>Login using bearer authentication</value>
+  </data>
+  <data name="Commands_Login_BearerAuthenticationTokenOption" xml:space="preserve">
+    <value>Specifies the token for bearer authentication</value>
+  </data>
+  <data name="Commands_Login_Description" xml:space="preserve">
+    <value>Authenticates the user and establishes a session with the FlowSynx system</value>
+  </data>
+  <data name="Commands_Login_OAuth2AuthenticationAuthorityUrlOption" xml:space="preserve">
+    <value>Specifies the OAuth2 authority URL</value>
+  </data>
+  <data name="Commands_Login_OAuth2AuthenticationClientIdOption" xml:space="preserve">
+    <value>Specifies the OAuth2 client ID</value>
+  </data>
+  <data name="Commands_Login_OAuth2AuthenticationEnterAuthorityAndClientId" xml:space="preserve">
+    <value>Please provide --authority and --client-id for OAuth2 login.</value>
+  </data>
+  <data name="Commands_Login_OAuth2AuthenticationLoggedSuccessfully" xml:space="preserve">
+    <value>Logged in with OAuth successfully.</value>
+  </data>
+  <data name="Commands_Login_OAuth2AuthenticationOption" xml:space="preserve">
+    <value>Login using OAuth2 via browser</value>
+  </data>
+  <data name="Commands_Login_OAuth2AuthenticationScopeOption" xml:space="preserve">
+    <value>Specifies the OAuth2 scopes like profile email</value>
+  </data>
+  <data name="Commands_Login_SpecifyAuthenticationType" xml:space="preserve">
+    <value>Please specify one of the authentication type: --basic, --bearer, or --oauth</value>
+  </data>
+  <data name="Commands_Logout_Description" xml:space="preserve">
+    <value>Close authentication session with the FlowSynx system</value>
+  </data>
+  <data name="Commands_Logout_LogoutSuccessfully" xml:space="preserve">
+    <value>Logout successfully.</value>
+  </data>
+  <data name="Commands_Logs_Description" xml:space="preserve">
+    <value>Get FlowSynx System logs</value>
+  </data>
+  <data name="Commands_Logs_EndDateOption" xml:space="preserve">
+    <value>Specifies the end date from which log entries should be retrieved.</value>
+  </data>
+  <data name="Commands_Logs_ExportToFileIsAlreadyExist" xml:space="preserve">
+    <value>File '{0}' is already exist!</value>
+  </data>
+  <data name="Commands_Logs_ExportToOption" xml:space="preserve">
+    <value>The path where the logs data are going to exported</value>
+  </data>
+  <data name="Commands_Logs_FromDateOption" xml:space="preserve">
+    <value>Specifies the start date from which log entries should be retrieved.</value>
+  </data>
+  <data name="Commands_Logs_LogLevelOption" xml:space="preserve">
+    <value>The log verbosity to controls the amount of detail emitted for each event that is logged. Valid values are Dbug|Info|Warn|Fail|Crit [default: off]</value>
+  </data>
+  <data name="Commands_Logs_MessageOption" xml:space="preserve">
+    <value>Specifies the log message content to be searched</value>
+  </data>
+  <data name="Commands_Output_Format" xml:space="preserve">
+    <value>Formatting Command-Line output</value>
+  </data>
+  <data name="Commands_Plugins_Description" xml:space="preserve">
+    <value>Manage and display the list and details of plugins supported by the FlowSynx system.</value>
+  </data>
+  <data name="Commands_Plugins_DetailsDescription" xml:space="preserve">
+    <value>Get details about plugin</value>
+  </data>
+  <data name="Commands_Plugins_DetailsIdentityOption" xml:space="preserve">
+    <value>Plugin identity</value>
+  </data>
+  <data name="Commands_Plugins_InstallDescription" xml:space="preserve">
+    <value>Install plugin</value>
+  </data>
+  <data name="Commands_Plugins_NewVersionOption" xml:space="preserve">
+    <value>Specifies the new plugin version should be installed.</value>
+  </data>
+  <data name="Commands_Plugins_OldVersionOption" xml:space="preserve">
+    <value>Specifies the old plugin version should be uninstalled.</value>
+  </data>
+  <data name="Commands_Plugins_TypeOption" xml:space="preserve">
+    <value>Specifies the plugin type should be installed.</value>
+  </data>
+  <data name="Commands_Plugins_UninstallDescription" xml:space="preserve">
+    <value>Uninstall plugin</value>
+  </data>
+  <data name="Commands_Plugins_UpdateDescription" xml:space="preserve">
+    <value>Update plugin</value>
+  </data>
+  <data name="Commands_Plugins_VersionOption" xml:space="preserve">
+    <value>Specifies the plugin version should be installed.</value>
+  </data>
+  <data name="Commands_RootDescription" xml:space="preserve">
+    <value>flowctl controls the FlowSynx engine</value>
+  </data>
+  <data name="Commands_Run_Description" xml:space="preserve">
+    <value>Run and execute the FlowSynx system under the current user profile</value>
+  </data>
+  <data name="Commands_Run_FlowSynxIsNotInstalled" xml:space="preserve">
+    <value>The FlowSynx system is not installed. Please run the 'synx init -h' command for more details.</value>
+  </data>
+  <data name="Commands_Stop_Description" xml:space="preserve">
+    <value>Stop the FlowSynx system and its associated applications running under the current user profile.</value>
+  </data>
+  <data name="Commands_Stop_StopSuccessfully" xml:space="preserve">
+    <value>The FlowSynx system has been successfully stopped.</value>
+  </data>
+  <data name="Commands_Uninstall_BeginningUninstalling" xml:space="preserve">
+    <value>Beginning uninstalling...</value>
+  </data>
+  <data name="Commands_Uninstall_Description" xml:space="preserve">
+    <value>Uninstalling the FlowSynx System from the current user's profile and local machine environment</value>
+  </data>
+  <data name="Commands_Uninstall_FlowSynxSystemIsRunning" xml:space="preserve">
+    <value>The FlowSynx system is currently running. Please stop it before attempting to uninstall it.</value>
+  </data>
+  <data name="Commands_Uninstall_ForceTerminateOption" xml:space="preserve">
+    <value>Forcefully terminates the FlowSynx system processes if it is currently running.</value>
+  </data>
+  <data name="Commands_Uninstall_StopSuccessfully" xml:space="preserve">
+    <value>The FlowSynx system has been successfully stopped.</value>
+  </data>
+  <data name="Commands_Uninstall_UninstalledSuccessfully" xml:space="preserve">
+    <value>The FlowSynx system has been uninstalled successfully.</value>
+  </data>
+  <data name="Commands_Update_CheckingForFlowSynxSystemUpdates" xml:space="preserve">
+    <value>Checking for FlowSynx updates...</value>
+  </data>
+  <data name="Commands_Update_Description" xml:space="preserve">
+    <value>Updates the FlowSynx system</value>
+  </data>
+  <data name="Commands_Update_DownloadedDataCorrupted" xml:space="preserve">
+    <value>The downloaded data may has been corrupted!</value>
+  </data>
+  <data name="Commands_Update_FlowSynxSystemIsRunning" xml:space="preserve">
+    <value>The FlowSynx system is currently running. Please stop it before attempting to update it.</value>
+  </data>
+  <data name="Commands_Update_FlowSynxSystemIsUpToDate" xml:space="preserve">
+    <value>The current version of FlowSynx system is up to date</value>
+  </data>
+  <data name="Commands_Update_FlowSynxVersionOption" xml:space="preserve">
+    <value>The version of the FlowSynx system to update, for example: 1.0.0</value>
+  </data>
+  <data name="Commands_Update_ForceTerminateOption" xml:space="preserve">
+    <value>Forcefully terminates the FlowSynx system processes if it is currently running.</value>
+  </data>
+  <data name="Commands_Update_StartDownloadFlowSynxSystemBinary" xml:space="preserve">
+    <value>Start download FlowSynx system binary</value>
+  </data>
+  <data name="Commands_Update_StartExtractingFlowSynxSystemBinary" xml:space="preserve">
+    <value>Starting extract FlowSynx system binary</value>
+  </data>
+  <data name="Commands_Update_StartValidatingFlowSynxSystemBinary" xml:space="preserve">
+    <value>Start validating FlowSynx system binary</value>
+  </data>
+  <data name="Commands_Update_ValidatingFlowSynxSystemFailed" xml:space="preserve">
+    <value>Validating download - Fail!</value>
+  </data>
+  <data name="Commands_Version_Description" xml:space="preserve">
+    <value>Displays the FlowSynx system version and CLI version.</value>
+  </data>
+  <data name="Commands_Version_NotInitialized" xml:space="preserve">
     <value>Not initialized</value>
   </data>
-  <data name="VersionNotFoundFromUrl" xml:space="preserve">
-    <value>Version not found from url: {0}</value>
+  <data name="Commands_Workflows_AddDescription" xml:space="preserve">
+    <value>Add workflow</value>
+  </data>
+  <data name="Commands_Workflows_Add_DefinitionData" xml:space="preserve">
+    <value>A JSON-serialized definition data</value>
+  </data>
+  <data name="Commands_Workflows_Add_DefinitionDataFile" xml:space="preserve">
+    <value>A file containing JSON-serialized definition data</value>
+  </data>
+  <data name="Commands_Workflows_DeleteDescription" xml:space="preserve">
+    <value>Delete workflow</value>
+  </data>
+  <data name="Commands_Workflows_DeleteIdentityOption" xml:space="preserve">
+    <value>Workflow identity</value>
+  </data>
+  <data name="Commands_Workflows_Description" xml:space="preserve">
+    <value>Manage and display the list and details of workflows.</value>
+  </data>
+  <data name="Commands_Workflows_DetailsDescription" xml:space="preserve">
+    <value>Get details about workflow</value>
+  </data>
+  <data name="Commands_Workflows_DetailsIdentityOption" xml:space="preserve">
+    <value>Workflow identity</value>
+  </data>
+  <data name="Commands_Workflows_ExecuteDescription" xml:space="preserve">
+    <value>Execute workflow</value>
+  </data>
+  <data name="Commands_Workflows_ExecuteIdentityOption" xml:space="preserve">
+    <value>Workflow identity</value>
+  </data>
+  <data name="Commands_Workflows_UpdateDescription" xml:space="preserve">
+    <value>Update workflow</value>
+  </data>
+  <data name="Commands_Workflows_UpdateIdentityOption" xml:space="preserve">
+    <value>Workflow identity</value>
+  </data>
+  <data name="Commands_Workflows_Update_DefinitionData" xml:space="preserve">
+    <value>A JSON-serialized definition data</value>
+  </data>
+  <data name="Commands_Workflows_Update_DefinitionDataFile" xml:space="preserve">
+    <value>A file containing JSON-serialized definition data</value>
+  </data>
+  <data name="ConsoleLogger_DataConversionError" xml:space="preserve">
+    <value>Data conversion encountered an error. The system couldn't process the data format.</value>
+  </data>
+  <data name="Error_During_Initializing_Application" xml:space="preserve">
+    <value>Something wrong happen during execute the application</value>
+  </data>
+  <data name="LocationService_ErrorDuringGettingRootLocation" xml:space="preserve">
+    <value>The base location could not be found.</value>
   </data>
 </root>

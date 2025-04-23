@@ -5,29 +5,29 @@ namespace FlowCtl.Commands.Logs;
 
 internal class LogsCommand : BaseCommand<LogsCommandOptions, LogsCommandOptionsHandler>
 {
-    public LogsCommand() : base("logs", Resources.LogsCommandDescription)
+    public LogsCommand() : base("logs", Resources.Commands_Logs_Description)
     {
         var levelOption = new Option<string?>(new[] { "-l", "--level" },
-            description: Resources.InvokeCommandDataOption);
+            description: Resources.Commands_Logs_LogLevelOption);
 
         var fromDateOption = new Option<string?>(new[] { "-f", "--from-date" },
-            description: Resources.InvokeCommandDataFileOption);
+            description: Resources.Commands_Logs_FromDateOption);
 
         var toDateOption = new Option<string?>(new[] { "-t", "--to-date" },
-            description: Resources.ReadCommandSaveToOption);
+            description: Resources.Commands_Logs_EndDateOption);
 
         var messageDateOption = new Option<string?>(new[] { "-m", "--message" },
-            description: Resources.ReadCommandSaveToOption);
+            description: Resources.Commands_Logs_MessageOption);
 
         var exportPathOption = new Option<string?>(new[] { "-e", "--export-to" },
-            description: Resources.ReadCommandSaveToOption);
+            description: Resources.Commands_Logs_ExportToOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: Resources.CommandAddressOption);
+            description: Resources.Commands_FlowSynxAddress);
 
         var outputOption = new Option<OutputType>(new[] { "-o", "--output" },
             getDefaultValue: () => OutputType.Json,
-            description: Resources.CommandOutputOption);
+            description: Resources.Commands_Output_Format);
 
         AddOption(levelOption);
         AddOption(fromDateOption);

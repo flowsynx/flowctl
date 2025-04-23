@@ -4,19 +4,19 @@ namespace FlowCtl.Commands.Workflows.Update;
 
 internal class UpdateWorkflowCommand : BaseCommand<UpdateWorkflowCommandOptions, UpdateWorkflowCommandOptionsHandler>
 {
-    public UpdateWorkflowCommand() : base("update", Resources.ConnectorDetailsCommandDescription)
+    public UpdateWorkflowCommand() : base("update", Resources.Commands_Workflows_UpdateDescription)
     {
         var identityOption = new Option<string?>(new[] { "-i", "--id" },
-            description: Resources.CommandFieldOption) { IsRequired = true };
+            description: Resources.Commands_Workflows_UpdateIdentityOption) { IsRequired = true };
 
         var definitionOption = new Option<string?>(new[] { "-d", "--definition" },
-            description: Resources.CommandFieldOption);
+            description: Resources.Commands_Workflows_Update_DefinitionData);
 
         var definitionFileOption = new Option<string?>(new[] { "-f", "--definition-file" },
-            description: Resources.InvokeCommandDataFileOption);
+            description: Resources.Commands_Workflows_Update_DefinitionDataFile);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
-            description: Resources.CommandAddressOption);
+            description: Resources.Commands_FlowSynxAddress);
 
         AddOption(identityOption);
         AddOption(definitionOption);

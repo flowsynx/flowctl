@@ -42,7 +42,7 @@ internal class WorkflowDetailsCommandOptionsHandler : ICommandOptionsHandler<Wor
             var result = await _flowSynxClient.WorkflowDetails(request, cancellationToken);
 
             if (result.StatusCode != 200)
-                throw new Exception(Resources.ErrorOccurredDuringProcessingRequest);
+                throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
 
             var payload = result.Payload;
             if (payload is { Succeeded: false })
