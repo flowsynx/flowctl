@@ -127,10 +127,10 @@
     <value>Asset '{0}' not found in release '{1}'.</value>
   </data>
   <data name="JsonDeserializer_InputValueCanNotBeEmpty" xml:space="preserve">
-    <value>Input value can&amp;apos;t be empty or null.</value>
+    <value>Input value can't be empty or null.</value>
   </data>
   <data name="JsonSerializer_InputValueCanNotBeEmpty" xml:space="preserve">
-    <value>Input value can&amp;apos;t be empty or null.</value>
+    <value>Input value can't be empty or null.</value>
   </data>
   <data name="ProcessHandler_ProcessKilled" xml:space="preserve">
     <value>Process '{0}' killed.</value>

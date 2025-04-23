@@ -52,7 +52,7 @@ public class ProcessHandlerTests
         _handler.Terminate("myproc", "localhost");
 
         processMock.Verify(p => p.Kill(), Times.Once);
-        _loggerMock.Verify(l => l.Write(" Process 'myproc' killed."), Times.Once);
+        _loggerMock.Verify(l => l.Write("Process 'myproc' killed."), Times.Once);
     }
 
     [Fact]
@@ -102,6 +102,6 @@ public class ProcessHandlerTests
 
         Assert.True(result);
         processMock.Verify(p => p.Kill(), Times.Once);
-        _loggerMock.Verify(l => l.Write(" Process 'myproc' killed."), Times.Once);
+        _loggerMock.Verify(l => l.Write("Process 'myproc' killed."), Times.Once);
     }
 }

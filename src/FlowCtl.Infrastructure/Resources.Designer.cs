@@ -88,7 +88,7 @@ namespace FlowCtl.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input value can&amp;apos;t be empty or null..
+        ///   Looks up a localized string similar to Input value can&apos;t be empty or null..
         /// </summary>
         internal static string JsonDeserializer_InputValueCanNotBeEmpty {
             get {
@@ -97,7 +97,7 @@ namespace FlowCtl.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input value can&amp;apos;t be empty or null..
+        ///   Looks up a localized string similar to Input value can&apos;t be empty or null..
         /// </summary>
         internal static string JsonSerializer_InputValueCanNotBeEmpty {
             get {
