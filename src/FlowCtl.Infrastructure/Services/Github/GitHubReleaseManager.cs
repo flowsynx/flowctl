@@ -26,7 +26,7 @@ public class GitHubReleaseManager : IGitHubReleaseManager
     {
         var release = await GetReleaseByVersionOrLatest(owner, repository, versionTag);
         var asset = release.Assets.FirstOrDefault(a => a.Name == assetName)
-            ?? throw new Exception($"Asset '{assetName}' not found in release '{release.TagName}'.");
+            ?? throw new Exception(string.Format(Resources.GithubReleaseManager_AssetNotFound, assetName, release.TagName));
 
         var response = await _httpClient.GetAsync(asset.BrowserDownloadUrl);
         response.EnsureSuccessStatusCode();

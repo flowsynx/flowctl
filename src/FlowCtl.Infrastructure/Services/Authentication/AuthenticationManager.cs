@@ -62,7 +62,7 @@ public class AuthenticationManager : IAuthenticationManager
         var result = await client.LoginAsync(new LoginRequest());
 
         if (result.IsError)
-            throw new Exception("OAuth login failed: " + result.Error);
+            throw new Exception(string.Format(Resources.AuthenticationManager_LoginOAuthAsync, result.Error));
 
         var data = new AuthenticationData
         {

@@ -30,7 +30,7 @@ public class ArchiveExtractor : IArchiveExtractor
         }
         else
         {
-            throw new NotSupportedException($"Unsupported archive format: {extension}");
+            throw new NotSupportedException(string.Format(Resources.ArchiveExtractor_NotSupportedFormat, extension));
         }
     }
 

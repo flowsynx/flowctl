@@ -28,7 +28,7 @@ public class SystemBrowser : IBrowser
         var context = await listener.GetContextAsync();
 
         var response = context.Response;
-        string html = "<h1>You may close this window.</h1>";
+        string html = Resources.SystemBrowser_InvokeAsync;
         var buffer = Encoding.UTF8.GetBytes(html);
         response.ContentLength64 = buffer.Length;
         response.OutputStream.Write(buffer, 0, buffer.Length);

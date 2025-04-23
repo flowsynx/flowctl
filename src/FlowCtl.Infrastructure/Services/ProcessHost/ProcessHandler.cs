@@ -27,7 +27,7 @@ public class ProcessHandler : IProcessHandler
 
         foreach (var process in processes)
         {
-            _flowCtlLogger.Write($" Process '{process.ProcessName}' killed.");
+            _flowCtlLogger.Write(string.Format(Resources.ProcessHandler_ProcessKilled, process.ProcessName));
             process.Kill();
         }
     }

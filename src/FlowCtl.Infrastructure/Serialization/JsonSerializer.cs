@@ -20,7 +20,7 @@ public class JsonSerializer : IJsonSerializer
         {
             if (input is null)
             {
-                throw new FlowCtlException("Input value can't be empty or null.");
+                throw new FlowCtlException(Resources.JsonSerializer_InputValueCanNotBeEmpty);
             }
 
             var settings = new JsonSerializerSettings
