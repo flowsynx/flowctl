@@ -38,8 +38,8 @@ internal class InstallPluginCommandOptionsHandler : ICommandOptionsHandler<Insta
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var request = new AddPluginRequest { Type = options.Type, Version = options.Version };
-            var result = await _flowSynxClient.AddPlugin(request, cancellationToken);
+            var request = new InstallPluginRequest { Type = options.Type, Version = options.Version };
+            var result = await _flowSynxClient.InstallPlugin(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

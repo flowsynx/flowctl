@@ -38,8 +38,8 @@ internal class UninstallPluginCommandOptionsHandler : ICommandOptionsHandler<Uni
             if (!string.IsNullOrEmpty(options.Address))
                 _flowSynxClient.ChangeConnection(options.Address);
 
-            var request = new DeletePluginRequest { Type = options.Type, Version = options.Version };
-            var result = await _flowSynxClient.DeletePlugin(request, cancellationToken);
+            var request = new UninstallPluginRequest { Type = options.Type, Version = options.Version };
+            var result = await _flowSynxClient.UninstallPlugin(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
