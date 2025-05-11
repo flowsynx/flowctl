@@ -26,9 +26,12 @@ internal class HealthCommandOptionsHandler : ICommandOptionsHandler<HealthComman
         try
         {
             if (!string.IsNullOrEmpty(options.Address))
-                _flowSynxClient.ChangeConnection(options.Address);
+            {
+                var connection = new FlowSynxClientConnection(options.Address);
+                _flowSynxClient.SetConnection(connection);
+            }
 
-            var result = await _flowSynxClient.Health(cancellationToken);
+            var result = await _flowSynxClient.HealthCheck.Check(cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

@@ -367,60 +367,6 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specifies the OAuth2 authority URL.
-        /// </summary>
-        internal static string Commands_Login_OAuth2AuthenticationAuthorityUrlOption {
-            get {
-                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationAuthorityUrlOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specifies the OAuth2 client ID.
-        /// </summary>
-        internal static string Commands_Login_OAuth2AuthenticationClientIdOption {
-            get {
-                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationClientIdOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please provide --authority and --client-id for OAuth2 login..
-        /// </summary>
-        internal static string Commands_Login_OAuth2AuthenticationEnterAuthorityAndClientId {
-            get {
-                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationEnterAuthorityAndClientId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Logged in with OAuth successfully..
-        /// </summary>
-        internal static string Commands_Login_OAuth2AuthenticationLoggedSuccessfully {
-            get {
-                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationLoggedSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Login using OAuth2 via browser.
-        /// </summary>
-        internal static string Commands_Login_OAuth2AuthenticationOption {
-            get {
-                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specifies the OAuth2 scopes like profile email.
-        /// </summary>
-        internal static string Commands_Login_OAuth2AuthenticationScopeOption {
-            get {
-                return ResourceManager.GetString("Commands_Login_OAuth2AuthenticationScopeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Please specify one of the authentication type: --basic, --bearer, or --oauth.
         /// </summary>
         internal static string Commands_Login_SpecifyAuthenticationType {

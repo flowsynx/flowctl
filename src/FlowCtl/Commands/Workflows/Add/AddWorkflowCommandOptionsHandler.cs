@@ -2,7 +2,7 @@
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.Workflows;
+using FlowSynx.Client.Messages.Requests.Workflows;
 
 namespace FlowCtl.Commands.Workflows.Add;
 
@@ -36,7 +36,10 @@ internal class AddWorkflowCommandOptionsHandler : ICommandOptionsHandler<AddWork
             _authenticationManager.AuthenticateClient(_flowSynxClient);
 
             if (!string.IsNullOrEmpty(options.Address))
-                _flowSynxClient.ChangeConnection(options.Address);
+            {
+                var connection = new FlowSynxClientConnection(options.Address);
+                _flowSynxClient.SetConnection(connection);
+            }
 
             string? definitionJsonData;
             if (!string.IsNullOrEmpty(options.DefinitionFile))
@@ -52,7 +55,7 @@ internal class AddWorkflowCommandOptionsHandler : ICommandOptionsHandler<AddWork
             }
 
             var request = new AddWorkflowRequest { Definition = definitionJsonData };
-            var result = await _flowSynxClient.AddWorkflow(request, cancellationToken);
+            var result = await _flowSynxClient.Workflows.AddAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

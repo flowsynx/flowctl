@@ -3,7 +3,7 @@ using FlowCtl.Core.Services.Authentication;
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.PluginConfig;
+using FlowSynx.Client.Messages.Requests.PluginConfig;
 
 namespace FlowCtl.Commands.Config.Add;
 
@@ -41,7 +41,10 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
             _authenticationManager.AuthenticateClient(_flowSynxClient);
 
             if (!string.IsNullOrEmpty(options.Address))
-                _flowSynxClient.ChangeConnection(options.Address);
+            {
+                var connection = new FlowSynxClientConnection(options.Address);
+                _flowSynxClient.SetConnection(connection);
+            }
 
             string? jsonData;
             if (!string.IsNullOrEmpty(options.DataFile))
@@ -57,7 +60,7 @@ internal class AddConfigCommandOptionsHandler : ICommandOptionsHandler<AddConfig
             }
 
             var request = AddConfigData(jsonData);
-            var result = await _flowSynxClient.AddPluginConfig(request, cancellationToken);
+            var result = await _flowSynxClient.PluginConfig.AddAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

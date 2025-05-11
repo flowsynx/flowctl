@@ -26,6 +26,7 @@ using FlowCtl.Services.Version;
 using FlowCtl.Services.Logger;
 using FlowSynx.Client;
 using Spectre.Console;
+using FlowSynx.Client.Authentication;
 
 namespace FlowCtl.Extensions;
 
@@ -62,8 +63,8 @@ public static class ServiceCollectionExtensions
     {
         var serviceProvider = services.BuildServiceProvider();
         var cancellationTokenSource = serviceProvider.GetRequiredService<CancellationTokenSource>();
-
-        var cancellationToken = cancellationTokenSource.Token;
+        var connection = new FlowSynxClientConnection(FlowSynxEnvironments.GetDefaultHttpEndpoint());
+        var basicAuthStrategy = new BasicAuthenticationStrategy(string.Empty, string.Empty);
 
         services
             .AddInfrastructure()
@@ -77,8 +78,10 @@ public static class ServiceCollectionExtensions
             .AddScoped<IJsonDeserializer, JsonDeserializer>()
             .AddTransient<ICliApplicationBuilder, CliApplicationBuilder>()
             .AddSingleton(AnsiConsole.Console)
-            .AddScoped<IFlowSynxClient, FlowSynxClient>()
-            .AddSingleton(new FlowSynxClientConnection());
+            .AddSingleton<IFlowSynxClientConnection>(x => connection)
+            .AddSingleton<IAuthenticationStrategy>(x=> basicAuthStrategy)
+            .AddSingleton<IFlowSynxServiceFactory, FlowSynxServiceFactory>()
+            .AddScoped<IFlowSynxClient, FlowSynxClient>();
 
         return services;
     }

@@ -2,7 +2,7 @@
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.Plugins;
+using FlowSynx.Client.Messages.Requests.Plugins;
 
 namespace FlowCtl.Commands.Plugins.Details;
 
@@ -36,10 +36,13 @@ internal class PluginDetailsCommandOptionsHandler : ICommandOptionsHandler<Plugi
             _authenticationManager.AuthenticateClient(_flowSynxClient);
 
             if (!string.IsNullOrEmpty(options.Address))
-                _flowSynxClient.ChangeConnection(options.Address);
+            {
+                var connection = new FlowSynxClientConnection(options.Address);
+                _flowSynxClient.SetConnection(connection);
+            }
 
             var request = new PluginDetailsRequest { Id = Guid.Parse(options.Id) };
-            var result = await _flowSynxClient.PluginDetails(request, cancellationToken);
+            var result = await _flowSynxClient.Plugins.DetailsAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

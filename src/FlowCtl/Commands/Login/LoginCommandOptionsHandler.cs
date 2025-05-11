@@ -21,7 +21,7 @@ internal class LoginCommandOptionsHandler : ICommandOptionsHandler<LoginCommandO
         return 0;
     }
 
-    private async Task Execute(LoginCommandOptions options, CancellationToken cancellationToken)
+    private Task Execute(LoginCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
@@ -41,25 +41,17 @@ internal class LoginCommandOptionsHandler : ICommandOptionsHandler<LoginCommandO
                 _authenticationManager.LoginBearer(options.Token);
                 _flowCtlLogger.Write(Resources.Commands_Login_BearerAuthenticationLoggedSuccessfully);
             }
-            else if (options.OAuth is true)
-            {
-                if (string.IsNullOrWhiteSpace(options.Authority) || string.IsNullOrWhiteSpace(options.ClientId))
-                    throw new InvalidOperationException(Resources.Commands_Login_OAuth2AuthenticationEnterAuthorityAndClientId);
-                
-                var result = await _authenticationManager.LoginOAuthAsync(options.Authority, options.ClientId, options.Scope);
-                _flowCtlLogger.Write(Resources.Commands_Login_OAuth2AuthenticationLoggedSuccessfully);
-            }
             else
             {
                 throw new InvalidOperationException(Resources.Commands_Login_SpecifyAuthenticationType);
             }
 
-            return;
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
             _flowCtlLogger.WriteError(ex.Message);
-            return;
+            return Task.CompletedTask;
         }
     }
 }

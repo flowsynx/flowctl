@@ -219,24 +219,6 @@
   <data name="Commands_Login_Description" xml:space="preserve">
     <value>Authenticates the user and establishes a session with the FlowSynx system</value>
   </data>
-  <data name="Commands_Login_OAuth2AuthenticationAuthorityUrlOption" xml:space="preserve">
-    <value>Specifies the OAuth2 authority URL</value>
-  </data>
-  <data name="Commands_Login_OAuth2AuthenticationClientIdOption" xml:space="preserve">
-    <value>Specifies the OAuth2 client ID</value>
-  </data>
-  <data name="Commands_Login_OAuth2AuthenticationEnterAuthorityAndClientId" xml:space="preserve">
-    <value>Please provide --authority and --client-id for OAuth2 login.</value>
-  </data>
-  <data name="Commands_Login_OAuth2AuthenticationLoggedSuccessfully" xml:space="preserve">
-    <value>Logged in with OAuth successfully.</value>
-  </data>
-  <data name="Commands_Login_OAuth2AuthenticationOption" xml:space="preserve">
-    <value>Login using OAuth2 via browser</value>
-  </data>
-  <data name="Commands_Login_OAuth2AuthenticationScopeOption" xml:space="preserve">
-    <value>Specifies the OAuth2 scopes like profile email</value>
-  </data>
   <data name="Commands_Login_SpecifyAuthenticationType" xml:space="preserve">
     <value>Please specify one of the authentication type: --basic, --bearer, or --oauth</value>
   </data>

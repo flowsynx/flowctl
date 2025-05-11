@@ -2,7 +2,7 @@
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.Logs;
+using FlowSynx.Client.Messages.Requests.Logs;
 using System.ComponentModel;
 
 namespace FlowCtl.Commands.Logs;
@@ -34,7 +34,10 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
             _authenticationManager.AuthenticateClient(_flowSynxClient);
 
             if (!string.IsNullOrEmpty(options.Address))
-                _flowSynxClient.ChangeConnection(options.Address);
+            {
+                var connection = new FlowSynxClientConnection(options.Address);
+                _flowSynxClient.SetConnection(connection);
+            }
 
             var request = new LogsListRequest { 
                 Level = options.Level, 
@@ -42,7 +45,7 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
                 ToDate = options.ToDate, 
                 Message = options.Message
             };
-            var result = await _flowSynxClient.LogsList(request, cancellationToken);
+            var result = await _flowSynxClient.Logs.ListAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

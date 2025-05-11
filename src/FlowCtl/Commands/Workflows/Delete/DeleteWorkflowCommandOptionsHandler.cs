@@ -2,7 +2,7 @@
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.Workflows;
+using FlowSynx.Client.Messages.Requests.Workflows;
 
 namespace FlowCtl.Commands.Workflows.Delete;
 
@@ -36,10 +36,13 @@ internal class DeleteWorkflowCommandOptionsHandler : ICommandOptionsHandler<Dele
             _authenticationManager.AuthenticateClient(_flowSynxClient);
 
             if (!string.IsNullOrEmpty(options.Address))
-                _flowSynxClient.ChangeConnection(options.Address);
+            {
+                var connection = new FlowSynxClientConnection(options.Address);
+                _flowSynxClient.SetConnection(connection);
+            }
 
             var request = new DeleteWorkflowRequest { Id = Guid.Parse(options.Id) };
-            var result = await _flowSynxClient.DeleteWorkflow(request, cancellationToken);
+            var result = await _flowSynxClient.Workflows.DeleteAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

@@ -1,5 +1,6 @@
 ﻿using FlowCtl.Core.Services.Authentication;
 using FlowSynx.Client;
+using FlowSynx.Client.Authentication;
 using System.Security.Authentication;
 
 namespace FlowCtl.Extensions;
@@ -12,9 +13,13 @@ public static class AuthenticationExtensions
             throw new AuthenticationException(Resources.AuthenticationExtensions_AuthenticationIsRequired);
 
         var authenticationData = authenticationManager.GetData();
+
+        IAuthenticationStrategy authenticationStrategy;
         if (authenticationManager.IsBasicAuthenticationUsed)
-            flowSynxClient.UseBasicAuth(authenticationData?.Username!, authenticationData?.Password!);
+            authenticationStrategy = new BasicAuthenticationStrategy(authenticationData?.Username!, authenticationData?.Password!);
         else
-            flowSynxClient.UseBearerToken(authenticationData?.AccessToken!);
+            authenticationStrategy = new BearerTokenAuthStrategy(authenticationData?.AccessToken!);
+
+        flowSynxClient.SetAuthenticationStrategy(authenticationStrategy);
     }
 }

@@ -2,7 +2,7 @@
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Requests.PluginConfig;
+using FlowSynx.Client.Messages.Requests.PluginConfig;
 
 namespace FlowCtl.Commands.Config.Delete;
 
@@ -36,10 +36,13 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
             _authenticationManager.AuthenticateClient(_flowSynxClient);
 
             if (!string.IsNullOrEmpty(options.Address))
-                _flowSynxClient.ChangeConnection(options.Address);
+            {
+                var connection = new FlowSynxClientConnection(options.Address);
+                _flowSynxClient.SetConnection(connection);
+            }
 
             var request = new DeletePluginConfigRequest { Id = Guid.Parse(options.Id) };
-            var result = await _flowSynxClient.DeletePluginConfig(request, cancellationToken);
+            var result = await _flowSynxClient.PluginConfig.DeleteAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

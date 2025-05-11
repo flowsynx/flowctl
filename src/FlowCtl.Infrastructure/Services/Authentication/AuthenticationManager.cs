@@ -1,5 +1,4 @@
-﻿using Duende.IdentityModel.OidcClient;
-using FlowCtl.Core.Serialization;
+﻿using FlowCtl.Core.Serialization;
 using FlowCtl.Core.Services.Authentication;
 
 namespace FlowCtl.Infrastructure.Services.Authentication;
@@ -43,34 +42,6 @@ public class AuthenticationManager : IAuthenticationManager
             AccessToken = token,
             Expiry = DateTime.UtcNow.AddHours(1)
         };
-        Save(data);
-        return data;
-    }
-
-    public async Task<AuthenticationData> LoginOAuthAsync(string authority, string clientId, string? scope)
-    {
-        var options = new OidcClientOptions
-        {
-            Authority = authority,
-            ClientId = clientId,
-            Scope = scope,
-            RedirectUri = "http://localhost:7890/",
-            Browser = new SystemBrowser(7890)
-        };
-
-        var client = new OidcClient(options);
-        var result = await client.LoginAsync(new LoginRequest());
-
-        if (result.IsError)
-            throw new Exception(string.Format(Resources.AuthenticationManager_LoginOAuthAsync, result.Error));
-
-        var data = new AuthenticationData
-        {
-            Type = AuthenticationType.Bearer,
-            AccessToken = result.AccessToken,
-            Expiry = DateTime.UtcNow.AddSeconds(result.AccessTokenExpiration.Second)
-        };
-
         Save(data);
         return data;
     }

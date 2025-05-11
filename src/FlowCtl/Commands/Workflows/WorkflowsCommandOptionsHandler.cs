@@ -35,9 +35,12 @@ internal class WorkflowsCommandOptionsHandler : ICommandOptionsHandler<Workflows
             _authenticationManager.AuthenticateClient(_flowSynxClient);
 
             if (!string.IsNullOrEmpty(options.Address))
-                _flowSynxClient.ChangeConnection(options.Address);
+            {
+                var connection = new FlowSynxClientConnection(options.Address);
+                _flowSynxClient.SetConnection(connection);
+            }
 
-            var result = await _flowSynxClient.WorkflowsList(cancellationToken);
+            var result = await _flowSynxClient.Workflows.ListAsync(cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
