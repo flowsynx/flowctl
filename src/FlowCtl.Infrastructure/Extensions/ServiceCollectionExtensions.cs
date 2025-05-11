@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
+        services.AddDataProtection();
         services
                 .AddSingleton(new GitHubClient(new ProductHeaderValue("flowsynx")))
                 .AddSingleton<IGitHubReleaseManager, GitHubReleaseManager>()
