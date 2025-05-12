@@ -41,7 +41,7 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new DeletePluginConfigRequest { Id = Guid.Parse(options.Id) };
+            var request = new DeletePluginConfigRequest { Id = Guid.Parse(options.ConfigId) };
             var result = await _flowSynxClient.PluginConfig.DeleteAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

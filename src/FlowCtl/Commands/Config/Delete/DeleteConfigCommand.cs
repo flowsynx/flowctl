@@ -6,13 +6,13 @@ internal class DeleteConfigCommand : BaseCommand<DeleteConfigCommandOptions, Del
 {
     public DeleteConfigCommand() : base("delete", Resources.Commands_DeleteConfig_Description)
     {
-        var identityOption = new Option<string>(new[] { "-i", "--id" },
+        var configIdOption = new Option<string>(new[] { "-c", "--config-id" },
             description: Resources.Commands_DeleteConfig_IdentityOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.Commands_FlowSynxAddress);
 
-        AddOption(identityOption);
+        AddOption(configIdOption);
         AddOption(addressOption);
     }
 }

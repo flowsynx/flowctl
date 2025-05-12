@@ -7,7 +7,7 @@ internal class PluginDetailsCommand : BaseCommand<PluginDetailsCommandOptions, P
 {
     public PluginDetailsCommand() : base("details", Resources.Commands_Plugins_DetailsDescription)
     {
-        var identityOption = new Option<string>(new[] { "-i", "--id" },
+        var pluginIdOption = new Option<string>(new[] { "-p", "--plugin-id" },
             description: Resources.Commands_Plugins_DetailsIdentityOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
@@ -17,7 +17,7 @@ internal class PluginDetailsCommand : BaseCommand<PluginDetailsCommandOptions, P
             getDefaultValue: () => OutputType.Json,
             description: Resources.Commands_Output_Format);
 
-        AddOption(identityOption);
+        AddOption(pluginIdOption);
         AddOption(addressOption);
         AddOption(outputFormatOption);
     }

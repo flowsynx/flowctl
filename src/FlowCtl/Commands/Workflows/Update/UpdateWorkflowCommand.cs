@@ -6,7 +6,7 @@ internal class UpdateWorkflowCommand : BaseCommand<UpdateWorkflowCommandOptions,
 {
     public UpdateWorkflowCommand() : base("update", Resources.Commands_Workflows_UpdateDescription)
     {
-        var identityOption = new Option<string?>(new[] { "-i", "--id" },
+        var workflowIdOption = new Option<string?>(new[] { "-w", "--workflow-id" },
             description: Resources.Commands_Workflows_UpdateIdentityOption) { IsRequired = true };
 
         var definitionOption = new Option<string?>(new[] { "-d", "--definition" },
@@ -18,7 +18,7 @@ internal class UpdateWorkflowCommand : BaseCommand<UpdateWorkflowCommandOptions,
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.Commands_FlowSynxAddress);
 
-        AddOption(identityOption);
+        AddOption(workflowIdOption);
         AddOption(definitionOption);
         AddOption(definitionFileOption);
         AddOption(addressOption);

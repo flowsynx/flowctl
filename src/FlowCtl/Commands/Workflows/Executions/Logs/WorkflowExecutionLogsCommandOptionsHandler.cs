@@ -4,15 +4,15 @@ using FlowCtl.Extensions;
 using FlowSynx.Client;
 using FlowSynx.Client.Messages.Requests.Workflows;
 
-namespace FlowCtl.Commands.Workflows.Delete;
+namespace FlowCtl.Commands.Workflows.Executions.Logs;
 
-internal class DeleteWorkflowCommandOptionsHandler : ICommandOptionsHandler<DeleteWorkflowCommandOptions>
+internal class WorkflowExecutionLogsCommandOptionsHandler : ICommandOptionsHandler<WorkflowExecutionLogsCommandOptions>
 {
     private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
     private readonly IAuthenticationManager _authenticationManager;
 
-    public DeleteWorkflowCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
+    public WorkflowExecutionLogsCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
         IFlowSynxClient flowSynxClient, IAuthenticationManager authenticationManager)
     {
         ArgumentNullException.ThrowIfNull(flowCtlLogger);
@@ -23,13 +23,13 @@ internal class DeleteWorkflowCommandOptionsHandler : ICommandOptionsHandler<Dele
         _authenticationManager = authenticationManager;
     }
 
-    public async Task<int> HandleAsync(DeleteWorkflowCommandOptions options, CancellationToken cancellationToken)
+    public async Task<int> HandleAsync(WorkflowExecutionLogsCommandOptions options, CancellationToken cancellationToken)
     {
         await Execute(options, cancellationToken);
         return 0;
     }
 
-    private async Task Execute(DeleteWorkflowCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(WorkflowExecutionLogsCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
@@ -41,8 +41,12 @@ internal class DeleteWorkflowCommandOptionsHandler : ICommandOptionsHandler<Dele
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new DeleteWorkflowRequest { Id = Guid.Parse(options.WorkflowId) };
-            var result = await _flowSynxClient.Workflows.DeleteAsync(request, cancellationToken);
+            var request = new WorkflowExecutionDetailsRequest 
+            {
+                WorkflowId = options.WorkflowId, 
+                WorkflowExecutionId = options.ExecutionId 
+            };
+            var result = await _flowSynxClient.Workflows.ExecutionsDetailsAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
@@ -51,7 +55,7 @@ internal class DeleteWorkflowCommandOptionsHandler : ICommandOptionsHandler<Dele
             if (payload is { Succeeded: false })
                 _flowCtlLogger.WriteError(payload.Messages);
             else
-                _flowCtlLogger.Write(payload.Data);
+                _flowCtlLogger.Write(payload.Data, options.Output);
         }
         catch (Exception ex)
         {

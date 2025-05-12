@@ -2,17 +2,17 @@
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Messages.Requests.Workflows;
+using FlowSynx.Client.Messages.Responses.Workflows;
 
-namespace FlowCtl.Commands.Workflows.Delete;
+namespace FlowCtl.Commands.Workflows.Executions.Execute;
 
-internal class DeleteWorkflowCommandOptionsHandler : ICommandOptionsHandler<DeleteWorkflowCommandOptions>
+internal class ExecuteWorkflowCommandOptionsHandler : ICommandOptionsHandler<ExecuteWorkflowCommandOptions>
 {
     private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
     private readonly IAuthenticationManager _authenticationManager;
 
-    public DeleteWorkflowCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
+    public ExecuteWorkflowCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
         IFlowSynxClient flowSynxClient, IAuthenticationManager authenticationManager)
     {
         ArgumentNullException.ThrowIfNull(flowCtlLogger);
@@ -23,13 +23,13 @@ internal class DeleteWorkflowCommandOptionsHandler : ICommandOptionsHandler<Dele
         _authenticationManager = authenticationManager;
     }
 
-    public async Task<int> HandleAsync(DeleteWorkflowCommandOptions options, CancellationToken cancellationToken)
+    public async Task<int> HandleAsync(ExecuteWorkflowCommandOptions options, CancellationToken cancellationToken)
     {
         await Execute(options, cancellationToken);
         return 0;
     }
 
-    private async Task Execute(DeleteWorkflowCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(ExecuteWorkflowCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
@@ -41,8 +41,8 @@ internal class DeleteWorkflowCommandOptionsHandler : ICommandOptionsHandler<Dele
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new DeleteWorkflowRequest { Id = Guid.Parse(options.WorkflowId) };
-            var result = await _flowSynxClient.Workflows.DeleteAsync(request, cancellationToken);
+            var request = new ExecuteWorkflowRequest { WorkflowId = Guid.Parse(options.WorkflowId) };
+            var result = await _flowSynxClient.Workflows.ExecuteAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

@@ -862,6 +862,24 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Workflow identity.
+        /// </summary>
+        internal static string Commands_Workflows_Executions_IdentityOption {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Executions_IdentityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow executions list.
+        /// </summary>
+        internal static string Commands_Workflows_ExecutionsListDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_ExecutionsListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A JSON-serialized definition data.
         /// </summary>
         internal static string Commands_Workflows_Update_DefinitionData {

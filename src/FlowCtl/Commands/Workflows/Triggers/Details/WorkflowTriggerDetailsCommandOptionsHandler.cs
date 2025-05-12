@@ -2,17 +2,17 @@
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Messages.Responses.Workflows;
+using FlowSynx.Client.Messages.Requests.Workflows;
 
-namespace FlowCtl.Commands.Workflows.Execute;
+namespace FlowCtl.Commands.Workflows.Triggers.Details;
 
-internal class ExecuteWorkflowCommandOptionsHandler : ICommandOptionsHandler<ExecuteWorkflowCommandOptions>
+internal class WorkflowTriggerDetailsCommandOptionsHandler : ICommandOptionsHandler<WorkflowTriggerDetailsCommandOptions>
 {
     private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
     private readonly IAuthenticationManager _authenticationManager;
 
-    public ExecuteWorkflowCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
+    public WorkflowTriggerDetailsCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
         IFlowSynxClient flowSynxClient, IAuthenticationManager authenticationManager)
     {
         ArgumentNullException.ThrowIfNull(flowCtlLogger);
@@ -23,13 +23,13 @@ internal class ExecuteWorkflowCommandOptionsHandler : ICommandOptionsHandler<Exe
         _authenticationManager = authenticationManager;
     }
 
-    public async Task<int> HandleAsync(ExecuteWorkflowCommandOptions options, CancellationToken cancellationToken)
+    public async Task<int> HandleAsync(WorkflowTriggerDetailsCommandOptions options, CancellationToken cancellationToken)
     {
         await Execute(options, cancellationToken);
         return 0;
     }
 
-    private async Task Execute(ExecuteWorkflowCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(WorkflowTriggerDetailsCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
@@ -41,8 +41,12 @@ internal class ExecuteWorkflowCommandOptionsHandler : ICommandOptionsHandler<Exe
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new ExecuteWorkflowRequest { WorkflowId = Guid.Parse(options.Id) };
-            var result = await _flowSynxClient.Workflows.ExecuteAsync(request, cancellationToken);
+            var request = new WorkflowTriggerDetailsRequest
+            {
+                WorkflowId = options.WorkflowId, 
+                TriggerId = options.TriggerId 
+            };
+            var result = await _flowSynxClient.Workflows.TriggerDetailsAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
@@ -51,7 +55,7 @@ internal class ExecuteWorkflowCommandOptionsHandler : ICommandOptionsHandler<Exe
             if (payload is { Succeeded: false })
                 _flowCtlLogger.WriteError(payload.Messages);
             else
-                _flowCtlLogger.Write(payload.Data);
+                _flowCtlLogger.Write(payload.Data, options.Output);
         }
         catch (Exception ex)
         {

@@ -41,7 +41,7 @@ internal class WorkflowDetailsCommandOptionsHandler : ICommandOptionsHandler<Wor
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new WorkflowDetailsRequest { Id = Guid.Parse(options.Id) };
+            var request = new WorkflowDetailsRequest { Id = Guid.Parse(options.WorkflowId) };
             var result = await _flowSynxClient.Workflows.DetailsAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

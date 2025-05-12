@@ -1,7 +1,7 @@
-﻿namespace FlowCtl.Commands.Workflows.Execute;
+﻿namespace FlowCtl.Commands.Workflows.Executions.Execute;
 
 internal class ExecuteWorkflowCommandOptions : ICommandOptions
 {
-    public required string Id { get; set; }
+    public required string WorkflowId { get; set; }
     public string? Address { get; set; } = string.Empty;
 }

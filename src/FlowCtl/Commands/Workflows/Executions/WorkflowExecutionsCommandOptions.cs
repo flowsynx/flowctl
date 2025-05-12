@@ -1,8 +1,8 @@
 ﻿using FlowCtl.Core.Services.Logger;
 
-namespace FlowCtl.Commands.Workflows.Details;
+namespace FlowCtl.Commands.Workflows.Executions;
 
-internal class WorkflowDetailsCommandOptions : ICommandOptions
+internal class WorkflowExecutionsCommandOptions : ICommandOptions
 {
     public required string WorkflowId { get; set; }
     public string? Address { get; set; } = string.Empty;

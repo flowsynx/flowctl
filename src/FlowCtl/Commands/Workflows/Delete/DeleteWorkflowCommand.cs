@@ -6,13 +6,13 @@ internal class DeleteWorkflowCommand : BaseCommand<DeleteWorkflowCommandOptions,
 {
     public DeleteWorkflowCommand() : base("delete", Resources.Commands_Workflows_DeleteDescription)
     {
-        var identityOption = new Option<string>(new[] { "-i", "--id" },
+        var workflowIdOption = new Option<string>(new[] { "-w", "--workflow-id" },
             description: Resources.Commands_Workflows_DeleteIdentityOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.Commands_FlowSynxAddress);
 
-        AddOption(identityOption);
+        AddOption(workflowIdOption);
         AddOption(addressOption);
     }
 }

@@ -7,14 +7,14 @@ internal class DetailsConfigCommand : BaseCommand<DetailsConfigCommandOptions, D
 {
     public DetailsConfigCommand() : base("details", Resources.Commands_DetailsConfig_Description)
     {
-        var identityOption = new Option<string>(new[] { "-i", "--id" },
+        var configIdOption = new Option<string>(new[] { "-c", "--config-id" },
             description: Resources.Commands_DetailsConfig_IdentityOption) { IsRequired = true };
 
         var outputFormatOption = new Option<OutputType>(new[] { "-o", "--output" }, 
             getDefaultValue: () => OutputType.Json,
             description: Resources.Commands_Output_Format);
 
-        AddOption(identityOption);
+        AddOption(configIdOption);
         AddOption(outputFormatOption);
     }
 }

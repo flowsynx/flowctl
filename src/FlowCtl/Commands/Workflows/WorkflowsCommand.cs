@@ -2,7 +2,8 @@
 using FlowCtl.Commands.Workflows.Add;
 using FlowCtl.Commands.Workflows.Delete;
 using FlowCtl.Commands.Workflows.Details;
-using FlowCtl.Commands.Workflows.Execute;
+using FlowCtl.Commands.Workflows.Executions;
+using FlowCtl.Commands.Workflows.Triggers;
 using FlowCtl.Commands.Workflows.Update;
 using FlowCtl.Core.Services.Logger;
 
@@ -24,8 +25,9 @@ internal class WorkflowsCommand : BaseCommand<WorkflowsCommandOptions, Workflows
 
         AddCommand(new AddWorkflowCommand());
         AddCommand(new DeleteWorkflowCommand());
-        AddCommand(new ExecuteWorkflowCommand());
         AddCommand(new WorkflowDetailsCommand());
         AddCommand(new UpdateWorkflowCommand());
+        AddCommand(new WorkflowExecutionsCommand());
+        AddCommand(new WorkflowTriggersCommand());
     }
 }

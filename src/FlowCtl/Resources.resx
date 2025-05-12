@@ -384,6 +384,12 @@
   <data name="Commands_Workflows_ExecuteIdentityOption" xml:space="preserve">
     <value>Workflow identity</value>
   </data>
+  <data name="Commands_Workflows_ExecutionsListDescription" xml:space="preserve">
+    <value>Workflow executions list</value>
+  </data>
+  <data name="Commands_Workflows_Executions_IdentityOption" xml:space="preserve">
+    <value>Workflow identity</value>
+  </data>
   <data name="Commands_Workflows_UpdateDescription" xml:space="preserve">
     <value>Update workflow</value>
   </data>

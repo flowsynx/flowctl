@@ -1,35 +1,39 @@
-﻿using FlowCtl.Core.Services.Authentication;
+﻿using FlowCtl.Core.Serialization;
+using FlowCtl.Core.Services.Authentication;
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
 using FlowSynx.Client.Messages.Requests.Workflows;
 
-namespace FlowCtl.Commands.Workflows.Update;
+namespace FlowCtl.Commands.Workflows.Triggers.Add;
 
-internal class UpdateWorkflowCommandOptionsHandler : ICommandOptionsHandler<UpdateWorkflowCommandOptions>
+internal class AddWorkflowTriggerCommandOptionsHandler : ICommandOptionsHandler<AddWorkflowTriggerCommandOptions>
 {
     private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
+    private readonly IJsonDeserializer _deserializer;
     private readonly IAuthenticationManager _authenticationManager;
 
-    public UpdateWorkflowCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
-        IFlowSynxClient flowSynxClient, IAuthenticationManager authenticationManager)
+    public AddWorkflowTriggerCommandOptionsHandler(IFlowCtlLogger flowCtlLogger,
+        IFlowSynxClient flowSynxClient, IJsonDeserializer deserializer,
+        IAuthenticationManager authenticationManager)
     {
         ArgumentNullException.ThrowIfNull(flowCtlLogger);
         ArgumentNullException.ThrowIfNull(flowSynxClient);
         ArgumentNullException.ThrowIfNull(flowCtlLogger);
         _flowCtlLogger = flowCtlLogger;
         _flowSynxClient = flowSynxClient;
+        _deserializer = deserializer;
         _authenticationManager = authenticationManager;
     }
 
-    public async Task<int> HandleAsync(UpdateWorkflowCommandOptions options, CancellationToken cancellationToken)
+    public async Task<int> HandleAsync(AddWorkflowTriggerCommandOptions options, CancellationToken cancellationToken)
     {
         await Execute(options, cancellationToken);
         return 0;
     }
 
-    private async Task Execute(UpdateWorkflowCommandOptions options, CancellationToken cancellationToken)
+    private async Task Execute(AddWorkflowTriggerCommandOptions options, CancellationToken cancellationToken)
     {
         try
         {
@@ -41,25 +45,22 @@ internal class UpdateWorkflowCommandOptionsHandler : ICommandOptionsHandler<Upda
                 _flowSynxClient.SetConnection(connection);
             }
 
-            string? definitionJsonData;
-            if (!string.IsNullOrEmpty(options.DefinitionFile))
+            string? jsonData;
+            if (!string.IsNullOrEmpty(options.DataFile))
             {
-                if (!File.Exists(options.DefinitionFile))
-                    throw new Exception($"Entered definition file '{options.DefinitionFile}' is not exist.");
+                if (!File.Exists(options.DataFile))
+                    throw new Exception($"Entered data file '{options.DataFile}' is not exist.");
 
-                definitionJsonData = await File.ReadAllTextAsync(options.DefinitionFile, cancellationToken);
+                jsonData = await File.ReadAllTextAsync(options.DataFile, cancellationToken);
             }
             else
             {
-                definitionJsonData = options.Definition;
+                jsonData = options.Data;
             }
 
-            var request = new UpdateWorkflowRequest 
-            { 
-                Id = Guid.Parse(options.WorkflowId), 
-                Definition = definitionJsonData 
-            };
-            var result = await _flowSynxClient.Workflows.UpdateAsync(request, cancellationToken);
+            var request = AddTriggerData(jsonData);
+            request.WorkflowId = options.WorkflowId;
+            var result = await _flowSynxClient.Workflows.AddTriggerAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);
@@ -74,5 +75,10 @@ internal class UpdateWorkflowCommandOptionsHandler : ICommandOptionsHandler<Upda
         {
             _flowCtlLogger.WriteError(ex.Message);
         }
+    }
+
+    private AddWorkflowTriggerRequest AddTriggerData(string? json)
+    {
+        return _deserializer.Deserialize<AddWorkflowTriggerRequest>(json);
     }
 }

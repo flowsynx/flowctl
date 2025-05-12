@@ -41,7 +41,7 @@ internal class DetailsConfigCommandOptionsHandler : ICommandOptionsHandler<Detai
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new PluginConfigDetailsRequest { Id = Guid.Parse(options.Id) };
+            var request = new PluginConfigDetailsRequest { Id = Guid.Parse(options.ConfigId) };
             var result = await _flowSynxClient.PluginConfig.DetailsAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
