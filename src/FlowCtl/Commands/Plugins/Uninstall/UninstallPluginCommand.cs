@@ -1,5 +1,4 @@
-﻿using FlowCtl.Commands.Plugins.Install;
-using System.CommandLine;
+﻿using System.CommandLine;
 
 namespace FlowCtl.Commands.Plugins.Uninstall;
 
@@ -8,7 +7,7 @@ internal class UninstallPluginCommand : BaseCommand<UninstallPluginCommandOption
     public UninstallPluginCommand() : base("uninstall", Resources.Commands_Plugins_UninstallDescription)
     {
         var typeOption = new Option<string>(new[] { "-t", "--type" },
-            description: Resources.Commands_Plugins_TypeOption) { IsRequired = true };
+            description: Resources.Commands_Plugins_UnInstall_TypeOption) { IsRequired = true };
 
         var versionOption = new Option<string>(new[] { "-v", "--version" },
             description: Resources.Commands_Plugins_VersionOption) { IsRequired = true };

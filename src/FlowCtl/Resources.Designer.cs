@@ -70,6 +70,42 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided definition file &apos;{0}&apos; does not exist or could not be located..
+        /// </summary>
+        internal static string Command_Workflow_AddCommand_FileNotExist {
+            get {
+                return ResourceManager.GetString("Command_Workflow_AddCommand_FileNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided data file &apos;{0}&apos; does not exist or could not be located..
+        /// </summary>
+        internal static string Command_Workflow_Triggers_AddCommand_FileNotExist {
+            get {
+                return ResourceManager.GetString("Command_Workflow_Triggers_AddCommand_FileNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided data file &apos;{0}&apos; does not exist or could not be located..
+        /// </summary>
+        internal static string Command_Workflow_Triggers_UpdateCommand_FileNotExist {
+            get {
+                return ResourceManager.GetString("Command_Workflow_Triggers_UpdateCommand_FileNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided definition file &apos;{0}&apos; does not exist or could not be located..
+        /// </summary>
+        internal static string Command_Workflow_UpdateCommand_FileNotExist {
+            get {
+                return ResourceManager.GetString("Command_Workflow_UpdateCommand_FileNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A JSON-serialized data.
         /// </summary>
         internal static string Commands_AddConfig_Data {
@@ -493,6 +529,15 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Specifies the plugin type should be installed..
+        /// </summary>
+        internal static string Commands_Plugins_Install_TypeOption {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_Install_TypeOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Install plugin.
         /// </summary>
         internal static string Commands_Plugins_InstallDescription {
@@ -520,11 +565,11 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specifies the plugin type should be installed..
+        ///   Looks up a localized string similar to Specifies the plugin type should be Uninstalled..
         /// </summary>
-        internal static string Commands_Plugins_TypeOption {
+        internal static string Commands_Plugins_UnInstall_TypeOption {
             get {
-                return ResourceManager.GetString("Commands_Plugins_TypeOption", resourceCulture);
+                return ResourceManager.GetString("Commands_Plugins_UnInstall_TypeOption", resourceCulture);
             }
         }
         
@@ -772,6 +817,42 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel the executed workflow.
+        /// </summary>
+        internal static string Commands_Workflow_Execution_CancelDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflow_Execution_CancelDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get details about workflow execution.
+        /// </summary>
+        internal static string Commands_Workflow_Execution_DetailsDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflow_Execution_DetailsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get logs about workflow execution.
+        /// </summary>
+        internal static string Commands_Workflow_Execution_LogsDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflow_Execution_LogsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get details about workflow trigger.
+        /// </summary>
+        internal static string Commands_Workflow_Triggers_DetailsDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflow_Triggers_DetailsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A JSON-serialized definition data.
         /// </summary>
         internal static string Commands_Workflows_Add_DefinitionData {
@@ -862,6 +943,15 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execution identity.
+        /// </summary>
+        internal static string Commands_Workflows_Execution_IdentityOption {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Execution_IdentityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Workflow identity.
         /// </summary>
         internal static string Commands_Workflows_Executions_IdentityOption {
@@ -876,6 +966,87 @@ namespace FlowCtl {
         internal static string Commands_Workflows_ExecutionsListDescription {
             get {
                 return ResourceManager.GetString("Commands_Workflows_ExecutionsListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow identity.
+        /// </summary>
+        internal static string Commands_Workflows_IdentityOption {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_IdentityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A JSON-serialized definition data.
+        /// </summary>
+        internal static string Commands_Workflows_Triggers_Add_DefinitionData {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Triggers_Add_DefinitionData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file containing JSON-serialized definition data.
+        /// </summary>
+        internal static string Commands_Workflows_Triggers_Add_DefinitionDataFile {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Triggers_Add_DefinitionDataFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add trigger for a workflow.
+        /// </summary>
+        internal static string Commands_Workflows_Triggers_AddDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Triggers_AddDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete workflow trigger.
+        /// </summary>
+        internal static string Commands_Workflows_Triggers_DeleteDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Triggers_DeleteDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trigger identity.
+        /// </summary>
+        internal static string Commands_Workflows_Triggers_IdentityOption {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Triggers_IdentityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A JSON-serialized definition data.
+        /// </summary>
+        internal static string Commands_Workflows_Triggers_Update_DefinitionData {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Triggers_Update_DefinitionData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file containing JSON-serialized definition data.
+        /// </summary>
+        internal static string Commands_Workflows_Triggers_Update_DefinitionDataFile {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Triggers_Update_DefinitionDataFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow triggers list.
+        /// </summary>
+        internal static string Commands_Workflows_TriggersListDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_TriggersListDescription", resourceCulture);
             }
         }
         

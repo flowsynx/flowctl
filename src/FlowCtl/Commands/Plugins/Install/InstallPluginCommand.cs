@@ -7,7 +7,7 @@ internal class InstallPluginCommand : BaseCommand<InstallPluginCommandOptions, I
     public InstallPluginCommand() : base("install", Resources.Commands_Plugins_InstallDescription)
     {
         var typeOption = new Option<string>(new[] { "-t", "--type" },
-            description: Resources.Commands_Plugins_TypeOption) { IsRequired = true };
+            description: Resources.Commands_Plugins_Install_TypeOption) { IsRequired = true };
 
         var versionOption = new Option<string>(new[] { "-v", "--version" },
             description: Resources.Commands_Plugins_VersionOption) { IsRequired = true };

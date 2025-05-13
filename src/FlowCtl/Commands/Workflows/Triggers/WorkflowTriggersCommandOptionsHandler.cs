@@ -41,8 +41,8 @@ internal class WorkflowTriggersCommandOptionsHandler : ICommandOptionsHandler<Wo
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new WorkflowExecutionListRequest { WorkflowId = options.WorkflowId };
-            var result = await _flowSynxClient.Workflows.ExecutionsAsync(request, cancellationToken);
+            var request = new WorkflowTriggersListRequest { WorkflowId = options.WorkflowId };
+            var result = await _flowSynxClient.Workflows.TriggersAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

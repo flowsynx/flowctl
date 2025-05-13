@@ -12,7 +12,7 @@ internal class WorkflowExecutionsCommand : BaseCommand<WorkflowExecutionsCommand
     public WorkflowExecutionsCommand() : base("executions", Resources.Commands_Workflows_ExecutionsListDescription)
     {
         var workflowIdOption = new Option<string>(new[] { "-w", "--workflow-id" },
-            description: Resources.Commands_Workflows_Executions_IdentityOption) { IsRequired = true };
+            description: Resources.Commands_Workflows_IdentityOption) { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.Commands_FlowSynxAddress);

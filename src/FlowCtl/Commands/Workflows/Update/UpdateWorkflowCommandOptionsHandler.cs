@@ -45,7 +45,7 @@ internal class UpdateWorkflowCommandOptionsHandler : ICommandOptionsHandler<Upda
             if (!string.IsNullOrEmpty(options.DefinitionFile))
             {
                 if (!File.Exists(options.DefinitionFile))
-                    throw new Exception($"Entered definition file '{options.DefinitionFile}' is not exist.");
+                    throw new Exception(string.Format(Resources.Command_Workflow_UpdateCommand_FileNotExist, options.DefinitionFile));
 
                 definitionJsonData = await File.ReadAllTextAsync(options.DefinitionFile, cancellationToken);
             }

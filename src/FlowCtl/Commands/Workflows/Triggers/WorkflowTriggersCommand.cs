@@ -1,4 +1,5 @@
 ﻿using FlowCtl.Commands.Workflows.Triggers.Add;
+using FlowCtl.Commands.Workflows.Triggers.Delete;
 using FlowCtl.Commands.Workflows.Triggers.Details;
 using FlowCtl.Commands.Workflows.Triggers.Update;
 using FlowCtl.Core.Services.Logger;
@@ -8,7 +9,7 @@ namespace FlowCtl.Commands.Workflows.Triggers;
 
 internal class WorkflowTriggersCommand : BaseCommand<WorkflowTriggersCommandOptions, WorkflowTriggersCommandOptionsHandler>
 {
-    public WorkflowTriggersCommand() : base("triggers", Resources.Commands_Workflows_ExecutionsListDescription)
+    public WorkflowTriggersCommand() : base("triggers", Resources.Commands_Workflows_TriggersListDescription)
     {
         var workflowIdOption = new Option<string>(new[] { "-w", "--workflow-id" },
             description: Resources.Commands_Workflows_Executions_IdentityOption) { IsRequired = true };

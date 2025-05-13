@@ -1,4 +1,4 @@
-﻿namespace FlowCtl.Commands.Workflows.Triggers.Details;
+﻿namespace FlowCtl.Commands.Workflows.Triggers.Delete;
 
 internal class DeleteWorkflowTriggerCommandOptions : ICommandOptions
 {

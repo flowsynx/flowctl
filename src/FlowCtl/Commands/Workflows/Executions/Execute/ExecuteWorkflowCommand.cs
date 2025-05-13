@@ -7,7 +7,7 @@ internal class ExecuteWorkflowCommand : BaseCommand<ExecuteWorkflowCommandOption
     public ExecuteWorkflowCommand() : base("execute", Resources.Commands_Workflows_ExecuteDescription)
     {
         var workflowIdOption = new Option<string>(new[] { "-w", "--workflow-id" },
-            description: Resources.Commands_Workflows_ExecuteIdentityOption)
+            description: Resources.Commands_Workflows_IdentityOption)
         { IsRequired = true };
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },

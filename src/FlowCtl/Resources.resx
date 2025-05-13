@@ -264,17 +264,20 @@
   <data name="Commands_Plugins_InstallDescription" xml:space="preserve">
     <value>Install plugin</value>
   </data>
+  <data name="Commands_Plugins_Install_TypeOption" xml:space="preserve">
+    <value>Specifies the plugin type should be installed.</value>
+  </data>
   <data name="Commands_Plugins_NewVersionOption" xml:space="preserve">
     <value>Specifies the new plugin version should be installed.</value>
   </data>
   <data name="Commands_Plugins_OldVersionOption" xml:space="preserve">
     <value>Specifies the old plugin version should be uninstalled.</value>
   </data>
-  <data name="Commands_Plugins_TypeOption" xml:space="preserve">
-    <value>Specifies the plugin type should be installed.</value>
-  </data>
   <data name="Commands_Plugins_UninstallDescription" xml:space="preserve">
     <value>Uninstall plugin</value>
+  </data>
+  <data name="Commands_Plugins_UnInstall_TypeOption" xml:space="preserve">
+    <value>Specifies the plugin type should be Uninstalled.</value>
   </data>
   <data name="Commands_Plugins_UpdateDescription" xml:space="preserve">
     <value>Update plugin</value>
@@ -390,6 +393,36 @@
   <data name="Commands_Workflows_Executions_IdentityOption" xml:space="preserve">
     <value>Workflow identity</value>
   </data>
+  <data name="Commands_Workflows_Execution_IdentityOption" xml:space="preserve">
+    <value>Execution identity</value>
+  </data>
+  <data name="Commands_Workflows_IdentityOption" xml:space="preserve">
+    <value>Workflow identity</value>
+  </data>
+  <data name="Commands_Workflows_TriggersListDescription" xml:space="preserve">
+    <value>Workflow triggers list</value>
+  </data>
+  <data name="Commands_Workflows_Triggers_AddDescription" xml:space="preserve">
+    <value>Add trigger for a workflow</value>
+  </data>
+  <data name="Commands_Workflows_Triggers_Add_DefinitionData" xml:space="preserve">
+    <value>A JSON-serialized definition data</value>
+  </data>
+  <data name="Commands_Workflows_Triggers_Add_DefinitionDataFile" xml:space="preserve">
+    <value>A file containing JSON-serialized definition data</value>
+  </data>
+  <data name="Commands_Workflows_Triggers_DeleteDescription" xml:space="preserve">
+    <value>Delete workflow trigger</value>
+  </data>
+  <data name="Commands_Workflows_Triggers_IdentityOption" xml:space="preserve">
+    <value>Trigger identity</value>
+  </data>
+  <data name="Commands_Workflows_Triggers_Update_DefinitionData" xml:space="preserve">
+    <value>A JSON-serialized definition data</value>
+  </data>
+  <data name="Commands_Workflows_Triggers_Update_DefinitionDataFile" xml:space="preserve">
+    <value>A file containing JSON-serialized definition data</value>
+  </data>
   <data name="Commands_Workflows_UpdateDescription" xml:space="preserve">
     <value>Update workflow</value>
   </data>
@@ -401,6 +434,30 @@
   </data>
   <data name="Commands_Workflows_Update_DefinitionDataFile" xml:space="preserve">
     <value>A file containing JSON-serialized definition data</value>
+  </data>
+  <data name="Commands_Workflow_Execution_CancelDescription" xml:space="preserve">
+    <value>Cancel the executed workflow</value>
+  </data>
+  <data name="Commands_Workflow_Execution_DetailsDescription" xml:space="preserve">
+    <value>Get details about workflow execution</value>
+  </data>
+  <data name="Commands_Workflow_Execution_LogsDescription" xml:space="preserve">
+    <value>Get logs about workflow execution</value>
+  </data>
+  <data name="Commands_Workflow_Triggers_DetailsDescription" xml:space="preserve">
+    <value>Get details about workflow trigger</value>
+  </data>
+  <data name="Command_Workflow_AddCommand_FileNotExist" xml:space="preserve">
+    <value>The provided definition file '{0}' does not exist or could not be located.</value>
+  </data>
+  <data name="Command_Workflow_Triggers_AddCommand_FileNotExist" xml:space="preserve">
+    <value>The provided data file '{0}' does not exist or could not be located.</value>
+  </data>
+  <data name="Command_Workflow_Triggers_UpdateCommand_FileNotExist" xml:space="preserve">
+    <value>The provided data file '{0}' does not exist or could not be located.</value>
+  </data>
+  <data name="Command_Workflow_UpdateCommand_FileNotExist" xml:space="preserve">
+    <value>The provided definition file '{0}' does not exist or could not be located.</value>
   </data>
   <data name="ConsoleLogger_DataConversionError" xml:space="preserve">
     <value>Data conversion encountered an error. The system couldn't process the data format.</value>

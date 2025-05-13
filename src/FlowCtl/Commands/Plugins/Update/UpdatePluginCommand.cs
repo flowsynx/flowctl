@@ -7,7 +7,7 @@ internal class UpdatePluginCommand : BaseCommand<UpdatePluginCommandOptions, Upd
     public UpdatePluginCommand() : base("update", Resources.Commands_Plugins_UpdateDescription)
     {
         var typeOption = new Option<string>(new[] { "-t", "--type" },
-            description: Resources.Commands_Plugins_TypeOption) { IsRequired = true };
+            description: Resources.Commands_Plugins_Install_TypeOption) { IsRequired = true };
 
         var oldVersionOption = new Option<string>(new[] { "-o", "--old-version" },
             description: Resources.Commands_Plugins_OldVersionOption) { IsRequired = true };

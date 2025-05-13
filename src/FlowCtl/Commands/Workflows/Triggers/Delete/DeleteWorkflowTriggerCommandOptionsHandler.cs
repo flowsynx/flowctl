@@ -4,7 +4,7 @@ using FlowCtl.Extensions;
 using FlowSynx.Client;
 using FlowSynx.Client.Messages.Requests.Workflows;
 
-namespace FlowCtl.Commands.Workflows.Triggers.Details;
+namespace FlowCtl.Commands.Workflows.Triggers.Delete;
 
 internal class DeleteWorkflowTriggerCommandOptionsHandler : ICommandOptionsHandler<DeleteWorkflowTriggerCommandOptions>
 {

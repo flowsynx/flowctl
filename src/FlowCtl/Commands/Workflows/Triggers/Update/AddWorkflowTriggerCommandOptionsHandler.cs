@@ -49,7 +49,7 @@ internal class UpdateWorkflowTriggerCommandOptionsHandler : ICommandOptionsHandl
             if (!string.IsNullOrEmpty(options.DataFile))
             {
                 if (!File.Exists(options.DataFile))
-                    throw new Exception($"Entered data file '{options.DataFile}' is not exist.");
+                    throw new Exception(string.Format(Resources.Command_Workflow_Triggers_UpdateCommand_FileNotExist, options.DataFile));
 
                 jsonData = await File.ReadAllTextAsync(options.DataFile, cancellationToken);
             }
