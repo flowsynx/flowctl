@@ -28,6 +28,33 @@ whether you're working in the cloud, on-premises, or in hybrid environments.
 
 ## 📦 Installation
 
+### 🛠️ Building FlowCtl from Source
+To build FlowCtl from source, ensure you have the .NET 9 SDK installed and configured in your environment. Then follow the steps below:
+```
+git clone https://github.com/flowsynx/flowctl.git
+cd flowctl
+dotnet build -c Release
+```
+The compiled binaries will be located in the bin/Release/net9.0 directory.
+
+#### ➕ (Optional) Add FlowCtl to Your System PATH
+To make flowctl available globally from any terminal session:
+- Linux/macOS:
+```
+sudo cp bin/Release/net8.0/flowctl /usr/local/bin/
+chmod +x /usr/local/bin/flowctl
+```
+
+- Windows:
+	1. Copy flowctl.exe from `bin\Release\net9.0` to a directory like `C:\flowctl`
+	2. Add that directory to your **System** or User **PATH** via **System Environment Variables**
+
+After setting the PATH, you can verify the installation with:
+```
+flowctl --version
+```
+> ✅ Building from source is recommended for contributors or developers customizing FlowCtl for internal use.
+	 
 ### 🚀 Installing FlowCtl
 You can install FlowCtl, the CLI for FlowSynx workflow automation system, using a platform-specific script or by downloading binaries manually from the Releases page.
 
@@ -41,13 +68,13 @@ powershell -Command "iwr -useb https://raw.githubusercontent.com/flowsynx/flowct
 After installation, restart your terminal or run refreshenv (if using tools like Chocolatey) to ensure FlowCtl is available in your PATH.
 
 #### 🐧 Linux
-Install FlowCtl to /usr/local/bin, making it accessible system-wide:
+Install FlowCtl to `/usr/local/bin`, making it accessible system-wide:
 
 ```
 wget -q https://raw.githubusercontent.com/flowsynx/flowctl/master/install/install.sh -O - | /bin/bash
 ```
 
-This script automatically detects your architecture and places the flowctl binary in /usr/local/bin.
+This script automatically detects your architecture and places the flowctl binary in `/usr/local/bin`.
 
 #### 🍎 macOS
 Install FlowCtl to /usr/local/bin using curl:
@@ -56,7 +83,7 @@ Install FlowCtl to /usr/local/bin using curl:
 curl -fsSL https://raw.githubusercontent.com/flowsynx/flowctl/master/install/install.sh | /bin/bash
 ```
 
-Ensure /usr/local/bin is in your shell's PATH. You can check this by running:
+Ensure `/usr/local/bin` is in your shell's PATH. You can check this by running:
 ```
 echo $PATH
 ```
@@ -65,18 +92,18 @@ echo $PATH
 If you prefer not to use the install scripts, you can manually download and set up FlowCtl:
 
 1. Visit the [Releases page](https://github.com/flowsynx/flowctl/releases).
-2. Download the appropriate archive for your OS and architecture (e.g., flowsynx-linux-amd64.tar.gz, flowsynx-windows-amd64.zip, etc.).
+2. Download the appropriate archive for your OS and architecture (e.g., `flowsynx-linux-amd64.tar.gz`, `flowsynx-windows-amd64.zip`, etc.).
 3. Unpack the archive.
 4. Move the flowctl binary to a directory in your PATH:
-	- Linux/macOS: Move to /usr/local/bin
+	- Linux/macOS: Move to `/usr/local/bin`
 	```
 	sudo mv flowctl /usr/local/bin/
 	chmod +x /usr/local/bin/flowctl
 	```
 	- Windows
-		- Create a directory like C:\flowctl
+		- Create a directory like `C:\flowctl`
 		- Move flowctl.exe into it
-		- Add C:\flowctl to the System or User PATH via Environment Variables settings
+		- Add `C:\flowctl` to the System or User PATH via Environment Variables settings
 
 	- Confirm installation by running:
 	```
