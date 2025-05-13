@@ -1,6 +1,5 @@
 ﻿using FlowCtl.Core.Serialization;
 using FlowCtl.Core.Services.Authentication;
-using Microsoft.AspNetCore.DataProtection;
 
 namespace FlowCtl.Infrastructure.Services.Authentication;
 
@@ -9,16 +8,16 @@ public class AuthenticationManager : IAuthenticationManager
     private const string ConfigPath = "config.json";
     private readonly IJsonSerializer _jsonSerializer;
     private readonly IJsonDeserializer _jsonDeserializer;
-    private readonly IDataProtector _protector;
+    private readonly IDataProtectorWrapper _protector;
 
     public AuthenticationManager(
         IJsonSerializer jsonSerializer,
         IJsonDeserializer jsonDeserializer,
-        IDataProtectionProvider dataProtectionProvider)
+        IDataProtectorWrapper protector)
     {
         _jsonSerializer = jsonSerializer;
         _jsonDeserializer = jsonDeserializer;
-        _protector = dataProtectionProvider.CreateProtector("AuthenticationManager.Protector");
+        _protector = protector;
     }
 
     public bool IsLoggedIn => File.Exists(ConfigPath) && Load() is { } data && (
