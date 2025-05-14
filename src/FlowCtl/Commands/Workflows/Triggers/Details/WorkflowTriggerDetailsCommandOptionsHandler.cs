@@ -41,10 +41,16 @@ internal class WorkflowTriggerDetailsCommandOptionsHandler : ICommandOptionsHand
                 _flowSynxClient.SetConnection(connection);
             }
 
+            if (!Guid.TryParse(options.WorkflowId, out Guid workflowId))
+                throw new FormatException("Invalid workflow id format. Expected a valid GUID.");
+
+            if (!Guid.TryParse(options.TriggerId, out Guid triggerId))
+                throw new FormatException("Invalid trigger id format. Expected a valid GUID.");
+
             var request = new WorkflowTriggerDetailsRequest
             {
-                WorkflowId = options.WorkflowId, 
-                TriggerId = options.TriggerId 
+                WorkflowId = workflowId, 
+                TriggerId = triggerId
             };
             var result = await _flowSynxClient.Workflows.TriggerDetailsAsync(request, cancellationToken);
 

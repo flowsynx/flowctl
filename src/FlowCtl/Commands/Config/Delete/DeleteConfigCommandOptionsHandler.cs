@@ -41,7 +41,10 @@ internal class DeleteConfigCommandOptionsHandler : ICommandOptionsHandler<Delete
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new DeletePluginConfigRequest { Id = Guid.Parse(options.ConfigId) };
+            if (!Guid.TryParse(options.ConfigId, out Guid configId))
+                throw new FormatException("Invalid config id format. Expected a valid GUID.");
+
+            var request = new DeletePluginConfigRequest { Id = configId };
             var result = await _flowSynxClient.PluginConfig.DeleteAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

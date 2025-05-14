@@ -58,8 +58,11 @@ internal class AddWorkflowTriggerCommandOptionsHandler : ICommandOptionsHandler<
                 jsonData = options.Data;
             }
 
+            if (!Guid.TryParse(options.WorkflowId, out Guid workflowId))
+                throw new FormatException("Invalid workflow id format. Expected a valid GUID.");
+
             var request = AddTriggerData(jsonData);
-            request.WorkflowId = options.WorkflowId;
+            request.WorkflowId =workflowId;
             var result = await _flowSynxClient.Workflows.AddTriggerAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

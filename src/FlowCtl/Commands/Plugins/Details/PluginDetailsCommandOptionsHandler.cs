@@ -41,7 +41,10 @@ internal class PluginDetailsCommandOptionsHandler : ICommandOptionsHandler<Plugi
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new PluginDetailsRequest { Id = Guid.Parse(options.PluginId) };
+            if (!Guid.TryParse(options.PluginId, out Guid pluginId))
+                throw new FormatException("Invalid plugin id format. Expected a valid GUID.");
+
+            var request = new PluginDetailsRequest { Id = pluginId };
             var result = await _flowSynxClient.Plugins.DetailsAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

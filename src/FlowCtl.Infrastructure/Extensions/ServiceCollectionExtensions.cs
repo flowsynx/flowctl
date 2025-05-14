@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
                 .AddScoped<IProcessProvider, DefaultProcessProvider>()
                 .AddScoped<IProcessHandler, ProcessHandler>()
                 .AddScoped<IArchiveExtractor, ArchiveExtractor>()
+                .AddScoped<IDataProtectorWrapper, DataProtectorWrapper>()
                 .AddScoped<IAuthenticationManager, AuthenticationManager>();
 
         return services;

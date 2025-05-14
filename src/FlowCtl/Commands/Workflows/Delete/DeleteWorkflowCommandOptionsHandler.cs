@@ -41,7 +41,10 @@ internal class DeleteWorkflowCommandOptionsHandler : ICommandOptionsHandler<Dele
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new DeleteWorkflowRequest { Id = Guid.Parse(options.WorkflowId) };
+            if (!Guid.TryParse(options.WorkflowId, out Guid workflowId))
+                throw new FormatException("Invalid workflow id format. Expected a valid GUID.");
+
+            var request = new DeleteWorkflowRequest { Id = workflowId };
             var result = await _flowSynxClient.Workflows.DeleteAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

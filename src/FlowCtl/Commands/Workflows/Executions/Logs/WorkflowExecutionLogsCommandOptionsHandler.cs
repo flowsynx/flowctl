@@ -41,10 +41,16 @@ internal class WorkflowExecutionLogsCommandOptionsHandler : ICommandOptionsHandl
                 _flowSynxClient.SetConnection(connection);
             }
 
+            if (!Guid.TryParse(options.WorkflowId, out Guid workflowId))
+                throw new FormatException("Invalid workflow id format. Expected a valid GUID.");
+
+            if (!Guid.TryParse(options.ExecutionId, out Guid executionId))
+                throw new FormatException("Invalid execution id format. Expected a valid GUID.");
+
             var request = new WorkflowExecutionDetailsRequest 
             {
-                WorkflowId = options.WorkflowId, 
-                WorkflowExecutionId = options.ExecutionId 
+                WorkflowId = workflowId, 
+                WorkflowExecutionId = executionId
             };
             var result = await _flowSynxClient.Workflows.ExecutionsDetailsAsync(request, cancellationToken);
 

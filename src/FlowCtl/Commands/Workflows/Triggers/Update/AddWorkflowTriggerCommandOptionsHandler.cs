@@ -58,9 +58,15 @@ internal class UpdateWorkflowTriggerCommandOptionsHandler : ICommandOptionsHandl
                 jsonData = options.Data;
             }
 
+            if (!Guid.TryParse(options.WorkflowId, out Guid workflowId))
+                throw new FormatException("Invalid workflow id format. Expected a valid GUID.");
+
+            if (!Guid.TryParse(options.TriggerId, out Guid triggerId))
+                throw new FormatException("Invalid trigger id format. Expected a valid GUID.");
+
             var request = GetUpdateTriggerData(jsonData);
-            request.WorkflowId = options.WorkflowId;
-            request.TriggerId = options.TriggerId;
+            request.WorkflowId = workflowId;
+            request.TriggerId = triggerId;
             var result = await _flowSynxClient.Workflows.UpdateTriggerAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

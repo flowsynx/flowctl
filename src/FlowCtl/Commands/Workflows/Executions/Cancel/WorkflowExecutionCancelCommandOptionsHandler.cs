@@ -41,10 +41,16 @@ internal class WorkflowExecutionCancelCommandOptionsHandler : ICommandOptionsHan
                 _flowSynxClient.SetConnection(connection);
             }
 
+            if (!Guid.TryParse(options.WorkflowId, out Guid workflowId))
+                throw new FormatException("Invalid workflow id format. Expected a valid GUID.");
+
+            if (!Guid.TryParse(options.ExecutionId, out Guid executionId))
+                throw new FormatException("Invalid executionId id format. Expected a valid GUID.");
+
             var request = new CancelWorkflowRequest
             {
-                WorkflowId = options.WorkflowId, 
-                WorkflowExecutionId = options.ExecutionId 
+                WorkflowId = workflowId, 
+                WorkflowExecutionId = executionId
             };
             var result = await _flowSynxClient.Workflows.CancelExecutionsAsync(request, cancellationToken);
 

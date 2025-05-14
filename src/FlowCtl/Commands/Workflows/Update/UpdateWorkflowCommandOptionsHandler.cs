@@ -54,9 +54,12 @@ internal class UpdateWorkflowCommandOptionsHandler : ICommandOptionsHandler<Upda
                 definitionJsonData = options.Definition;
             }
 
+            if (!Guid.TryParse(options.WorkflowId, out Guid workflowId))
+                throw new FormatException("Invalid workflow id format. Expected a valid GUID.");
+
             var request = new UpdateWorkflowRequest 
             { 
-                Id = Guid.Parse(options.WorkflowId), 
+                Id = workflowId, 
                 Definition = definitionJsonData 
             };
             var result = await _flowSynxClient.Workflows.UpdateAsync(request, cancellationToken);
