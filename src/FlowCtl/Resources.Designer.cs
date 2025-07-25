@@ -817,6 +817,24 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Get list of pending approvals about workflow execution.
+        /// </summary>
+        internal static string Commands_Workflow_Execution_ApprovalsDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflow_Execution_ApprovalsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approve the pending task in executed workflow.
+        /// </summary>
+        internal static string Commands_Workflow_Execution_ApprovePendingTaskDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflow_Execution_ApprovePendingTaskDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel the executed workflow.
         /// </summary>
         internal static string Commands_Workflow_Execution_CancelDescription {
@@ -840,6 +858,15 @@ namespace FlowCtl {
         internal static string Commands_Workflow_Execution_LogsDescription {
             get {
                 return ResourceManager.GetString("Commands_Workflow_Execution_LogsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reject the pending task in executed workflow.
+        /// </summary>
+        internal static string Commands_Workflow_Execution_RejectPendingTaskDescription {
+            get {
+                return ResourceManager.GetString("Commands_Workflow_Execution_RejectPendingTaskDescription", resourceCulture);
             }
         }
         
@@ -939,6 +966,15 @@ namespace FlowCtl {
         internal static string Commands_Workflows_ExecuteIdentityOption {
             get {
                 return ResourceManager.GetString("Commands_Workflows_ExecuteIdentityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execution approval identity.
+        /// </summary>
+        internal static string Commands_Workflows_Execution_ApprovalIdentityOption {
+            get {
+                return ResourceManager.GetString("Commands_Workflows_Execution_ApprovalIdentityOption", resourceCulture);
             }
         }
         

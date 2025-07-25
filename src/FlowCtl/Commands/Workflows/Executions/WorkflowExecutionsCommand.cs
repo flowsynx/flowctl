@@ -1,4 +1,5 @@
-﻿using FlowCtl.Commands.Workflows.Executions.Cancel;
+﻿using FlowCtl.Commands.Workflows.Executions.Approvals;
+using FlowCtl.Commands.Workflows.Executions.Cancel;
 using FlowCtl.Commands.Workflows.Executions.Details;
 using FlowCtl.Commands.Workflows.Executions.Execute;
 using FlowCtl.Commands.Workflows.Executions.Logs;
@@ -25,6 +26,7 @@ internal class WorkflowExecutionsCommand : BaseCommand<WorkflowExecutionsCommand
         AddOption(addressOption);
         AddOption(outputFormatOption);
 
+        AddCommand(new WorkflowExecutionPendingApprovalsCommand());
         AddCommand(new WorkflowExecutionCancelCommand());
         AddCommand(new WorkflowExecutionDetailsCommand());
         AddCommand(new ExecuteWorkflowCommand());

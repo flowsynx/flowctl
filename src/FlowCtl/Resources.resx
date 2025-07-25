@@ -393,6 +393,9 @@
   <data name="Commands_Workflows_Executions_IdentityOption" xml:space="preserve">
     <value>Workflow identity</value>
   </data>
+  <data name="Commands_Workflows_Execution_ApprovalIdentityOption" xml:space="preserve">
+    <value>Execution approval identity</value>
+  </data>
   <data name="Commands_Workflows_Execution_IdentityOption" xml:space="preserve">
     <value>Execution identity</value>
   </data>
@@ -435,6 +438,12 @@
   <data name="Commands_Workflows_Update_DefinitionDataFile" xml:space="preserve">
     <value>A file containing JSON-serialized definition data</value>
   </data>
+  <data name="Commands_Workflow_Execution_ApprovalsDescription" xml:space="preserve">
+    <value>Get list of pending approvals about workflow execution</value>
+  </data>
+  <data name="Commands_Workflow_Execution_ApprovePendingTaskDescription" xml:space="preserve">
+    <value>Approve the pending task in executed workflow</value>
+  </data>
   <data name="Commands_Workflow_Execution_CancelDescription" xml:space="preserve">
     <value>Cancel the executed workflow</value>
   </data>
@@ -443,6 +452,9 @@
   </data>
   <data name="Commands_Workflow_Execution_LogsDescription" xml:space="preserve">
     <value>Get logs about workflow execution</value>
+  </data>
+  <data name="Commands_Workflow_Execution_RejectPendingTaskDescription" xml:space="preserve">
+    <value>Reject the pending task in executed workflow</value>
   </data>
   <data name="Commands_Workflow_Triggers_DetailsDescription" xml:space="preserve">
     <value>Get details about workflow trigger</value>
