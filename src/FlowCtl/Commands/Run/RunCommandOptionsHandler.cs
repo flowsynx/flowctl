@@ -43,12 +43,20 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
             };
 
             var process = new Process { StartInfo = startInfo };
-            process.OutputDataReceived += OutputDataHandler;
-            process.ErrorDataReceived += ErrorDataHandler;
+
+            if (!options.Background) {
+                process.OutputDataReceived += OutputDataHandler;
+                process.ErrorDataReceived += ErrorDataHandler;
+            }
+
             process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-            process?.WaitForExit();
+
+            if (!options.Background)
+            {
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process?.WaitForExit();
+            }
         }
         catch (Exception e)
         {

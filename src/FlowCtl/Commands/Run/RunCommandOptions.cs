@@ -2,5 +2,5 @@
 
 internal class RunCommandOptions : ICommandOptions
 {
-
+    public bool Background { get; set; } = false;
 }
