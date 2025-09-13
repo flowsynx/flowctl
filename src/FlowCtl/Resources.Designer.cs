@@ -70,6 +70,15 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run the console in the background.
+        /// </summary>
+        internal static string Command_Console_BackgroundOption {
+            get {
+                return ResourceManager.GetString("Command_Console_BackgroundOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FlowSynx Console is not installed. Please run the &apos;synx init -h&apos; command to see the details..
         /// </summary>
         internal static string Command_Console_ConsleIsNotInstalled {
@@ -93,6 +102,15 @@ namespace FlowCtl {
         internal static string Command_ConsoleVersion_Description {
             get {
                 return ResourceManager.GetString("Command_ConsoleVersion_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run the FlowSynx system in the background.
+        /// </summary>
+        internal static string Command_Run_BackgroundOption {
+            get {
+                return ResourceManager.GetString("Command_Run_BackgroundOption", resourceCulture);
             }
         }
         
@@ -714,6 +732,15 @@ namespace FlowCtl {
         internal static string Commands_Stop_StopFlowSynxSuccessfully {
             get {
                 return ResourceManager.GetString("Commands_Stop_StopFlowSynxSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop the FlowSynx Console running under the current user profile..
+        /// </summary>
+        internal static string Commands_StopConsole_Description {
+            get {
+                return ResourceManager.GetString("Commands_StopConsole_Description", resourceCulture);
             }
         }
         

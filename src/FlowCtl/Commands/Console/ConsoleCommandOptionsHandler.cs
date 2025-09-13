@@ -1,7 +1,6 @@
 ﻿using FlowCtl.Core.Services.Location;
 using FlowCtl.Core.Services.Logger;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace FlowCtl.Commands.Console;
 
@@ -46,13 +45,21 @@ internal class ConsoleCommandOptionsHandler : ICommandOptionsHandler<ConsoleComm
             };
 
             var process = new Process { StartInfo = startInfo };
-            process.OutputDataReceived += OutputDataHandler;
-            process.ErrorDataReceived += ErrorDataHandler;
+
+            if (!options.Background)
+            {
+                process.OutputDataReceived += OutputDataHandler;
+                process.ErrorDataReceived += ErrorDataHandler;
+            }
+
             var processStarted = process.Start();
 
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-            process?.WaitForExit();
+            if (!options.Background)
+            {
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process?.WaitForExit();
+            }
         }
         catch (Exception e)
         {

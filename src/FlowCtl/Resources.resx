@@ -306,6 +306,9 @@
   <data name="Commands_Run_FlowSynxIsNotInstalled" xml:space="preserve">
     <value>The FlowSynx system is not installed. Please run the 'synx init -h' command for more details.</value>
   </data>
+  <data name="Commands_StopConsole_Description" xml:space="preserve">
+    <value>Stop the FlowSynx Console running under the current user profile.</value>
+  </data>
   <data name="Commands_Stop_Description" xml:space="preserve">
     <value>Stop the FlowSynx system and its associated applications running under the current user profile.</value>
   </data>
@@ -480,11 +483,17 @@
   <data name="Command_ConsoleVersion_Description" xml:space="preserve">
     <value>Display the version for FlowSynx Console</value>
   </data>
+  <data name="Command_Console_BackgroundOption" xml:space="preserve">
+    <value>Run the console in the background</value>
+  </data>
   <data name="Command_Console_ConsleIsNotInstalled" xml:space="preserve">
     <value>FlowSynx Console is not installed. Please run the 'synx init -h' command to see the details.</value>
   </data>
   <data name="Command_Console_Description" xml:space="preserve">
     <value>Run and execute the FlowSynx console</value>
+  </data>
+  <data name="Command_Run_BackgroundOption" xml:space="preserve">
+    <value>Run the FlowSynx system in the background</value>
   </data>
   <data name="Command_Workflow_AddCommand_FileNotExist" xml:space="preserve">
     <value>The provided definition file '{0}' does not exist or could not be located.</value>
