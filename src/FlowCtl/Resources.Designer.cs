@@ -70,6 +70,33 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FlowSynx Console is not installed. Please run the &apos;synx init -h&apos; command to see the details..
+        /// </summary>
+        internal static string Command_Console_ConsleIsNotInstalled {
+            get {
+                return ResourceManager.GetString("Command_Console_ConsleIsNotInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and execute the FlowSynx console.
+        /// </summary>
+        internal static string Command_Console_Description {
+            get {
+                return ResourceManager.GetString("Command_Console_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display the version for FlowSynx Console.
+        /// </summary>
+        internal static string Command_ConsoleVersion_Description {
+            get {
+                return ResourceManager.GetString("Command_ConsoleVersion_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided definition file &apos;{0}&apos; does not exist or could not be located..
         /// </summary>
         internal static string Command_Workflow_AddCommand_FileNotExist {
@@ -277,11 +304,29 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start download FlowSynx Console binary.
+        /// </summary>
+        internal static string Commands_Init_StartDownloadConsoleBinary {
+            get {
+                return ResourceManager.GetString("Commands_Init_StartDownloadConsoleBinary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start download FlowSynx system binary.
         /// </summary>
         internal static string Commands_Init_StartDownloadFlowSynxSystemBinary {
             get {
                 return ResourceManager.GetString("Commands_Init_StartDownloadFlowSynxSystemBinary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting extract FlowSynx Console binary.
+        /// </summary>
+        internal static string Commands_Init_StartExtractingConsoleBinary {
+            get {
+                return ResourceManager.GetString("Commands_Init_StartExtractingConsoleBinary", resourceCulture);
             }
         }
         
@@ -295,11 +340,29 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start validating FlowSynx Console binary.
+        /// </summary>
+        internal static string Commands_Init_StartValidatingConsoleBinary {
+            get {
+                return ResourceManager.GetString("Commands_Init_StartValidatingConsoleBinary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start validating FlowSynx system binary.
         /// </summary>
         internal static string Commands_Init_StartValidatingFlowSynxSystemBinary {
             get {
                 return ResourceManager.GetString("Commands_Init_StartValidatingFlowSynxSystemBinary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validating Console download - Fail!.
+        /// </summary>
+        internal static string Commands_Init_ValidatingConsoleFailed {
+            get {
+                return ResourceManager.GetString("Commands_Init_ValidatingConsoleFailed", resourceCulture);
             }
         }
         
@@ -637,11 +700,20 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The FlowSynx Console has been successfully stopped..
+        /// </summary>
+        internal static string Commands_Stop_StopConsoleSuccessfully {
+            get {
+                return ResourceManager.GetString("Commands_Stop_StopConsoleSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The FlowSynx system has been successfully stopped..
         /// </summary>
-        internal static string Commands_Stop_StopSuccessfully {
+        internal static string Commands_Stop_StopFlowSynxSuccessfully {
             get {
-                return ResourceManager.GetString("Commands_Stop_StopSuccessfully", resourceCulture);
+                return ResourceManager.GetString("Commands_Stop_StopFlowSynxSuccessfully", resourceCulture);
             }
         }
         
@@ -651,6 +723,15 @@ namespace FlowCtl {
         internal static string Commands_Uninstall_BeginningUninstalling {
             get {
                 return ResourceManager.GetString("Commands_Uninstall_BeginningUninstalling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The FlowSynx Console is currently running. Please stop it before attempting to uninstall it..
+        /// </summary>
+        internal static string Commands_Uninstall_ConsoleIsRunning {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_ConsoleIsRunning", resourceCulture);
             }
         }
         
@@ -790,7 +871,7 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Validating download - Fail!.
+        ///   Looks up a localized string similar to Validating FlowSynx download - Fail!.
         /// </summary>
         internal static string Commands_Update_ValidatingFlowSynxSystemFailed {
             get {

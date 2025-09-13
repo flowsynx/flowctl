@@ -27,6 +27,7 @@ using FlowCtl.Services.Logger;
 using FlowSynx.Client;
 using Spectre.Console;
 using FlowSynx.Client.Authentication;
+using FlowCtl.Commands.Console;
 
 namespace FlowCtl.Extensions;
 
@@ -43,6 +44,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddTransient<RootCommand, Root>()
                 .AddTransient<Command, ConfigCommand>()
+                .AddTransient<Command, ConsoleCommand>()
                 .AddTransient<Command, HealthCommand>()
                 .AddTransient<Command, InitCommand>()
                 .AddTransient<Command, LoginCommand>()

@@ -177,14 +177,26 @@
   <data name="Commands_Init_StartChangeExecutionMode" xml:space="preserve">
     <value>Starting to change the execution mode of FlowSynx.</value>
   </data>
+  <data name="Commands_Init_StartDownloadConsoleBinary" xml:space="preserve">
+    <value>Start download FlowSynx Console binary</value>
+  </data>
   <data name="Commands_Init_StartDownloadFlowSynxSystemBinary" xml:space="preserve">
     <value>Start download FlowSynx system binary</value>
+  </data>
+  <data name="Commands_Init_StartExtractingConsoleBinary" xml:space="preserve">
+    <value>Starting extract FlowSynx Console binary</value>
   </data>
   <data name="Commands_Init_StartExtractingFlowSynxSystemBinary" xml:space="preserve">
     <value>Starting extract FlowSynx system binary</value>
   </data>
+  <data name="Commands_Init_StartValidatingConsoleBinary" xml:space="preserve">
+    <value>Start validating FlowSynx Console binary</value>
+  </data>
   <data name="Commands_Init_StartValidatingFlowSynxSystemBinary" xml:space="preserve">
     <value>Start validating FlowSynx system binary</value>
+  </data>
+  <data name="Commands_Init_ValidatingConsoleFailed" xml:space="preserve">
+    <value>Validating Console download - Fail!</value>
   </data>
   <data name="Commands_Init_ValidatingFlowSynxSystemFailed" xml:space="preserve">
     <value>Validating download - Fail!</value>
@@ -297,11 +309,17 @@
   <data name="Commands_Stop_Description" xml:space="preserve">
     <value>Stop the FlowSynx system and its associated applications running under the current user profile.</value>
   </data>
-  <data name="Commands_Stop_StopSuccessfully" xml:space="preserve">
+  <data name="Commands_Stop_StopConsoleSuccessfully" xml:space="preserve">
+    <value>The FlowSynx Console has been successfully stopped.</value>
+  </data>
+  <data name="Commands_Stop_StopFlowSynxSuccessfully" xml:space="preserve">
     <value>The FlowSynx system has been successfully stopped.</value>
   </data>
   <data name="Commands_Uninstall_BeginningUninstalling" xml:space="preserve">
     <value>Beginning uninstalling...</value>
+  </data>
+  <data name="Commands_Uninstall_ConsoleIsRunning" xml:space="preserve">
+    <value>The FlowSynx Console is currently running. Please stop it before attempting to uninstall it.</value>
   </data>
   <data name="Commands_Uninstall_Description" xml:space="preserve">
     <value>Uninstalling the FlowSynx System from the current user's profile and local machine environment</value>
@@ -349,7 +367,7 @@
     <value>Start validating FlowSynx system binary</value>
   </data>
   <data name="Commands_Update_ValidatingFlowSynxSystemFailed" xml:space="preserve">
-    <value>Validating download - Fail!</value>
+    <value>Validating FlowSynx download - Fail!</value>
   </data>
   <data name="Commands_Version_Description" xml:space="preserve">
     <value>Displays the FlowSynx system version and CLI version.</value>
@@ -458,6 +476,15 @@
   </data>
   <data name="Commands_Workflow_Triggers_DetailsDescription" xml:space="preserve">
     <value>Get details about workflow trigger</value>
+  </data>
+  <data name="Command_ConsoleVersion_Description" xml:space="preserve">
+    <value>Display the version for FlowSynx Console</value>
+  </data>
+  <data name="Command_Console_ConsleIsNotInstalled" xml:space="preserve">
+    <value>FlowSynx Console is not installed. Please run the 'synx init -h' command to see the details.</value>
+  </data>
+  <data name="Command_Console_Description" xml:space="preserve">
+    <value>Run and execute the FlowSynx console</value>
   </data>
   <data name="Command_Workflow_AddCommand_FileNotExist" xml:space="preserve">
     <value>The provided definition file '{0}' does not exist or could not be located.</value>
