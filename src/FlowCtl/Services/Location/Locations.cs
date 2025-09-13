@@ -23,11 +23,16 @@ public class LocationService : ILocation
 
     public string FlowSynxBinaryName => "flowsynx";
 
+    public string ConsoleBinaryName => "console";
+
     public string LookupFlowSynxBinaryFilePath(string path) =>
         Path.Combine(path, AppendExecutableExtension("flowsynx"));
 
     public string LookupFlowCtlBinaryFilePath(string path) =>
         Path.Combine(path, AppendExecutableExtension("flowctl"));
+
+    public string LookupConsoleBinaryFilePath(string path) =>
+        Path.Combine(path, AppendExecutableExtension("console"));
 
     private static string AppendExecutableExtension(string binaryName) =>
         RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? $"{binaryName}.exe" : binaryName;

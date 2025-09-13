@@ -8,6 +8,7 @@ public static class GitHubSettings
     public const string Organization = "flowsynx";
     public const string FlowSynxRepository = "flowsynx";
     public const string FlowCtlRepository = "flowctl";
+    public const string ConsoleRepository = "console";
 
     // Archive and Hash File Extensions
     private static readonly string HashFileExtension = "sha256";
@@ -31,6 +32,12 @@ public static class GitHubSettings
     // FlowCtl Filenames
     public static string FlowCtlArchiveFileName => $"{FlowCtlRepository}-{ArchiveName.ToLower()}";
     public static string FlowCtlArchiveHashFileName => $"{FlowCtlRepository}-{ArchiveName.ToLower()}.{HashFileExtension}";
+
+    // Console Filenames
+    public static string ConsoleArchiveFileName => $"{ConsoleRepository}-{ArchiveName.ToLower()}";
+    public static string ConsoleArchiveTemporaryFileName => $"{ConsoleRepository}-{ArchiveTemporaryName.ToLower()}";
+    public static string ConsoleArchiveHashFileName => $"{ConsoleRepository}-{ArchiveName.ToLower()}.{HashFileExtension}";
+    public static string ConsoleArchiveTemporaryHashFileName => $"{ConsoleRepository}-{ArchiveTemporaryHashName.ToLower()}.{HashFileExtension}";
 
     // Determine OS platform
     private static string GetOperatingSystemType()

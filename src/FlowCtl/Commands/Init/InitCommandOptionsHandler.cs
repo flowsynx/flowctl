@@ -53,6 +53,21 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             _flowCtlLogger.Write(Resources.Commands_Init_StartChangeExecutionMode);
             MakeExecutable(flowSynxBinaryFile);
 
+            // --- Console initialization ---
+            var consolePath = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, "console");
+            var consoleBinaryFile = _location.LookupConsoleBinaryFilePath(consolePath);
+            if (File.Exists(consoleBinaryFile))
+            {
+                _flowCtlLogger.Write(Resources.Commands_Init_FlowSynxSystemIsAlreadyInitialized);
+                return;
+            }
+            var initConsole = await InitConsole(options.ConsoleVersion, cancellationToken);
+            if (!initConsole)
+                return;
+
+            _flowCtlLogger.Write(Resources.Commands_Init_StartChangeExecutionMode);
+            MakeExecutable(consoleBinaryFile);
+
             _flowCtlLogger.Write(string.Format(Resources.Commands_Init_FlowSynxSystemDownloadedAndInstalledSuccessfully, 
                 _location.DefaultFlowSynxBinaryDirectoryName));
         }
@@ -72,12 +87,20 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
 
         _flowCtlLogger.Write(Resources.Commands_Init_StartDownloadFlowSynxSystemBinary);
         string tempPath = Path.Combine(Path.GetTempPath(), GitHubSettings.FlowSynxArchiveTemporaryFileName);
-        var flowSynxDownloadPath = await _gitHubReleaseManager.DownloadAsset(GitHubSettings.Organization, 
-            GitHubSettings.FlowSynxRepository, GitHubSettings.FlowSynxArchiveFileName, tempPath, flowSynxVersion);
+        var flowSynxDownloadPath = await _gitHubReleaseManager.DownloadAsset(
+            GitHubSettings.Organization, 
+            GitHubSettings.FlowSynxRepository, 
+            GitHubSettings.FlowSynxArchiveFileName, 
+            tempPath, 
+            flowSynxVersion);
 
         string tempHashPath = Path.Combine(Path.GetTempPath(), GitHubSettings.FlowSynxArchiveTemporaryHashFileName);
-        var flowSynxHashDownloadPath = await _gitHubReleaseManager.DownloadAsset(GitHubSettings.Organization, 
-            GitHubSettings.FlowSynxRepository, GitHubSettings.FlowSynxArchiveHashFileName, tempHashPath, flowSynxVersion);
+        var flowSynxHashDownloadPath = await _gitHubReleaseManager.DownloadAsset(
+            GitHubSettings.Organization, 
+            GitHubSettings.FlowSynxRepository, 
+            GitHubSettings.FlowSynxArchiveHashFileName, 
+            tempHashPath, 
+            flowSynxVersion);
 
         _flowCtlLogger.Write(Resources.Commands_Init_StartValidatingFlowSynxSystemBinary);
         var isFlowSynxValid = _gitHubReleaseManager.ValidateDownloadedAsset(flowSynxDownloadPath, flowSynxHashDownloadPath);
@@ -93,7 +116,46 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         ExtractAsset(flowSynxDownloadPath, "engine", cancellationToken);
         return true;
     }
-        
+
+    private async Task<bool> InitConsole(string? version, CancellationToken cancellationToken)
+    {
+        var consoleVersion = await _gitHubReleaseManager.GetLatestVersion(GitHubSettings.Organization, GitHubSettings.ConsoleRepository);
+        if (!string.IsNullOrEmpty(version))
+            consoleVersion = version;
+
+        consoleVersion = NormalizeVersion(consoleVersion);
+
+        _flowCtlLogger.Write(Resources.Commands_Init_StartDownloadConsoleBinary);
+        string tempPath = Path.Combine(Path.GetTempPath(), GitHubSettings.ConsoleArchiveTemporaryFileName);
+        var consoleDownloadPath = await _gitHubReleaseManager.DownloadAsset(
+            GitHubSettings.Organization,
+            GitHubSettings.ConsoleRepository,
+            GitHubSettings.ConsoleArchiveFileName,
+            tempPath,
+            consoleVersion);
+
+        string tempHashPath = Path.Combine(Path.GetTempPath(), GitHubSettings.ConsoleArchiveTemporaryHashFileName);
+        var consoleHashDownloadPath = await _gitHubReleaseManager.DownloadAsset(
+            GitHubSettings.Organization,
+            GitHubSettings.ConsoleRepository,
+            GitHubSettings.ConsoleArchiveHashFileName,
+            tempHashPath,
+            consoleVersion);
+
+        _flowCtlLogger.Write(Resources.Commands_Init_StartValidatingConsoleBinary);
+        var isConsoleValid = _gitHubReleaseManager.ValidateDownloadedAsset(consoleDownloadPath, consoleHashDownloadPath);
+
+        if (!isConsoleValid)
+        {
+            _flowCtlLogger.Write(Resources.Commands_Init_ValidatingConsoleFailed);
+            return false;
+        }
+
+        _flowCtlLogger.Write(Resources.Commands_Init_StartExtractingConsoleBinary);
+        ExtractAsset(consoleDownloadPath, "console", cancellationToken);
+        return true;
+    }
+
     private void ExtractAsset(string sourcePath, string destinationPathName, CancellationToken cancellationToken)
     {
         var extractTarget = Path.Combine(_location.DefaultFlowSynxBinaryDirectoryName, destinationPathName, "downloadedFiles");

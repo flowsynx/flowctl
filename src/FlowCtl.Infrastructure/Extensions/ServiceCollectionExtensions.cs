@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDataProtection();
         services
-                .AddSingleton(new GitHubClient(new ProductHeaderValue("flowsynx")))
+                .AddSingleton<IGitHubClient>(new GitHubClient(new ProductHeaderValue("flowsynx")))
                 .AddSingleton<IGitHubReleaseManager, GitHubReleaseManager>()
                 .AddScoped<IProcessProvider, DefaultProcessProvider>()
                 .AddScoped<IProcessHandler, ProcessHandler>()

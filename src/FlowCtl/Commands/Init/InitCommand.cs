@@ -9,6 +9,10 @@ internal class InitCommand : BaseCommand<InitCommandOptions, InitCommandOptionsH
         var flowSynxVersionOption = new Option<string?>("--flowsynx-version",
             description: Resources.Commands_Init_FlowSynxVersionOption);
 
+        var consoleVersionOption = new Option<string?>("--console-version",
+            description: Resources.Commands_Init_FlowSynxVersionOption);
+
         AddOption(flowSynxVersionOption);
+        AddOption(consoleVersionOption);
     }
 }

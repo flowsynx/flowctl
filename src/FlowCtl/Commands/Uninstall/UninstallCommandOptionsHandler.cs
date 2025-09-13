@@ -35,11 +35,25 @@ internal class UninstallCommandOptionsHandler : ICommandOptionsHandler<Uninstall
                 if (options.Force)
                 {
                     _processHandler.Terminate(_location.FlowSynxBinaryName, ".");
-                    _flowCtlLogger.Write(Resources.Commands_Uninstall_StopSuccessfully);
+                    _flowCtlLogger.Write(Resources.Commands_Stop_StopFlowSynxSuccessfully);
                 }
                 else
                 {
                     _flowCtlLogger.Write(Resources.Commands_Uninstall_FlowSynxSystemIsRunning);
+                    return Task.CompletedTask;
+                }
+            }
+
+            if (_processHandler.IsRunning(_location.ConsoleBinaryName, "."))
+            {
+                if (options.Force)
+                {
+                    _processHandler.Terminate(_location.ConsoleBinaryName, ".");
+                    _flowCtlLogger.Write(Resources.Commands_Stop_StopConsoleSuccessfully);
+                }
+                else
+                {
+                    _flowCtlLogger.Write(Resources.Commands_Uninstall_ConsoleIsRunning);
                     return Task.CompletedTask;
                 }
             }
