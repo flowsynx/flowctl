@@ -50,7 +50,7 @@ else {
 Write-Output "Creating $FlowCtlRootPath directory"
 New-Item -ErrorAction Ignore -Path $FlowCtlRootPath -ItemType "directory"
 if (!(Test-Path $FlowCtlRootPath -PathType Container)) {
-    Write-Warning "Please visit https://flowsynx.io/docs/getting-started/install-flowctl/ for instructions on how to install without admin rights."
+    Write-Warning "Please visit https://flowsynx.io/docs/getting-started/flowctl-based-installation/ for instructions on how to install without admin rights."
     throw "Cannot create $FlowCtlRootPath"
 }
 
@@ -142,4 +142,4 @@ else {
 }
 
 Write-Output "`r`nFlowCtl is installed successfully."
-Write-Output "To get started with FlowCtl, please visit https://flowsynx.io/docs/category/getting-started ."
+Write-Output "To get started with FlowCtl, please visit https://flowsynx.io/docs/getting-started/."
