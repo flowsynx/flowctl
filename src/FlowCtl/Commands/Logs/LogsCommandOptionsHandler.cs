@@ -43,7 +43,9 @@ internal class LogsCommandOptionsHandler : ICommandOptionsHandler<LogsCommandOpt
                 Level = options.Level, 
                 FromDate = options.FromDate, 
                 ToDate = options.ToDate, 
-                Message = options.Message
+                Message = options.Message,
+                Page = options.Page,
+                PageSize = options.PageSize
             };
             var result = await _flowSynxClient.Logs.ListAsync(request, cancellationToken);
 

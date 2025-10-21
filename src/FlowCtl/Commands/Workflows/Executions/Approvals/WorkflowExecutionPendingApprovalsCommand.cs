@@ -16,6 +16,12 @@ internal class WorkflowExecutionPendingApprovalsCommand
         var executionIdOption = new Option<string>(new[] { "-e", "--execution-id" },
             description: Resources.Commands_Workflows_Execution_IdentityOption) { IsRequired = true };
 
+        var pageOption = new Option<int?>(new[] { "-p", "--page" },
+            description: Resources.Commands_FlowSynxPage);
+
+        var pageSizeOption = new Option<int?>(new[] { "-s", "--page-size" },
+            description: Resources.Commands_FlowSynxPageSize);
+
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.Commands_FlowSynxAddress);
 
@@ -25,6 +31,8 @@ internal class WorkflowExecutionPendingApprovalsCommand
 
         AddOption(workflowIdOption);
         AddOption(executionIdOption);
+        AddOption(pageOption);
+        AddOption(pageSizeOption);
         AddOption(addressOption);
         AddOption(outputFormatOption);
 

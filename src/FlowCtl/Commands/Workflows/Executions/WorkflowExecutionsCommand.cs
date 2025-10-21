@@ -15,6 +15,12 @@ internal class WorkflowExecutionsCommand : BaseCommand<WorkflowExecutionsCommand
         var workflowIdOption = new Option<string>(new[] { "-w", "--workflow-id" },
             description: Resources.Commands_Workflows_IdentityOption) { IsRequired = true };
 
+        var pageOption = new Option<int?>(new[] { "-p", "--page" },
+            description: Resources.Commands_FlowSynxPage);
+
+        var pageSizeOption = new Option<int?>(new[] { "-s", "--page-size" },
+            description: Resources.Commands_FlowSynxPageSize);
+
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.Commands_FlowSynxAddress);
 
@@ -23,6 +29,8 @@ internal class WorkflowExecutionsCommand : BaseCommand<WorkflowExecutionsCommand
             description: Resources.Commands_Output_Format);
 
         AddOption(workflowIdOption);
+        AddOption(pageOption);
+        AddOption(pageSizeOption);
         AddOption(addressOption);
         AddOption(outputFormatOption);
 

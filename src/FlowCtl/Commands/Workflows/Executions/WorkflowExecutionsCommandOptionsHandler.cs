@@ -44,7 +44,11 @@ internal class WorkflowExecutionsCommandOptionsHandler : ICommandOptionsHandler<
             if (!Guid.TryParse(options.WorkflowId, out Guid workflowId))
                 throw new FormatException("Invalid workflow id format. Expected a valid GUID.");
 
-            var request = new WorkflowExecutionListRequest { WorkflowId = workflowId };
+            var request = new WorkflowExecutionListRequest { 
+                WorkflowId = workflowId,
+                Page = options.Page,
+                PageSize = options.PageSize
+            };
             var result = await _flowSynxClient.Workflows.ExecutionsAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

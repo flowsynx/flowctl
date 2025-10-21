@@ -250,6 +250,24 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The page number used to specify which set of results to retrieve.
+        /// </summary>
+        internal static string Commands_FlowSynxPage {
+            get {
+                return ResourceManager.GetString("Commands_FlowSynxPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The number of items or records to include per page.
+        /// </summary>
+        internal static string Commands_FlowSynxPageSize {
+            get {
+                return ResourceManager.GetString("Commands_FlowSynxPageSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Display the health status of FlowSynx System.
         /// </summary>
         internal static string Commands_Health_Description {

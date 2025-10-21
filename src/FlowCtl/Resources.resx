@@ -153,6 +153,12 @@
   <data name="Commands_FlowSynxAddress" xml:space="preserve">
     <value>The address that specifies the HTTP endpoint used to connect to the flowsynx system</value>
   </data>
+  <data name="Commands_FlowSynxPage" xml:space="preserve">
+    <value>The page number used to specify which set of results to retrieve</value>
+  </data>
+  <data name="Commands_FlowSynxPageSize" xml:space="preserve">
+    <value>The number of items or records to include per page</value>
+  </data>
   <data name="Commands_Health_Description" xml:space="preserve">
     <value>Display the health status of FlowSynx System</value>
   </data>

@@ -22,6 +22,12 @@ internal class LogsCommand : BaseCommand<LogsCommandOptions, LogsCommandOptionsH
         var exportPathOption = new Option<string?>(new[] { "-e", "--export-to" },
             description: Resources.Commands_Logs_ExportToOption);
 
+        var pageOption = new Option<int?>(new[] { "-p", "--page" },
+            description: Resources.Commands_FlowSynxPage);
+
+        var pageSizeOption = new Option<int?>(new[] { "-s", "--page-size" },
+            description: Resources.Commands_FlowSynxPageSize);
+
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.Commands_FlowSynxAddress);
 
@@ -34,6 +40,8 @@ internal class LogsCommand : BaseCommand<LogsCommandOptions, LogsCommandOptionsH
         AddOption(toDateOption);
         AddOption(messageDateOption);
         AddOption(exportPathOption);
+        AddOption(pageOption);
+        AddOption(pageSizeOption);
         AddOption(addressOption);
         AddOption(outputOption);
     }

@@ -44,7 +44,11 @@ internal class WorkflowTriggersCommandOptionsHandler : ICommandOptionsHandler<Wo
             if (!Guid.TryParse(options.WorkflowId, out Guid workflowId))
                 throw new FormatException("Invalid workflow id format. Expected a valid GUID.");
 
-            var request = new WorkflowTriggersListRequest { WorkflowId = workflowId };
+            var request = new WorkflowTriggersListRequest { 
+                WorkflowId = workflowId,
+                Page = options.Page,
+                PageSize = options.PageSize
+            };
             var result = await _flowSynxClient.Workflows.TriggersAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

@@ -11,6 +11,12 @@ internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsComman
 {
     public PluginsCommand() : base("plugins", Resources.Commands_Plugins_Description)
     {
+        var pageOption = new Option<int?>(new[] { "-p", "--page" },
+            description: Resources.Commands_FlowSynxPage);
+
+        var pageSizeOption = new Option<int?>(new[] { "-s", "--page-size" },
+            description: Resources.Commands_FlowSynxPageSize);
+
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.Commands_FlowSynxAddress);
 
@@ -18,6 +24,8 @@ internal class PluginsCommand : BaseCommand<PluginsCommandOptions, PluginsComman
             getDefaultValue: () => OutputType.Json,
             description: Resources.Commands_Output_Format);
 
+        AddOption(pageOption);
+        AddOption(pageSizeOption);
         AddOption(addressOption);
         AddOption(outputOption);
 

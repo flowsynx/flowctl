@@ -2,6 +2,7 @@
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
+using FlowSynx.Client.Messages.Requests.Workflows;
 
 namespace FlowCtl.Commands.Workflows;
 
@@ -40,7 +41,12 @@ internal class WorkflowsCommandOptionsHandler : ICommandOptionsHandler<Workflows
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var result = await _flowSynxClient.Workflows.ListAsync(cancellationToken);
+            var request = new WorkflowListRequest
+            {
+                Page = options.Page,
+                PageSize = options.PageSize
+            };
+            var result = await _flowSynxClient.Workflows.ListAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

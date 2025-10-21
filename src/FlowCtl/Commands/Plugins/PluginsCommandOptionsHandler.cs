@@ -2,6 +2,7 @@
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
+using FlowSynx.Client.Messages.Requests.Workflows;
 
 namespace FlowCtl.Commands.Plugins;
 
@@ -40,7 +41,13 @@ internal class PluginsCommandOptionsHandler : ICommandOptionsHandler<PluginsComm
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var result = await _flowSynxClient.Plugins.ListAsync(cancellationToken);
+            var request = new PluginsListRequest
+            {
+                Page = options.Page,
+                PageSize = options.PageSize
+            };
+
+            var result = await _flowSynxClient.Plugins.ListAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
                 throw new Exception(Resources.Commands_Error_DuringProcessingRequest);

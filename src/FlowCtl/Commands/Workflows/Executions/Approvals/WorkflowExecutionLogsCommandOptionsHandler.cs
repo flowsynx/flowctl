@@ -49,7 +49,9 @@ internal class WorkflowExecutionPendingApprovalsCommandOptionsHandler : ICommand
 
             var request = new WorkflowExecutionPendingApprovalsRequest { 
                 WorkflowId = workflowId,
-                WorkflowExecutionId = executionId
+                WorkflowExecutionId = executionId,
+                Page = options.Page,
+                PageSize = options.PageSize
             };
             var result = await _flowSynxClient.Workflows.ExecutionPendingApprovalsAsync(request, cancellationToken);
 

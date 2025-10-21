@@ -9,6 +9,8 @@ internal class LogsCommandOptions : ICommandOptions
     public DateTime? ToDate { get; set; }
     public string? Message { get; set; }
     public string? ExportTo { get; set; }
+    public int? Page { get; set; }
+    public int? PageSize { get; set; }
     public string? Address { get; set; }
     public OutputType Output { get; set; } = OutputType.Json;
 }
