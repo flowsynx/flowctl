@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FlowSynx.Client" Version="1.3.7" />
+    <PackageReference Include="FlowSynx.Client" Version="1.3.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.4" />
     <PackageReference Include="Spectre.Console" Version="0.50.0" />
