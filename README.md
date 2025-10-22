@@ -1,34 +1,35 @@
-﻿# FlowCtl
+﻿<div align="center">
+  <h2>FlowCtl</h2>
+  <p><i>Command-line tools for control FlowSynx</i></p>
 
-[![dotnet][dotnet-budge]][dotnet-url] [![License: MIT][mit-badge]][mit-url] [![Build Status][actions-badge]][actions-url] [![FOSSA Status][fossa-badge]][fossa-url]
-
-[mit-badge]: https://img.shields.io/github/license/flowsynx/flowctl?style=flat&label=License&logo=github
-[mit-url]: https://github.com/flowsynx/flowctl/blob/master/LICENSE
-[actions-badge]: https://github.com/flowsynx/flowctl/actions/workflows/flowctl-release.yml/badge.svg?branch=master
-[actions-url]: https://github.com/flowsynx/flowctl/actions?workflow=flowctl
-[fossa-badge]: https://app.fossa.com/api/projects/git%2Bgithub.com%2Fflowsynx%2Fcli.svg?type=shield&issueType=license
-[fossa-url]: https://app.fossa.com/projects/git%2Bgithub.com%2Fflowsynx%2Fcli?ref=badge_shield&issueType=license
-[dotnet-budge]: https://img.shields.io/badge/.NET-9.0-blue
-[dotnet-url]: https://dotnet.microsoft.com/en-us/download/dotnet/9.0
+  [![dotnet][dotnet-budge]][dotnet-url] [![License: MIT][mit-badge]][mit-url] [![Build Status][actions-badge]][actions-url] [![FOSSA Status][fossa-badge]][fossa-url]
+  
+  [mit-badge]: https://img.shields.io/github/license/flowsynx/flowctl?style=flat&label=License&logo=github
+  [mit-url]: https://github.com/flowsynx/flowctl/blob/master/LICENSE
+  [actions-badge]: https://github.com/flowsynx/flowctl/actions/workflows/flowctl-release.yml/badge.svg?branch=master
+  [actions-url]: https://github.com/flowsynx/flowctl/actions?workflow=flowctl
+  [fossa-badge]: https://app.fossa.com/api/projects/git%2Bgithub.com%2Fflowsynx%2Fcli.svg?type=shield&issueType=license
+  [fossa-url]: https://app.fossa.com/projects/git%2Bgithub.com%2Fflowsynx%2Fcli?ref=badge_shield&issueType=license
+  [dotnet-budge]: https://img.shields.io/badge/.NET-9.0-blue
+  [dotnet-url]: https://dotnet.microsoft.com/en-us/download/dotnet/9.0
+</div>
 
 **flowctl** is a powerful command-line interface (CLI) tool written in C# for controlling and managing a FlowSynx workflow automation system. 
 Designed for developers and operations teams, flowctl enables seamless integration, orchestration, and lifecycle management of workflows 
 whether you're working in the cloud, on-premises, or in hybrid environments.
 
----
+![Flowctl CLI Screenshot](/img/flowctl.jpg)
 
-## ✨ Features
+## Features
 - 🔧 **Workflow Lifecycle Management**: Create, update, validate, delete, and execute workflows.
 - 📦 **Plugin Support**: Manage plugins and integrations for workflow tasks.
 - 📊 **Monitoring & Status**: Query real-time execution status and audit logs.
 - 🔐 **Authentication**: Supports Basic and JWT tokens-based authentication.
 - ⚡ **Cross-Platform**: Runs on Windows, Linux, and macOS (.NET 9+ required).
 
----
+## Installation
 
-## 📦 Installation
-
-### 🛠️ Building FlowCtl from Source
+### Building FlowCtl from Source
 To build FlowCtl from source, ensure you have the .NET 9 SDK installed and configured in your environment. Then follow the steps below:
 ```
 git clone https://github.com/flowsynx/flowctl.git
@@ -37,7 +38,7 @@ dotnet build -c Release
 ```
 The compiled binaries will be located in the bin/Release/net9.0 directory.
 
-#### ➕ (Optional) Add FlowCtl to Your System PATH
+#### (Optional) Add FlowCtl to Your System PATH
 To make flowctl available globally from any terminal session:
 - Linux/macOS:
 ```
@@ -53,12 +54,12 @@ After setting the PATH, you can verify the installation with:
 ```
 flowctl --version
 ```
-> ✅ Building from source is recommended for contributors or developers customizing FlowCtl for internal use.
+> Building from source is recommended for contributors or developers customizing FlowCtl for internal use.
 	 
-### 🚀 Installing FlowCtl
+### Installing FlowCtl
 You can install FlowCtl, the CLI for FlowSynx workflow automation system, using a platform-specific script or by downloading binaries manually from the Releases page.
 
-#### 🪟 Windows
+#### Windows
 Use the following PowerShell script to install FlowCtl to $Env:SystemDrive\flowctl and automatically add this directory to your User PATH:
 
 ```
@@ -67,7 +68,7 @@ powershell -Command "iwr -useb https://raw.githubusercontent.com/flowsynx/flowct
 
 After installation, restart your terminal or run refreshenv (if using tools like Chocolatey) to ensure FlowCtl is available in your PATH.
 
-#### 🐧 Linux
+#### Linux
 Install FlowCtl to `/usr/local/bin`, making it accessible system-wide:
 
 ```
@@ -76,7 +77,7 @@ wget -q https://raw.githubusercontent.com/flowsynx/flowctl/master/install/instal
 
 This script automatically detects your architecture and places the flowctl binary in `/usr/local/bin`.
 
-#### 🍎 macOS
+#### macOS
 Install FlowCtl to /usr/local/bin using curl:
 
 ```
@@ -88,7 +89,7 @@ Ensure `/usr/local/bin` is in your shell's PATH. You can check this by running:
 echo $PATH
 ```
 
-#### 📦 Manual Installation from Binary Releases
+#### Manual Installation from Binary Releases
 If you prefer not to use the install scripts, you can manually download and set up FlowCtl:
 
 1. Visit the [Releases page](https://github.com/flowsynx/flowctl/releases).
@@ -110,7 +111,7 @@ If you prefer not to use the install scripts, you can manually download and set 
 	flowctl --version
 	```
 
-### 🧰 Initialize FlowSynx in Standalone Mode
+### Initialize FlowSynx in Standalone Mode
 In standalone mode, FlowSynx can operate locally with minimal dependencies. You can initialize FlowSynx using FlowCtl with a simple command:
 ```
 flowctl init
@@ -147,7 +148,7 @@ This will output version information in JSON format, similar to the example belo
 
 > This command is useful for confirming compatibility and ensuring you're using the intended versions.
 
-### 🔄 Uninstalling FlowSynx (Standalone Mode)
+### Uninstalling FlowSynx (Standalone Mode)
 To uninstall FlowSynx in standalone mode, run the following command:
 ```
 flowctl uninstall
