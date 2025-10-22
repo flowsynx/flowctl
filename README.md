@@ -1,5 +1,5 @@
 ﻿<div align="center">
-  <h2>FlowCtl</h2>
+  <h1>FlowCtl</h1>
   <p><i>Command-line tools for control FlowSynx</i></p>
 
   [![dotnet][dotnet-budge]][dotnet-url] [![License: MIT][mit-badge]][mit-url] [![Build Status][actions-badge]][actions-url] [![FOSSA Status][fossa-badge]][fossa-url]
