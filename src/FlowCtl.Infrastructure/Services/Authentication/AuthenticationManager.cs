@@ -60,10 +60,11 @@ public class AuthenticationManager : IAuthenticationManager
             if (data.Username != null)
                 data.Username = _protector.Unprotect(data.Username);
 
-            if (data?.Type == AuthenticationType.Basic && data.Password != null)
+            // data is guaranteed non-null within this scope, so we can evaluate authentication type directly.
+            if (data.Type == AuthenticationType.Basic && data.Password != null)
                 data.Password = _protector.Unprotect(data.Password);
-            
-            if (data?.Type == AuthenticationType.Bearer && data.AccessToken != null)
+
+            if (data.Type == AuthenticationType.Bearer && data.AccessToken != null)
                 data.AccessToken = _protector.Unprotect(data.AccessToken);
         }
 
