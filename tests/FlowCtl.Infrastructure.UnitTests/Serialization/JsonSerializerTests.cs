@@ -7,6 +7,16 @@ namespace FlowCtl.Infrastructure.UnitTests.Serialization;
 public class JsonSerializerTests
 {
     [Fact]
+    public void ContentMineType_ShouldExposeJsonMimeTypeWithoutInstance()
+    {
+        // Act
+        var mimeType = JsonSerializer.ContentMineType;
+
+        // Assert
+        Assert.Equal("application/json", mimeType);
+    }
+
+    [Fact]
     public void Serialize_ShouldThrowFlowSynxException_WhenInputIsNull()
     {
         // Arrange
