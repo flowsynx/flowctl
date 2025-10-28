@@ -12,16 +12,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Logging\**" />
-		<EmbeddedResource Remove="Logging\**" />
-		<None Remove="Logging\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Remove="Extensions\LoggerExtensions.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="9.0.4" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.4" />
