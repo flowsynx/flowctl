@@ -73,10 +73,6 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
     private string GetArgumentStr(RunCommandOptions options)
     {
         var arguments = new List<string> { "--start" };
-
-        if (options.Background)
-            arguments.Add("--background");
-
         return string.Join(' ', arguments);
     }
 
