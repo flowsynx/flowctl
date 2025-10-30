@@ -65,14 +65,19 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Builds the argument string that is forwarded to the FlowSynx engine.
+    /// </summary>
+    /// <param name="options">The run command options selected by the user.</param>
+    /// <returns>A space-delimited argument string.</returns>
     private string GetArgumentStr(RunCommandOptions options)
     {
-        var argList = new List<string>
-        {
-            "--start"
-        };
+        var arguments = new List<string> { "--start" };
 
-        return argList.Count == 0 ? string.Empty : string.Join(' ', argList);
+        if (options.Background)
+            arguments.Add("--background");
+
+        return string.Join(' ', arguments);
     }
 
     private void OutputDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
