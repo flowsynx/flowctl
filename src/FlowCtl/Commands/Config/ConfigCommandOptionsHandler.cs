@@ -2,7 +2,7 @@
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
-using FlowSynx.Client.Messages.Requests.Workflows;
+using FlowSynx.Client.Messages.Requests.PluginConfig;
 
 namespace FlowCtl.Commands.Config;
 
