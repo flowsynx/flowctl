@@ -282,6 +282,9 @@
   <data name="Commands_Plugins_InstallDescription" xml:space="preserve">
     <value>Install plugin</value>
   </data>
+  <data name="Commands_Plugins_Install_DefaultVersionInfo" xml:space="preserve">
+    <value>No plugin version was specified; using '{0}'.</value>
+  </data>
   <data name="Commands_Plugins_Install_TypeOption" xml:space="preserve">
     <value>Specifies the plugin type should be installed.</value>
   </data>
@@ -301,7 +304,7 @@
     <value>Update plugin</value>
   </data>
   <data name="Commands_Plugins_VersionOption" xml:space="preserve">
-    <value>Specifies the plugin version should be installed.</value>
+    <value>Specifies the plugin version to install. Defaults to 'latest' when omitted.</value>
   </data>
   <data name="Commands_RootDescription" xml:space="preserve">
     <value>flowctl controls the FlowSynx engine</value>

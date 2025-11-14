@@ -644,6 +644,15 @@ namespace FlowCtl {
                 return ResourceManager.GetString("Commands_Plugins_InstallDescription", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No plugin version was specified; using &apos;{0}&apos;..
+        /// </summary>
+        internal static string Commands_Plugins_Install_DefaultVersionInfo {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_Install_DefaultVersionInfo", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Specifies the new plugin version should be installed..
