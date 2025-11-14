@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using FlowCtl.Commands.Plugins.Install;
+﻿using FlowCtl.Commands.Plugins.Install;
 using FlowCtl.Core.Services.Authentication;
 using FlowCtl.Core.Services.Logger;
 using FlowSynx.Client;
