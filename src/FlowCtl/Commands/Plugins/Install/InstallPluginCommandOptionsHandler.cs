@@ -61,7 +61,7 @@ internal class InstallPluginCommandOptionsHandler : ICommandOptionsHandler<Insta
             if (payload is { Succeeded: false })
                 _flowCtlLogger.WriteError(payload.Messages);
             else
-                _flowCtlLogger.Write(payload.Data);
+                _flowCtlLogger.Write(payload.Messages);
         }
         catch (Exception ex)
         {
