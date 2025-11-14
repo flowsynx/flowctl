@@ -6,6 +6,10 @@ internal class LoginCommand : BaseCommand<LoginCommandOptions, LoginCommandOptio
 {
     public LoginCommand() : base("login", Resources.Commands_Login_Description)
     {
+        var noneOption = new Option<bool?>("--noauth",
+            getDefaultValue: () => false,
+            description: Resources.Commands_Login_NoAuthenticationOption);
+
         var basicOption = new Option<bool?>("--basic", 
             getDefaultValue: () => false, 
             description: Resources.Commands_Login_BasicAuthenticationOption);

@@ -2,6 +2,7 @@
 
 public enum AuthenticationType
 {
+    None = 0,
     Basic,
     Bearer
 }

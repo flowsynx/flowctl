@@ -237,6 +237,9 @@
   <data name="Commands_Login_Description" xml:space="preserve">
     <value>Authenticates the user and establishes a session with the FlowSynx system</value>
   </data>
+  <data name="Commands_Login_NoAuthenticationOption" xml:space="preserve">
+    <value>Use no authentication. Sends requests without credentials and overrides any saved login.</value>
+  </data>
   <data name="Commands_Login_SpecifyAuthenticationType" xml:space="preserve">
     <value>Please specify one of the authentication type: --basic, --bearer, or --oauth</value>
   </data>
