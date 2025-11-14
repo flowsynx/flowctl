@@ -9,8 +9,8 @@ internal class InstallPluginCommand : BaseCommand<InstallPluginCommandOptions, I
         var typeOption = new Option<string>(new[] { "-t", "--type" },
             description: Resources.Commands_Plugins_Install_TypeOption) { IsRequired = true };
 
-        var versionOption = new Option<string>(new[] { "-v", "--version" },
-            description: Resources.Commands_Plugins_VersionOption) { IsRequired = true };
+        var versionOption = new Option<string?>(new[] { "-v", "--version" },
+            description: Resources.Commands_Plugins_VersionOption);
 
         var addressOption = new Option<string?>(new[] { "-a", "--address" },
             description: Resources.Commands_FlowSynxAddress);
