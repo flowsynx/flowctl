@@ -190,14 +190,18 @@ internal class RunCommandOptionsHandler : ICommandOptionsHandler<RunCommandOptio
         }
         else
         {
-            _flowCtlLogger.Write(string.Format(Resources.Command_Run_StartingDockerContainer, containerName));
-            var startResult = await _dockerService.StartContainerAsync(containerName, cancellationToken);
-            if (!startResult.Success)
+            var containerRunning = await _dockerService.IsContainerRunningAsync(containerName, cancellationToken);
+            if (!containerRunning)
             {
-                _flowCtlLogger.WriteError(string.IsNullOrWhiteSpace(startResult.Error)
-                    ? Resources.Command_Run_DockerRunFailed
-                    : startResult.Error);
-                return;
+                _flowCtlLogger.Write(string.Format(Resources.Command_Run_StartingDockerContainer, containerName));
+                var startResult = await _dockerService.StartContainerAsync(containerName, cancellationToken);
+                if (!startResult.Success)
+                {
+                    _flowCtlLogger.WriteError(string.IsNullOrWhiteSpace(startResult.Error)
+                        ? Resources.Command_Run_DockerRunFailed
+                        : startResult.Error);
+                    return;
+                }
             }
         }
 
