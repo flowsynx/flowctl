@@ -207,6 +207,51 @@
   <data name="Commands_Init_ValidatingFlowSynxSystemFailed" xml:space="preserve">
     <value>Validating download - Fail!</value>
   </data>
+  <data name="Commands_Init_DockerOption" xml:space="preserve">
+    <value>Initialize FlowSynx using Docker instead of local binaries</value>
+  </data>
+  <data name="Commands_Init_ContainerNameOption" xml:space="preserve">
+    <value>Name to assign to the FlowSynx engine container</value>
+  </data>
+  <data name="Commands_Init_PortOption" xml:space="preserve">
+    <value>Host port to map to the FlowSynx engine (default: 6262)</value>
+  </data>
+  <data name="Commands_Init_MountOption" xml:space="preserve">
+    <value>Host path to bind to the FlowSynx data directory (default: ~/.flowsynx/data)</value>
+  </data>
+  <data name="Commands_Init_ContainerPathOption" xml:space="preserve">
+    <value>Container path for FlowSynx data mount (default: /app/data)</value>
+  </data>
+  <data name="Commands_Init_DockerUnavailable" xml:space="preserve">
+    <value>Docker is not installed or the daemon is not running.</value>
+  </data>
+  <data name="Commands_Init_UseBinaryFallback" xml:space="preserve">
+    <value>Docker is unavailable. Rerun without --docker to install the binary version.</value>
+  </data>
+  <data name="Commands_Init_FailedToResolveVersion" xml:space="preserve">
+    <value>Could not resolve a FlowSynx version to use.</value>
+  </data>
+  <data name="Commands_Init_UnsupportedPlatform" xml:space="preserve">
+    <value>Docker images currently support amd64 Linux and Windows LTSC 2022 hosts.</value>
+  </data>
+  <data name="Commands_Init_PullingDockerImage" xml:space="preserve">
+    <value>Pulling image {0}...</value>
+  </data>
+  <data name="Commands_Init_DockerPullFailed" xml:space="preserve">
+    <value>Failed to pull the FlowSynx Docker image.</value>
+  </data>
+  <data name="Commands_Init_RemovingExistingContainer" xml:space="preserve">
+    <value>Removing existing FlowSynx container '{0}'.</value>
+  </data>
+  <data name="Commands_Init_CreatingDockerContainer" xml:space="preserve">
+    <value>Creating FlowSynx container '{0}' on port {1}.</value>
+  </data>
+  <data name="Commands_Init_DockerRunFailed" xml:space="preserve">
+    <value>Failed to create or start the FlowSynx container.</value>
+  </data>
+  <data name="Commands_Init_DockerSuccess" xml:space="preserve">
+    <value>FlowSynx engine is running in Docker as '{0}' on port {1}. Data directory: {2}.</value>
+  </data>
   <data name="Commands_Login_BasicAuthenticationLoggedSuccessfully" xml:space="preserve">
     <value>Logged in with Basic Authentication successfully.</value>
   </data>
@@ -324,6 +369,18 @@
   <data name="Commands_Stop_StopFlowSynxSuccessfully" xml:space="preserve">
     <value>The FlowSynx system has been successfully stopped.</value>
   </data>
+  <data name="Commands_Stop_DockerDescription" xml:space="preserve">
+    <value>Stop the FlowSynx engine container instead of the local process.</value>
+  </data>
+  <data name="Commands_Stop_DockerNotRunning" xml:space="preserve">
+    <value>The FlowSynx Docker container '{0}' is not running.</value>
+  </data>
+  <data name="Commands_Stop_DockerStopFailed" xml:space="preserve">
+    <value>Failed to stop the FlowSynx Docker container.</value>
+  </data>
+  <data name="Commands_Stop_DockerStoppedSuccessfully" xml:space="preserve">
+    <value>The FlowSynx Docker container '{0}' has been stopped.</value>
+  </data>
   <data name="Commands_Uninstall_BeginningUninstalling" xml:space="preserve">
     <value>Beginning uninstalling...</value>
   </data>
@@ -338,6 +395,27 @@
   </data>
   <data name="Commands_Uninstall_ForceTerminateOption" xml:space="preserve">
     <value>Forcefully terminates the FlowSynx system processes if it is currently running.</value>
+  </data>
+  <data name="Commands_Uninstall_DockerOption" xml:space="preserve">
+    <value>Remove the FlowSynx Docker container instead of the local binaries.</value>
+  </data>
+  <data name="Commands_Uninstall_RemoveDataOption" xml:space="preserve">
+    <value>Delete the FlowSynx data directory when uninstalling Docker mode.</value>
+  </data>
+  <data name="Commands_Uninstall_RemovingDockerContainer" xml:space="preserve">
+    <value>Removing FlowSynx Docker container '{0}'.</value>
+  </data>
+  <data name="Commands_Uninstall_RemoveDockerFailed" xml:space="preserve">
+    <value>Failed to remove the FlowSynx Docker container.</value>
+  </data>
+  <data name="Commands_Uninstall_DockerContainerMissing" xml:space="preserve">
+    <value>No FlowSynx Docker container named '{0}' was found.</value>
+  </data>
+  <data name="Commands_Uninstall_SkipDataDeletion" xml:space="preserve">
+    <value>Skipped deleting data because the target path looked unsafe.</value>
+  </data>
+  <data name="Commands_Uninstall_RemovedDataDirectory" xml:space="preserve">
+    <value>Removed FlowSynx data directory at '{0}'.</value>
   </data>
   <data name="Commands_Uninstall_StopSuccessfully" xml:space="preserve">
     <value>The FlowSynx system has been successfully stopped.</value>
@@ -500,6 +578,36 @@
   </data>
   <data name="Command_Run_BackgroundOption" xml:space="preserve">
     <value>Run the FlowSynx system in the background</value>
+  </data>
+  <data name="Command_Run_DockerOption" xml:space="preserve">
+    <value>Run FlowSynx using Docker instead of the local binary</value>
+  </data>
+  <data name="Command_Run_DockerModeHint" xml:space="preserve">
+    <value>FlowSynx is configured for Docker. Rerun with the --docker flag.</value>
+  </data>
+  <data name="Command_Run_DockerPull" xml:space="preserve">
+    <value>Pulling image {0}...</value>
+  </data>
+  <data name="Command_Run_DockerPullFailed" xml:space="preserve">
+    <value>Failed to pull the FlowSynx Docker image.</value>
+  </data>
+  <data name="Command_Run_DockerCreatingContainer" xml:space="preserve">
+    <value>Creating FlowSynx container '{0}' on port {1}.</value>
+  </data>
+  <data name="Command_Run_DockerRunFailed" xml:space="preserve">
+    <value>Failed to start the FlowSynx container.</value>
+  </data>
+  <data name="Command_Run_StartingDockerContainer" xml:space="preserve">
+    <value>Starting FlowSynx container '{0}'.</value>
+  </data>
+  <data name="Command_Run_DockerStarted" xml:space="preserve">
+    <value>FlowSynx engine container '{0}' is running on port {1}.</value>
+  </data>
+  <data name="Command_Run_AttachingToLogs" xml:space="preserve">
+    <value>Attaching to container logs (press Ctrl+C to detach).</value>
+  </data>
+  <data name="Command_Run_FailedToResolveVersion" xml:space="preserve">
+    <value>Could not resolve a FlowSynx version to build a Docker tag.</value>
   </data>
   <data name="Command_Workflow_AddCommand_FileNotExist" xml:space="preserve">
     <value>The provided definition file '{0}' does not exist or could not be located.</value>

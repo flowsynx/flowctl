@@ -1,3 +1,6 @@
 ﻿namespace FlowCtl.Commands.Stop;
 
-internal class StopCommandOptions : ICommandOptions {}
+internal class StopCommandOptions : ICommandOptions
+{
+    public bool Docker { get; set; }
+}

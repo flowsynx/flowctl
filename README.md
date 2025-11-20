@@ -148,6 +148,28 @@ This will output version information in JSON format, similar to the example belo
 
 > This command is useful for confirming compatibility and ensuring you're using the intended versions.
 
+### Initialize FlowSynx in Docker Mode
+Docker mode runs only the FlowSynx engine inside a container and persists data to your host. Docker must be installed and running.
+
+```
+flowctl init --docker --container-name flowsynx-engine --port 6262 --mount ~/.flowsynx/data --container-path /app/data
+```
+
+- Images are pulled from Docker Hub (`flowsynx/flowsynx`) using platform-specific tags (`linux-amd64` or `windows-ltsc2022-amd64`).
+- Data (workflows, logs, plugins) is stored on the host path you provide (default `~/.flowsynx/data`).
+- Install mode and container details are stored in `appsettings.json` next to the `flowctl` binary.
+
+To start the engine in Docker mode:
+```
+flowctl run --docker --background
+```
+
+To stop or remove the container:
+```
+flowctl stop --docker
+flowctl uninstall --docker [--remove-data]
+```
+
 ### Uninstalling FlowSynx (Standalone Mode)
 To uninstall FlowSynx in standalone mode, run the following command:
 ```

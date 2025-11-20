@@ -115,6 +115,96 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run FlowSynx using Docker instead of the local binary.
+        /// </summary>
+        internal static string Command_Run_DockerOption {
+            get {
+                return ResourceManager.GetString("Command_Run_DockerOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FlowSynx is configured for Docker. Rerun with the --docker flag..
+        /// </summary>
+        internal static string Command_Run_DockerModeHint {
+            get {
+                return ResourceManager.GetString("Command_Run_DockerModeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pulling image {0}....
+        /// </summary>
+        internal static string Command_Run_DockerPull {
+            get {
+                return ResourceManager.GetString("Command_Run_DockerPull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to pull the FlowSynx Docker image..
+        /// </summary>
+        internal static string Command_Run_DockerPullFailed {
+            get {
+                return ResourceManager.GetString("Command_Run_DockerPullFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating FlowSynx container &apos;{0}&apos; on port {1}..
+        /// </summary>
+        internal static string Command_Run_DockerCreatingContainer {
+            get {
+                return ResourceManager.GetString("Command_Run_DockerCreatingContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to start the FlowSynx container..
+        /// </summary>
+        internal static string Command_Run_DockerRunFailed {
+            get {
+                return ResourceManager.GetString("Command_Run_DockerRunFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting FlowSynx container &apos;{0}&apos;..
+        /// </summary>
+        internal static string Command_Run_StartingDockerContainer {
+            get {
+                return ResourceManager.GetString("Command_Run_StartingDockerContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FlowSynx engine container &apos;{0}&apos; is running on port {1}..
+        /// </summary>
+        internal static string Command_Run_DockerStarted {
+            get {
+                return ResourceManager.GetString("Command_Run_DockerStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attaching to container logs (press Ctrl+C to detach)..
+        /// </summary>
+        internal static string Command_Run_AttachingToLogs {
+            get {
+                return ResourceManager.GetString("Command_Run_AttachingToLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not resolve a FlowSynx version to build a Docker tag..
+        /// </summary>
+        internal static string Command_Run_FailedToResolveVersion {
+            get {
+                return ResourceManager.GetString("Command_Run_FailedToResolveVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided definition file &apos;{0}&apos; does not exist or could not be located..
         /// </summary>
         internal static string Command_Workflow_AddCommand_FileNotExist {
@@ -408,6 +498,141 @@ namespace FlowCtl {
         internal static string Commands_Init_ValidatingFlowSynxSystemFailed {
             get {
                 return ResourceManager.GetString("Commands_Init_ValidatingFlowSynxSystemFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialize FlowSynx using Docker instead of local binaries.
+        /// </summary>
+        internal static string Commands_Init_DockerOption {
+            get {
+                return ResourceManager.GetString("Commands_Init_DockerOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name to assign to the FlowSynx engine container.
+        /// </summary>
+        internal static string Commands_Init_ContainerNameOption {
+            get {
+                return ResourceManager.GetString("Commands_Init_ContainerNameOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Host port to map to the FlowSynx engine (default: 6262).
+        /// </summary>
+        internal static string Commands_Init_PortOption {
+            get {
+                return ResourceManager.GetString("Commands_Init_PortOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Host path to bind to the FlowSynx data directory (default: ~/.flowsynx/data).
+        /// </summary>
+        internal static string Commands_Init_MountOption {
+            get {
+                return ResourceManager.GetString("Commands_Init_MountOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Container path for FlowSynx data mount (default: /app/data).
+        /// </summary>
+        internal static string Commands_Init_ContainerPathOption {
+            get {
+                return ResourceManager.GetString("Commands_Init_ContainerPathOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Docker is not installed or the daemon is not running..
+        /// </summary>
+        internal static string Commands_Init_DockerUnavailable {
+            get {
+                return ResourceManager.GetString("Commands_Init_DockerUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Docker is unavailable. Rerun without --docker to install the binary version..
+        /// </summary>
+        internal static string Commands_Init_UseBinaryFallback {
+            get {
+                return ResourceManager.GetString("Commands_Init_UseBinaryFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not resolve a FlowSynx version to use..
+        /// </summary>
+        internal static string Commands_Init_FailedToResolveVersion {
+            get {
+                return ResourceManager.GetString("Commands_Init_FailedToResolveVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Docker images currently support amd64 Linux and Windows LTSC 2022 hosts..
+        /// </summary>
+        internal static string Commands_Init_UnsupportedPlatform {
+            get {
+                return ResourceManager.GetString("Commands_Init_UnsupportedPlatform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pulling image {0}....
+        /// </summary>
+        internal static string Commands_Init_PullingDockerImage {
+            get {
+                return ResourceManager.GetString("Commands_Init_PullingDockerImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to pull the FlowSynx Docker image..
+        /// </summary>
+        internal static string Commands_Init_DockerPullFailed {
+            get {
+                return ResourceManager.GetString("Commands_Init_DockerPullFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing existing FlowSynx container &apos;{0}&apos;..
+        /// </summary>
+        internal static string Commands_Init_RemovingExistingContainer {
+            get {
+                return ResourceManager.GetString("Commands_Init_RemovingExistingContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating FlowSynx container &apos;{0}&apos; on port {1}..
+        /// </summary>
+        internal static string Commands_Init_CreatingDockerContainer {
+            get {
+                return ResourceManager.GetString("Commands_Init_CreatingDockerContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to create or start the FlowSynx container..
+        /// </summary>
+        internal static string Commands_Init_DockerRunFailed {
+            get {
+                return ResourceManager.GetString("Commands_Init_DockerRunFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FlowSynx engine is running in Docker as &apos;{0}&apos; on port {1}. Data directory: {2}..
+        /// </summary>
+        internal static string Commands_Init_DockerSuccess {
+            get {
+                return ResourceManager.GetString("Commands_Init_DockerSuccess", resourceCulture);
             }
         }
         
@@ -754,6 +979,42 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop the FlowSynx engine container instead of the local process..
+        /// </summary>
+        internal static string Commands_Stop_DockerDescription {
+            get {
+                return ResourceManager.GetString("Commands_Stop_DockerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The FlowSynx Docker container &apos;{0}&apos; is not running..
+        /// </summary>
+        internal static string Commands_Stop_DockerNotRunning {
+            get {
+                return ResourceManager.GetString("Commands_Stop_DockerNotRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to stop the FlowSynx Docker container..
+        /// </summary>
+        internal static string Commands_Stop_DockerStopFailed {
+            get {
+                return ResourceManager.GetString("Commands_Stop_DockerStopFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The FlowSynx Docker container &apos;{0}&apos; has been stopped..
+        /// </summary>
+        internal static string Commands_Stop_DockerStoppedSuccessfully {
+            get {
+                return ResourceManager.GetString("Commands_Stop_DockerStoppedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop the FlowSynx Console running under the current user profile..
         /// </summary>
         internal static string Commands_StopConsole_Description {
@@ -804,6 +1065,69 @@ namespace FlowCtl {
         internal static string Commands_Uninstall_ForceTerminateOption {
             get {
                 return ResourceManager.GetString("Commands_Uninstall_ForceTerminateOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove the FlowSynx Docker container instead of the local binaries..
+        /// </summary>
+        internal static string Commands_Uninstall_DockerOption {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_DockerOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the FlowSynx data directory when uninstalling Docker mode..
+        /// </summary>
+        internal static string Commands_Uninstall_RemoveDataOption {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_RemoveDataOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing FlowSynx Docker container &apos;{0}&apos;..
+        /// </summary>
+        internal static string Commands_Uninstall_RemovingDockerContainer {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_RemovingDockerContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to remove the FlowSynx Docker container..
+        /// </summary>
+        internal static string Commands_Uninstall_RemoveDockerFailed {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_RemoveDockerFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No FlowSynx Docker container named &apos;{0}&apos; was found..
+        /// </summary>
+        internal static string Commands_Uninstall_DockerContainerMissing {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_DockerContainerMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipped deleting data because the target path looked unsafe..
+        /// </summary>
+        internal static string Commands_Uninstall_SkipDataDeletion {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_SkipDataDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed FlowSynx data directory at &apos;{0}&apos;..
+        /// </summary>
+        internal static string Commands_Uninstall_RemovedDataDirectory {
+            get {
+                return ResourceManager.GetString("Commands_Uninstall_RemovedDataDirectory", resourceCulture);
             }
         }
         
