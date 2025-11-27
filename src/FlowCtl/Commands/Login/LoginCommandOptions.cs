@@ -2,6 +2,7 @@
 
 internal class LoginCommandOptions : ICommandOptions
 {
+    public bool? NoAuth { get; set; } = false;
     public bool? Basic { get; set; } = false;
     public bool? Bearer { get; set; } = false;
     public string? Username { get; set; }

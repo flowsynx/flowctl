@@ -7,7 +7,10 @@ namespace FlowCtl.Infrastructure.Serialization;
 
 public class JsonSerializer : IJsonSerializer
 {
-    public string ContentMineType => "application/json";
+    /// <summary>
+    /// Static JSON content type reference that callers can reuse without instantiating the serializer.
+    /// </summary>
+    public static string ContentMineType => "application/json";
 
     public string Serialize(object? input)
     {

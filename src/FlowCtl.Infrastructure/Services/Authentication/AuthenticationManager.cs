@@ -21,11 +21,28 @@ public class AuthenticationManager : IAuthenticationManager
     }
 
     public bool IsLoggedIn => File.Exists(ConfigPath) && Load() is { } data && (
-        data.Type == AuthenticationType.Basic || data.Expiry is null || data.Expiry > DateTime.UtcNow
+        data.Type == AuthenticationType.Basic
+        || data.Type == AuthenticationType.None
+        || data.Expiry is null
+        || data.Expiry > DateTime.UtcNow
     );
 
     public bool IsBasicAuthenticationUsed => File.Exists(ConfigPath) && Load() is { } data &&
         data.Type == AuthenticationType.Basic;
+
+    public AuthenticationData LoginNone()
+    {
+        var data = new AuthenticationData
+        {
+            Type = AuthenticationType.None,
+            Username = null,
+            Password = null,
+            AccessToken = null,
+            Expiry = null
+        };
+        Save(data);
+        return data;
+    }
 
     public AuthenticationData LoginBasic(string username, string password)
     {
@@ -60,10 +77,11 @@ public class AuthenticationManager : IAuthenticationManager
             if (data.Username != null)
                 data.Username = _protector.Unprotect(data.Username);
 
-            if (data?.Type == AuthenticationType.Basic && data.Password != null)
+            // data is guaranteed non-null within this scope, so we can evaluate authentication type directly.
+            if (data.Type == AuthenticationType.Basic && data.Password != null)
                 data.Password = _protector.Unprotect(data.Password);
-            
-            if (data?.Type == AuthenticationType.Bearer && data.AccessToken != null)
+
+            if (data.Type == AuthenticationType.Bearer && data.AccessToken != null)
                 data.AccessToken = _protector.Unprotect(data.AccessToken);
         }
 

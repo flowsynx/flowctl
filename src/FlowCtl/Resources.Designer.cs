@@ -727,6 +727,15 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use no authentication. Sends requests without credentials and overrides any saved login..
+        /// </summary>
+        internal static string Commands_Login_NoAuthenticationOption {
+            get {
+                return ResourceManager.GetString("Commands_Login_NoAuthenticationOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please specify one of the authentication type: --basic, --bearer, or --oauth.
         /// </summary>
         internal static string Commands_Login_SpecifyAuthenticationType {
@@ -853,6 +862,15 @@ namespace FlowCtl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No plugin version was specified; using &apos;{0}&apos;..
+        /// </summary>
+        internal static string Commands_Plugins_Install_DefaultVersionInfo {
+            get {
+                return ResourceManager.GetString("Commands_Plugins_Install_DefaultVersionInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specifies the plugin type should be installed..
         /// </summary>
         internal static string Commands_Plugins_Install_TypeOption {
@@ -916,7 +934,7 @@ namespace FlowCtl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specifies the plugin version should be installed..
+        ///   Looks up a localized string similar to Specifies the plugin version to install. Defaults to &apos;latest&apos; when omitted..
         /// </summary>
         internal static string Commands_Plugins_VersionOption {
             get {
