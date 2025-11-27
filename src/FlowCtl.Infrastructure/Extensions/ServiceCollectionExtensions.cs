@@ -1,8 +1,12 @@
-﻿using FlowCtl.Core.Services.Authentication;
+using FlowCtl.Core.Services.Authentication;
+using FlowCtl.Core.Services.Configuration;
+using FlowCtl.Core.Services.Docker;
 using FlowCtl.Core.Services.Extractor;
 using FlowCtl.Core.Services.Github;
 using FlowCtl.Core.Services.ProcessHost;
 using FlowCtl.Infrastructure.Services.Authentication;
+using FlowCtl.Infrastructure.Services.Configuration;
+using FlowCtl.Infrastructure.Services.Docker;
 using FlowCtl.Infrastructure.Services.Extractor;
 using FlowCtl.Infrastructure.Services.Github;
 using FlowCtl.Infrastructure.Services.ProcessHost;
@@ -23,7 +27,9 @@ public static class ServiceCollectionExtensions
                 .AddScoped<IProcessHandler, ProcessHandler>()
                 .AddScoped<IArchiveExtractor, ArchiveExtractor>()
                 .AddScoped<IDataProtectorWrapper, DataProtectorWrapper>()
-                .AddScoped<IAuthenticationManager, AuthenticationManager>();
+                .AddScoped<IAuthenticationManager, AuthenticationManager>()
+                .AddScoped<IAppSettingsService, AppSettingsService>()
+                .AddScoped<IDockerService, DockerService>();
 
         return services;
     }

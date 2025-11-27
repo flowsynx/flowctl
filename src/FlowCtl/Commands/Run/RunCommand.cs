@@ -10,6 +10,11 @@ internal class RunCommand : BaseCommand<RunCommandOptions, RunCommandOptionsHand
             getDefaultValue: () => false,
             description: Resources.Command_Run_BackgroundOption);
 
+        var dockerOption = new Option<bool>("--docker",
+            getDefaultValue: () => false,
+            description: Resources.Command_Run_DockerOption);
+
         AddOption(backgroundOption);
+        AddOption(dockerOption);
     }
 }
