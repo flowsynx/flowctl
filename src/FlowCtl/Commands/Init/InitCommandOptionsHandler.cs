@@ -135,7 +135,7 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             return;
         }
 
-        var platformSuffix = GetPlatformSuffix();
+        var platformSuffix = await GetPlatformSuffix(cancellationToken);
         if (string.IsNullOrWhiteSpace(platformSuffix))
         {
             _flowCtlLogger.WriteError(Resources.Commands_Init_UnsupportedPlatform);
@@ -170,7 +170,8 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
             ContainerPort = EngineContainerPort,
             HostDataPath = hostDataPath,
             ContainerDataPath = containerDataPath,
-            Detached = true
+            Detached = true,
+            AdditionalArguments = " --start"
         };
 
         _flowCtlLogger.Write(string.Format(Resources.Commands_Init_CreatingDockerContainer, containerName, port));
@@ -353,13 +354,11 @@ internal class InitCommandOptionsHandler : ICommandOptionsHandler<InitCommandOpt
         return NormalizeDockerVersion(version);
     }
 
-    private string? GetPlatformSuffix()
+    private async Task<string?> GetPlatformSuffix(CancellationToken cancellationToken)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        var mode = await _dockerService.GetDockerModeAsync(cancellationToken);
+        if (mode == "Windows")
             return "windows-ltsc2022-amd64";
-
-        if (RuntimeInformation.ProcessArchitecture != Architecture.X64)
-            return null;
 
         return "linux-amd64";
     }

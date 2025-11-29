@@ -15,6 +15,24 @@ public class DockerService : IDockerService
         _flowCtlLogger = flowCtlLogger ?? throw new ArgumentNullException(nameof(flowCtlLogger));
     }
 
+    public async Task<string> GetDockerModeAsync(CancellationToken cancellationToken = default)
+    {
+        var result = await RunDockerAsync(new[] { "info", "--format", "{{.OSType}}" }, streamOutput: false, cancellationToken);
+        if (!result.Success || string.IsNullOrWhiteSpace(result.Output))
+        {
+            return "Unknown";
+        }
+
+        // Docker OSType usually returns "linux" or "windows"
+        var osType = result.Output.Trim().ToLowerInvariant();
+        return osType switch
+        {
+            "linux" => "Linux",
+            "windows" => "Windows",
+            _ => "Unknown"
+        };
+    }
+
     public Task<bool> IsDockerAvailableAsync(CancellationToken cancellationToken = default)
     {
         return ContainerQueryAsync(new[] { "info" }, cancellationToken);
@@ -64,6 +82,11 @@ public class DockerService : IDockerService
         arguments.Add($"{options.HostDataPath}:{options.ContainerDataPath}");
 
         arguments.Add($"{options.ImageName}:{options.Tag}");
+
+        if (!string.IsNullOrWhiteSpace(options.AdditionalArguments))
+        {
+            arguments.AddRange(options.AdditionalArguments.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+        }
 
         return RunDockerAsync(arguments, streamOutput: true, cancellationToken);
     }

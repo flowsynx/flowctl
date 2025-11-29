@@ -10,4 +10,5 @@ public class DockerRunOptions
     public string HostDataPath { get; set; } = string.Empty;
     public string ContainerDataPath { get; set; } = string.Empty;
     public bool Detached { get; set; } = true;
+    public string? AdditionalArguments { get; set; } = string.Empty;
 }

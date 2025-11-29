@@ -4,6 +4,7 @@ namespace FlowCtl.Core.Services.Docker;
 
 public interface IDockerService
 {
+    Task<string> GetDockerModeAsync(CancellationToken cancellationToken = default);
     Task<bool> IsDockerAvailableAsync(CancellationToken cancellationToken = default);
     Task<DockerCommandResult> PullImageAsync(string imageName, string tag, CancellationToken cancellationToken = default);
     Task<DockerCommandResult> RunContainerAsync(DockerRunOptions options, CancellationToken cancellationToken = default);
