@@ -41,12 +41,7 @@ internal class UpdatePluginCommandOptionsHandler : ICommandOptionsHandler<Update
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new UpdatePluginRequest
-            { 
-                Type = options.Type, 
-                OldVersion = options.OldVersion, 
-                NewVersion = options.NewVersion 
-            };
+            var request = new UpdatePluginRequest { Type = options.Type };
             var result = await _flowSynxClient.Plugins.UpdateAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

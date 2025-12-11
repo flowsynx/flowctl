@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using FlowCtl.Core.Services.Authentication;
+﻿using FlowCtl.Core.Services.Authentication;
 using FlowCtl.Core.Services.Logger;
 using FlowCtl.Extensions;
 using FlowSynx.Client;
@@ -9,8 +8,6 @@ namespace FlowCtl.Commands.Plugins.Install;
 
 internal class InstallPluginCommandOptionsHandler : ICommandOptionsHandler<InstallPluginCommandOptions>
 {
-    private const string LatestPluginVersion = "latest"; // FlowSynx resolves this marker to the newest plugin release.
-
     private readonly IFlowCtlLogger _flowCtlLogger;
     private readonly IFlowSynxClient _flowSynxClient;
     private readonly IAuthenticationManager _authenticationManager;
@@ -44,14 +41,7 @@ internal class InstallPluginCommandOptionsHandler : ICommandOptionsHandler<Insta
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var resolvedVersion = ResolvePluginVersion(options.Version);
-            if (string.IsNullOrWhiteSpace(options.Version))
-            {
-                _flowCtlLogger.Write(string.Format(CultureInfo.InvariantCulture,
-                    Resources.Commands_Plugins_Install_DefaultVersionInfo, resolvedVersion));
-            }
-
-            var request = new InstallPluginRequest { Type = options.Type, Version = resolvedVersion };
+            var request = new InstallPluginRequest { Type = options.Type };
             var result = await _flowSynxClient.Plugins.InstallAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)
@@ -68,10 +58,4 @@ internal class InstallPluginCommandOptionsHandler : ICommandOptionsHandler<Insta
             _flowCtlLogger.WriteError(ex.Message);
         }
     }
-
-    /// <summary>
-    /// Normalizes the requested version by falling back to the FlowSynx "latest" tag.
-    /// </summary>
-    private static string ResolvePluginVersion(string? requestedVersion) =>
-        string.IsNullOrWhiteSpace(requestedVersion) ? LatestPluginVersion : requestedVersion;
 }

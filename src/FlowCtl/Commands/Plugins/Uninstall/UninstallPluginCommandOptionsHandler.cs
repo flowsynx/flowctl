@@ -41,7 +41,7 @@ internal class UninstallPluginCommandOptionsHandler : ICommandOptionsHandler<Uni
                 _flowSynxClient.SetConnection(connection);
             }
 
-            var request = new UninstallPluginRequest { Type = options.Type, Version = options.Version };
+            var request = new UninstallPluginRequest { Type = options.Type };
             var result = await _flowSynxClient.Plugins.UninstallAsync(request, cancellationToken);
 
             if (result.StatusCode != 200)

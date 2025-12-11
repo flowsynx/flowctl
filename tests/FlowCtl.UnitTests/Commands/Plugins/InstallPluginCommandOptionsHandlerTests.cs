@@ -26,7 +26,7 @@ public class InstallPluginCommandOptionsHandlerTests
         flowSynxClientMock.Setup(client => client.SetAuthenticationStrategy(It.IsAny<IAuthenticationStrategy>()));
 
         pluginsServiceMock.Setup(service => service.InstallAsync(
-                It.Is<InstallPluginRequest>(request => request.Version == "latest"),
+                It.Is<InstallPluginRequest>(request => request.Type == "email-sender"),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(CreateSuccessfulInstallResult());
 
@@ -37,8 +37,7 @@ public class InstallPluginCommandOptionsHandlerTests
 
         var options = new InstallPluginCommandOptions
         {
-            Type = "email-sender",
-            Version = null
+            Type = "email-sender"
         };
 
         // Act
@@ -46,12 +45,8 @@ public class InstallPluginCommandOptionsHandlerTests
 
         // Assert
         pluginsServiceMock.Verify(service => service.InstallAsync(
-            It.Is<InstallPluginRequest>(request => request.Version == "latest"),
+            It.Is<InstallPluginRequest>(request => request.Type == "email-sender"),
             It.IsAny<CancellationToken>()), Times.Once);
-
-        loggerMock.Verify(logger => logger.Write(
-                It.Is<string>(message => message.Contains("latest", StringComparison.OrdinalIgnoreCase))),
-            Times.Once);
     }
 
     private static Mock<IAuthenticationManager> CreateAuthenticationManagerMock()

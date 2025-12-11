@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using System.CommandLine;
 using FlowCtl.Commands;
-using FlowCtl.Commands.Config;
 using FlowCtl.Commands.Plugins;
 using FlowCtl.Commands.Version;
 using FlowCtl.Commands.Health;
@@ -43,7 +42,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddCommands(this IServiceCollection services)
     {
         services.AddTransient<RootCommand, Root>()
-                .AddTransient<Command, ConfigCommand>()
                 .AddTransient<Command, ConsoleCommand>()
                 .AddTransient<Command, HealthCommand>()
                 .AddTransient<Command, InitCommand>()
